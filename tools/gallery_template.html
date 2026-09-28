@@ -1,0 +1,2219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<title>Qwen Anime Lab</title>
+<style>
+:root {
+  --bg: #f6f4ef; --panel: #ffffff; --ink: #1d1b22; --muted: #6b6775; --line: #e2ded5;
+  --accent: #d6336c; --accent-soft: #fbe3ec; --add: #1f7a4a; --add-bg: #dff3e7; --del: #a8321f; --del-bg: #f8e1dc;
+  --shadow: 0 1px 2px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.05);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14131a; --panel: #1d1c25; --ink: #ecebf2; --muted: #9a97a8; --line: #2e2c38;
+    --accent: #ff6b9a; --accent-soft: #3a1f2b; --add: #6fdc9d; --add-bg: #173424; --del: #ff9480; --del-bg: #3a1c17;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 4px 16px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14131a; --panel: #1d1c25; --ink: #ecebf2; --muted: #9a97a8; --line: #2e2c38;
+  --accent: #ff6b9a; --accent-soft: #3a1f2b; --add: #6fdc9d; --add-bg: #173424; --del: #ff9480; --del-bg: #3a1c17;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 4px 16px rgba(0,0,0,.3);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.sbtns { display: inline-flex; gap: 2px; margin-left: 6px; vertical-align: middle; }
+.sbtn { font-size: 12px; line-height: 1; padding: 2px 5px; border-radius: 6px; border: 1px solid var(--line); background: var(--panel); cursor: pointer; opacity: .55; }
+.sbtn:hover { opacity: 1; }
+.sbtn.on { opacity: 1; border-color: var(--accent); background: var(--accent-soft, rgba(127,127,127,.15)); }
+.strip.s-love > .shead { box-shadow: inset 3px 0 0 #e0557a; padding-left: 6px; }
+.strip.s-nope > .shead { opacity: .6; }
+.tnode.s-love { outline: 2px solid #e0557a; outline-offset: 1px; }
+.tnode.s-nope { opacity: .6; }
+.gsheets { margin: 0 0 18px; }
+.gsheets h3, .chdetail h3 { margin: 4px 0 8px; font-size: 16px; }
+.gsheets h3 .sub, .chdetail .sub { font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 6px; }
+.chgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.chtile { display: flex; flex-direction: column; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; color: var(--ink); }
+.chtile:hover { border-color: var(--accent); text-decoration: none; }
+.chtile img { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; }
+.chcap { padding: 6px 8px; display: flex; flex-direction: column; gap: 2px; font-size: 13px; }
+.chcap span { color: var(--muted); font-size: 11.5px; }
+.chall { margin-top: 18px !important; }
+.chdetail h4 { margin: 16px 0 6px; font-size: 14px; }
+.shmore { margin-top: 6px; } .shmore summary { cursor: pointer; color: var(--muted); font-size: 12.5px; } .shmore .shcells { margin-top: 6px; opacity: .8; }
+.chprog { font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 999px; background: var(--panel); border: 1px solid var(--line); margin-left: 6px; }
+.chprog.done { background: var(--add); border-color: var(--add); color: #fff; }
+.chback { display: inline-block; margin-bottom: 6px; }
+.shcells { display: flex; gap: 10px; flex-wrap: wrap; }
+.shcell { margin: 0; width: 200px; display: flex; flex-direction: column; gap: 4px; }
+.shcell img { width: 100%; aspect-ratio: 1; object-fit: cover; object-position: top; border-radius: 8px; cursor: zoom-in; background: #ddd; }
+.shcell figcaption { font-size: 12px; color: var(--muted); }
+.shcell figcaption span { opacity: .7; }
+.pincount { display: inline-flex; align-items: center; gap: 4px; font-size: 12.5px; white-space: nowrap; }
+.pincount input { width: 46px; }
+.refit { display: inline-flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+.refit select { font-size: 12px; }
+.refit a { font-size: 12px; }
+.fitwait { font-size: 12px; color: var(--accent); }
+.upfit { position: absolute; left: 5px; top: 5px; font-size: 11px; font-weight: 700; padding: 1px 5px; border-radius: 4px; background: rgba(0,0,0,.6); color: #fff; pointer-events: auto; }
+select[data-fsel].on { border-color: var(--accent); color: var(--accent); }
+/* lightbox action buttons, lightly colour-coded by what they do (user 2026-09-27: "color code the buttons slightly when viewing
+   the enlarged images"): a faint tint + coloured border, stronger when on */
+#lightbox .lbfb button, #lightbox .lbfb a.upb { --c: 128,128,128; background: linear-gradient(rgba(var(--c), .32), rgba(var(--c), .32)), #2a2833;
+  border: 1px solid rgba(var(--c), .9); color: #fff; }
+#lightbox .lbfb button:hover, #lightbox .lbfb a.upb:hover { background: linear-gradient(rgba(var(--c), .5), rgba(var(--c), .5)), #2a2833; }
+#lightbox .lbfb button.on, #lightbox .lbfb a.upb.on { background: rgb(var(--c)); border-color: rgb(var(--c)); color: #fff; }
+#lightbox .lbfb .pinb { --c: 214,166,52; }                       /* evolve / cross: gold */
+#lightbox .lbfb .rerollb { --c: 70,130,220; }                    /* re-render: blue */
+#lightbox .lbfb .upb, #lightbox .lbfb [data-refit] { --c: 32,170,170; }    /* upscale / refit: teal */
+#lightbox .lbfb [data-fb="love"] { --c: 226,80,122; }            /* love: pink */
+#lightbox .lbfb [data-fb="nope"] { --c: 150,150,150; }           /* nope: grey */
+#lightbox .lbfb [data-fb="animate"] { --c: 150,90,220; }         /* animate: violet */
+#lightbox .lbfb [data-fb="cast"] { --c: 70,170,90; }             /* more characters: green */
+#lightbox .lbfb .exploreb { --c: 230,130,40; }                   /* journey: orange */
+#lightbox .lbfb .blurb { --c: 110,120,140; }                     /* blur: slate */
+#lightbox .lbfb [data-jref] { --c: 150,110,70; }                 /* journey reference: brown */
+header { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: 16px; padding: 12px 24px; flex-wrap: wrap; }
+header h1 { font-size: 18px; margin: 0; letter-spacing: .02em; }
+header h1 span { color: var(--accent); }
+header .stats { color: var(--muted); font-size: 13px; }
+header .spacer { flex: 1; }
+button, .chip { font: inherit; font-size: 13px; border: 1px solid var(--line); background: var(--panel); color: var(--ink);
+  border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+button:hover { border-color: var(--accent); }
+button.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+main { padding: 20px 24px 120px; }
+.round-head { display: flex; align-items: baseline; gap: 12px; margin: 28px 0 12px; flex-wrap: wrap; }
+.round-head h2 { margin: 0; font-size: 20px; }
+.round-head .sub { color: var(--muted); font-size: 13px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow);
+  display: flex; flex-direction: column; cursor: pointer; transition: transform .12s; }
+.card:hover { transform: translateY(-2px); border-color: var(--accent); }
+.card .thumbs { display: grid; grid-auto-flow: column; gap: 2px; background: var(--line); }
+.card .thumbs img { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; }
+.card .body { padding: 10px 12px 12px; }
+.card .id { font: 12px ui-monospace, Consolas, monospace; color: var(--muted); }
+.card h3 { margin: 2px 0 4px; font-size: 15px; }
+.card .meta { font-size: 12px; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap; }
+.verdict { font-size: 13px; margin-top: 6px; padding: 6px 8px; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 4px; }
+.verdict:empty { display: none; }
+.grid-wrap { overflow-x: auto; }
+table.sgrid { border-collapse: separate; border-spacing: 6px; width: 100%; table-layout: fixed; }
+table.sgrid th { font-size: 12px; font-weight: 600; text-align: left; vertical-align: bottom; padding: 0 2px; overflow-wrap: anywhere; }
+table.sgrid th a { color: var(--ink); }
+table.sgrid td img { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 6px; display: block; cursor: zoom-in; }
+table.sgrid td.rowlabel { font: 12px ui-monospace, Consolas, monospace; color: var(--muted); writing-mode: vertical-rl; transform: rotate(180deg); }
+.crumbs { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+.lin-head h2 { margin: 0 0 4px; font-size: 24px; }
+.lin-head .goal { color: var(--muted); max-width: 800px; }
+.rel { font-size: 13px; margin-top: 8px; display: flex; gap: 12px; flex-wrap: wrap; }
+.version { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow);
+  margin: 20px 0; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); overflow: hidden; }
+@media (max-width: 900px) { .version { grid-template-columns: 1fr; } }
+.version .imgs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(var(--tile), 100%), 1fr)); gap: 4px; padding: 4px; background: var(--line); }
+.imgbox { position: relative; }
+.imgbox img { width: 100%; display: block; border-radius: 6px; cursor: zoom-in; }
+.imgbox .cap { position: absolute; left: 6px; top: 6px; font: 11px ui-monospace, Consolas, monospace; background: rgba(0,0,0,.6); color: #fff; padding: 1px 6px; border-radius: 4px; }
+.imgbox .pin { position: absolute; right: 6px; top: 6px; padding: 2px 8px; font-size: 12px; background: rgba(0,0,0,.55); color: #fff; border-color: transparent; }
+.imgbox .pin.on { background: var(--accent); }
+.version .info { padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.vtitle { display: flex; align-items: baseline; gap: 10px; }
+.vtitle b { font: 700 18px ui-monospace, Consolas, monospace; color: var(--accent); }
+.label { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.prompt { font-size: 13.5px; line-height: 1.6; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; white-space: pre-wrap; }
+.prompt ins { text-decoration: none; background: var(--add-bg); color: var(--add); border-radius: 3px; padding: 0 1px; }
+.prompt del { background: var(--del-bg); color: var(--del); border-radius: 3px; padding: 0 1px; }
+.params { display: flex; flex-wrap: wrap; gap: 6px; }
+.params span { font: 12px ui-monospace, Consolas, monospace; border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; }
+.params span.changed { border-color: var(--add); color: var(--add); background: var(--add-bg); }
+.difftoggle { align-self: flex-start; }
+.chip.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+#tray { position: fixed; left: 0; right: 0; bottom: 0; background: var(--panel); border-top: 1px solid var(--line); padding: 8px 24px;
+  display: none; align-items: center; gap: 10px; z-index: 6; box-shadow: 0 -4px 16px rgba(0,0,0,.12); }
+#tray.show { display: flex; }
+#tray .pins { display: flex; gap: 6px; overflow-x: auto; flex: 1; }
+#tray .pins img { height: 56px; border-radius: 4px; cursor: pointer; }
+#tray .pins img:hover { opacity: .5; }
+#tray #pindir { flex: 1.2; min-width: 180px; max-width: 520px; font: inherit; font-size: 13px; resize: vertical; background: var(--bg); color: var(--fg);
+  border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; }
+#tray #pinsubmit { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+@media (max-width: 700px) { #tray { flex-wrap: wrap; padding: 8px 16px; } #tray #pindir { flex-basis: 100%; max-width: none; } }
+.fbbar button.rerollb.on, .lbfb button.rerollb.on { background: var(--accent); color: #fff; animation: rrpulse 1s ease-in-out infinite alternate; }
+@keyframes rrpulse { to { opacity: .55; } }
+.fbbar button.pinb.on { background: var(--accent); color: #fff; }
+.overlay { position: fixed; inset: 0; background: rgba(8,8,12,.92); z-index: 10; display: none; }
+.overlay.show { display: flex; }
+#lightbox { align-items: center; justify-content: center; flex-direction: column; gap: 10px; }
+#lightbox img { max-width: 94vw; max-height: 62vh; border-radius: 6px; }
+#lightbox .lbcap { color: #ddd; font-size: 13px; text-align: center; }
+#lightbox .nav { position: absolute; top: 50%; transform: translateY(-50%); font-size: 28px; background: none; border: none; color: #fff; padding: 20px; }
+#lightbox .prev { left: 8px; } #lightbox .next { right: 8px; }
+.overlay .close { position: absolute; top: 12px; right: 16px; background: none; border: none; color: #fff; font-size: 26px; }
+#compare { flex-direction: column; padding: 48px 16px 16px; }
+#compare .cmp { flex: 1; display: grid; gap: 8px; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); min-height: 0; }
+#compare figure { margin: 0; display: flex; flex-direction: column; min-height: 0; }
+#compare figure img { flex: 1; min-height: 0; width: 100%; object-fit: contain; }
+#compare figcaption { color: #ddd; font-size: 12px; text-align: center; padding-top: 4px; }
+.cell { position: relative; }
+/* hover bar: confined to its own image (user 2026-09-25: buttons bled over neighbouring images). It may never be wider
+   than the tile: it wraps upward inside it, and on narrow tiles only ❤ 👎 + ⋯ (opens the full labelled bar) are shown */
+.cell, .imgbox { container-type: inline-size; }
+.fbbar { position: absolute; left: 6px; right: 6px; bottom: 6px; display: flex; flex-wrap: wrap-reverse; justify-content: flex-end;
+  align-content: flex-start; gap: 4px; opacity: 0; transition: opacity .12s; z-index: 2; pointer-events: none; }
+.fbbar > *, .fbbar .sec > * { pointer-events: auto; }
+.fbbar .sec { display: contents; }
+.fbbar .moreb { display: none; }
+@container (max-width: 250px) {
+  .fbbar .sec { display: none; }
+  .fbbar .moreb { display: inline-block; }
+  .fbbar.marked .sec { display: contents; }
+  .fbbar.marked .sec button:not(.on) { display: none !important; }
+}
+.cell:hover .fbbar, .imgbox:hover .fbbar, .fbbar.marked { opacity: 1; }
+.fbbar button { padding: 2px 7px; font-size: 13px; background: rgba(0,0,0,.6); color: #fff; border-color: transparent; }
+.fbbar button.on { background: var(--accent); }
+.fbbar.marked button:not(.on) { display: none; }
+.cell:hover .fbbar.marked button, .imgbox:hover .fbbar.marked button { display: inline-block; }
+.fbstat { position: absolute; left: 6px; bottom: 6px; font-size: 11px; background: rgba(0,0,0,.65); color: #fff; padding: 1px 6px; border-radius: 4px;
+  white-space: nowrap; z-index: 1; cursor: help; }
+.cell:hover .fbstat, .imgbox:hover .fbstat { opacity: .35; }
+#sendfb { display: none; } #sendfb.show { display: inline-block; background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+#fbwait { font-size: 12px; color: var(--muted); }
+.lbfb { display: flex; flex-direction: column; gap: 6px; align-items: center; width: min(640px, 94vw); }
+.lbfb .row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+.lbfb button { background: #2a2833; color: #fff; border-color: #444; }
+.lbfb button.on { background: var(--accent); border-color: var(--accent); }
+.lbfb textarea { width: 100%; min-height: 44px; border-radius: 8px; border: 1px solid #444; background: #1b1a22; color: #eee; font: 13px system-ui, sans-serif; padding: 6px 8px; resize: vertical; }
+.lbfb .reply { color: #9fe0b8; font-size: 13px; }
+.lbfb .hint { color: #999; font-size: 12px; }
+.lbthread { width: 100%; max-height: 26vh; overflow-y: auto; }
+.lbthread .msg { background: #1b1a22; border-color: #3a3846; color: #eee; }
+.lbthread .msg.claude { background: #16301f; border-color: #3f8f5f; }
+.lbthread textarea { background: #1b1a22; color: #eee; border-color: #444; }
+.lbthread .who, .lbthread .awaiting { color: #aaa; }
+.vbadge { position: absolute; left: 6px; top: 6px; font: 11px ui-monospace, Consolas, monospace; background: rgba(0,0,0,.65); color: #fff; padding: 1px 6px; border-radius: 4px; }
+.pending { display: grid; place-items: center; text-align: center; aspect-ratio: 3/4; min-width: 0; border: 1px dashed var(--muted);
+  border-radius: 6px; color: var(--muted); font-size: 12px; background: var(--panel); }
+table.sgrid td .cell { position: relative; }
+.empty { color: var(--muted); padding: 40px 0; }
+:root { --tile: 200px; --hdr: 52px; }
+.toolbar { position: sticky; top: var(--hdr); z-index: 4; background: var(--bg); display: flex; gap: 6px; align-items: center;
+  flex-wrap: wrap; padding: 8px 0; margin: -8px 0 4px; border-bottom: 1px solid var(--line); }
+.sizer { display: inline-flex; align-items: center; gap: 4px; color: var(--muted); font-size: 12px; margin-right: 6px; }
+.sizer input { width: 130px; accent-color: var(--accent); }
+.groups { display: flex; flex-wrap: wrap; gap: 6px 28px; align-items: flex-start; }
+.group { max-width: 100%; min-width: 0; }
+.group .round-head { width: 0; min-width: 100%; margin: 14px 0 8px; flex-wrap: nowrap; }
+.group .round-head h2 { white-space: nowrap; }
+.group .round-head .sub { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.group.evset { margin: 10px 0; }
+.group .evhead { width: 0; min-width: 100%; }
+.lead { display: flex; gap: 10px; align-items: stretch; max-width: 100%; }
+.lead > .strip { min-width: 0; }
+.layer-head { margin-bottom: 14px; }
+.imgflow { gap: 6px; }
+.vidchip { position: absolute; right: 6px; top: 32px; font-size: 12px; font-weight: 600; background: #ff9f43; color: #1d1b22 !important;
+  padding: 1px 8px; border-radius: 999px; box-shadow: 0 1px 4px rgba(0,0,0,.4); }
+.vidchip:hover { text-decoration: none; filter: brightness(1.1); }
+.vtile video { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 6px; display: block; cursor: zoom-in; background: #000; }
+.vstrip .tiles, .vstrip .vtile { width: var(--tile); }
+.vstrip { width: calc(var(--tile) + 12px); }
+#lightbox .lbvid { max-width: 94vw; max-height: 62vh; border-radius: 6px; background: #000; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.seg button { border: 0 !important; border-radius: 0 !important; padding: 4px 10px; }
+.seg button + button { border-left: 1px solid var(--line) !important; }
+.toolbar select { font: inherit; font-size: 13px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 4px 10px; max-width: 180px; }
+.castbox { position: relative; }
+.castbox input { font: inherit; font-size: 13px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 4px 12px; width: 210px; }
+.castbox input:focus { outline: none; border-color: var(--accent); width: 280px; }
+.castlist { display: none; position: absolute; z-index: 30; top: calc(100% + 4px); left: 0; width: 380px; max-width: calc(100vw - 32px); max-height: 60vh; overflow-y: auto;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); padding: 4px; font-size: 13px; }
+.castlist.show { display: block; }
+.copt { padding: 6px 9px; border-radius: 7px; cursor: pointer; }
+.copt.sel { background: var(--accent-soft); }
+.copt.cur b::after { content: " ✓"; color: var(--accent); }
+.copt .cn { color: var(--muted); font-size: 11px; }
+.copt .ch { color: var(--muted); font-size: 12px; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.copt mark { background: none; color: var(--accent); font-weight: 600; }
+.copt.none { color: var(--muted); cursor: default; }
+.fdrop { position: relative; }
+.fdrop summary { list-style: none; cursor: pointer; font-size: 13px; border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 4px 12px; user-select: none; }
+.fdrop summary::-webkit-details-marker { display: none; }
+.fdrop summary b { background: var(--accent); color: #fff; border-radius: 999px; padding: 0 6px; font-size: 11px; }
+.fdrop .fmenu { position: absolute; z-index: 20; top: calc(100% + 4px); left: 0; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 10px; padding: 8px 10px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 6px; white-space: nowrap; font-size: 13px; }
+.pill { background: var(--accent-soft) !important; border-color: var(--accent) !important; color: var(--accent) !important; padding: 2px 10px !important; }
+.clearf { border-color: var(--accent) !important; color: var(--accent) !important; }
+.reveal { background: none; border: 0; padding: 0 2px; cursor: pointer; font-size: 13px; opacity: .7; } .reveal:hover { opacity: 1; }
+.lbfb .reveal { font-size: 13px; opacity: 1; }
+.sdate { font: 10.5px ui-monospace, Consolas, monospace; color: var(--accent); white-space: nowrap; margin-right: 2px; }
+select[data-sort] { font: inherit; font-size: 13px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 4px 10px; }
+.rmark { align-self: stretch; display: flex; align-items: center; justify-content: center; padding: 8px 5px; border-radius: 10px;
+  background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: 13px; letter-spacing: .06em; }
+.rmark span { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; }
+.evmark { align-self: stretch; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px; border-radius: 10px;
+  background: var(--accent-soft); width: calc(var(--tile) * .55 + 12px); }
+.evmark img { width: calc(var(--tile) * .55); aspect-ratio: 3/4; object-fit: cover; border-radius: 6px; display: block; }
+.evmark .label { color: var(--accent); font-weight: 700; text-align: center; }
+.evmark .cross { color: var(--accent); font-weight: 700; font-size: 18px; line-height: 1; }
+.evmark.hl, .strip.hl { outline: 3px solid var(--accent); box-shadow: 0 0 0 7px var(--accent-soft); }
+.strips { display: flex; flex-wrap: wrap; gap: 12px 10px; align-items: flex-start; }
+.strip { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 5px; max-width: 100%; box-shadow: var(--shadow); }
+.shead { display: flex; gap: 6px; align-items: baseline; width: 0; min-width: 100%; padding: 1px 3px 5px; font-size: 12.5px; font-weight: 600; }
+.shead a { color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0; }
+.shead .sid { font: 11px ui-monospace, Consolas, monospace; color: var(--muted); }
+.shead .sinfo { color: var(--muted); cursor: help; }
+.snote { width: 0; min-width: 100%; font-size: 11px; color: var(--muted); padding: 0 3px 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tiles { display: flex; flex-wrap: wrap; gap: 4px; }
+.tile { position: relative; width: var(--tile); }
+.tile img { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 6px; display: block; cursor: zoom-in; }
+.tile .pending { width: 100%; }
+.tlabel { position: absolute; left: 5px; top: 5px; font: 11px ui-monospace, Consolas, monospace; background: rgba(0,0,0,.6); color: #fff;
+  padding: 1px 5px; border-radius: 4px; pointer-events: none; }
+.tlabel.old { background: rgba(120, 60, 0, .75); pointer-events: auto; }
+.tile.hl img { outline: 3px solid var(--accent); outline-offset: 2px; }
+.compact .tlabel, .compact .fbstat { display: none; }
+.compact .fbbar button { padding: 1px 4px; font-size: 11px; }
+#layers { display: flex; gap: 4px; flex-wrap: wrap; }
+.search { display: inline-flex; align-items: center; gap: 6px; }
+.search input { width: 240px; font: inherit; font-size: 13px; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--panel); color: var(--ink); }
+.search input:focus { outline: none; border-color: var(--accent); width: 320px; }
+#qcount { font-size: 12px; color: var(--muted); }
+#layers a { padding: 3px 11px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink); font-size: 13px; }
+#layers a.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+#layers .evodd { position: relative; }
+#layers .evodd summary { list-style: none; cursor: pointer; padding: 3px 11px; border-radius: 999px; border: 1px solid var(--line); font-size: 13px; user-select: none; }
+#layers .evodd summary::-webkit-details-marker { display: none; }
+#layers .evodd.on summary { background: var(--accent); border-color: var(--accent); color: #fff; }
+#layers .evomenu { position: absolute; z-index: 40; top: calc(100% + 4px); right: 0; min-width: 170px; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 10px; box-shadow: var(--shadow); padding: 6px; display: flex; flex-direction: column; gap: 3px; }
+#layers .evomenu a { border: 0; border-radius: 8px; display: flex; justify-content: space-between; gap: 12px; }
+#layers .evomenu a b { color: var(--muted); font-weight: 500; }
+#layers .evomenu a.on b { color: #fff; }
+#layers a:hover { text-decoration: none; border-color: var(--accent); }
+.evochip { position: absolute; right: 6px; top: 6px; font-size: 12px; font-weight: 600; background: var(--accent); color: #fff !important;
+  padding: 1px 8px; border-radius: 999px; box-shadow: 0 1px 4px rgba(0,0,0,.4); }
+.evochip:hover { text-decoration: none; filter: brightness(1.1); }
+.imgbox .evochip { top: 36px; }
+.layer-head h2 { margin: 0 0 4px; font-size: 24px; }
+.layer-head .sub { color: var(--muted); max-width: 900px; }
+.evset { display: block; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 12px; padding: 14px; margin: 18px 0; box-shadow: var(--shadow); }
+.evhead { display: flex; gap: 14px; align-items: center; margin-bottom: 10px; }
+.evhead { flex-wrap: wrap; }
+.evparent1 { display: flex; gap: 10px; align-items: center; font-size: 14px; font-weight: 600; }
+.evparent1 .sub { font-weight: 400; }
+.evparent1 img { width: 84px; aspect-ratio: 3/4; object-fit: cover; border-radius: 8px; display: block; }
+.evhead .cross { font-size: 26px; color: var(--accent); font-weight: 700; }
+.evhead .sub { color: var(--muted); font-size: 13px; margin-top: 2px; }
+.colnote { font-weight: 400; font-size: 11px; color: var(--muted); margin-top: 2px; }
+.cell.hl { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+.evset.hl, .variant.hl { outline: 3px solid var(--accent); box-shadow: 0 0 0 7px var(--accent-soft); }
+.evparent { font-size: 13px; color: var(--muted); display: flex; flex-direction: column; gap: 6px; }
+.evparent img { width: 100%; border-radius: 8px; display: block; }
+.evset h3 { margin: 0 0 2px; font-size: 16px; }
+.variants { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-top: 10px; }
+.variant { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--bg); }
+.variant .imgs { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 4px; padding: 4px; }
+.variant .vinfo { padding: 8px 10px 10px; font-size: 13px; display: flex; flex-direction: column; gap: 8px; }
+.variant .vinfo b { font-family: ui-monospace, Consolas, monospace; color: var(--accent); }
+.lbevo { font-size: 14px; }
+.lbevo.lbtree { display: inline-block; }
+.treelink { font-size: 13px; margin-left: 8px; white-space: nowrap; }
+.evmarktree { align-self: center; font-size: 15px; }
+/* 🌳 family tree page */
+.tree-wrap { overflow-x: auto; padding-bottom: 10px; }
+.gnav .gtodo { margin-left: 5px; min-width: 18px; padding: 0 5px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; line-height: 18px; display: inline-block; text-align: center; }
+.gsearch { margin-left: auto; min-width: 260px; font: inherit; font-size: 13px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 5px 12px; }
+.gsearch:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+.tree-layout { display: flex; gap: 14px; align-items: flex-start; }
+.tree-main { flex: 1; min-width: 0; }
+.tree-side { width: 270px; flex: none; position: sticky; top: calc(var(--hdr, 60px) + 8px); max-height: calc(100vh - var(--hdr, 60px) - 24px);
+  display: flex; flex-direction: column; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px; box-shadow: var(--shadow); }
+.tree-side-head { font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+.tree-side-head b { color: var(--muted); font-weight: 500; }
+.tfam-q { font: inherit; font-size: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 999px; padding: 4px 10px; margin-bottom: 8px; }
+.tfam-list { overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
+.tfam { display: flex; gap: 8px; align-items: center; padding: 5px; border-radius: 8px; color: var(--ink); text-decoration: none; }
+.tfam:hover { background: var(--accent-soft); }
+.tfam.on { background: var(--accent-soft); outline: 2px solid var(--accent); }
+.tfam img, .tfam-noimg { width: 40px; height: 40px; border-radius: 6px; object-fit: cover; flex: none; background: var(--line); }
+.tfam-txt { display: flex; flex-direction: column; min-width: 0; }
+.tfam-txt b { font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tfam-txt span { font-size: 11px; color: var(--muted); }
+@media (max-width: 900px) { .tree-layout { flex-direction: column-reverse; } .tree-side { position: static; width: auto; max-height: 260px; } }
+.tree-inner { position: relative; display: inline-flex; flex-direction: column; gap: 34px; min-width: 100%; padding: 6px 4px; }
+.tree-edges { position: absolute; top: 0; left: 0; pointer-events: none; overflow: visible; }
+.tedge { fill: none; stroke: var(--muted); stroke-width: 2; opacity: .55; }
+.tedge-cross { stroke: var(--accent); stroke-dasharray: 5 4; opacity: .8; }
+.trow { position: relative; display: flex; gap: 14px; align-items: flex-start; }
+.trow-label { flex: none; width: 92px; padding-top: 10px; font-size: 11px; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--muted); text-align: right; }
+.trow-nodes { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; }
+.trow.descrow .trow-nodes { align-items: stretch; }
+.tnode { position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 6px;
+  cursor: pointer; box-shadow: var(--shadow); transition: border-color .15s, transform .15s; }
+.tnode:hover { border-color: var(--accent); transform: translateY(-2px); }
+.tnode.timg, .tnode.tlin { width: 108px; }
+.tnode img { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 6px; display: block; }
+.tnode .tcap { font-size: 11px; line-height: 1.3; margin-top: 4px; color: var(--ink); }
+.tnode .tcap .tver { display: block; color: var(--muted); font: 10px ui-monospace, Consolas, monospace; }
+.tnode .theart { color: var(--accent); }
+.tnode .topen { position: absolute; top: 3px; right: 3px; background: rgba(0,0,0,.55); color: #fff !important; border-radius: 5px;
+  padding: 1px 4px; font-size: 11px; line-height: 1.4; text-decoration: none; opacity: 0; transition: opacity .15s; }
+.tnode:hover .topen { opacity: 1; }
+.tnode .tzoom { position: absolute; top: 3px; left: 3px; background: rgba(0,0,0,.55); color: #fff; border-radius: 5px; cursor: zoom-in;
+  padding: 1px 4px; font-size: 11px; line-height: 1.4; opacity: 0; transition: opacity .15s; }
+.tnode:hover .tzoom { opacity: 1; }
+.tfocus-imgs .tzoom-img { cursor: zoom-in; }
+.tnode.tfocus { width: auto; display: flex; gap: 12px; align-items: center; padding: 12px 16px; border: 2px solid var(--accent);
+  box-shadow: 0 0 0 6px var(--accent-soft); cursor: default; }
+.tfocus-imgs { display: flex; gap: 4px; }
+.tfocus-imgs img { width: 70px; aspect-ratio: 3/4; object-fit: cover; border-radius: 6px; }
+.tfocus-info { display: flex; flex-direction: column; gap: 3px; max-width: 320px; }
+.tfocus-info b { font-size: 16px; }
+.tfocus-info .goal { color: var(--muted); font-size: 12.5px; }
+.tfocus-info .topen { position: static; opacity: 1; background: none; color: var(--accent) !important; padding: 0; font-size: 12.5px; }
+.tset { border: 1px dashed var(--line); border-radius: 10px; padding: 10px; background: var(--bg); }
+.tset-parents { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+.tparentchip { position: relative; display: block; width: 30px; }
+.tparentchip img { width: 30px; aspect-ratio: 3/4; object-fit: cover; border-radius: 4px; display: block; }
+.tparentchip.other { outline: 1px dashed var(--accent); }
+.tparentchip.other::after { content: "×"; position: absolute; top: -7px; right: -6px; color: var(--accent); font-weight: 700;
+  font-size: 13px; background: var(--panel); border-radius: 50%; line-height: 1; }
+.tset-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+.tset-members { display: flex; gap: 10px; flex-wrap: wrap; }
+.tree-more { margin-top: -18px; }
+.tree-more summary { list-style: none; cursor: pointer; color: var(--accent); font-size: 13px; padding: 6px 0; user-select: none; }
+.tree-more summary::-webkit-details-marker { display: none; }
+.tree-more-inner { display: flex; flex-direction: column; gap: 34px; margin-top: 20px; }
+.thread { display: flex; flex-direction: column; gap: 6px; }
+.thread .msg { font-size: 13px; padding: 6px 9px; border-radius: 8px; background: var(--bg); border: 1px solid var(--line); white-space: pre-wrap; }
+.thread .msg.claude { border-color: var(--add); background: var(--add-bg); }
+.thread .who { display: block; font-size: 11px; color: var(--muted); margin-bottom: 1px; white-space: normal; }
+.thread .compose { display: flex; gap: 6px; align-items: flex-end; }
+.thread textarea { flex: 1; min-height: 34px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink);
+  font: 13px system-ui, sans-serif; padding: 6px 8px; resize: vertical; }
+.thread .awaiting { font-size: 11px; color: var(--muted); }
+#atpop { position: fixed; z-index: 12; display: none; width: min(460px, calc(100vw - 32px)); max-height: 340px; overflow-y: auto;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); padding: 4px; font-size: 13px; }
+#atpop.show { display: block; }
+#atpop .ati { display: flex; gap: 8px; align-items: center; padding: 4px 6px; border-radius: 6px; cursor: pointer; }
+#atpop .ati img { width: 36px; height: 48px; object-fit: cover; border-radius: 4px; flex: none; }
+#atpop .ati .atl { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#atpop .ati .atr { font: 11px ui-monospace, Consolas, monospace; color: var(--muted); }
+#atpop .ati.on, #atpop .ati:hover { background: var(--accent); color: #fff; }
+#atpop .ati.on .atr, #atpop .ati:hover .atr { color: #fff; }
+#atpop .atpin { font-size: 11px; }
+#qbtn .dot { display: inline-block; min-width: 18px; padding: 0 5px; margin-left: 4px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 11px; }
+#qbtn.busy { border-color: var(--accent); }
+#qpanel { position: fixed; top: 64px; right: 16px; width: min(400px, calc(100vw - 32px)); max-height: calc(100vh - 96px); overflow-y: auto;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); z-index: 8; padding: 12px 14px 14px; display: none; font-size: 13px; }
+#qpanel.show { display: block; }
+#qpanel .qsum { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
+#qpanel h4 { margin: 10px 0 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+#qpanel .qi { display: flex; gap: 8px; align-items: baseline; padding: 3px 0; border-bottom: 1px solid var(--line); }
+#qpanel .qi .ql { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#qpanel .qi .qt { font: 11px ui-monospace, Consolas, monospace; color: var(--muted); white-space: nowrap; }
+#qpanel .qi.running .ql { color: var(--accent); font-weight: 600; }
+#qpanel .qbar { height: 5px; margin: 2px 0 6px; border-radius: 999px; background: var(--line); overflow: hidden; }
+#qpanel .qbar span { display: block; height: 100%; border-radius: 999px; background: var(--accent); transition: width 2.8s linear; }
+#qpanel .qbar.paused { background: repeating-linear-gradient(45deg, var(--line) 0 6px, transparent 6px 12px); }
+#qpanel .qi .qext { font: 600 11px ui-monospace, Consolas, monospace; margin-right: 6px; }
+#qpanel .qx-png, #qpanel .qx-img { color: #4ea3ff; }
+#qpanel .qx-mp4 { color: #ff8a3d; }
+#qpanel .qx-flac, #qpanel .qx-wav, #qpanel .qx-mp3 { color: #b77dff; }
+#qpanel .qx-glb, #qpanel .qx-3d { color: #3fcf8e; }
+#qpanel .qi.failed .ql, #qpanel .qi.cancelled .ql { text-decoration: line-through; color: var(--muted); }
+#qpanel .qclose { float: right; }
+#cmbtn .dot { display: inline-block; min-width: 18px; padding: 0 5px; margin-left: 4px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 11px; }
+#drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(460px, 100vw); background: var(--panel); border-left: 1px solid var(--line);
+  z-index: 9; transform: translateX(105%); transition: transform .18s; overflow-y: auto; padding: 16px 18px 40px; box-shadow: var(--shadow); }
+#drawer.show { transform: none; }
+#drawer h3 { margin: 18px 0 6px; font-size: 14px; }
+#drawer h3:first-of-type { margin-top: 4px; }
+#drawer .dclose { float: right; }
+.lin-thread { margin-top: 12px; max-width: 800px; }
+/* 🌫 blur: per image, stored server-side (feedback/blur.json); the header switch turns every blur off for this viewer */
+.blurred { filter: blur(26px) saturate(.85); clip-path: inset(0 round 6px); }
+body.noblur .blurred { filter: none; clip-path: none; }
+.fbbar button.blurb.on, .lbfb button.blurb.on { background: #5a6b86; border-color: #5a6b86; }
+#blurall.off { opacity: .6; text-decoration: line-through; }
+/* ↑ back to top: bottom-right, only after scrolling, lifts above the pin tray */
+#totop { position: fixed; right: 18px; bottom: 18px; z-index: 7; width: 40px; height: 40px; padding: 0; border-radius: 50%;
+  font-size: 18px; line-height: 1; box-shadow: var(--shadow); opacity: 0; pointer-events: none; transform: translateY(8px);
+  transition: opacity .15s, transform .15s, bottom .15s; }
+#totop.show { opacity: .8; pointer-events: auto; transform: none; }
+#totop.show:hover { opacity: 1; }
+body.trayup #totop { bottom: 96px; }
+/* 🧭 journeys */
+:root { --scene: 440px; }
+.jchip { position: absolute; right: 6px; top: 58px; font-size: 12px; font-weight: 600; background: #3d8bfd; color: #fff !important;
+  padding: 1px 8px; border-radius: 999px; box-shadow: 0 1px 4px rgba(0,0,0,.4); }
+.jchip:hover { text-decoration: none; filter: brightness(1.1); }
+.jcards { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+.jcard { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); cursor: pointer; transition: transform .12s; }
+.jcard:hover { transform: translateY(-2px); border-color: var(--accent); }
+.jcard .jcover { position: relative; aspect-ratio: 16/9; background: var(--line); overflow: hidden; }
+.jcard .jcover > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.jcard .jportrait { position: absolute; left: 10px; bottom: 10px; width: 64px; aspect-ratio: 3/4; object-fit: cover; border-radius: 6px; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,.4); }
+.jcard .body { padding: 10px 14px 14px; }
+.jcard h3 { margin: 0 0 2px; font-size: 16px; }
+.jcard .meta { font-size: 12px; color: var(--muted); }
+.jcard.pendingj { cursor: default; opacity: .85; }
+.jhero { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 20px; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 12px; padding: 16px; box-shadow: var(--shadow); margin-bottom: 8px; }
+@media (max-width: 700px) { .jhero { grid-template-columns: 1fr; } }
+.jhero .jsrc img { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 8px; display: block; cursor: zoom-in; }
+.jhero h2 { margin: 0 0 2px; font-size: 24px; }
+.jhero .who { color: var(--accent); font-weight: 600; }
+.jhero .jtext { font-size: 13.5px; color: var(--ink); max-width: 820px; margin-top: 8px; }
+.jhero .jtext b { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-right: 6px; }
+.jcast { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 8px; font-size: 13px; }
+.jcast b { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-right: 2px; }
+.jcameo { display: inline-flex; align-items: center; gap: 6px; border: 1px solid #3d8bfd; border-radius: 999px; padding: 2px 10px 2px 2px; color: var(--ink); }
+.jcameo img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; object-position: top; }
+.jcameo:hover { text-decoration: none; background: color-mix(in srgb, #3d8bfd 15%, transparent); }
+.jcname { border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; cursor: help; }
+.jrefs { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; align-items: center; }
+.jrefs img { height: 64px; border-radius: 5px; display: block; }
+.chapter { margin: 26px 0 8px; }
+.chapter .chead { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+.chapter .chead h3 { margin: 0; font-size: 19px; }
+.chapter .chead .cid { font: 12px ui-monospace, Consolas, monospace; color: var(--muted); }
+.chapter .cdir { font-size: 13.5px; border-left: 3px solid #3d8bfd; background: color-mix(in srgb, #3d8bfd 12%, transparent); padding: 5px 10px; border-radius: 4px; margin: 4px 0 6px; max-width: 900px; }
+.chapter .csum { color: var(--muted); font-size: 13.5px; max-width: 900px; margin-bottom: 10px; }
+.scenes { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(var(--scene), 100%), 1fr)); gap: 12px; }
+.scene { margin: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.scene .cell img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; cursor: zoom-in; border-radius: 0; }
+.scene .cell .pending { aspect-ratio: 16/9; border: 0; border-radius: 0; }
+.scene figcaption { padding: 8px 12px 10px; font-size: 13.5px; font-style: italic; line-height: 1.45; }
+.scene figcaption .shot { font: normal 11px ui-monospace, Consolas, monospace; color: var(--muted); margin-right: 6px; }
+.scene .refmark { position: absolute; left: 6px; top: 6px; font-size: 11px; background: #3d8bfd; color: #fff; padding: 1px 6px; border-radius: 4px; }
+.jnext { margin: 28px 0 10px; background: var(--panel); border: 1px solid #3d8bfd; border-radius: 12px; padding: 14px 16px; box-shadow: var(--shadow); max-width: 980px; }
+.jnext h3 { margin: 0 0 6px; font-size: 16px; }
+.jnext .choices { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0 10px; }
+.jnext .choices button { text-align: left; border-radius: 10px; }
+.jnext textarea, .jstart textarea { width: 100%; min-height: 64px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--ink);
+  font: 13.5px system-ui, sans-serif; padding: 8px 10px; resize: vertical; }
+.jnext .row, .jstart .row { display: flex; gap: 8px; align-items: center; margin-top: 6px; flex-wrap: wrap; }
+.jgo { background: #3d8bfd !important; border-color: #3d8bfd !important; color: #fff !important; font-weight: 600; }
+.jstatus { font-size: 13px; color: var(--muted); }
+.jstatus.done { color: var(--add); }
+.jstart { width: 100%; background: #1b1a22; border: 1px solid #3d8bfd; border-radius: 10px; padding: 10px 12px; color: #eee; }
+.jstart textarea { background: #14131a; color: #eee; border-color: #444; }
+.jstart .hint { color: #aaa; font-size: 12px; }
+/* 💬 speech bubbles over journey scenes; font scales with the image (--bfs set from the image width) */
+.bubbles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; font-size: var(--bfs, 13px); }
+body.nobubbles .bubbles { display: none; }
+.bubble { position: absolute; max-width: 40%; background: #fffdf6; color: #16141c; border: .14em solid #16141c; border-radius: 1.1em;
+  padding: .45em .8em .5em; font: 700 1em/1.25 "Trebuchet MS", "Segoe UI", sans-serif; letter-spacing: .01em; text-transform: uppercase;
+  box-shadow: .15em .2em 0 rgba(0,0,0,.35); }
+.bubble .bwho { display: block; font-size: .72em; letter-spacing: .08em; color: #a1244f; margin-bottom: .1em; }
+.bubble::after, .bubble::before { content: ""; position: absolute; border-style: solid; }
+.bubble.t-bl::before { left: 1.2em; bottom: -1.05em; border-width: 1.05em .9em 0 0; border-color: #16141c transparent transparent; }
+.bubble.t-bl::after { left: 1.38em; bottom: -.72em; border-width: .78em .62em 0 0; border-color: #fffdf6 transparent transparent; }
+.bubble.t-br::before { right: 1.2em; bottom: -1.05em; border-width: 1.05em 0 0 .9em; border-color: #16141c transparent transparent; }
+.bubble.t-br::after { right: 1.38em; bottom: -.72em; border-width: .78em 0 0 .62em; border-color: #fffdf6 transparent transparent; }
+.bubble.t-b::before { left: calc(50% - .6em); bottom: -1.05em; border-width: 1.05em .6em 0; border-color: #16141c transparent transparent; }
+.bubble.t-b::after { left: calc(50% - .4em); bottom: -.72em; border-width: .78em .4em 0; border-color: #fffdf6 transparent transparent; }
+.bubble.t-tl::before { left: 1.2em; top: -1.05em; border-width: 0 .9em 1.05em 0; border-color: transparent transparent #16141c; }
+.bubble.t-tl::after { left: 1.38em; top: -.72em; border-width: 0 .62em .78em 0; border-color: transparent transparent #fffdf6; }
+.bubble.t-tr::before { right: 1.2em; top: -1.05em; border-width: 0 0 1.05em .9em; border-color: transparent transparent #16141c; }
+.bubble.t-tr::after { right: 1.38em; top: -.72em; border-width: 0 0 .78em .62em; border-color: transparent transparent #fffdf6; }
+.bubble.radio { border-style: dashed; border-radius: .3em; background: #eef6ff; }
+.bubble.radio .bwho { color: #1f5fbf; }
+.lbstage { position: relative; display: inline-block; line-height: 0; }
+.lbstage .bubbles { line-height: normal; }
+.bubtoggle.on { background: #3d8bfd; border-color: #3d8bfd; color: #fff; }
+/* phone layout (user 2026-09-28: "make the menus expandable and collapsible on phone"): header and filter toolbars
+   collapse behind ☰ Menu / ⚙ Filters; active filter pills and the Send button stay visible */
+.mobonly { display: none; }
+.tapheart { position: fixed; z-index: 30; transform: translate(-50%, -50%) scale(.4); font-size: 90px; pointer-events: none;
+  animation: tapheart .8s ease-out forwards; text-shadow: 0 2px 12px rgba(0,0,0,.5); }
+@keyframes tapheart { 30% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; } 100% { transform: translate(-50%, -80%) scale(1); opacity: 0; } }
+@media (max-width: 700px) {
+  .mobonly { display: inline-block; }
+  header { padding: 8px 12px; gap: 8px; }
+  header h1 { font-size: 15px; }
+  header:not(.open) > :not(h1):not(#menubtn):not(#sendfb) { display: none !important; }
+  header.open #menubtn { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .toolbar { flex-wrap: wrap; }
+  body:not(.tbopen) .toolbar > :not(.tbtoggle):not(.pill):not(.clearf) { display: none !important; }
+  body.tbopen .tbtoggle { background: var(--accent); border-color: var(--accent); color: #fff; }
+  #lightbox .lbstage { touch-action: pan-y; }
+  /* phone picture mode (user 2026-09-28: "minimize the menu at the base and fit the image to resolution"): details hidden,
+     the picture fills the screen; ⌃ Details brings the caption and buttons back */
+  #lightbox.lbmin { justify-content: center; padding: 0; }
+  #lightbox.lbmin .lbcap, #lightbox.lbmin .lbfb { display: none; }
+  #lightbox.lbmin img, #lightbox.lbmin video { max-width: 100vw; max-height: calc(100vh - 56px); border-radius: 0; }
+  /* details open: the whole overlay scrolls, with room for the phone's bottom bar + keyboard, so the comment box is reachable
+     (user 2026-09-28: "comments are hard to use on phone ... due to phone bottom menus") */
+  #lightbox:not(.lbmin) { overflow-y: auto; justify-content: flex-start; padding: 60px 8px calc(160px + env(safe-area-inset-bottom)); }
+  #lightbox:not(.lbmin) img, #lightbox:not(.lbmin) video { max-height: 55dvh; }
+  #lightbox:not(.lbmin) .lbmintog { bottom: auto; top: 10px; left: 10px; transform: none; }
+  body:has(#lightbox.show) #tray, body:has(#lightbox.show) #totop { display: none !important; }
+  #lightbox .lbmintog { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 20; border-radius: 999px;
+    padding: 8px 16px; background: rgba(0,0,0,.65); color: #fff; border: 1px solid rgba(255,255,255,.4); }
+  #lightbox .nav { opacity: .45; font-size: 22px; padding: 6px 8px; }
+  #lightbox .close { position: fixed; top: 10px; right: 10px; z-index: 20; width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(0,0,0,.65); border: 1px solid rgba(255,255,255,.4); font-size: 22px; line-height: 1; display: flex; align-items: center; justify-content: center; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Qwen Image 2.1 · <span>Anime Lab</span></h1>
+  <button id="menubtn" class="mobonly" title="Show / hide the menu">☰ Menu</button>
+  <span class="stats" id="stats"></span>
+  <span class="spacer"></span>
+  <nav id="layers"></nav>
+  <span class="search"><input id="q" type="search" placeholder="Search styles…  ( / )" autocomplete="off"
+    title="Searches the full prompts (style + every character's description), titles, tags and my notes. Several words = all must match; use &quot;quotes&quot; for an exact phrase."><span id="qcount"></span></span>
+  <button id="cmbtn" title="Comments for your agent" hidden>💬 Comments</button>
+  <button id="qbtn" title="Generation queue: what's rendering and what's next">⚙ Queue</button>
+  <span id="fbwait"></span>
+  <button id="sendfb" title="Send your marks and notes to your coding agent">▶ Send marks</button>
+  <span id="live" class="chip" title="">● Live</span>
+  <button id="blurall" title="">🌫 Blur</button>
+  <button id="theme" title="Toggle theme">◐</button>
+</header>
+<main id="app"></main>
+<button id="totop" title="Back to top">↑</button>
+
+<div id="tray"><span class="label" id="pinlabel">Pinned</span><div class="pins"></div>
+  <label class="pincount" title="How many variant styles (galleries) to make from this evolve/cross">Variations <input id="pincount" type="number" min="1" max="9" value="3"></label>
+  <textarea id="pindir" rows="2" placeholder="Directions for your agent: what to keep, change or try (optional). Type @ to reference any image"></textarea>
+  <button id="pinsubmit" title="Done adding images and directions: send this set to your agent">Submit</button>
+  <button id="cmpbtn">Compare</button><button id="clearpins">Clear</button></div>
+<div id="lightbox" class="overlay"><button class="close">×</button><button class="nav prev">‹</button><div class="lbstage"><img alt=""><div class="bubbles"></div></div><video class="lbvid" controls loop playsinline style="display:none"></video><div class="lbcap"></div><div class="lbfb"></div><button class="nav next">›</button><button class="lbmintog mobonly" title="Show / hide the caption and buttons">⌃ Details</button></div>
+<aside id="drawer"></aside>
+<aside id="qpanel"></aside>
+<div id="atpop" role="listbox"></div>
+<div id="compare" class="overlay"><button class="close">×</button><div class="cmp"></div></div>
+
+<script>
+const RAW = /*__DATA__*/{};
+let DATA = [], SUBJ = {}, SUBJT = {}, byId = {}, VIDS = [], JRN = [], jById = {}, MTIMES = {}, UPS = {}, FITS = {};
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const store = { get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
+                set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
+
+// theme
+const applyTheme = t => t ? document.documentElement.setAttribute("data-theme", t) : document.documentElement.removeAttribute("data-theme");
+applyTheme(store.get("theme", null));
+$("#theme").onclick = () => {
+  const dark = getComputedStyle(document.body).backgroundColor === "rgb(20, 19, 26)";
+  const t = dark ? "light" : "dark"; store.set("theme", t); applyTheme(t);
+};
+
+function setData(raw) {
+  (raw.lineages || []).forEach(l => delete l._text);
+  // "hub only" lineages (a research/reference tag): kept out of the survey/images/evolution/tree pages, still reachable by id
+  const allL = raw.lineages || [];
+  DATA = allL.filter(l => !(l.tags || []).some(t => /hub only/i.test(t))); SUBJ = raw.subjects || {}; SUBJT = raw.subject_text || {}; VIDS = raw.videos || []; byId = Object.fromEntries(allL.map(l => [l.id, l]));
+  JRN = raw.journeys || []; jById = Object.fromEntries(JRN.map(j => [j.id, j]));
+  MTIMES = raw.mtimes || {}; UPS = raw.upscaled || {}; FITS = raw.resized || {};
+  const nImg = DATA.reduce((a, l) => a + l.versions.reduce((b, v) => b + v.images.length, 0), 0);
+  $("#stats").textContent = `${DATA.length} lineages · ${DATA.reduce((a, l) => a + l.versions.length, 0)} versions · ${nImg} images`;
+}
+setData(RAW);
+
+// feedback marks (served by tools/serve_gallery.py)
+const ACTIONS = [["animate", "🎬", "Animate: turn this image into a video clip (add a note for the motion)"],   ["cast", "👥", "More characters: new characters in this same style (stays on this layer, not an evolution)"],
+  ["love", "❤", "Love: keep this quality"], ["nope", "👎", "Nope: dead end"]];
+let FB = {};
+const hasAct = (m, a) => !!m && ((m.actions || (m.action ? [m.action] : [])).includes(a));
+// project-relative key of an image/clip: "evolutions/..." (lab) or "journeys/..." (🧭 journey scenes)
+// memoized: the 🎮 Props page called this ~1M times per redraw (900 ms; user 2026-09-26: "reviewing props is still super laggy")
+const FBK = new Map();
+const fbKey = src => {
+  let k = FBK.get(src);
+  if (k === undefined) { const m = String(src).match(/(?:evolutions|journeys)\/[^?]*/); k = m ? m[0] : src; if (FBK.size > 50000) FBK.clear(); FBK.set(src, k); }
+  return k;
+};
+const isScene = src => fbKey(src).startsWith("journeys/");
+const canFB = location.protocol.startsWith("http");
+async function fbPost(path, body) {
+  try {
+    const r = await fetch(path, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body || {})});
+    const j = await r.json(); FB = j.state || j; paintFB();
+  } catch { $("#fbwait").textContent = "⚠ can't reach gallery server; mark not saved"; }
+}
+function fbBar(src, cap) {
+  if (!canFB) return "";
+  const m = FB[fbKey(src)];
+  const n = cmCount(imgTarget(src));
+  // compact badge; the full reply is in the tooltip and the enlarged view, so it never covers the buttons
+  const stat = [n ? `💬${n}` : "", !m ? "" : m.status === "done" ? "✓" : m.status === "sent" ? "⏳" : ""].filter(Boolean).join(" ");
+  const statTip = [n ? `${n} comment${n > 1 ? "s" : ""}` : "", m && m.status === "done" ? "Agent: " + (m.reply || "") : m && m.status === "sent" ? "Sent to your agent" : ""].filter(Boolean).join(" · ");
+  const acts = isScene(src) ? ACTIONS.filter(([a]) => a !== "cast") : ACTIONS;
+  const fbB = ([a, ic, tip]) => `<button data-fb="${a}" data-src="${esc(src)}" data-cap="${esc(cap)}" title="${tip}" class="${hasAct(m, a) ? "on" : ""}">${ic}</button>`;
+  const primary = acts.filter(([a]) => a === "love" || a === "nope"), secondary = acts.filter(([a]) => a !== "love" && a !== "nope");
+  // secondary actions hide on narrow tiles (container query); ⋯ opens the enlarged view with every action labelled
+  // 📌 stays on the tile at every size (user 2026-09-25: pinning is multi-select, opening each image is annoying);
+  // a pinned tile keeps its bar visible so you can see what's in the tray
+  const pinned = !isScene(src) && isPinned(src);
+  return `<div class="fbbar ${m || isBlurred(src) || pinned ? "marked" : ""}"><span class="sec">${rerollBtn(src)}${upscaleBtn(src)}${exploreBtn(src, cap)}${secondary.map(fbB).join("")}${blurBtn(src)}</span>${isScene(src) ? "" : pinBtn(src, cap)}${primary.map(fbB).join("")}<button class="moreb" data-more title="More actions (reroll, animate, explore, blur…)">⋯</button></div>
+    ${stat ? `<span class="fbstat" title="${esc(statTip)}">${stat}</span>` : ""}`;
+}
+function paintFB() {
+  const marks = Object.values(FB), pending = marks.filter(m => m.status === "pending").length, sent = marks.filter(m => m.status === "sent").length;
+  $("#sendfb").classList.toggle("show", pending > 0);
+  $("#sendfb").textContent = `▶ Send ${pending} mark${pending === 1 ? "" : "s"}`;
+  $("#fbwait").textContent = sent ? `${sent} with your agent…` : "";
+  if ($("#lightbox").classList.contains("show")) showLB();
+  const y = window.scrollY; render(true); window.scrollTo(0, y);
+}
+async function fbLoad() {
+  try {
+    const j = await (await fetch("/api/feedback", {cache: "no-store"})).json();
+    if (JSON.stringify(j) !== JSON.stringify(FB)) { FB = j; paintFB(); }
+  } catch {}
+}
+document.addEventListener("click", e => {
+  const mb = e.target.closest("[data-more]"); if (!mb) return;
+  e.stopPropagation(); e.preventDefault();
+  const host = mb.closest(".cell, .imgbox"); const img = host && host.querySelector("img[data-src], img[data-jscene], video[data-vsrc]");
+  if (img) img.click();
+}, true);
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-fb]"); if (!b) return;
+  e.stopPropagation(); e.preventDefault();
+  fbPost("/api/feedback", {src: b.dataset.src, cap: b.dataset.cap, action: b.dataset.fb});  // server toggles; marks stack
+}, true);
+$("#sendfb").onclick = () => fbPost("/api/feedback/submit");
+// 📂 opens the clip's folder in Windows Explorer (server-side; videos only)
+const revealBtn = (src, label = "") => canFB ? `<button class="reveal" data-reveal="${esc(src)}" title="Open the containing folder in Explorer">📂${label}</button>` : "";
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-reveal]"); if (!b) return;
+  e.stopPropagation(); e.preventDefault();
+  fetch("/api/reveal", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({src: b.dataset.reveal})}).catch(() => {});
+}, true);
+
+// comments (threads per target: general | round:N | lineage:ID | version:ID/vNN)
+let CM = [];
+const imgTarget = src => "image:" + fbKey(src);
+const cmCount = tg => CM.filter(c => c.target === tg).length;
+const cmLabel = tg => tg.startsWith("image:journeys/") ? "Journey scene " + tg.slice(15).replace(/\.png$/, "")
+  : tg.startsWith("image:") ? "Image " + tg.slice(6).replace(/^evolutions\//, "").replace(/\.png$/, "")
+  : tg === "general" ? "General" : tg.startsWith("round:") ? `Round ${tg.slice(6)}`
+  : tg.startsWith("journey:") ? `Journey ${tg.slice(8)}` : tg.startsWith("lineage:") ? `Lineage ${tg.slice(8)}` : tg.startsWith("version:") ? `Version ${tg.slice(8)}` : tg;
+const cmLink = tg => tg.startsWith("image:journeys/") ? `#/j/${tg.slice(6).split("/")[1]}` : tg.startsWith("image:") ? `#/l/${tg.slice(6).split("/")[1]}`
+  : tg.startsWith("journey:") ? `#/j/${tg.slice(8)}` : tg.startsWith("lineage:") ? `#/l/${tg.slice(8)}` : tg.startsWith("version:") ? `#/l/${tg.slice(8).split("/")[0]}` : null;
+function awaitingTargets() {
+  const last = {}; CM.forEach(c => last[c.target] = c);
+  return Object.keys(last).filter(k => last[k].author === "you");
+}
+function thread(target, placeholder) {
+  if (!canFB) return "";
+  const msgs = CM.filter(c => c.target === target);
+  const waiting = msgs.length && msgs[msgs.length - 1].author === "you";
+  return `<div class="thread">${msgs.map(m => `<div class="msg ${m.author}"><span class="who">${m.author === "claude" ? "Agent" : "You"} · ${esc(m.ts)}</span>${esc(m.text)}</div>`).join("")}
+    ${waiting ? `<span class="awaiting">Sent. Your agent will reply here.</span>` : ""}
+    <div class="compose"><textarea data-draft="${esc(target)}" placeholder="${esc(placeholder || "Comment for your agent… (Ctrl+Enter to send)")}"></textarea>
+      <button data-cpost="${esc(target)}">Send</button></div></div>`;
+}
+function drawer() {
+  const rounds = [...new Set(DATA.filter(l => !l.depth).map(l => l.round))].sort((a, b) => b - a);
+  const fixed = ["general", ...rounds.map(r => `round:${r}`)];
+  const others = [...new Set(CM.map(c => c.target))].filter(t => !fixed.includes(t))
+    .sort((a, b) => a.startsWith("image:") - b.startsWith("image:"));
+  return `<button class="dclose" data-dclose>×</button>
+    <h3>General</h3>${thread("general", "Anything about the project, direction, or the gallery…")}
+    ${rounds.map(r => `<h3>Round ${r}</h3>${thread(`round:${r}`, `About round ${r} as a whole…`)}`).join("")}
+    ${others.length ? `<h3 style="margin-top:24px">Lineage, version & image threads</h3>` + others.map(tg =>
+      `<h3>${cmLink(tg) ? `<a href="${cmLink(tg)}">${esc(cmLabel(tg))}</a>` : esc(cmLabel(tg))}</h3>${thread(tg)}`).join("") : ""}`;
+}
+// re-render a container without losing what the user is typing
+function keepDrafts(el, fn) {
+  const drafts = {}, act = document.activeElement;
+  // textareas AND single-line inputs (direction notes, "none of these" reasons: user 2026-09-26 "typing a comment ... gets cleared")
+  const SEL = "textarea[data-draft], input[data-draft], select[data-draft]";
+  el.querySelectorAll(SEL).forEach(t => drafts[t.dataset.draft] = t.value);
+  const focus = act && act.dataset && act.dataset.draft && el.contains(act) ? [act.dataset.draft, act.selectionStart, act.selectionEnd] : null;
+  fn();
+  el.querySelectorAll(SEL).forEach(t => { if (drafts[t.dataset.draft]) t.value = drafts[t.dataset.draft]; });
+  if (focus) { const t = el.querySelector(`[data-draft="${CSS.escape(focus[0])}"]`); if (t) { t.focus(); try { t.setSelectionRange(focus[1], focus[2]); } catch {} } }
+}
+function paintCM() {
+  const n = awaitingTargets().length;
+  $("#cmbtn").innerHTML = `💬 Comments${CM.length ? `<span class="dot" title="${n} thread(s) awaiting your agent">${CM.length}</span>` : ""}`;
+  if ($("#drawer").classList.contains("show")) keepDrafts($("#drawer"), () => $("#drawer").innerHTML = drawer());
+  if ($("#lightbox").classList.contains("show")) showLB();
+  const y = window.scrollY; render(true); window.scrollTo(0, y);
+}
+async function cmLoad() {
+  try {
+    const j = await (await fetch("/api/comments", {cache: "no-store"})).json();
+    if (JSON.stringify(j) !== JSON.stringify(CM)) { CM = j; paintCM(); }
+  } catch {}
+}
+async function cmPost(target) {
+  const ta = document.querySelector(`textarea[data-draft="${CSS.escape(target)}"]`);
+  let text = ta && ta.value.trim(); if (!text) return;
+  // a comment on the open video carries its playback time, so "tone here" can be located in the clip
+  const lv = $("#lightbox .lbvid");
+  if (target.endsWith(".mp4") && $("#lightbox").classList.contains("show") && lv.getAttribute("src") && target === imgTarget(lv.getAttribute("src")))
+    text = `[@${lv.currentTime.toFixed(1)}s] ${text}`;
+  try {
+    const r = await fetch("/api/comments", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({target, text})});
+    if (!r.ok) throw 0;
+    document.querySelectorAll(`textarea[data-draft="${CSS.escape(target)}"]`).forEach(t => t.value = "");
+    CM = await r.json(); paintCM();
+  } catch { $("#fbwait").textContent = "⚠ can't reach gallery server; comment not sent"; }
+}
+document.addEventListener("click", e => {
+  const p = e.target.closest("[data-cpost]"); if (p) { e.preventDefault(); cmPost(p.dataset.cpost); return; }
+  if (e.target.closest("[data-dclose]")) $("#drawer").classList.remove("show");
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && e.target.dataset && e.target.dataset.draft) { e.preventDefault(); cmPost(e.target.dataset.draft); }
+});
+$("#cmbtn").onclick = () => {
+  const d = $("#drawer"); d.classList.toggle("show");
+  if (d.classList.contains("show")) keepDrafts(d, () => d.innerHTML = drawer());
+};
+
+// word diff (LCS over tokens)
+function diffWords(a, b) {
+  const A = a.split(/(\s+)/), B = b.split(/(\s+)/);
+  const n = A.length, m = B.length, L = Array.from({length: n + 1}, () => new Uint16Array(m + 1));
+  for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--)
+    L[i][j] = A[i] === B[j] ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+  let i = 0, j = 0, out = "";
+  while (i < n && j < m) {
+    if (A[i] === B[j]) { out += esc(A[i]); i++; j++; }
+    else if (L[i + 1][j] >= L[i][j + 1]) out += `<del>${esc(A[i++])}</del>`;
+    else out += `<ins>${esc(B[j++])}</ins>`;
+  }
+  while (i < n) out += `<del>${esc(A[i++])}</del>`;
+  while (j < m) out += `<ins>${esc(B[j++])}</ins>`;
+  return out.replace(/<\/del><del>/g, "").replace(/<\/ins><ins>/g, "");
+}
+
+// what each version should diff against: previous version, or the parent version for a branch's first
+function prevOf(lin, idx) {
+  if (parentsOf(lin).length) {
+    const [, pl, pv] = parentsOf(lin)[0].split("/"); const v = byId[pl]?.versions.find(x => x.id === pv);
+    if (v) return { ref: `${pl}/${pv}`, v };
+  }
+  if (idx > 0) return { ref: `${lin.id}/${lin.versions[idx - 1].id}`, v: lin.versions[idx - 1] };
+  if (lin.parent) { const [pl, pv] = lin.parent.split("/"); const v = byId[pl]?.versions.find(x => x.id === pv); if (v) return { ref: lin.parent, v }; }
+  return null;
+}
+const latest = l => l.versions[l.versions.length - 1];
+// evolution layers: depth 0 = survey; an evolution set sits one layer below the image it came from
+const parentsOf = l => l.parent_images || [];
+const kidsOf = src => DATA.filter(l => parentsOf(l).includes(fbKey(src)));
+// a style counts as evolved when any evolution lists one of its images as a parent
+const evolvedLineage = l => DATA.some(k => parentsOf(k).some(p => p.split("/")[1] === l.id));
+function evoLink(src) {
+  const k = kidsOf(src); if (!k.length) return null;
+  const d = Math.min(...k.map(l => l.depth));
+  return {href: `#/e/${d}?from=${encodeURIComponent(fbKey(src))}`, n: k.length};
+}
+// where an image lives: survey images -> their lineage page, evolved images -> their layer, highlighted
+function imageHome(img) {
+  const lin = byId[img.split("/")[1]];
+  return !lin || !lin.depth ? `#/l/${img.split("/")[1]}` : `#/e/${lin.depth}?hl=${encodeURIComponent(img)}`;
+}
+const vidsOf = src => VIDS.filter(v => v.image === fbKey(src));
+function vidChip(src) {
+  const n = vidsOf(src).length;
+  return n ? `<a class="vidchip" href="#/videos?img=${encodeURIComponent(fbKey(src))}" title="See this image's video clips">🎬 ${n}</a>` : "";
+}
+function evoChip(src) {
+  const e = evoLink(src);
+  return e ? `<a class="evochip" href="${e.href}" title="Open this image's evolutions">🌱 ${e.n} →</a>` : "";
+}
+// the lightbox's 🌳 link, for images that belong to a lineage (evolutions/, not journeys/)
+function treeLinkFor(src) {
+  const key = fbKey(src);
+  if (!key.startsWith("evolutions/")) return "";
+  const lin = byId[key.split("/")[1]];
+  return lin ? `<a class="lbevo lbtree" href="#/tree/${esc(lin.id)}">🌳 Family tree</a>` : "";
+}
+const Q = () => (store.get("q", "") || "").toLowerCase().trim();
+// search terms: words, or "quoted phrases" that must appear as written
+const qTerms = q => (q.match(/"[^"]+"|\S+/g) || []).map(t => t.replace(/^"|"$/g, "")).filter(Boolean);
+const hasAll = (text, q) => !q || qTerms(q).every(w => text.includes(w));
+function lineageText(l) {
+  if (!l._text) l._text = [l.id, l.title, l.goal, ...(l.tags || []), l.round ? "round " + l.round : "",
+    l.depth ? "evolution " + l.depth : "survey", ...l.versions.flatMap(v => [v.prompt, v.notes.change, v.notes.verdict, v.notes.why,
+      ...v.slots.map(sl => SUBJT[sl.subject] || "")])]  // the full prompts: style + every character rendered in it
+    .filter(Boolean).join(" \n ").toLowerCase();
+  return l._text;
+}
+const matchQ = l => hasAll(lineageText(l), Q());
+function layerNav() {
+  const h = location.hash.replace(/^#\/?/, "");
+  const cur = h.startsWith("e/") ? parseInt(h.slice(2)) : h.startsWith("l/") ? (byId[h.slice(2)]?.depth || 0) : 0;
+  const max = Math.max(0, ...DATA.map(l => l.depth || 0));
+  const count = n => DATA.filter(l => (l.depth || 0) === n).length;
+  const imgTab = `<a href="#/images" class="${h.startsWith("images") ? "on" : ""}" title="Every image from every evolution, searchable">🖼 Images</a>`;
+  const vidTab = VIDS.length ? `<a href="#/videos" class="${h.startsWith("videos") ? "on" : ""}" title="${VIDS.length} clips">🎬 Videos</a>` : "";
+  const jTab = `<a href="#/j" class="${/^j(\/|$)/.test(h) ? "on" : ""}" title="Characters exploring their own worlds, chapter by chapter; you direct what happens next">🧭 Journeys${JRN.length ? " " + JRN.length : ""}</a>`;
+  const newestEvo = DATA.filter(l => l.depth).sort((a, b) => (b.created || 0) - (a.created || 0))[0];
+  const treeTab = newestEvo ? `<a href="#/tree/${newestEvo.id}" class="${h.startsWith("tree/") ? "on" : ""}" title="Family tree: where an evolution came from and what it spawned">🌳 Tree</a>` : "";
+  // evolution layers in ONE dropdown (user 2026-09-26: "make the evolutions in the top bar a dropdown, they will just keep growing")
+  const evoDD = max ? `<details class="evodd${cur ? " on" : ""}"><summary title="Evolution layers">🧬 ${cur ? `Evolution ${cur}` : "Evolutions"} ▾</summary>
+    <div class="evomenu">${Array.from({length: max}, (_, i) => i + 1).map(n =>
+      `<a href="#/e/${n}" class="${cur === n ? "on" : ""}">Evolution ${n} <b>${count(n)}</b></a>`).join("")}</div></details>` : "";
+  $("#layers").innerHTML = `<a href="#/" class="${cur === 0 && !/^(videos|images|j\/|j$|tree\/)/.test(h) ? "on" : ""}">Survey</a>` + imgTab + vidTab + jTab + treeTab + evoDD;
+}
+const childrenOf = id => DATA.filter(l => l.parent && l.parent.startsWith(id + "/"));
+
+let TREE_EDGES = [];  // edges for the currently-rendered #/tree/ page, set by treePage(), drawn by drawTreeEdges()
+// ---- 🌳 family tree (#/tree/<id>): ancestors (walking parent_images up to the survey) -> the focus
+// lineage -> descendant evolution sets, a few generations deep. See CLAUDE.md "Evolution layers".
+// ancestor image nodes: {id:"img:<src>", src, lin, ver, label, title, depth, gen} where gen=1 is the
+// focus's immediate parent, gen=2 its grandparent, etc. (hop count, not necessarily == lineage depth
+// for a mixed-depth crossbreed). edges: {from, to} node ids, to may be "lin:<focusId>" for the top edge.
+function treeAncestors(l) {
+  const nodes = [], edges = [], seen = new Map();
+  function addNode(src, gen) {
+    const key = fbKey(src);
+    if (seen.has(key)) return seen.get(key);
+    const [, pl, pv] = key.split("/"); const plin = byId[pl];
+    const pslot = plin?.versions.find(v => v.id === pv)?.slots.find(sl => sl.src && fbKey(sl.src) === key);
+    const node = {id: "img:" + key, src: key, lin: pl, ver: pv, label: pslot ? pslot.label : pv,
+      title: plin ? plin.title : pl, depth: plin ? (plin.depth || 0) : 0,
+      change: plin?.versions.find(v => v.id === pv)?.notes.change || "", gen};
+    nodes.push(node); seen.set(key, node); return node;
+  }
+  let frontier = parentsOf(l).map(src => ({src, to: "lin:" + l.id})), gen = 1, guard = 0;
+  while (frontier.length && guard++ < 12) {
+    const next = [];
+    for (const {src, to} of frontier) {
+      const node = addNode(src, gen); edges.push({from: node.id, to});
+      const plin = byId[node.lin];
+      if (plin) parentsOf(plin).forEach(gp => next.push({src: gp, to: node.id}));
+    }
+    frontier = next; gen++;
+  }
+  return {nodes, edges};
+}
+// descendant evolution sets, gen 0 = sets spawned straight off any image of `l`. an image's "owner"
+// starts as "lin:<l.id>" and becomes the set id once it belongs to a rendered set, so a later gen can
+// grow from an older sibling's image too. crossbreed parents outside this chain are flagged !inTree.
+function treeDescendants(l, maxGen) {
+  const gens = [], edges = [], imgOwner = new Map();
+  l.versions.forEach(v => v.slots.forEach(sl => { if (sl.src) imgOwner.set(fbKey(sl.src), "lin:" + l.id); }));
+  const used = new Set([l.id]);
+  for (let g = 0; g < maxGen; g++) {
+    const avail = new Set(imgOwner.keys());
+    const childLins = DATA.filter(k => !used.has(k.id) && parentsOf(k).some(p => avail.has(fbKey(p))));
+    if (!childLins.length) break;
+    childLins.forEach(k => used.add(k.id));
+    const setKey = k => parentsOf(k).join(" × ");
+    const sets = [...new Set(childLins.map(setKey))].map((key, idx) => {
+      const members = childLins.filter(k => setKey(k) === key);
+      const parents = parentsOf(members[0]).map(src => {
+        const key2 = fbKey(src); const [, pl, pv] = key2.split("/"); const plin = byId[pl];
+        const pslot = plin?.versions.find(v => v.id === pv)?.slots.find(sl => sl.src && fbKey(sl.src) === key2);
+        return {src: key2, lin: pl, ver: pv, label: pslot ? pslot.label : pv, title: plin ? plin.title : pl, inTree: avail.has(key2)};
+      });
+      const id = `set:${g}:${idx}`;
+      parents.filter(p => p.inTree).forEach(p => edges.push({from: imgOwner.get(p.src), to: id}));
+      return {id, gen: g, parents, members};
+    });
+    sets.forEach(s => s.members.forEach(m => m.versions.forEach(v => v.slots.forEach(sl => { if (sl.src) imgOwner.set(fbKey(sl.src), s.id); }))));
+    gens.push(sets);
+  }
+  return {gens, edges};
+}
+const TREE_SHOWN_GENS = 3;  // rendered inline; deeper generations fold into a <details>
+function treeNodeImg(n, extra = "") {
+  return `<div class="tnode timg" data-tid="${esc(n.id)}" data-go="#/tree/${esc(n.lin)}" title="${esc(n.change || "")}">
+    <img src="${esc(th("../" + n.src))}" loading="lazy">
+    <a class="tzoom" data-tzoom="${esc(n.lin)}" data-tzsrc="${esc("../" + n.src)}" data-tzver="${esc(n.ver)}" title="Enlarge (mouse wheel steps through this version's images)">🔍</a>
+    <div class="tcap">${isLoved(n.src) ? '<span class="theart">❤</span> ' : ""}${esc(n.title)}<span class="tver">${esc(n.ver)}${n.label && n.label !== n.ver ? " · " + esc(n.label) : ""}</span></div>
+    <a class="topen" href="#/l/${esc(n.lin)}" title="Open the ${esc(n.title)} lineage page">🔗</a></div>${extra}`;
+}
+function treeRow(label, nodesHtml, opts = {}) {
+  return `<div class="trow ${opts.cls || ""}"><div class="trow-label">${esc(label)}</div><div class="trow-nodes">${nodesHtml}</div></div>`;
+}
+function treeSetBox(s) {
+  const otherParents = s.parents.filter(p => !p.inTree);
+  const setLins = s.members.map(m => m.id).join(",");
+  const memberCards = s.members.map(m => {
+    const v0 = m.versions[0], img = v0?.images[0];
+    const change = v0?.notes.change || "";
+    const loved = m.versions.some(v => v.images.some(im => isLoved(im.src)));
+    return `<div class="tnode tlin${styleMark(m.id) ? " s-" + styleMark(m.id) : ""}" data-tid="lin:${esc(m.id)}" data-go="#/tree/${esc(m.id)}" title="${esc(change)}">
+      ${img ? `<img src="${esc(th("../" + img.src))}" loading="lazy"><a class="tzoom" data-tzoom="${esc(setLins)}" data-tzstart="${esc(m.id)}" title="Enlarge (mouse wheel steps through every style in this set)">🔍</a>` : `<div class="pending" style="aspect-ratio:3/4">rendering…</div>`}
+      <div class="tcap">${loved ? '<span class="theart">❤</span> ' : ""}${esc(m.title)}${styleBtns(m.id, m.title)}</div>
+      <a class="topen" href="#/l/${esc(m.id)}" title="Open the ${esc(m.title)} lineage page">🔗</a></div>`;
+  }).join("");
+  return `<div class="tset" data-tid="${esc(s.id)}">
+    <div class="tset-parents">${s.parents.map(p => `<a class="tparentchip ${p.inTree ? "" : "other"}" href="#/tree/${esc(p.lin)}"
+        title="${p.inTree ? "Parent image" : "× crossed with a parent from outside this tree"}: ${esc(p.title)} · ${esc(p.ver)}">
+        <img src="${esc(th("../" + p.src))}" loading="lazy"></a>`).join("")}
+      <span class="tset-label">Set${s.members.length > 1 ? ` · ${s.members.length} styles` : ""}${otherParents.length ? " · crossbreed" : ""}</span></div>
+    <div class="tset-members">${memberCards}</div></div>`;
+}
+// the family (survey root) a lineage belongs to: follow the first parent image up to layer 0
+function treeRootOf(l, seen) {
+  seen = seen || new Set();
+  if (!l || seen.has(l.id)) return l;
+  seen.add(l.id);
+  const p = parentsOf(l)[0];
+  const pl = p ? byId[String(p).split("/")[1]] : null;
+  return pl ? treeRootOf(pl, seen) : l;
+}
+// right-hand list of distinct evolution families (user 2026-09-26: "keep a list of distinct evolutions on the right side
+// that the user can navigate between to see different trees")
+function treeFamilies() {
+  const fam = new Map();
+  DATA.filter(x => (x.depth || 0) > 0).forEach(x => {
+    const r = treeRootOf(x); if (!r) return;
+    const f = fam.get(r.id) || {root: r, n: 0, depth: 0, latest: 0};
+    f.n++; f.depth = Math.max(f.depth, x.depth || 0); f.latest = Math.max(f.latest, x.created || 0);
+    fam.set(r.id, f);
+  });
+  return [...fam.values()].sort((a, b) => b.latest - a.latest);
+}
+function treeSidebar(cur) {
+  const curRoot = treeRootOf(cur), fams = treeFamilies();
+  const item = f => { const img = ([...f.root.versions].reverse().find(x => x.images.length) || latest(f.root)).images[0];
+    return `<a class="tfam${curRoot && curRoot.id === f.root.id ? " on" : ""}" href="#/tree/${esc(f.root.id)}" data-tfam="${esc((f.root.title + " " + f.root.id).toLowerCase())}">
+      ${img ? `<img src="${esc(th(img.src))}" loading="lazy" alt="">` : `<span class="tfam-noimg"></span>`}
+      <span class="tfam-txt"><b>${esc(f.root.title)}</b><span>${f.n} evolved style${f.n === 1 ? "" : "s"} · ${f.depth} generation${f.depth === 1 ? "" : "s"}</span></span></a>`; };
+  return `<aside class="tree-side"><div class="tree-side-head">🌳 Evolution families <b>${fams.length}</b></div>
+    <input type="search" class="tfam-q" placeholder="Filter families…" oninput="const q=this.value.toLowerCase();this.parentNode.querySelectorAll('.tfam').forEach(a=>a.style.display=a.dataset.tfam.includes(q)?'':'none')">
+    <div class="tfam-list">${fams.map(item).join("")}</div></aside>`;
+}
+function treePage(id) {
+  const l = byId[id];
+  if (!l) return `<p class="empty">Unknown lineage ${esc(id)}</p>`;
+  const {nodes: anc, edges: ancEdges} = treeAncestors(l);
+  const maxGen = Math.max(0, ...anc.map(n => n.gen));
+  const ancRowsArr = Array.from({length: maxGen}, (_, i) => anc.filter(n => n.gen === maxGen - i));  // oldest first
+  const ancRows = ancRowsArr.map(row => {
+    const depths = [...new Set(row.map(n => n.depth))];
+    const label = depths.length === 1 ? (depths[0] === 0 ? "Survey" : `Evolution ${depths[0]}`) : "Ancestors";
+    return treeRow(label, row.map(n => treeNodeImg(n)).join(""));
+  }).join("");
+  const {gens: descGens, edges: descEdges} = treeDescendants(l, 8);
+  // an edge is a "crossbreed" edge when its target set has more than one parent, or its target ancestor
+  // image feeds more than one child (both draw as the dashed accent style, set below)
+  const allEdges = [...ancEdges, ...descEdges];
+  const toCounts = allEdges.reduce((m, e) => (m.set(e.to, (m.get(e.to) || 0) + 1), m), new Map());
+  TREE_EDGES = allEdges.map(e => ({...e, cross: toCounts.get(e.to) > 1}));
+  const shown = descGens.slice(0, TREE_SHOWN_GENS), rest = descGens.slice(TREE_SHOWN_GENS);
+  const descRow = s => treeRow(`Evolution ${l.depth + s[0].gen + 1}`, s.map(treeSetBox).join(""), {cls: "descrow"});
+  const descRows = shown.map(descRow).join("");
+  const moreCount = rest.reduce((a, g) => a + g.reduce((b, s) => b + s.members.length, 0), 0);
+  const moreHtml = rest.length ? `<details class="tree-more"><summary>+ ${moreCount} more style${moreCount === 1 ? "" : "s"} across ${rest.length} further generation${rest.length === 1 ? "" : "s"}</summary>
+      <div class="tree-more-inner">${rest.map(descRow).join("")}</div></details>` : "";
+  const v = [...l.versions].reverse().find(x => x.images.length) || latest(l), thumbs = v.images.slice(0, 4);  // newest version WITH images
+  const focus = `<div class="trow"><div class="trow-label">${l.depth ? `Evolution ${l.depth}` : "Survey"}</div><div class="trow-nodes">
+    <div class="tnode tfocus" data-tid="lin:${esc(l.id)}">
+      <div class="tfocus-imgs">${thumbs.map(i => `<img src="${esc(th(i.src))}" loading="lazy" class="tzoom-img" data-tzoom="${esc(l.id)}" data-tzsrc="${esc(i.src)}" data-tzver="${esc(v.id)}" title="Enlarge (mouse wheel steps through this version)">`).join("")}</div>
+      <div class="tfocus-info"><b>${esc(l.title)}</b>${styleBtns(l.id, l.title)}<span class="goal">${esc(l.goal)}</span>
+        <a class="topen" href="#/l/${esc(l.id)}">Open lineage page →</a></div></div></div></div>`;
+  return `<div class="layer-head"><h2>🌳 Family tree · ${esc(l.title)}</h2>
+      <div class="sub">Ancestors above (the exact images this style evolved from), descendants below (every evolution set spawned
+        from an image of this lineage). Click a node to re-center the tree on it; 🔗 opens its lineage page.</div></div>
+    <div class="tree-layout"><div class="tree-main"><div class="tree-wrap"><div class="tree-inner" id="treeinner">
+      <svg class="tree-edges"></svg>
+      ${ancRows}${focus}${descRows}${moreHtml}
+    </div></div></div>${treeSidebar(l)}</div>`;
+}
+function drawTreeEdges(app) {
+  const svg = app.querySelector(".tree-edges"), inner = app.querySelector("#treeinner");
+  if (!svg || !inner) return;
+  const edges = TREE_EDGES;
+  const w = inner.scrollWidth, h = inner.scrollHeight;
+  svg.setAttribute("width", w); svg.setAttribute("height", h);
+  svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+  const box = inner.getBoundingClientRect();
+  const at = tid => { const el = inner.querySelector(`[data-tid="${CSS.escape(tid)}"]`); if (!el) return null;
+    const r = el.getBoundingClientRect(); return {x: r.left - box.left + r.width / 2, y: r.top - box.top, y2: r.bottom - box.top}; };
+  svg.innerHTML = edges.map(e => {
+    const a = at(e.from), b = at(e.to); if (!a || !b) return "";
+    const midY = (a.y2 + b.y) / 2;
+    return `<path d="M${a.x},${a.y2} C${a.x},${midY} ${b.x},${midY} ${b.x},${b.y}" class="tedge${e.cross ? " tedge-cross" : ""}"/>`;
+  }).join("");
+}
+let treeResizeBound = false;
+function bindTree(app) {
+  app.querySelectorAll(".topen").forEach(a => a.onclick = e => e.stopPropagation());
+  // 🔍 enlarge in the lightbox; the mouse wheel steps through the set (user 2026-09-26: "enlarge images and scroll through
+  // that set using the mousewheel in the evo tree")
+  app.querySelectorAll("[data-tzoom]").forEach(z => z.onclick = e => {
+    e.stopPropagation(); e.preventDefault();
+    const list = [];
+    z.dataset.tzoom.split(",").forEach(id => {
+      const lin = byId[id]; if (!lin) return;
+      const v = (z.dataset.tzver && lin.versions.find(x => x.id === z.dataset.tzver)) || [...lin.versions].reverse().find(x => x.images.length);
+      (v ? v.images : []).forEach(im => list.push({src: im.src, cap: `${lin.title} · ${v.id} · ${im.name || ""}`, lin: id}));
+    });
+    if (!list.length) return;
+    let i = z.dataset.tzsrc ? list.findIndex(x => fbKey(x.src) === fbKey(z.dataset.tzsrc)) : list.findIndex(x => x.lin === z.dataset.tzstart);
+    openLB(list, Math.max(0, i));
+  });
+  const redraw = () => drawTreeEdges($("#app"));
+  redraw();
+  setTimeout(redraw, 60);  // after images/layout settle
+  if (!treeResizeBound) { treeResizeBound = true; window.addEventListener("resize", () => drawTreeEdges($("#app"))); }
+  app.querySelectorAll(".tree-inner img").forEach(img => { img.addEventListener("load", redraw); });
+  const more = app.querySelector(".tree-more"); if (more) more.ontoggle = redraw;
+}
+
+// lightbox: a flat list of {src, cap} for the current view
+let LB = [], lbi = 0;
+function openLB(list, i) {
+  LB = list; lbi = i; showLB(); $("#lightbox").classList.add("show");
+  // phone Back closes the picture instead of leaving the page (user 2026-09-28: "a way to close an image and return to gallery")
+  if (!(history.state && history.state.lb)) history.pushState({lb: 1}, "");
+}
+// any way the lightbox closes (✕, swipe down, Esc, tap outside) also pops the history entry openLB pushed
+new MutationObserver(() => {
+  if (!$("#lightbox").classList.contains("show") && history.state && history.state.lb) history.back();
+}).observe($("#lightbox"), {attributes: true, attributeFilter: ["class"]});
+window.addEventListener("popstate", () => {
+  if ($("#lightbox").classList.contains("show")) { $("#lightbox").classList.remove("show"); const v = $("#lightbox video"); if (v) v.pause(); }
+});
+function showLB() {
+  const it = LB[lbi], img = $("#lightbox img"), vid = $("#lightbox .lbvid");
+  if (it.video) { img.style.display = "none"; vid.style.display = ""; if (vid.getAttribute("src") !== it.src) { vid.src = it.src; vid.play().catch(() => {}); } }
+  else { vid.pause(); vid.removeAttribute("src"); vid.style.display = "none"; img.style.display = ""; img.src = vq(it.src); }
+  const bl = $("#lightbox .bubbles"); bl.innerHTML = !it.video && it.dialogue ? bubblesHtml(it.dialogue) : ""; bubbleRO.observe(bl);
+  $("#lightbox .lbcap").textContent = it.cap + (it.prompt ? " — " + it.prompt.slice(0, 160) + (it.prompt.length > 160 ? "…" : "") : "");
+  const box = $("#lightbox .lbfb");
+  if (!canFB) { box.innerHTML = ""; return; }
+  const m = FB[fbKey(it.src)] || {};
+  const scene = isScene(it.src) && !it.video, jid = scene ? fbKey(it.src).split("/")[1] : null;
+  const acts = isScene(it.src) ? ACTIONS.filter(([a]) => a !== "cast") : ACTIONS;
+  const isRef = scene && jById[jid] && (jById[jid].refs || []).includes(fbKey(it.src));
+  keepDrafts(box, () => box.innerHTML = `<div class="row">${isScene(it.src) ? "" : pinBtn(it.src, it.cap, " Pin (evolve / cross)")}${rerollBtn(it.src, " Reroll")}${upscaleBtn(it.src, upOf(it.src) ? " Open 2048" : " Upscale")}${upOf(it.src) ? `<a class="upb" href="upscale_compare.html?img=${encodeURIComponent(fbKey(it.src))}" target="_blank" title="Compare the original, the upscale and any test versions side by side, zoom and pan locked together">⤢ Compare upscales</a>` : ""}${refitCtl(it.src)}${acts.map(([a, ic, tip]) =>
+      `<button data-fb="${a}" data-src="${esc(it.src)}" data-cap="${esc(it.cap)}" class="${hasAct(m, a) ? "on" : ""}">${ic} ${tip.split(":")[0]}</button>`).join("")}
+      ${blurBtn(it.src, isBlurred(it.src) ? " Unblur" : " Blur")}
+      ${exploreBtn(it.src, it.cap, " Explore their world")}
+      ${scene ? `<button data-jref="${esc(jid)}" data-src="${esc(it.src)}" class="${isRef ? "on" : ""}" title="Use this scene as an extra reference for how the character looks in new scenes">⚓ ${isRef ? "Reference ✓" : "Use as reference"}</button>` : ""}</div>
+    ${jStartBox(it.src, it.cap)}
+    ${m.reply ? `<div class="reply">Agent (on your mark): ${esc(m.reply)}</div>` : m.status === "sent" ? `<div class="hint">Mark sent to your agent, waiting for a reply…</div>` :
+      (m.actions || []).length ? `<div class="hint">Marked. Press "Send marks" in the header when you're done marking.</div>` : ""}
+    ${m.note ? `<div class="hint">Earlier note: ${esc(m.note)}</div>` : ""}
+    ${evoLink(it.src) ? `<a class="lbevo" href="${evoLink(it.src).href}">🌱 See its ${evoLink(it.src).n} evolution${evoLink(it.src).n > 1 ? "s" : ""} →</a>` : ""}
+    ${treeLinkFor(it.src)}
+    ${it.video ? `<div class="row">${revealBtn(it.src, " Show in Explorer")}</div>` : ""}
+    <div class="lbthread">${thread(imgTarget(it.src), "Comment on this image… (Ctrl+Enter to send, goes to your agent right away)")}</div>`);
+}
+$("#lightbox .prev").onclick = e => { e.stopPropagation(); lbi = (lbi - 1 + LB.length) % LB.length; showLB(); };
+$("#lightbox .next").onclick = e => { e.stopPropagation(); lbi = (lbi + 1) % LB.length; showLB(); };
+// wheel steps through images while the lightbox is open (throttled so trackpads don't skip ahead);
+// the note box keeps normal scrolling
+let wheelAt = 0, wheelAcc = 0, wheelLast = 0;
+$("#lightbox").addEventListener("wheel", e => {
+  if (e.target.tagName === "TEXTAREA" || e.target.closest(".lbthread")) return;
+  e.preventDefault();
+  const now = Date.now();
+  if (now - wheelLast > 300) wheelAcc = 0;  // fresh gesture
+  wheelLast = now;
+  wheelAcc += e.deltaY || e.deltaX;
+  if (Math.abs(wheelAcc) < 40 || now - wheelAt < 180) return;
+  wheelAt = now;
+  (wheelAcc > 0 ? $("#lightbox .next") : $("#lightbox .prev")).click();
+  wheelAcc = 0;
+}, {passive: false});
+// a comment box focused on a phone: keep it above the on-screen keyboard
+$("#lightbox").addEventListener("focusin", e => {
+  if (e.target.tagName === "TEXTAREA" || e.target.tagName === "INPUT") setTimeout(() => e.target.scrollIntoView({block: "center", behavior: "smooth"}), 350);
+});
+// 📱 phone picture mode: starts minimized (remembered), ⌃/⌄ toggles the caption + buttons
+const lbMinApply = () => { const on = store.get("lbmin", true); $("#lightbox").classList.toggle("lbmin", on); $("#lightbox .lbmintog").textContent = on ? "⌃ Details" : "⌄ Picture only"; };
+lbMinApply();
+$("#lightbox .lbmintog").onclick = e => { e.stopPropagation(); store.set("lbmin", !store.get("lbmin", true)); lbMinApply(); };
+let lastTap = 0;
+function lbLove(x, y) {
+  const it = LB[lbi]; if (!it || !canFB) return;
+  const was = isLoved(it.src);
+  fbPost("/api/feedback", {src: it.src, cap: it.cap || "", action: "love"});
+  const h = document.createElement("div"); h.className = "tapheart"; h.textContent = was ? "🤍" : "❤";
+  h.style.left = x + "px"; h.style.top = y + "px"; document.body.appendChild(h);
+  setTimeout(() => h.remove(), 800);
+}
+// 📱 swipe in the lightbox (user 2026-09-28: images "swipeable on phone for navigation"): left/right = next/previous,
+// down = close. Only on the picture itself, so the buttons, notes and comments below still scroll and tap normally.
+let swipe = null;
+$("#lightbox .lbstage").addEventListener("touchstart", e => {
+  if (e.touches.length !== 1) { swipe = null; return; }
+  swipe = {x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now()};
+}, {passive: true});
+$("#lightbox .lbstage").addEventListener("touchend", e => {
+  if (!swipe) return;
+  const t = e.changedTouches[0], dx = t.clientX - swipe.x, dy = t.clientY - swipe.y, fast = Date.now() - swipe.t < 600;
+  swipe = null;
+  // ❤ double tap (user 2026-09-28: "double tap love image while on phone"): two quick taps in the same spot toggle ❤
+  if (Math.abs(dx) < 12 && Math.abs(dy) < 12) {
+    const now = Date.now();
+    if (now - lastTap < 320) { lastTap = 0; lbLove(t.clientX, t.clientY); } else lastTap = now;
+    return;
+  }
+  if (!fast) return;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.3) (dx < 0 ? $("#lightbox .next") : $("#lightbox .prev")).click();
+  else if (dy > 80 && dy > Math.abs(dx) * 1.3) { $("#lightbox").classList.remove("show"); const v = $("#lightbox video"); if (v) v.pause(); }
+}, {passive: true});
+// keep the page underneath from scrolling while any overlay is open
+new MutationObserver(() => {
+  document.body.style.overflow = document.querySelector(".overlay.show") ? "hidden" : "";
+}).observe(document.body, {subtree: true, attributes: true, attributeFilter: ["class"]});
+document.querySelectorAll(".overlay").forEach(o => o.addEventListener("click", e => {
+  if (e.target === o || e.target.classList.contains("close")) { o.classList.remove("show"); const v = o.querySelector("video"); if (v) v.pause(); } }));
+document.addEventListener("keydown", e => {
+  if (e.target.tagName === "TEXTAREA") { if (e.key === "Escape") e.target.blur(); return; }
+  if (e.key === "Escape") document.querySelectorAll(".overlay").forEach(o => o.classList.remove("show"));
+  if ($("#lightbox").classList.contains("show")) {
+    if (e.key === "ArrowLeft") $("#lightbox .prev").click();
+    if (e.key === "ArrowRight") $("#lightbox .next").click();
+  }
+});
+
+// 📌 pins: the evolve / cross set builder. 1 pinned = evolve, 2+ = cross; Submit sends the set + directions to your agent.
+// Server-side (feedback/pins.json) so pins survive page and filter changes; file:// falls back to localStorage (compare only).
+let pins = canFB ? [] : store.get("pins", []).filter(p => p && p.src), pinDir = "";
+const pinSrc = src => canFB ? "../" + fbKey(src) : src;
+const isPinned = src => pins.some(p => fbKey(p.src) === fbKey(src));
+const pinBtn = (src, cap, label = "") => /\.png$/.test(src) ? `<button class="pinb ${isPinned(src) ? "on" : ""}" data-pin="${esc(src)}" data-cap="${esc(cap)}"
+  title="Pin: 1 pinned image = evolve it, 2+ = cross them. Add directions and press Submit in the tray below">📌${label}</button>` : "";
+function paintPins() {
+  const n = pins.length;
+  $("#tray").classList.toggle("show", n > 0); document.body.classList.toggle("trayup", n > 0);
+  $("#tray .pins").innerHTML = pins.map(p => `<img src="${esc(th(pinSrc(p.src)))}" data-unpin="${esc(p.src)}" title="${esc(p.cap)} (click to unpin)">`).join("");
+  $("#pinlabel").textContent = n > 1 ? `🧬 Cross ${n}` : "🌱 Evolve";
+  $("#pinsubmit").textContent = n > 1 ? `Submit cross (${n}) →` : "Submit evolve →";
+  $("#pinsubmit").style.display = canFB ? "" : "none"; $("#pindir").style.display = canFB ? "" : "none";
+  if (document.activeElement !== $("#pindir")) $("#pindir").value = pinDir;
+  document.querySelectorAll("[data-pin]").forEach(b => {
+    b.classList.toggle("on", isPinned(b.dataset.pin));
+    const bar = b.closest(".fbbar");  // keep a pinned tile's bar visible without a full re-render
+    if (bar) bar.classList.toggle("marked", !!bar.querySelector("button.on"));
+  });
+}
+function takePins(j) { if (j && j.pins) { pins = j.pins; pinDir = j.directions || ""; if (document.activeElement !== $("#pincount")) $("#pincount").value = j.count || 3; paintPins(); } }
+async function pinPost(path, body) {
+  try { const r = await fetch(path, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body || {})});
+        takePins(await r.json()); return r.ok; }
+  catch { $("#fbwait").textContent = "⚠ can't reach gallery server; pin not saved"; return false; }
+}
+async function pinLoad() { try { takePins(await (await fetch("/api/pins", {cache: "no-store"})).json()); } catch {} }
+function togglePin(src, cap) {
+  if (canFB) return pinPost("/api/pins", {op: "toggle", src, cap});
+  pins = isPinned(src) ? pins.filter(p => fbKey(p.src) !== fbKey(src)) : [...pins, {src, cap}]; store.set("pins", pins); paintPins();
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-pin],[data-unpin]"); if (!b) return;
+  e.stopPropagation(); e.preventDefault();
+  togglePin(b.dataset.pin || b.dataset.unpin, b.dataset.cap || "");
+}, true);
+let pinTimer = 0;
+$("#pindir").addEventListener("input", () => { pinDir = $("#pindir").value; clearTimeout(pinTimer);
+  pinTimer = setTimeout(() => pinPost("/api/pins", {op: "directions", text: pinDir}), 500); });
+// number of variant styles for the set (user 2026-09-27: "an option for me to change the number of galleries(variations)")
+$("#pincount").addEventListener("change", () => { const n = Math.max(1, Math.min(9, +$("#pincount").value || 3)); $("#pincount").value = n; pinPost("/api/pins", {op: "count", n}); });
+$("#pinsubmit").onclick = async () => {
+  clearTimeout(pinTimer);
+  await pinPost("/api/pins", {op: "count", n: Math.max(1, Math.min(9, +$("#pincount").value || 3))});
+  if (pinDir !== undefined) await pinPost("/api/pins", {op: "directions", text: $("#pindir").value});
+  const kind = pins.length > 1 ? `cross of ${pins.length}` : "evolve";
+  if (await pinPost("/api/pins/submit")) $("#fbwait").textContent = `✓ ${kind} sent to your agent`;
+};
+$("#clearpins").onclick = () => canFB ? pinPost("/api/pins", {op: "clear"}) : (pins = [], store.set("pins", pins), paintPins());
+$("#cmpbtn").onclick = () => {
+  $("#compare .cmp").innerHTML = pins.map(p => `<figure><img src="${esc(pinSrc(p.src))}"><figcaption>${esc(p.cap)}</figcaption></figure>`).join("");
+  $("#compare").classList.add("show");
+};
+
+// @ image references in the tray directions: "@" opens a picker (pinned images first, then search everything);
+// picking inserts "@<lineage#>/<vNN>/<image name>" which tools/feedback.py expands back to the file path
+const imgRef = (l, v, src) => `@${l.id.slice(0, 3)}/${v.id}/${src.split("/").pop().replace(/\.png$/, "").replace(/_seed1001$/, "")}`;
+let AT = null;  // {ta, start, items, i}
+function atCandidates(q) {
+  const words = q.toLowerCase().split(/[\s/]+/).filter(Boolean), pinned = new Set(pins.map(p => fbKey(p.src)));
+  const all = allImages().map(it => ({...it, ref: imgRef(it.l, it.v, it.sl.src), pinned: pinned.has(fbKey(it.sl.src))}));
+  return all.filter(it => words.every(w => it.text.includes(w) || it.ref.toLowerCase().includes(w)))
+    .sort((a, b) => (b.pinned - a.pinned) || b.l.id.localeCompare(a.l.id) || b.v.id.localeCompare(a.v.id)).slice(0, 40);
+}
+function atPaint() {
+  const pop = $("#atpop");
+  if (!AT || !AT.items.length) { pop.classList.remove("show"); return; }
+  pop.innerHTML = AT.items.map((it, i) => `<div class="ati ${i === AT.i ? "on" : ""}" data-ati="${i}"><img src="${esc(th(it.sl.src))}" loading="lazy">
+    <div class="atl">${it.pinned ? `<span class="atpin">📌 </span>` : ""}${esc(it.l.title)} · ${esc(it.v.id)} · ${esc(it.sl.label)}<div class="atr">${esc(it.ref)}</div></div></div>`).join("");
+  const r = AT.ta.getBoundingClientRect();
+  pop.style.left = Math.max(16, Math.min(r.left, innerWidth - pop.offsetWidth - 16)) + "px";
+  pop.style.bottom = (innerHeight - r.top + 6) + "px"; pop.style.top = "auto";
+  pop.classList.add("show");
+  pop.querySelector(".ati.on")?.scrollIntoView({block: "nearest"});
+}
+function atUpdate(ta) {
+  const upto = ta.value.slice(0, ta.selectionStart), m = upto.match(/(?:^|\s)@([^@\n]{0,40})$/);
+  if (!m) { AT = null; return atPaint(); }
+  const q = m[1];
+  AT = {ta, start: ta.selectionStart - q.length - 1, items: atCandidates(q), i: 0};
+  atPaint();
+}
+function atPick(i) {
+  const it = AT.items[i], ta = AT.ta, end = ta.selectionStart;
+  ta.value = ta.value.slice(0, AT.start) + it.ref + " " + ta.value.slice(end);
+  const pos = AT.start + it.ref.length + 1; ta.setSelectionRange(pos, pos); ta.focus();
+  AT = null; atPaint();
+  ta.dispatchEvent(new Event("input"));
+}
+function atAttach(ta) {
+  ta.addEventListener("input", () => atUpdate(ta));
+  ta.addEventListener("click", () => atUpdate(ta));
+  ta.addEventListener("keydown", e => {
+    if (!AT || !AT.items.length) return;
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); AT.i = (AT.i + (e.key === "ArrowDown" ? 1 : -1) + AT.items.length) % AT.items.length; atPaint(); }
+    else if (e.key === "Enter" || e.key === "Tab") { e.preventDefault(); atPick(AT.i); }
+    else if (e.key === "Escape") { e.preventDefault(); AT = null; atPaint(); }
+  });
+  ta.addEventListener("blur", () => setTimeout(() => { if (AT && AT.ta === ta && document.activeElement !== ta) { AT = null; atPaint(); } }, 150));
+}
+$("#atpop").addEventListener("mousedown", e => { const r = e.target.closest("[data-ati]"); if (r) { e.preventDefault(); atPick(+r.dataset.ati); } });
+atAttach($("#pindir"));
+
+// ⚙ Queue: render jobs' plans from /api/queue (tools/pipeline.py) + ComfyUI's own queue
+let QV = null;
+const qShow = () => $("#qpanel").classList.contains("show");
+const fmtSecs = s => s >= 90 ? `${Math.round(s / 60)} min` : `${Math.round(s)}s`;
+function qLink(it) {
+  if (it.status !== "done") return "";
+  return it.kind === "video" ? "#/videos" : it.out.startsWith("journeys/") ? `#/j/${it.out.split("/")[1]}` : `#/l/${it.out.split("/")[1]}`;
+}
+function paintQueue() {
+  if (!QV) return;
+  const items = QV.jobs.flatMap(j => j.items.map(it => ({...it, ended: j.ended})));
+  const running = items.filter(it => it.status === "running"), queued = items.filter(it => it.status === "queued");
+  const recent = items.filter(it => ["done", "failed", "cancelled"].includes(it.status)).sort((a, b) => (b.t0 || 0) - (a.t0 || 0)).slice(0, 25);
+  const left = [...running, ...queued].reduce((t, it) => t + Math.max(10, (QV.avg[it.kind] || 60) - (it.t0 ? QV.now - it.t0 : 0)), 0);
+  const n = running.length + queued.length;
+  $("#qbtn").innerHTML = `⚙ Queue${n ? `<span class="dot">${n}</span>` : ""}`;
+  $("#qbtn").classList.toggle("busy", n > 0);
+  document.querySelectorAll("[data-reroll]").forEach(b => b.classList.toggle("on", rerolling(b.dataset.reroll)));
+  if (!qShow()) return;
+  // media-type icon per row (user 2026-09-26: "put the media type icon in the queue")
+  // user 2026-09-26: "just the extension in [] and a color code on that text only"
+  const qExt = it => { const m = String(it.out || "").match(/\.(\w{2,4})$/); return (m ? m[1] : it.kind === "3d" ? "3d" : "img").toLowerCase(); };
+  const row = (it, t) => { const href = qLink(it), x = qExt(it);
+    return `<div class="qi ${it.status}"><span class="ql" title="${esc(it.out)}"><span class="qext qx-${esc(x)}">[${esc(x)}]</span>${href ? `<a href="${href}">${esc(it.label)}</a>` : esc(it.label)}</span><span class="qt">${t}</span></div>`; };
+  const c = QV.comfy;
+  const onGpu = running.filter(it => it.on_gpu), inComfy = running.filter(it => !it.on_gpu);
+  $("#qpanel").innerHTML = `<button class="qclose" title="Close">×</button><b>Generation queue</b>
+    <div class="qsum">${n ? `${n} to go · about ${fmtSecs(left)} left` : "Idle: nothing planned"}${c ? ` · ComfyUI: ${c.running} running, ${c.pending} waiting` : " · ComfyUI unreachable"}
+      · avg ${QV.avg.image}s/image, ${QV.avg.video}s/clip</div>
+    ${onGpu.length ? `<h4>Rendering</h4>${onGpu.map(it => {
+      // estimated progress: time on the GPU vs the average for that kind of job, capped at 95% until it actually lands
+      // (only the job ComfyUI is executing gets a bar, since jobs run one at a time)
+      const el = Math.max(0, QV.now - (it.gpu_t0 || it.t0 || QV.now)), avg = QV.avg[it.kind] || 60, pct = Math.max(3, Math.min(95, 100 * el / avg));
+      const eta = el > avg ? `${fmtSecs(el)} · finishing…` : `${fmtSecs(el)} / ~${fmtSecs(avg)}`;
+      return row(it, eta) + `<div class="qbar"><span style="width:${pct.toFixed(1)}%"></span></div>`;
+    }).join("")}` : ""}
+    ${inComfy.length ? `<h4>Waiting in ComfyUI (${inComfy.length}) · one job renders at a time</h4>${inComfy.map(it => row(it, "submitted, waiting")).join("")}` : ""}
+    ${queued.length ? `<h4>Up next (${queued.length})</h4>${queued.map(it => row(it, "~" + fmtSecs(QV.avg[it.kind] || 60))).join("")}` : ""}
+    ${recent.length ? `<h4>Recent</h4>${recent.map(it => row(it, it.status === "done" ? "✓ " + fmtSecs(it.secs || 0) : it.status === "failed" ? "✗ failed" : "cancelled")).join("")}` : ""}`;
+}
+// 🎲 reroll: same prompt, fresh seed, replaces the image in place (old one kept in vNN/_rerolled/)
+const rerolling = src => !!QV && QV.jobs.some(j => j.items.some(it => it.out === fbKey(src) && (it.status === "queued" || it.status === "running")));
+const rerollBtn = (src, label = "") => canFB && (/\/v\d+\/[^/]+\.png$/.test(src) || /\/ch\d+\/s\d+\.png$/.test(src)) ? `<button class="rerollb ${rerolling(src) ? "on" : ""}" data-reroll="${esc(src)}"
+  title="Reroll: render this image again with the exact same prompt and a new seed, replacing it (the old one is kept in _rerolled/)">🎲${label}</button>` : "";
+// ⤢ upscale (user 2026-09-27): a 2048 px detail pass saved to _upscaled/; once it exists the button opens it
+const upKey = src => fbKey(src), upOf = src => UPS[upKey(src)];
+const upPath = src => { const k = upKey(src), i = k.lastIndexOf("/"); return "../" + k.slice(0, i) + "/_upscaled/" + k.slice(i + 1); };
+const upscaleBtn = (src, label = "") => canFB && (/\/v\d+\/[^/]+\.png$/.test(src) || /\/ch\d+\/s\d+\.png$/.test(src)) ? (upOf(src)
+  ? `<a class="upb on" href="${esc(upPath(src))}?v=${upOf(src)}" target="_blank" title="Open the 2048 px upscale">⤢${label}</a>`
+  : `<button class="upb ${rerolling(upPath(src).slice(3)) ? "on" : ""}" data-upscale="${esc(src)}" title="Upscale: a 2048 px detail pass of this image (same prompt, low denoise), saved next to it in _upscaled/">⤢${label}</button>`) : "";
+// ⬚ refit (user 2026-09-27): re-pose/recompose the image for another aspect ratio (tools/refit.py, output in _resized/)
+const FIT_RATIOS = ["1:1 (Square)", "3:4 (Portrait Standard)", "4:3 (Standard)", "2:3 (Portrait Photo)", "3:2 (Photo)",
+  "9:16 (Portrait Widescreen)", "16:9 (Widescreen)", "21:9 (Ultrawide)"];
+// refits of this image that are queued or rendering (from ⚙ Queue data), shown next to the button as "⏳ 21:9 rendering…"
+// small corner badges on tiles that have an upscale / refits
+const upFitChip = src => { const u = upOf(src), f = (FITS[fbKey(src)] || []).length;
+  return u || f ? `<span class="upfit" title="${u ? "Has a 2048 upscale" : ""}${u && f ? " · " : ""}${f ? `${f} refit${f > 1 ? "s" : ""} (${(FITS[fbKey(src)] || []).map(x => x.ratio).join(", ")})` : ""}">${u ? "⤢" : ""}${f ? "⬚" + (f > 1 ? f : "") : ""}</span>` : ""; };
+// ⤢/⬚ filters shared by every view (tiles, cards, the Images page)
+const upFitOk = src => !!src && (!fget("upOnly") || !!upOf(src)) && (!fget("fitOnly") || !!(FITS[fbKey(src)] || []).length);
+// with ⤢/⬚ filters on, tiles show the DERIVED images themselves, not the source (user 2026-09-27: "when I filter for resized,
+// I expect the resized images not the source image"); null = no such filter active
+const derivedOf = src => {
+  if (!(fget("upOnly") || fget("fitOnly"))) return null;
+  const out = [];
+  if (fget("upOnly") && upOf(src)) out.push({src: upPath(src), tag: "⤢ 2048"});
+  if (fget("fitOnly")) (FITS[fbKey(src)] || []).forEach(f => out.push({src: f.src, tag: "⬚ " + f.ratio}));
+  return out;
+};
+const fitPending = src => { const k = fbKey(src), i = k.lastIndexOf("/"), pre = k.slice(0, i) + "/_resized/" + k.slice(i + 1).replace(/\.png$/, "") + "__";
+  return !QV ? [] : QV.jobs.flatMap(j => j.items.filter(it => it.out && it.out.startsWith(pre) && (it.status === "queued" || it.status === "running"))
+    .map(it => it.out.slice(pre.length).replace(/\.png$/, "").replace("x", ":"))); };
+const refitCtl = src => !(canFB && (/\/v\d+\/[^/]+\.png$/.test(src) || /\/ch\d+\/s\d+\.png$/.test(src))) ? "" :
+  `<span class="refit"><select data-fitsel title="Aspect ratio to refit this image to">${FIT_RATIOS.map(r => `<option>${r}</option>`).join("")}</select><button data-refit="${esc(src)}" title="Refit: re-render this image in the chosen aspect ratio with the subject re-posed to fill it (same character and style; the image is used as the reference), saved in _resized/">⬚ Refit</button>${fitPending(src).map(r => ` <span class="fitwait" title="Rendering: see ⚙ Queue">⏳ ${esc(r)} rendering…</span>`).join("")}${(FITS[fbKey(src)] || []).map(f => ` <a href="${esc(f.src)}?v=${f.mtime}" target="_blank" title="Open the ${esc(f.ratio)} refit">${esc(f.ratio)}</a>`).join("")}</span>`;
+document.addEventListener("click", async e => {
+  const b = e.target.closest("[data-refit]"); if (!b) return;
+  e.stopPropagation(); e.preventDefault();
+  const sel = b.parentElement.querySelector("[data-fitsel]"), aspect = sel ? sel.value : "16:9 (Widescreen)";
+  b.classList.add("on");
+  try {
+    const r = await fetch("/api/refit", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({src: b.dataset.refit, aspect})});
+    const j = await r.json();
+    $("#fbwait").textContent = r.ok ? `⬚ refit to ${aspect.split(" ")[0]} queued${j.position ? ` (#${j.position + 1})` : ""}: see ⚙ Queue` : "⚠ refit refused";
+    // visible right where the user clicked, until the Queue data takes over (user 2026-09-27: "pressed refit and nothing happened")
+    if (r.ok) { b.textContent = `⏳ ${aspect.split(" ")[0]} queued`; b.disabled = true; setTimeout(() => { b.textContent = "⬚ Refit"; b.disabled = false; }, 8000); }
+    qLoad();
+  } catch { $("#fbwait").textContent = "⚠ can't reach gallery server; refit not queued"; }
+}, true);
+document.addEventListener("click", async e => {
+  const b = e.target.closest("[data-upscale]"); if (!b) return;
+  e.stopPropagation(); e.preventDefault();
+  b.classList.add("on");
+  try {
+    const r = await fetch("/api/upscale", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({src: b.dataset.upscale})});
+    const j = await r.json();
+    $("#fbwait").textContent = r.ok ? `⤢ upscale queued${j.position ? ` (#${j.position + 1})` : ""}: see ⚙ Queue` : "⚠ upscale refused";
+    qLoad();
+  } catch { $("#fbwait").textContent = "⚠ can't reach gallery server; upscale not queued"; }
+}, true);
+document.addEventListener("click", async e => {
+  const b = e.target.closest("[data-reroll]"); if (!b) return;
+  e.stopPropagation(); e.preventDefault();
+  b.classList.add("on");
+  try {
+    const r = await fetch("/api/reroll", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({src: b.dataset.reroll})});
+    const j = await r.json();
+    $("#fbwait").textContent = r.ok ? `🎲 reroll queued${j.position ? ` (#${j.position + 1})` : ""}: see ⚙ Queue` : "⚠ reroll refused";
+    qLoad();
+  } catch { $("#fbwait").textContent = "⚠ can't reach gallery server; reroll not queued"; }
+}, true);
+async function qLoad() { try { QV = await (await fetch("/api/queue", {cache: "no-store"})).json(); paintQueue(); repaintFits(); } catch {} }
+// keep the lightbox's refit controls (pending ⏳ labels, finished ratio links) current without closing it; the ratio picked stays
+function repaintFits() {
+  document.querySelectorAll(".refit").forEach(el => {
+    const b = el.querySelector("[data-refit]"), sel = el.querySelector("[data-fitsel]"); if (!b || b.disabled) return;
+    const v = sel ? sel.value : "", html = refitCtl(b.dataset.refit);
+    if (el.outerHTML === html) return;
+    const tmp = document.createElement("span"); tmp.innerHTML = html; const neu = tmp.firstElementChild; if (!neu) return;
+    const ns = neu.querySelector("[data-fitsel]"); if (ns && v) ns.value = v;
+    el.replaceWith(neu);
+  });
+}
+$("#qbtn").onclick = () => { $("#qpanel").classList.toggle("show"); paintQueue(); qLoad(); };
+$("#qpanel").addEventListener("click", e => { if (e.target.closest(".qclose")) $("#qpanel").classList.remove("show"); });
+
+// 🌫 blur: per image (server-side, feedback/blur.json, stays until turned off); the header switch disables all blur here
+let BL = {};
+// tiles show a 640px WebP from the server (/thumb/...), the lightbox and compare view the full PNG
+// (user 2026-09-26: "page is getting kind of sluggish": ~2 MB PNGs in every tile)
+const THUMBS = location.protocol.startsWith("http");
+// ?v=<file mtime>: a reroll keeps the file name, so without it the browser keeps showing the old picture
+const mtOf = src => MTIMES[String(src || "").replace(/^\.\.\//, "").split("?")[0]];
+const vq = src => { const m = mtOf(src); return m ? `${src}?v=${m}` : src; };
+const th = src => { if (!(THUMBS && src && src.startsWith("../") && /\.(png|jpe?g|webp)$/i.test(src))) return vq(src);
+  const m = mtOf(src); return "/thumb/" + encodeURI(src.slice(3)) + (m ? `?v=${m}` : ""); };
+const unth = u => { u = u && String(u).split("?")[0]; return u && u.startsWith("/thumb/") ? "../" + decodeURI(u.slice(7)) : u; };
+const isBlurred = src => !!BL[fbKey(unth(src))];
+const blurBtn = (src, label = "") => canFB ? `<button class="blurb ${isBlurred(src) ? "on" : ""}" data-blur="${esc(src)}"
+  title="${isBlurred(src) ? "Unblur this image" : "Blur this image (stays blurred until you turn it off)"}">🌫${label}</button>` : "";
+function applyBlur() {
+  document.querySelectorAll("img[src], video[src]").forEach(el => {
+    const b = isBlurred(el.getAttribute("src")) || (el.poster && isBlurred(el.getAttribute("poster")));
+    if (el.classList.contains("blurred") !== !!b) el.classList.toggle("blurred", !!b);
+  });
+}
+let blurRaf = 0;
+new MutationObserver(() => { if (!blurRaf) blurRaf = requestAnimationFrame(() => { blurRaf = 0; applyBlur(); }); })
+  .observe(document.body, {subtree: true, childList: true, attributes: true, attributeFilter: ["src"]});
+const paintBlurAll = () => {
+  const off = store.get("noblur", false);
+  document.body.classList.toggle("noblur", off);
+  $("#blurall").classList.toggle("off", off);
+  $("#blurall").textContent = off ? "🌫 Blur off" : "🌫 Blur";
+  $("#blurall").title = off ? "Blur is disabled on this whole site: blurred images show normally. Click to blur them again."
+    : `Disable blur for the whole site (${Object.keys(BL).length} blurred image${Object.keys(BL).length === 1 ? "" : "s"}; their 🌫 marks are kept)`;
+};
+$("#blurall").onclick = () => { store.set("noblur", !store.get("noblur", false)); paintBlurAll(); };
+function paintBL() {
+  document.querySelectorAll("[data-blur]").forEach(b => b.classList.toggle("on", isBlurred(b.dataset.blur)));
+  paintBlurAll(); applyBlur();
+  const y = window.scrollY; render(true); window.scrollTo(0, y);
+  if ($("#lightbox").classList.contains("show")) showLB();
+}
+async function blLoad() {
+  try { const j = await (await fetch("/api/blur", {cache: "no-store"})).json();
+        if (JSON.stringify(j) !== JSON.stringify(BL)) { BL = j; paintBL(); } } catch {}
+}
+document.addEventListener("click", async e => {
+  const b = e.target.closest("[data-blur]"); if (!b) return;
+  e.stopPropagation(); e.preventDefault();
+  const k = fbKey(b.dataset.blur);
+  BL = {...BL}; if (BL[k]) delete BL[k]; else BL[k] = true; paintBL();  // optimistic
+  try { BL = await (await fetch("/api/blur", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({src: b.dataset.blur})})).json(); paintBL(); }
+  catch { $("#fbwait").textContent = "⚠ can't reach gallery server; blur not saved"; }
+}, true);
+paintBlurAll();
+
+// ↑ back to top
+const totop = $("#totop");
+window.addEventListener("scroll", () => totop.classList.toggle("show", window.scrollY > 500), {passive: true});
+totop.onclick = () => window.scrollTo({top: 0, behavior: "smooth"});
+
+// 🧭 journeys: one character from a lab image exploring their own world, 6 scenes per chapter; the user directs each next
+// chapter. Requests (start / direct) go to feedback/journeys.json + a "journey" event; the agent writes + renders the chapter.
+let JR = [], jOpen = null;  // jOpen: image whose "start a journey" composer is open in the lightbox
+const journeysOf = src => JRN.filter(j => j.source === fbKey(src));
+const jReqsFor = src => JR.filter(r => r.kind === "start" && r.image === fbKey(src));
+const exploreBtn = (src, cap, label = "") => canFB && !isScene(src) && /\.png$/.test(src) ? `<button class="exploreb" data-explore="${esc(src)}" data-cap="${esc(cap)}"
+  title="Explore their world: this character goes on a journey through their own world (6 scenes per chapter, you direct what happens next)">🧭${label}</button>` : "";
+function jChip(src) {
+  const js = journeysOf(src);
+  return js.length ? `<a class="jchip" href="#/j/${js[0].id}" title="This character's journey${js.length > 1 ? "s" : ""}">🧭 ${js.length}</a>` : "";
+}
+async function jPost(body) {
+  try {
+    const r = await fetch("/api/journeys", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)});
+    const j = await r.json(); if (!r.ok) throw 0;
+    JR = j.requests || JR; if (j.refs) { const jj = jById[body.journey]; if (jj) jj.refs = j.refs; }
+    const y = window.scrollY; render(true); window.scrollTo(0, y);
+    if ($("#lightbox").classList.contains("show")) showLB();
+    return true;
+  } catch { $("#fbwait").textContent = "⚠ can't reach gallery server; journey request not sent"; return false; }
+}
+async function jLoad() {
+  try { const j = await (await fetch("/api/journeys", {cache: "no-store"})).json();
+        if (JSON.stringify(j.requests) !== JSON.stringify(JR)) { JR = j.requests; const y = window.scrollY; render(true); window.scrollTo(0, y);
+          if ($("#lightbox").classList.contains("show")) showLB(); } } catch {}
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-explore]"); if (!b) return;
+  e.stopPropagation(); e.preventDefault();
+  const src = b.dataset.explore;
+  if (!$("#lightbox").classList.contains("show")) {  // open the image big, with the journey composer
+    const img = [...document.querySelectorAll("#app img[data-src]")].find(i => fbKey(i.dataset.src) === fbKey(src));
+    if (img) img.click(); else openLB([{src, cap: b.dataset.cap}], 0);
+  }
+  jOpen = jOpen === fbKey(src) && $("#lightbox").classList.contains("show") && b.closest(".lbfb") ? null : fbKey(src);
+  showLB();
+  setTimeout(() => $(`#lightbox textarea[data-draft="${CSS.escape("journey:" + fbKey(src))}"]`)?.focus(), 30);
+}, true);
+document.addEventListener("click", async e => {
+  const s = e.target.closest("[data-jstart]"), d = e.target.closest("[data-jdirect]"), c = e.target.closest("[data-jchoice]"), r = e.target.closest("[data-jref]");
+  if (s) {
+    e.preventDefault();
+    const ta = document.querySelector(`textarea[data-draft="${CSS.escape("journey:" + s.dataset.jstart)}"]`);
+    if (await jPost({op: "start", src: s.dataset.jstart, cap: s.dataset.cap || "", text: ta ? ta.value.trim() : ""})) {
+      if (ta) ta.value = ""; $("#fbwait").textContent = "🧭 journey sent to your agent";
+    }
+  } else if (d) {
+    e.preventDefault();
+    const ta = document.querySelector(`textarea[data-draft="${CSS.escape("jdir:" + d.dataset.jdirect)}"]`);
+    if (!ta || !ta.value.trim()) { ta?.focus(); return; }
+    if (await jPost({op: "direct", journey: d.dataset.jdirect, text: ta.value.trim()})) { ta.value = ""; $("#fbwait").textContent = "🧭 direction sent to your agent"; }
+  } else if (c) {
+    e.preventDefault();
+    const ta = document.querySelector(`textarea[data-draft="${CSS.escape("jdir:" + c.dataset.jchoice)}"]`);
+    if (ta) { ta.value = (ta.value.trim() ? ta.value.trim() + " " : "") + c.dataset.text; ta.focus(); }
+  } else if (r) {
+    e.preventDefault(); e.stopPropagation();
+    jPost({op: "ref", journey: r.dataset.jref, src: r.dataset.src});
+  }
+}, true);
+// the "start a journey" composer inside the lightbox
+function jStartBox(src, cap) {
+  const key = fbKey(src), js = journeysOf(src), reqs = jReqsFor(src), open = reqs.filter(r => r.status === "sent");
+  const links = js.map(j => `<a href="#/j/${j.id}">🧭 ${esc(j.title)} →</a>`).join(" · ");
+  if (jOpen !== key) return links ? `<div class="row">${links}</div>` : "";
+  return `<div class="jstart"><b>🧭 Explore their world</b>
+    <div class="hint">This character leaves the portrait and lives in their world: 6 candid scenes per chapter, the world in full detail,
+      the character kept consistent. You direct each next chapter from the journey page.</div>
+    ${open.length ? `<div class="hint" style="color:#9fe0b8">Sent ${esc(open[open.length - 1].ts)}: Your agent is writing chapter 1…</div>` : ""}
+    <textarea data-draft="journey:${esc(key)}" placeholder="Where do they go, what are they after? (optional: leave empty and your agent picks a first adventure from their world)"></textarea>
+    <div class="row"><button class="jgo" data-jstart="${esc(key)}" data-cap="${esc(cap)}">Start the journey →</button>
+      ${links ? `<span class="hint">Already on: ${links}</span>` : ""}</div></div>`;
+}
+function scenesOf(j) {
+  return j.chapters.flatMap((c, ci) => c.scenes.filter(sc => sc.src).map(sc => ({src: sc.src, dialogue: sc.dialogue,
+    cap: `${j.name || j.title} · Ch ${ci + 1} · ${sc.id}${sc.shot ? " (" + sc.shot + ")" : ""} — ${sc.caption}`})));
+}
+// 💬 speech bubbles: scene.dialogue [{who, text, pos: [x%, y%] (bubble top-left), tail: bl|br|b|tl|tr|none, radio}]
+const bubblesOn = () => store.get("bubbles", true);
+function bubblesHtml(dlg) {
+  return (dlg || []).map((b, i) => {
+    const pos = b.pos || (i % 2 ? [55, 4 + 16 * Math.floor(i / 2)] : [3, 4 + 16 * Math.floor(i / 2)]);  // default: alternate across the top
+    const tail = b.radio ? "none" : b.tail || (pos[0] > 50 ? "br" : "bl");
+    return `<div class="bubble t-${tail} ${b.radio ? "radio" : ""}" style="left:${pos[0]}%;top:${pos[1]}%${b.w ? `;max-width:${b.w}%` : ""}">` +
+      `<span class="bwho">${esc(b.who)}</span>${esc(b.text)}</div>`;
+  }).join("");
+}
+// font size follows the rendered image width so bubbles keep their proportions at every size
+const bubbleRO = new ResizeObserver(es => es.forEach(e => e.target.style.setProperty("--bfs", Math.max(7, e.contentRect.width * 0.0165) + "px")));
+function watchBubbles(root) { root.querySelectorAll(".bubbles").forEach(l => bubbleRO.observe(l)); }
+document.body.classList.toggle("nobubbles", !bubblesOn());
+document.addEventListener("click", e => {
+  if (!e.target.closest("[data-bubtoggle]")) return;
+  store.set("bubbles", !bubblesOn()); document.body.classList.toggle("nobubbles", !bubblesOn());
+  document.querySelectorAll("[data-bubtoggle]").forEach(b => { b.classList.toggle("on", bubblesOn()); b.textContent = bubblesOn() ? "💬 Bubbles on" : "💬 Bubbles off"; });
+});
+const bubbleBtn = () => `<button class="bubtoggle ${bubblesOn() ? "on" : ""}" data-bubtoggle title="Show or hide the speech bubbles on every scene">${bubblesOn() ? "💬 Bubbles on" : "💬 Bubbles off"}</button>`;
+function journeysPage() {
+  const q = Q();
+  const jt = j => [j.id, j.title, j.name, j.character, j.world, j.source_cap, ...j.chapters.flatMap(c => [c.title, c.summary, c.direction,
+    ...c.scenes.flatMap(sc => [sc.caption, sc.prompt, ...(sc.dialogue || []).map(d => d.who + " " + d.text)])])].join(" ").toLowerCase();
+  const js = [...JRN].filter(j => hasAll(jt(j), q)).sort((a, b) => (b.rendered || b.created) - (a.rendered || a.created));
+  $("#qcount").textContent = q ? `${js.length} journey${js.length === 1 ? "" : "s"}` : "";
+  // a start request whose journey already exists (same source image) shows as that journey's card, not a placeholder,
+  // even before the agent's jreply marks the request done
+  const started = new Set([...JRN].map(j => j.source));
+  const waiting = JR.filter(r => r.kind === "start" && r.status === "sent" && !started.has(r.image));
+  const head = `<div class="layer-head"><h2>🧭 Journeys</h2><div class="sub">Characters stepping out of their portraits to live in their own worlds.
+    Each chapter is 6 candid scenes; you steer what happens next at the bottom of each journey. Start one with 🧭 on any lab image.</div></div>`;
+  const pend = waiting.map(r => `<div class="jcard pendingj"><div class="jcover" style="display:grid;place-items:center">
+      <img class="jportrait" src="../${esc(r.image)}" style="position:static;width:90px"></div>
+    <div class="body"><h3>Chapter 1 in the works…</h3><div class="meta">requested ${esc(r.ts)}${r.text ? " · “" + esc(r.text) + "”" : ""}</div></div></div>`).join("");
+  const cards = js.map(j => {
+    const scenes = j.chapters.flatMap(c => c.scenes), done = scenes.filter(sc => sc.src);
+    const cover = done[done.length - 1];
+    const open = JR.some(r => r.kind === "direct" && r.journey === j.id && r.status === "sent");
+    return `<div class="jcard" data-go="#/j/${j.id}"><div class="jcover">${cover ? `<img src="${esc(th(cover.src))}" loading="lazy">` : ""}
+        <img class="jportrait" src="../${esc(j.source)}" loading="lazy"></div>
+      <div class="body"><h3>${esc(j.title)}</h3><div class="meta">${esc(j.name)} · ${j.chapters.length} chapter${j.chapters.length === 1 ? "" : "s"} ·
+        ${done.length}/${scenes.length} scenes${open ? " · ✍ next chapter being written" : ""}${j.rendered ? " · " + esc(fmtDate(j.rendered)) : ""}</div></div></div>`;
+  }).join("");
+  if (!cards && !pend) return head + `<p class="empty">${q ? "No journeys match." : "No journeys yet. Open any image and press 🧭 Explore their world."}</p>`;
+  return head + `<div class="jcards">${pend}${cards}</div>`;
+}
+const sceneSize = () => store.get("scene", 440);
+const applyScene = px => document.documentElement.style.setProperty("--scene", px + "px");
+applyScene(sceneSize());
+function journeyPage(id) {
+  const j = jById[id];
+  if (!j) return `<p class="empty">Unknown journey ${esc(id)}. <a href="#/j">All journeys</a></p>`;
+  const src = j.source, home = imageHome(src), refs = j.refs || [src];
+  const reqs = JR.filter(r => r.kind === "direct" && r.journey === j.id);
+  const open = reqs.filter(r => r.status === "sent"), lastDone = [...reqs].reverse().find(r => r.status === "done");
+  const chapters = j.chapters.map((c, ci) => `<section class="chapter" id="${c.id}">
+      <div class="chead"><span class="cid">${esc(c.id)}</span><h3>${esc(c.title)}</h3></div>
+      ${c.direction ? `<div class="cdir">You: “${esc(c.direction)}”</div>` : ""}
+      ${c.summary ? `<div class="csum">${esc(c.summary)}</div>` : ""}
+      <div class="scenes">${c.scenes.map(sc => {
+        const cap = `${j.name || j.title} · Ch ${ci + 1} · ${sc.id}`;
+        return `<figure class="scene"><div class="cell">${sc.src
+            ? `<img src="${esc(th(sc.src))}" data-jscene="${esc(sc.src)}" loading="lazy">${sc.dialogue && sc.dialogue.length ? `<div class="bubbles">${bubblesHtml(sc.dialogue)}</div>` : ""}${refs.includes(fbKey(sc.src)) ? `<span class="refmark" title="Used as a character reference for new scenes">⚓ ref</span>` : ""}
+               ${fbBar(sc.src, cap)}${vidChip(sc.src)}`
+            : `<div class="pending">${esc(sc.id)} · ${esc(sc.shot || "scene")}<br>rendering…</div>`}</div>
+          <figcaption><span class="shot">${esc(sc.id)}${sc.shot ? " · " + esc(sc.shot) : ""}</span>${esc(sc.caption)}</figcaption></figure>`;
+      }).join("")}</div></section>`).join("");
+  const last = j.chapters[j.chapters.length - 1];
+  const next = canFB ? `<section class="jnext"><h3>🧭 What happens next?</h3>
+      <div class="jstatus ${open.length ? "" : lastDone ? "done" : ""}">${open.length ? `Sent ${esc(open[open.length - 1].ts)}: “${esc(open[open.length - 1].text)}”. Your agent is writing chapter ${j.chapters.length + 1}…`
+        : lastDone ? `Agent: ${esc(lastDone.reply || "")}` : `Direct ${esc(j.name || "them")}: where to go, what to do, who to meet, what goes wrong. One chapter = 6 new scenes.`}</div>
+      ${last && last.choices && last.choices.length ? `<div class="choices">${last.choices.map(ch =>
+        `<button data-jchoice="${esc(j.id)}" data-text="${esc(ch)}" title="Add this to your direction">${esc(ch)}</button>`).join("")}</div>` : ""}
+      <textarea data-draft="jdir:${esc(j.id)}" placeholder="e.g. She follows the signal into the ice belt, but the pod's radio dies halfway there…"></textarea>
+      <div class="row"><button class="jgo" data-jdirect="${esc(j.id)}">Send direction →</button>
+        <span class="jstatus">Tip: ⚓ on a scene makes it an extra reference for how ${esc(j.name || "the character")} looks. Comments on any scene go to your agent too.</span></div></section>` : "";
+  return `<div class="crumbs"><a href="#/j">🧭 Journeys</a> / ${esc(j.id)}</div>
+    <div class="jhero"><div class="jsrc"><img src="../${esc(src)}" data-jscene="../${esc(src)}" title="${esc(j.source_cap)}"></div>
+      <div><h2>${esc(j.title)}</h2><div class="who">${esc(j.name)}</div>
+        <div class="jtext"><b>Character</b>${esc(j.character)}</div>
+        <div class="jtext"><b>World</b>${esc(j.world)}</div>
+        ${(j.cast || []).length ? `<div class="jcast"><b>Cast</b>${j.cast.map(c => c.ref
+          ? `<a class="jcameo" href="${imageHome(c.ref)}" title="${esc(c.name + ": library cameo from " + (c.from || c.ref) + ". " + c.look)}"><img src="../${esc(c.ref)}" loading="lazy"><span>${esc(c.name)}</span></a>`
+          : `<span class="jcname" title="${esc(c.look)}">${esc(c.name)}</span>`).join("")}</div>` : ""}
+        <div class="jtext"><b>From</b><a href="${home}">${esc(j.source_cap || src)}</a></div>
+        <div class="jrefs"><span class="label">⚓ Character references</span>${refs.map(r => `<img src="../${esc(r)}" title="${esc(r)}">`).join("")}
+          ${j.chapters.some(c => c.scenes.some(sc => (sc.dialogue || []).length)) ? `<span style="margin-left:auto">${bubbleBtn()}</span>` : ""}
+          <label class="sizer" title="Scene size" style="${j.chapters.some(c => c.scenes.some(sc => (sc.dialogue || []).length)) ? "" : "margin-left:auto"}">▫<input type="range" min="260" max="1100" step="20" value="${sceneSize()}" data-scene>▣</label></div>
+        ${canFB ? `<div class="lin-thread">${thread("journey:" + j.id, "Comment on the journey as a whole… (tone, pacing, the world, the character)")}</div>` : ""}</div></div>
+    ${chapters}${next}`;
+}
+function bindJourney(app, id) {
+  const j = jById[id];
+  const list = j ? [{src: "../" + j.source, cap: `${j.name} · the portrait this journey started from`}, ...scenesOf(j)] : [];
+  app.querySelectorAll("img[data-jscene]").forEach(img => img.onclick = () => openLB(list, Math.max(0, list.findIndex(x => fbKey(x.src) === fbKey(img.dataset.jscene)))));
+  app.querySelectorAll("[data-scene]").forEach(r => r.oninput = () => { applyScene(+r.value); store.set("scene", +r.value); });
+  watchBubbles(app);
+}
+
+// views
+const SORTS =[["rounds", "Rounds"], ["new", "Newest styles"], ["old", "Oldest styles"], ["recent", "Recently rendered"]];
+const sortKey = () => store.get("sort", "rounds");
+const fmtDate = ts => ts ? new Date(ts * 1000).toLocaleString(undefined, {month: "short", day: "numeric", hour: "2-digit", minute: "2-digit"}) : "";
+function sortStyles(ls) {
+  const k = sortKey(), by = k === "recent" ? "rendered" : "created";
+  const out = [...ls].sort((a, b) => (b[by] || 0) - (a[by] || 0) || a.id.localeCompare(b.id));
+  return k === "old" ? out.reverse() : out;
+}
+const FILTER_KEYS = ["heartOnly", "evolvedOnly", "hideNope", "renderedOnly", "upOnly", "fitOnly"];
+const fget = k => store.get(k, false);
+const fdef = k => false;
+const TOGGLES = [["heartOnly", "❤ Loved only"], ["hideNope", "Hide 👎"], ["evolvedOnly", "🌱 Evolved only"], ["renderedOnly", "Rendered only"], ["upOnly", "⤢ Upscaled only"], ["fitOnly", "⬚ Refitted only"]];
+const GENRES = [["modern", "modern"], ["scifi", "sci-fi"], ["fantasy", "fantasy"]];
+// character keys look like "f-modern" (survey six) or "m-scifi@amano" (a per-set cast)
+function parseSubj(k) {
+  const [base, cast] = String(k || "f-modern").split("@"), [g, genre] = base.split("-");
+  return {g, genre, cast: (cast || "survey").split("~")[0]};  // "m-scifi@arcane2~3" = 3rd such character in a larger cast
+}
+const castName = c => c === "survey" ? "Survey six" : c.replace(/(\d+)$/, " $1").replace(/^./, x => x.toUpperCase()) + " cast";
+function subjMatch(k) {
+  const p = parseSubj(k), cast = store.get("fcast", "all"), g = store.get("fg", "all"), genre = store.get("fgenre", "all");
+  return (cast === "all" || p.cast === cast) && (g === "all" || p.g === g) && (genre === "all" || p.genre === genre);
+}
+const charFiltered = () => ["fcast", "fg", "fgenre"].some(k => store.get(k, "all") !== "all");
+const filtersActive = () => charFiltered() || !!Q() || FILTER_KEYS.some(k => fget(k) !== fdef(k));
+let fdropOpen = false;
+// searchable cast picker (user 2026-09-26: "a searchable top option with intellisense"): each option knows its
+// characters, so "wolf" or "beekeeper" finds the cast that has one; ranked name-prefix > name > character text
+let CASTOPTS = [];
+function castOptions(casts, lins) {
+  const subs = {}, where = {};
+  lins.forEach(l => l.versions.forEach(v => v.slots.forEach(sl => {
+    const c = parseSubj(sl.subject).cast;
+    (subs[c] = subs[c] || new Set()).add(sl.subject); (where[c] = where[c] || new Set()).add(l.title || l.id);
+  })));
+  const opt = (v, lab, keys) => {
+    const chars = [...keys].map(k => SUBJT[k] || SUBJ[k] || k);
+    return {v, lab, n: keys.size, where: [...(where[v] || [])].slice(0, 2).join(", "),
+            name: (lab + " " + v).toLowerCase(), chars, text: chars.join(" \n ").toLowerCase()};
+  };
+  const all = new Set(Object.values(subs).flatMap(s => [...s]));
+  return [{v: "all", lab: "All casts", n: all.size, where: "", name: "all casts", chars: [], text: ""},
+    ...casts.map(c => opt(c, castName(c), subs[c] || new Set()))];
+}
+function castMatches(q) {
+  const terms = qTerms(q.toLowerCase());
+  if (!terms.length) return CASTOPTS.map(o => ({o, hit: ""}));
+  return CASTOPTS.map(o => {
+    if (!terms.every(t => o.name.includes(t) || o.text.includes(t))) return null;
+    const score = terms.every(t => o.name.startsWith(t) || o.name.includes(" " + t)) ? 0 : terms.every(t => o.name.includes(t)) ? 1 : 2;
+    // the character that explains a text match, trimmed around the first hit
+    const ch = score === 2 ? o.chars.find(c => terms.some(t => c.toLowerCase().includes(t))) || "" : "";
+    const at = ch ? Math.max(0, ch.toLowerCase().indexOf(terms.find(t => ch.toLowerCase().includes(t)) || "") - 30) : 0;
+    return {o, score, hit: ch ? (at ? "…" : "") + ch.slice(at, at + 90) + (ch.length > at + 90 ? "…" : "") : ""};
+  }).filter(Boolean).sort((a, b) => a.score - b.score);
+}
+function hiTerms(s, q) {
+  let h = esc(s);
+  qTerms(q).forEach(t => { if (t.length > 1) h = h.replace(new RegExp(t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi"), m => `<mark>${m}</mark>`); });
+  return h;
+}
+function bindCastBox(app) {
+  app.querySelectorAll(".castbox").forEach(box => {
+    const inp = box.querySelector("input"), list = box.querySelector(".castlist");
+    let items = [], sel = 0, open = false;
+    const draw = () => {
+      items = castMatches(inp.value === castName(store.get("fcast", "all")) ? "" : inp.value).slice(0, 60);
+      sel = Math.min(sel, Math.max(0, items.length - 1));
+      const cur = store.get("fcast", "all");
+      list.innerHTML = items.length ? items.map(({o, hit}, i) =>
+        `<div class="copt${i === sel ? " sel" : ""}${o.v === cur ? " cur" : ""}" data-i="${i}" role="option">
+          <div><b>${hiTerms(o.lab, inp.value)}</b> <span class="cn">${o.n} character${o.n === 1 ? "" : "s"}</span></div>
+          ${hit ? `<div class="ch">${hiTerms(hit, inp.value)}</div>` : o.where ? `<div class="ch">${esc(o.where)}</div>` : ""}</div>`).join("")
+        : `<div class="copt none">No cast matches “${esc(inp.value)}”</div>`;
+      list.classList.toggle("show", open);
+      list.querySelector(".sel")?.scrollIntoView({block: "nearest"});
+    };
+    const pick = i => { const it = items[i]; if (!it) return; open = false; store.set("fcast", it.o.v); render(true, true); };
+    inp.onfocus = () => { open = true; sel = 0; inp.select(); draw(); };
+    inp.oninput = () => { open = true; sel = 0; draw(); };
+    inp.onblur = () => setTimeout(() => { open = false; list.classList.remove("show");
+      if (!inp.value.trim() && store.get("fcast", "all") !== "all") { store.set("fcast", "all"); render(true, true); }
+      else inp.value = store.get("fcast", "all") === "all" ? "" : castName(store.get("fcast", "all")); }, 150);
+    inp.onkeydown = e => {
+      if (e.key === "ArrowDown") { e.preventDefault(); open = true; sel = Math.min(sel + 1, items.length - 1); draw(); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); sel = Math.max(sel - 1, 0); draw(); }
+      else if (e.key === "Enter") { e.preventDefault(); pick(sel); }
+      else if (e.key === "Escape") { e.stopPropagation(); inp.value = ""; open = false; inp.blur(); }
+    };
+    list.onmousedown = e => { const c = e.target.closest(".copt[data-i]"); if (c) { e.preventDefault(); pick(+c.dataset.i); } };
+  });
+}
+function toolbar() {
+  const mode = store.get("ovmode", "grid");
+  // casts present on this page only (the Images page shows every cast)
+  const h = location.hash.replace(/^#\/?/, ""), depth = h.startsWith("e/") ? parseInt(h.slice(2)) || 1 : 0;
+  const pageLins = DATA.filter(l => /^(images|videos)/.test(h) || (l.depth || 0) === depth);
+  const casts = [...new Set(pageLins.flatMap(l => l.versions.flatMap(v => v.slots.map(sl => parseSubj(sl.subject).cast)))
+    .concat(h.startsWith("videos") ? VIDS.map(v => parseSubj(v.subject).cast) : []))]
+    .sort((x, y) => (x !== "survey") - (y !== "survey") || x.localeCompare(y, undefined, {numeric: true}));
+  const genres = GENRES;
+  const cast = store.get("fcast", "all"), g = store.get("fg", "all"), genre = store.get("fgenre", "all");
+  const seg = (key, cur, opts) => `<span class="seg">${opts.map(([v, lab]) =>
+    `<button data-fset="${key}" data-v="${v}" class="${cur === v ? "on" : ""}">${lab}</button>`).join("")}</span>`;
+  const activeToggles = TOGGLES.filter(([k]) => fget(k) !== fdef(k));  // only what differs from the defaults counts
+  const pills = [
+    ...(cast !== "all" ? [["fcast", castName(cast)]] : []), ...(g !== "all" ? [["fg", g === "f" ? "♀" : "♂"]] : []),
+    ...(genre !== "all" ? [["fgenre", (GENRES.find(x => x[0] === genre) || [0, genre])[1]]] : []),
+    ...activeToggles.map(([k, lab]) => [k, lab]),
+  ].map(([k, lab]) => `<button class="pill" data-unset="${k}" title="Remove this filter">${esc(lab)} ✕</button>`).join("");
+  CASTOPTS = castOptions(casts, pageLins);
+  return `<div class="toolbar">
+      <span class="castbox"><input data-castq type="search" autocomplete="off" spellcheck="false" placeholder="🔎 Cast or character…"
+        title="Which cast of characters: type a cast name or anything about a character in it (wolf, beekeeper, orig42…). ↑↓ + Enter"
+        value="${cast === "all" ? "" : esc(castName(cast))}"><div class="castlist" role="listbox"></div></span>
+      ${seg("fg", g, [["all", "All"], ["f", "♀"], ["m", "♂"]])}
+      <select data-fsel="fgenre" class="${genre !== "all" ? "on" : ""}" title="Genre">${[["all", "Genre: all"], ...genres].map(([v, lab]) => `<option value="${v}" ${genre === v ? "selected" : ""}>${v === "all" ? lab : "Genre: " + lab}</option>`).join("")}</select>
+      <details class="fdrop" ${fdropOpen ? "open" : ""}><summary>Filters${activeToggles.length ? ` <b>${activeToggles.length}</b>` : ""} ▾</summary>
+        <div class="fmenu">${TOGGLES.map(([k, lab]) => `<label><input type="checkbox" data-ftoggle="${k}" ${fget(k) ? "checked" : ""}> ${lab}</label>`).join("")}</div></details>
+      ${pills}
+      ${filtersActive() ? `<button data-clearf class="clearf" title="Reset search and every filter">✕ Clear</button>` : ""}
+      <span style="flex:1"></span>
+      <select data-sort title="Sort">${SORTS.map(([v, lab]) => `<option value="${v}" ${sortKey() === v ? "selected" : ""}>Sort: ${lab}</option>`).join("")}</select>
+      ${mode === "grid" ? `<label class="sizer" title="Image size">▫<input type="range" min="100" max="520" step="10" value="${tileSize()}" data-tile>▣</label>` : ""}
+      <span class="seg"><button data-mode="grid" class="${mode === "grid" ? "on" : ""}">Tiles</button><button data-mode="cards" class="${mode === "cards" ? "on" : ""}">Cards</button></span></div>`;
+}
+const tileSize = () => store.get("tile", 200);
+const applyTile = px => document.documentElement.style.setProperty("--tile", px + "px");
+applyTile(tileSize());
+// compact subject labels for tiles/chips: ♀ modern, ♂ sci-fi, ...
+function subjShort(k, seed) {
+  const [base, cast] = k.split("@");  // per-evolution-set casts: "f-modern@amano"
+  const [g, genre] = base.split("-");
+  const name = {modern: "modern", scifi: "sci-fi", fantasy: "fantasy"}[genre] || genre || k;
+  return `${g === "f" ? "♀" : g === "m" ? "♂" : ""} ${name}${seed && seed !== "1001" ? " · " + seed : ""}`.trim();
+}
+// one strip per style: title + its visible images in subject order; strips wrap and pack across the page
+function styleGrid(ls, gid, capPrefix, hlImg, opts = {}) {
+  const heart = store.get("heartOnly", false);
+  const only = store.get("renderedOnly", false) || heart;
+  const pick = heart ? lovedCell : store.get("hideNope", false) ? unNopedCell : bestCell;
+  const order = Object.keys(SUBJ);
+  const rows = new Map();
+  ls.forEach(l => l.versions.forEach(v => v.slots.forEach(sl => { if (!rows.has(sl.key)) rows.set(sl.key, sl); })));
+  const keys = [...rows.values()].filter(sl => subjMatch(sl.subject))
+    .sort((a, b) => (order.indexOf(a.subject) - order.indexOf(b.subject)) || a.key.localeCompare(b.key, undefined, {numeric: true}));
+  const strips = ls.map(l => {
+    const tiles = keys.map(row => {
+      const c = pick(l, row.key);
+      const lab = subjShort(row.subject || row.key, row.key.split("seed")[1]);
+      if (!c) return "";
+      if (!c.slot.src) return only || fget("upOnly") || fget("fitOnly") ? "" : `<div class="tile"><div class="pending">${esc(lab)}<br>rendering…</div></div>`;
+      // ⤢/⬚ filters (user 2026-09-27: "a refit and upscale filter on the main image gallery")
+      if (!upFitOk(c.slot.src)) return "";
+      const old = c.v !== latest(l);
+      const cap = `${l.id} ${l.title} · ${c.v.id} · ${row.label}`;
+      const der = derivedOf(c.slot.src);
+      if (der) return der.map(dv => `<div class="tile cell"><img src="${esc(th(dv.src))}" data-grid="${gid}" data-src="${esc(dv.src)}" data-cap="${esc(`${capPrefix} · ${cap} · ${dv.tag}`)}" loading="lazy">
+        <span class="tlabel">${esc(lab)} · ${esc(dv.tag)}</span></div>`).join("");
+      return `<div class="tile cell ${hlImg && fbKey(c.slot.src) === hlImg ? "hl" : ""}">
+        <img src="${esc(th(c.slot.src))}" data-grid="${gid}" data-src="${esc(c.slot.src)}" data-cap="${esc(`${capPrefix} · ${cap}`)}" loading="lazy">
+        <span class="tlabel ${old ? "old" : ""}" title="${old ? esc(`${latest(l).id} not shown for this subject; this is ${c.v.id}`) : ""}">${esc(lab)}${old ? " · " + esc(c.v.id) : ""}</span>
+        ${fbBar(c.slot.src, cap)}${evoChip(c.slot.src)}${vidChip(c.slot.src)}${jChip(c.slot.src)}${upFitChip(c.slot.src)}</div>`;
+    }).filter(Boolean);
+    if (!tiles.length) return "";
+    const verdict = latest(l).notes.verdict || [...l.versions].reverse().find(v => v.notes.verdict)?.notes.verdict || "";
+    const dateTag = sortKey() === "rounds" ? "" : `<span class="sdate" title="${sortKey() === "recent" ? "newest render" : "created"}">${esc(fmtDate(sortKey() === "recent" ? l.rendered : l.created))}</span>`;
+    return `<div class="strip ${opts.stripClass || ""}${styleMark(l.id) ? " s-" + styleMark(l.id) : ""}"><div class="shead">${dateTag}<a href="#/l/${l.id}" title="${esc(l.title + (l.goal ? " — " + l.goal : ""))}"><span class="sid">${l.id.slice(0, 3)}</span> ${esc(l.title)}</a>
+        ${verdict ? `<span class="sinfo" title="${esc(verdict)}">ⓘ</span>` : ""}${styleBtns(l.id, l.title)}</div>
+      ${l.depth ? `<div class="snote" title="${esc(l.goal)}">${esc(l.goal)}</div>` : ""}
+      <div class="tiles">${tiles.join("")}</div></div>`;
+  }).filter(Boolean);
+  if (opts.raw) return strips;
+  return strips.length ? `<div class="strips">${strips.join("")}</div>` : "";
+}
+function overview() {
+  const mode = store.get("ovmode", "grid"), only = store.get("renderedOnly", false);
+  const SURVEY = DATA.filter(l => !l.depth);
+  if (!SURVEY.length) return `<p class="empty">No styles yet.</p>`;
+  const rounds = [...new Set(SURVEY.map(l => l.round))].sort((a, b) => b - a);
+  const hits = SURVEY.filter(matchQ).length;
+  $("#qcount").textContent = Q() ? `${hits} match${hits === 1 ? "" : "es"}` : "";
+  if (Q() && !hits) return toolbar() + `<p class="empty">No styles match “${esc(Q())}”. Press Esc in the search box to clear it.</p>`;
+  const heartEmpty = store.get("heartOnly", false) && !SURVEY.some(lovedLineage)
+    ? `<p class="empty">No ❤ images yet. Hover an image and click ❤ to add it here.</p>` : "";
+  if (sortKey() !== "rounds") {
+    let ls = SURVEY;
+    if (only) ls = ls.filter(l => l.versions.some(v => v.images.length));
+    if (store.get("heartOnly", false)) ls = ls.filter(lovedLineage);
+    if (store.get("evolvedOnly", false)) ls = ls.filter(evolvedLineage);
+    if (store.get("hideNope", false)) ls = ls.filter(notAllNoped);
+    ls = sortStyles(ls.filter(matchQ));
+    if (mode === "cards") return toolbar() + heartEmpty + `<div class="cards">${ls.map(card).join("")}</div>`;
+    const strips = styleGrid(ls, "all", "Survey", null, {raw: true});
+    return toolbar() + heartEmpty + (strips.length ? `<div class="strips flow">${strips.join("")}</div>` : `<p class="empty">Nothing matches your filters.</p>`);
+  }
+  return toolbar() + heartEmpty + rounds.map(r => {
+    let ls = SURVEY.filter(l => l.round === r);
+    if (only) ls = ls.filter(l => l.versions.some(v => v.images.length));
+    if (store.get("heartOnly", false)) ls = ls.filter(lovedLineage);
+    if (store.get("evolvedOnly", false)) ls = ls.filter(evolvedLineage);
+    if (store.get("hideNope", false)) ls = ls.filter(notAllNoped);
+    ls = ls.filter(matchQ);
+    if (!ls.length) return "";
+    const tags = [...new Set(ls.flatMap(l => l.tags))];
+    const head = `<div class="round-head"><h2>Round ${r}</h2><span class="sub">${esc(tags.join(" · "))} — ${ls.length} styles, newest render per cell (badge = older version)</span></div>`;
+    if (mode === "cards") return head + `<div class="cards">${ls.map(card).join("")}</div>`;
+    const strips = styleGrid(ls, "r" + r, `Round ${r}`, null, {raw: true});
+    return strips.length ? `<div class="lead"><div class="rmark" title="Round ${r}: ${esc(tags.join(" · "))} (${strips.length} styles shown)"><span>Round ${r}</span></div>${strips[0]}</div>` + strips.slice(1).join("") : "";
+  }).join("").replace(/^/, mode === "cards" ? "" : '<div class="strips flow">') + (mode === "cards" ? "" : "</div>");
+}
+// newest version with a rendered image for this subject/seed; else the newest one that plans it (pending)
+const isNoped = src => !!src && hasAct(FB[fbKey(src)], "nope");
+// newest render for this subject/seed that isn't 👎 (falls back to older versions); pending if only planned
+function unNopedCell(l, key) {
+  let planned = null;
+  for (let i = l.versions.length - 1; i >= 0; i--) {
+    const v = l.versions[i], slot = v.slots.find(s => s.key === key);
+    if (!slot) continue;
+    if (slot.src && !isNoped(slot.src)) return {v, slot};
+    if (!slot.src) planned = planned || {v, slot};
+  }
+  return planned;
+}
+const notAllNoped = l => { const imgs = l.versions.flatMap(v => v.images); return !imgs.length || imgs.some(im => !isNoped(im.src)); };
+const isLoved = src => !!src && hasAct(FB[fbKey(src)], "love");
+// ❤/👎 a whole style (user 2026-09-27): stored with the marks as "style:<lineage id>", no Send needed
+const styleMark = id => { const m = FB["style:" + id]; return hasAct(m, "love") ? "love" : hasAct(m, "nope") ? "nope" : ""; };
+const styleBtns = (id, title) => !canFB ? "" : `<span class="sbtns">${[["love", "❤", "Love this whole style"], ["nope", "👎", "Not this style"]].map(([a, ic, t]) =>
+  `<button class="sbtn${styleMark(id) === a ? " on" : ""}" data-smark="${esc(id)}" data-sact="${a}" data-scap="${esc(title)}" title="${t}">${ic}</button>`).join("")}</span>`;
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-smark]"); if (!b) return;
+  e.stopPropagation(); e.preventDefault();
+  fbPost("/api/feedback", {src: "style:" + b.dataset.smark, action: b.dataset.sact, cap: b.dataset.scap});
+}, true);
+const lovedLineage = l => l.versions.some(v => v.images.some(im => isLoved(im.src)));
+function lovedCell(l, key) {
+  for (let i = l.versions.length - 1; i >= 0; i--) {
+    const v = l.versions[i], slot = v.slots.find(s => s.key === key && isLoved(s.src));
+    if (slot) return {v, slot};
+  }
+  return null;
+}
+function bestCell(l, key) {
+  let planned = null;
+  for (let i = l.versions.length - 1; i >= 0; i--) {
+    const v = l.versions[i], slot = v.slots.find(s => s.key === key);
+    if (!slot) continue;
+    if (slot.src) return {v, slot};
+    planned = planned || {v, slot};
+  }
+  return planned;
+}
+function card(l) {
+  const v = [...l.versions].reverse().find(x => x.images.length) || latest(l);
+  return `<div class="card" data-go="#/l/${l.id}">
+    <div class="thumbs">${v.images.slice(0, 2).map(i => `<img src="${esc(th(i.src))}" loading="lazy">`).join("")}</div>
+    <div class="body"><div class="id">${l.id}</div><h3>${esc(l.title)}</h3>
+      <div class="meta"><span>${l.versions.length} version${l.versions.length > 1 ? "s" : ""}</span>
+        ${l.parent ? `<span>↳ from ${esc(l.parent)}</span>` : ""}
+        ${childrenOf(l.id).length ? `<span>${childrenOf(l.id).length} branch(es)</span>` : ""}</div>
+      <div class="verdict">${esc(v.notes.verdict || "")}</div></div></div>`;
+}
+function lineage(id) {
+  const l = byId[id];
+  if (!l) return `<p class="empty">Unknown lineage ${esc(id)}</p>`;
+  const kids = childrenOf(id);
+  const showDiff = store.get("diff", true);
+  const versions = l.versions.map((v, idx) => {
+    const prev = prevOf(l, idx);
+    const promptHtml = prev && showDiff ? diffWords(prev.v.prompt, v.prompt) : esc(v.prompt);
+    const params = Object.entries(v.params).map(([k, val]) => {
+      const changed = prev && JSON.stringify(prev.v.params[k]) !== JSON.stringify(val);
+      return `<span class="${changed ? "changed" : ""}">${esc(k)}: ${esc(Array.isArray(val) ? val.join(", ") : val)}</span>`;
+    }).join("");
+    return `<section class="version" id="${v.id}">
+      <div class="imgs">${v.slots.filter(im => (im.src || !store.get("renderedOnly", false)) && (!store.get("heartOnly", false) || isLoved(im.src)) && !(store.get("hideNope", false) && isNoped(im.src))).map(im => im.src ? `<div class="imgbox">
+          <img src="${esc(th(im.src))}" data-src="${esc(im.src)}" loading="lazy">
+          <span class="cap">${esc(im.label)}</span>
+          ${fbBar(im.src, `${l.id} ${l.title} · ${v.id} · ${im.label}`)}${evoChip(im.src)}${jChip(im.src)}</div>`
+          : `<div class="pending">${esc(im.label)}<br>rendering…</div>`).join("")}</div>
+      <div class="info">
+        <div class="vtitle"><b>${v.id}</b><span>${esc(v.notes.change || "")}</span></div>
+        ${v.notes.why ? `<div><div class="label">Why</div>${esc(v.notes.why)}</div>` : ""}
+        <div class="verdict">${esc(v.notes.verdict || "")}</div>
+        <div><div class="label">Prompt ${prev && showDiff ? `— diff vs <a href="#/l/${prev.ref.split("/")[0]}">${esc(prev.ref)}</a>` : ""}</div>
+          <div class="prompt">${promptHtml}</div></div>
+        <div><div class="label">Params</div><div class="params">${params}</div></div>
+        ${canFB ? `<div><div class="label">Comments on ${v.id}</div>${thread(`version:${l.id}/${v.id}`, `Comment on ${v.id}…`)}</div>` : ""}
+      </div></section>`;
+  }).join("");
+  return `<div class="crumbs">${l.depth ? `<a href="#/e/${l.depth}?hl=${encodeURIComponent("set:" + l.id)}">Evolution ${l.depth}</a> / ${esc(l.id)}` : `<a href="#/">Survey</a> / Round ${l.round}`}
+      ${parentsOf(l).length ? ` · evolved from ${parentsOf(l).map(p => `<a href="${imageHome(p)}">${esc(p.split("/").slice(1, 3).join("/"))}</a>`).join(" × ")}` : ""}</div>
+    <div class="lin-head"><h2><span style="color:var(--muted);font-family:ui-monospace,monospace">${l.id.slice(0, 3)}</span> ${esc(l.title)}</h2>
+      <div class="goal">${esc(l.goal)}</div>
+      <div class="rel">${l.parent ? `<span>Branched from <a href="#/l/${l.parent.split("/")[0]}">${esc(l.parent)}</a></span>` : ""}
+        ${kids.length ? `<span>Branches: ${kids.map(k => `<a href="#/l/${k.id}">${k.id}</a> (from ${esc(k.parent.split("/")[1])})`).join(", ")}</span>` : ""}
+        <a class="treelink" href="#/tree/${esc(l.id)}" title="See where this style came from and what it spawned">🌳 Family tree</a>
+        <button id="difft" class="difftoggle ${showDiff ? "on" : ""}">Show prompt diffs</button>
+        <label class="sizer" title="Image size">▫<input type="range" min="100" max="520" step="10" value="${tileSize()}" data-tile>▣</label></div>
+      <div class="lin-thread">${thread(`lineage:${l.id}`, `Comment on the ${l.title} lineage as a whole…`)}</div></div>
+    ${versions}`;
+}
+
+function layerPage(n, from, hl) {
+  const mode = store.get("ovmode", "grid"), only = store.get("renderedOnly", false);
+  const all = DATA.filter(l => l.depth === n);
+  const prevName = n === 1 ? "the Survey" : `Evolution ${n - 1}`;
+  if (!all.length) return `<p class="empty">Evolution ${n} doesn't exist yet. It appears once an image on ${prevName} is evolved.</p>`;
+  // one evolution set per parent combination; its variants are sibling styles (columns)
+  const setKey = l => parentsOf(l).join(" × ");
+  const sets = [...new Set(all.map(setKey))];
+  if (sortKey() !== "rounds") {  // order whole sets too, by their newest style (sortStyles alone only reorders inside a set)
+    const by = sortKey() === "recent" ? "rendered" : "created";
+    const newest = key => Math.max(0, ...all.filter(l => setKey(l) === key).map(l => l[by] || 0));
+    sets.sort((a, b) => sortKey() === "old" ? newest(a) - newest(b) : newest(b) - newest(a));
+  }
+  const hlSet = hl && hl.startsWith("set:") && byId[hl.slice(4)] ? setKey(byId[hl.slice(4)]) : null;
+  const parentCard = img => {
+    const [, pl, pv] = img.split("/");
+    const plin = byId[pl], pslot = plin?.versions.find(v => v.id === pv)?.slots.find(sl => sl.src && fbKey(sl.src) === img);
+    const up = imageHome(img);
+    return `<div class="evparent1"><a href="${up}" title="Go to this parent image"><img src="../${esc(img)}" loading="lazy"></a>
+      <a href="${up}">↑ ${esc(plin ? plin.title : pl)}<br><span class="sub">${esc(pv)}${pslot ? " · " + esc(pslot.label) : ""}${plin?.depth ? ` · Evolution ${plin.depth}` : " · Survey"}</span></a></div>`;
+  };
+  return `<div class="layer-head"><h2>Evolution ${n}</h2>
+    <div class="sub">${sets.length} evolution set${sets.length > 1 ? "s" : ""}. Each grows from one image (or crossbreeds several) on an earlier layer.
+      Every variant style makes one deliberate change and is shown on all subjects. Evolve any image here to go further out.</div></div>` +
+    toolbar() + sets.map((key, i) => {
+      let ls = all.filter(l => setKey(l) === key);
+      if (sortKey() !== "rounds") ls = sortStyles(ls);
+      const parents = parentsOf(ls[0]);
+      if (only) ls = ls.filter(l => l.versions.some(v => v.images.length));
+      if (store.get("heartOnly", false)) ls = ls.filter(lovedLineage);
+      if (store.get("evolvedOnly", false)) ls = ls.filter(evolvedLineage);
+      if (store.get("hideNope", false)) ls = ls.filter(notAllNoped);
+        ls = ls.filter(matchQ);
+      const isHl = (from && parents.includes(from)) || hlSet === key ||
+        (hl && ls.some(l => l.versions.some(v => v.images.some(im => fbKey(im.src) === hl))));
+      const setTreeHref = `#/tree/${esc(ls[0]?.id || "")}`;
+      const head = `<div class="evhead">${parents.map(parentCard).join(`<span class="cross">×</span>`)}
+          <div><div class="label">Evolution set ${i + 1}${parents.length > 1 ? " · crossbreed" : ""}
+              <a class="treelink" href="${setTreeHref}" title="See this set's family tree">🌳 Family tree</a></div>
+            <div class="sub">${ls.length} variant style${ls.length === 1 ? "" : "s"}: ${ls.map(l => `<a href="#/l/${l.id}">${esc(l.title)}</a>`).join(" · ")}</div></div></div>`;
+      if (mode === "cards") return `<section class="evset ${isHl ? "hl" : ""}">${head}${ls.length ? `<div class="cards">${ls.map(card).join("")}</div>` : ""}</section>`;
+      const strips = !ls.length ? [] : styleGrid(ls, "s" + i, `Evolution ${n} · set ${i + 1}`, hl && !hl.startsWith("set:") ? hl : null,
+        {raw: true, stripClass: isHl ? "hl" : ""});
+      if (!strips.length) return "";
+      const mark = `<div class="evmark evset ${isHl ? "hl" : ""}" title="Evolution set ${i + 1}: ${esc(ls.map(l => l.title).join(" · "))}">
+          <div class="label">Set ${i + 1}${parents.length > 1 ? " · cross" : ""}</div>
+          ${parents.map(p => `<a href="${imageHome(p)}" title="↑ parent: ${esc(p.split("/").slice(1, 3).join("/"))}"><img src="../${esc(p)}" loading="lazy"></a>`).join(`<span class="cross">×</span>`)}
+          <div class="label">↑ parent${parents.length > 1 ? "s" : ""}</div>
+          <a class="treelink evmarktree" href="${setTreeHref}" title="See this set's family tree">🌳</a></div>`;
+      return `<div class="lead">${mark}${strips[0]}</div>` + strips.slice(1).join("");
+    }).join("").replace(/^/, mode === "cards" ? "" : '<div class="strips flow">') + (mode === "cards" ? "" : "</div>");
+}
+
+// every rendered image from every lineage and version, as a flat searchable list
+function allImages() {
+  return DATA.flatMap(l => l.versions.flatMap(v => v.slots.filter(sl => sl.src).map(sl => ({
+    l, v, sl, text: [l.id, l.title, l.goal, ...(l.tags || []), v.id, v.prompt, v.notes.change, v.notes.verdict, v.notes.why,
+      sl.label, sl.subject, SUBJ[sl.subject] || "", SUBJT[sl.subject] || "", (sl.subject || "").split("@")[1] || "",
+      l.depth ? "evolution " + l.depth + " evolved" : "survey round " + l.round].join(" ").toLowerCase(),
+  }))));
+}
+function imagesPage() {
+  const q = Q(), heart = store.get("heartOnly", false), hideN = store.get("hideNope", false);
+  const evo = store.get("evolvedOnly", false), all = allImages();
+  let items = all.filter(it => hasAll(it.text, q) && subjMatch(it.sl.subject)
+    && (!heart || isLoved(it.sl.src)) && !(hideN && isNoped(it.sl.src)) && upFitOk(it.sl.src) && (!evo || (it.l.depth || 0) > 0));
+  const k = sortKey();
+  items.sort(k === "rounds" ? (a, b) => a.l.id.localeCompare(b.l.id) || a.v.id.localeCompare(b.v.id)
+    : k === "old" ? (a, b) => a.sl.ts - b.sl.ts : (a, b) => b.sl.ts - a.sl.ts);
+  $("#qcount").textContent = q ? `${items.length} image${items.length === 1 ? "" : "s"}` : "";
+  const head = `<div class="layer-head"><h2>🖼 Images</h2><div class="sub">All ${all.length} images from the survey and every evolution layer.
+    Search matches style, character, cast, prompt words and my notes. 🌱 Evolved only = evolution images.</div></div>`;
+  if (!items.length) return head + toolbar() + `<p class="empty">No images match.</p>`;
+  return head + toolbar() + `<div class="strips flow imgflow">${items.map(({l, v, sl}) => {
+    const cap = `${l.id} ${l.title} · ${v.id} · ${sl.label}`, where = l.depth ? `Evolution ${l.depth}` : `Round ${l.round}`;
+    const der = derivedOf(sl.src);
+    if (der) return der.map(dv => `<div class="tile cell" title="${esc(`${l.title} · ${v.id} · ${sl.label} · ${dv.tag}`)}">
+      <img src="${esc(th(dv.src))}" data-grid="all" data-src="${esc(dv.src)}" data-cap="${esc(`${where} · ${cap} · ${dv.tag}`)}" loading="lazy">
+      <span class="tlabel">${esc(l.id.slice(0, 3))} · ${esc(dv.tag)}</span></div>`).join("");
+    return `<div class="tile cell" title="${esc(`${l.title} · ${v.id} · ${sl.label} · ${where}`)}">
+      <img src="${esc(th(sl.src))}" data-grid="all" data-src="${esc(sl.src)}" data-cap="${esc(`${where} · ${cap}`)}" loading="lazy">
+      <span class="tlabel">${esc(l.id.slice(0, 3))} · ${esc(subjShort(sl.subject || "f-modern"))}</span>
+      ${fbBar(sl.src, cap)}${evoChip(sl.src)}${vidChip(sl.src)}${jChip(sl.src)}</div>`;
+  }).join("")}</div>`;
+}
+const ENGINE_LABEL = {fasth3: "FastH3", h3turbo: "H3 turbo"};
+function vidText(v) {
+  return [v.title, v.lineage, v.subject_label, v.subject, v.engine, ENGINE_LABEL[v.engine], v.tag, v.prompt, v.note, "depth " + v.depth].join(" ").toLowerCase();
+}
+function videosPage(imgFilter) {
+  const q = Q(), heart = store.get("heartOnly", false), hideN = store.get("hideNope", false);
+  let vs = VIDS.filter(v => (!imgFilter || v.image === imgFilter) && hasAll(vidText(v), q)
+    && subjMatch(v.subject) && (!heart || isLoved(v.src)) && !(hideN && isNoped(v.src)));
+  vs = [...vs].sort((a, b) => sortKey() === "old" ? a.created - b.created : b.created - a.created);
+  $("#qcount").textContent = q ? `${vs.length} clip${vs.length === 1 ? "" : "s"}` : "";
+  const head = `<div class="layer-head"><h2>🎬 Videos</h2><div class="sub">${VIDS.length} clips animated from lab images.
+      Hover to play (muted), click for full size with sound. Search matches style, character, engine and the motion prompt.
+      ${imgFilter ? `Showing clips of one image · <a href="#/videos">show all</a>` : ""}</div></div>`;
+  if (!vs.length) return head + toolbar() + `<p class="empty">No clips match. Mark an image with 🎬 (optionally with a note describing the motion) and send it.</p>`;
+  return head + toolbar() + `<div class="strips flow">${vs.map(v => {
+    const cap = `${v.title} · ${v.subject_label} · ${ENGINE_LABEL[v.engine] || v.engine}`;
+    return `<div class="strip vstrip"><div class="shead"><a href="${v.depth ? `#/e/${v.depth}?hl=${encodeURIComponent(v.image)}` : `#/l/${v.lineage}`}" title="Go to the source image">${esc(v.title)}</a>
+        <span class="sdate">${esc(ENGINE_LABEL[v.engine] || v.engine)}${v.tag ? " · " + esc(v.tag) : ""}${v.render_seconds ? ` · ${Math.round(v.render_seconds)}s` : ""}</span>${revealBtn(v.src)}</div>
+      <div class="tile cell vtile"><video src="${esc(v.src)}" poster="${esc(v.poster)}" muted loop playsinline preload="none"
+          data-vsrc="${esc(v.src)}" data-cap="${esc(cap)}" data-prompt="${esc(v.prompt)}"></video>
+        <span class="tlabel">${esc(subjShort(v.subject))}</span>${fbBar(v.src, cap)}</div>
+      ${v.note ? `<div class="snote" title="${esc(v.note)}">${esc(v.note)}</div>` : ""}</div>`;
+  }).join("")}</div>`;
+}
+function bindVideos(app) {
+  const list = [...app.querySelectorAll("video[data-vsrc]")].map(x => ({src: x.dataset.vsrc, cap: x.dataset.cap, prompt: x.dataset.prompt, video: true}));
+  app.querySelectorAll("video[data-vsrc]").forEach(v => {
+    v.onmouseenter = () => { v.play().catch(() => {}); };
+    v.onmouseleave = () => { v.pause(); };
+    v.onclick = () => openLB(list, list.findIndex(x => x.src === v.dataset.vsrc));
+  });
+}
+
+// a redraw rebuilds the DOM and would cut off a playing audio/video clip: defer it until playback stops
+const mediaPlaying = () => [...document.querySelectorAll("audio, video")].some(m => !m.paused && !m.ended && !m.muted);
+let PENDING_RENDER = false, PENDING_RELOAD = false;
+const typing = () => { const a = document.activeElement; return !!a && /^(TEXTAREA|INPUT)$/.test(a.tagName) && a.type !== "range" && a.type !== "checkbox" && a.id !== "q" && a.id !== "gq" && $("#app").contains(a); };
+function render(keepScroll = false, force = false) {
+  if (!force && (mediaPlaying() || typing())) { PENDING_RENDER = true; return; }
+  keepDrafts($("#app"), () => renderInner(keepScroll));
+}
+["pause", "ended", "focusout"].forEach(ev => document.addEventListener(ev, () => setTimeout(() => {
+  if (mediaPlaying() || typing()) return;
+  if (PENDING_RELOAD) { location.reload(); return; }
+  if (PENDING_RENDER) { PENDING_RENDER = false; const y = window.scrollY; render(true); window.scrollTo(0, y); }
+}, 150), true));
+function renderInner(keepScroll) {
+  const h = location.hash.replace(/^#\/?/, "");
+  const app = $("#app");
+  let lbList = [];
+  layerNav();
+  if (/^j(\/|$)/.test(h)) {
+    const id = h.slice(2).split("?")[0];
+    app.innerHTML = id ? journeyPage(id) : journeysPage();
+    bindGrid(app); if (id) bindJourney(app, id);
+  } else if (h.startsWith("images")) {
+    app.innerHTML = imagesPage();
+    bindGrid(app);
+  } else if (h.startsWith("videos")) {
+    const q = new URLSearchParams(h.split("?")[1] || "");
+    app.innerHTML = videosPage(q.get("img"));
+    bindGrid(app); bindVideos(app);
+  } else if (h.startsWith("e/")) {
+    const [path, qs] = h.slice(2).split("?"); const q = new URLSearchParams(qs || "");
+    app.innerHTML = layerPage(parseInt(path) || 1, q.get("from"), q.get("hl"));
+    bindGrid(app);
+    if (!keepScroll) { const target = app.querySelector(".cell.hl") || app.querySelector(".hl"); if (target) { target.scrollIntoView({block: "center"}); keepScroll = true; } }
+  } else if (h.startsWith("l/")) {
+    const id = h.slice(2); app.innerHTML = lineage(id);
+    const l = byId[id];
+    if (l) lbList = l.versions.flatMap(v => v.images.map(im => ({src: im.src, cap: `${l.id}/${v.id} · ${im.name}`})));
+    app.querySelectorAll(".imgbox img").forEach(img => img.onclick = () =>
+      openLB(lbList, lbList.findIndex(x => x.src === img.dataset.src)));
+    bindGrid(app);
+    const dt = $("#difft"); if (dt) dt.onclick = () => { store.set("diff", !store.get("diff", true)); render(); };
+  } else if (h.startsWith("tree/")) {
+    app.innerHTML = treePage(h.slice(5).split("?")[0]);
+    bindGrid(app); bindTree(app);
+  } else {
+    app.innerHTML = overview();
+    bindGrid(app);
+  }
+  if (!keepScroll) window.scrollTo(0, 0);
+}
+function bindGrid(app) {
+  {
+    app.querySelectorAll("[data-sort]").forEach(sel => sel.onchange = () => { store.set("sort", sel.value); render(); });
+    app.querySelectorAll("[data-tile]").forEach(r => r.oninput = () => {
+      const px = +r.value; applyTile(px); store.set("tile", px); document.body.classList.toggle("compact", px < 150); });
+    app.querySelectorAll("[data-nope]").forEach(b => b.onclick = () => { store.set("hideNope", !store.get("hideNope", false)); render(true); });
+    app.querySelectorAll("[data-clearf]").forEach(b => b.onclick = () => {
+      ["fcast", "fg", "fgenre"].forEach(k => store.set(k, "all")); store.set("q", ""); FILTER_KEYS.forEach(k => store.set(k, fdef(k)));
+      $("#q").value = ""; $("#qcount").textContent = ""; render(true);
+    });
+    app.querySelectorAll("[data-evolved]").forEach(b => b.onclick = () => { store.set("evolvedOnly", !store.get("evolvedOnly", false)); render(true); });
+    app.querySelectorAll("[data-heart]").forEach(b => b.onclick = () => { store.set("heartOnly", !store.get("heartOnly", false)); render(true); });
+    app.querySelectorAll("[data-ronly]").forEach(b => b.onclick = () => { store.set("renderedOnly", !store.get("renderedOnly", false)); render(true); });
+    app.querySelectorAll("[data-fset]").forEach(b => b.onclick = () => { store.set(b.dataset.fset, b.dataset.v); render(true); });
+    app.querySelectorAll("[data-fsel]").forEach(sl => sl.onchange = () => { store.set(sl.dataset.fsel, sl.value); render(true); });
+    app.querySelectorAll("[data-fsel]").forEach(sel => sel.onchange = () => { store.set(sel.dataset.fsel, sel.value); render(true); });
+    bindCastBox(app);
+    app.querySelectorAll("[data-ftoggle]").forEach(cb => cb.onchange = () => { store.set(cb.dataset.ftoggle, cb.checked); fdropOpen = true; render(true); });
+    app.querySelectorAll("[data-unset]").forEach(b => b.onclick = () => {
+      const k = b.dataset.unset; store.set(k, FILTER_KEYS.includes(k) ? fdef(k) : "all"); render(true); });
+    app.querySelectorAll("details.fdrop").forEach(d => d.ontoggle = () => { fdropOpen = d.open; });
+    app.querySelectorAll("[data-mode]").forEach(b => b.onclick = () => { store.set("ovmode", b.dataset.mode); render(); });
+    app.querySelectorAll("[data-go]").forEach(c => c.onclick = () => location.hash = c.dataset.go);
+    app.querySelectorAll("img[data-grid]").forEach(img => img.onclick = () => {
+      const list = [...app.querySelectorAll("img[data-grid]")].map(x => ({src: x.dataset.src, cap: x.dataset.cap}));
+      openLB(list, list.findIndex(x => x.src === img.dataset.src));
+    });
+  }
+}
+// phone menus: ☰ toggles the header, ⚙ Filters toggles every toolbar (injected into each .toolbar as pages render)
+$("#menubtn").onclick = () => { $("header").classList.toggle("open"); syncHdr(); };
+const addTbToggles = () => document.querySelectorAll(".toolbar").forEach(tb => {
+  if (tb.querySelector(".tbtoggle")) return;
+  const b = document.createElement("button"); b.className = "tbtoggle mobonly"; b.textContent = "⚙ Filters";
+  b.onclick = e => { e.preventDefault(); document.body.classList.toggle("tbopen"); syncHdr(); };
+  tb.prepend(b);
+});
+new MutationObserver(addTbToggles).observe($("#app"), {childList: true, subtree: true});
+const syncHdr = () => { const r = document.documentElement.style, g = document.querySelector(".gnav");
+  r.setProperty("--hdr", document.querySelector("header").offsetHeight + "px");
+  if (g) r.setProperty("--gnavh", g.offsetHeight + "px"); };
+syncHdr(); window.addEventListener("resize", syncHdr);
+document.body.classList.toggle("compact", tileSize() < 150);
+{
+  const q = $("#q"); q.value = store.get("q", "");
+  let tmr;
+  q.addEventListener("input", () => { clearTimeout(tmr); tmr = setTimeout(() => { store.set("q", q.value); render(); }, 150); });
+  let gtmr;
+  document.addEventListener("input", e => {
+    if (e.target.id !== "gq") return;
+    clearTimeout(gtmr);
+    gtmr = setTimeout(() => {
+      const v = e.target.value, pos = e.target.selectionStart;
+      store.set("gq", v); render(true, true);
+      const el = $("#gq"); if (el) { el.focus(); try { el.setSelectionRange(pos, pos); } catch {} }
+    }, 150);
+  });
+  q.addEventListener("keydown", e => { if (e.key === "Escape") { q.value = ""; store.set("q", ""); render(); q.blur(); } });
+  document.addEventListener("keydown", e => {
+    if (e.key === "/" && !/INPUT|TEXTAREA/.test(document.activeElement?.tagName || "") && !document.querySelector(".overlay.show")) { e.preventDefault(); q.focus(); q.select(); }
+  });
+}
+document.addEventListener("click", e => {  // clicking anywhere outside an open Filters dropdown closes it
+  document.querySelectorAll("details.fdrop[open]").forEach(d => { if (!d.contains(e.target)) { d.open = false; fdropOpen = false; } });
+  document.querySelectorAll("details.evodd[open]").forEach(d => { if (!d.contains(e.target) || e.target.closest(".evomenu a")) d.open = false; });
+});
+window.addEventListener("hashchange", () => { document.querySelectorAll(".overlay").forEach(o => o.classList.remove("show")); render(); });
+render(); paintPins();
+if (canFB) { fbLoad(); cmLoad(); pinLoad(); qLoad(); blLoad(); jLoad(); setInterval(() => { if (document.hidden) return; fbLoad(); cmLoad(); pinLoad(); qLoad(); blLoad(); jLoad(); }, 3000); }
+else { $("#qbtn").style.display = "none"; $("#cmbtn").style.display = "none"; }
+
+// live updates: when served over http, poll data.json and redraw in place on change
+const live = $("#live");
+if (location.protocol.startsWith("http")) {
+  let last = JSON.stringify(RAW), stamp = "";
+  live.classList.add("on"); live.title = "Auto-updating: new renders appear within a few seconds";
+  setInterval(async () => {
+    if (document.hidden) return;  // no polling in a background tab
+    try {
+      // cheap HEAD first: the 2.4 MB data.json is only downloaded + parsed when it actually changed
+      const h = await fetch("data.json", {method: "HEAD", cache: "no-store"});
+      const st = (h.headers.get("last-modified") || "") + "|" + (h.headers.get("content-length") || "");
+      live.classList.add("on");
+      if (st && st === stamp) return;
+      const txt = JSON.stringify(await (await fetch("data.json", {cache: "no-store"})).json());
+      stamp = st;
+      if (txt === last) return;
+      const next = JSON.parse(txt);
+      if (next.ui !== RAW.ui) { if (mediaPlaying()) PENDING_RELOAD = true; else location.reload(); return; }  // gallery code changed
+      last = txt; setData(next);
+      const y = window.scrollY; render(true); window.scrollTo(0, y);
+    } catch { live.classList.remove("on"); live.title = "Gallery server not reachable"; }
+  }, 4000);
+} else {
+  live.style.opacity = .5;
+  live.title = "Opened as a file, so no live updates. Run tools/serve_gallery.py and use http://127.0.0.1:8765/gallery/";
+}
+</script>
+</body>
+</html>

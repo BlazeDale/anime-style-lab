@@ -1,0 +1,9 @@
+{
+  "title": "Plain 'anime' baseline",
+  "goal": "Baseline: what Qwen 2.1 does with just the word 'anime' and no style guidance.",
+  "parent": null,
+  "round": 1,
+  "tags": [
+    "style-survey"
+  ]
+}

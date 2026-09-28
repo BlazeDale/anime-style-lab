@@ -1,0 +1,9 @@
+{
+  "title": "Chibi / super-deformed",
+  "goal": "Does it handle stylized proportions (big head, tiny body) cleanly?",
+  "parent": null,
+  "round": 1,
+  "tags": [
+    "style-survey"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "f-modern": {
+    "label": "Female · modern",
+    "text": "a high school girl with long silver hair and amber eyes, wearing a navy sailor uniform with a red neckerchief, standing on a school rooftop at sunset, one hand resting on the chain-link fence, looking back over her shoulder with a soft smile, wind lifting her hair, city skyline and glowing orange clouds behind her"
+  },
+  "m-modern": {
+    "label": "Male · modern",
+    "text": "a high school boy with messy black hair and sharp green eyes, wearing an unbuttoned black gakuran uniform over a white shirt, standing on a school rooftop at sunset with his hands in his pockets, leaning back against the chain-link fence, confident half-smile, wind tousling his hair, city skyline and glowing orange clouds behind him"
+  },
+  "f-scifi": {
+    "label": "Female · sci-fi space",
+    "text": "a young woman starship pilot with short teal hair and violet eyes, wearing a fitted white and orange flight suit with mission patches, holding her helmet under one arm, standing on the bridge of a starship in front of a huge panoramic window showing a ringed gas giant and a colorful nebula, holographic consoles glowing around her, calm determined expression"
+  },
+  "m-scifi": {
+    "label": "Male · sci-fi space",
+    "text": "a rugged male bounty hunter with a scar across his cheek and slicked-back dark hair, wearing a long dark coat over light armor plating, holding a heavy blaster pistol at his side, standing on a spaceport landing pad at night, starships lifting off overhead, neon signs and floodlights cutting through the haze, wary sidelong glance"
+  },
+  "f-fantasy": {
+    "label": "Female · D&D fantasy",
+    "text": "a young elf ranger woman with long braided auburn hair, pointed ears and green eyes, wearing leather armor and a hooded green cloak, holding a longbow with an arrow nocked, standing among ancient moss-covered stone ruins in a deep forest, shafts of golden light falling through the canopy, alert focused expression"
+  },
+  "m-fantasy": {
+    "label": "Male · D&D fantasy",
+    "text": "a young male paladin with short blond hair and blue eyes, wearing battered steel plate armor and a blue tabard with a silver sun emblem, both hands resting on the pommel of a greatsword planted point-down in front of him, standing in a torchlit stone dungeon hall with pillars and drifting dust, resolute expression"
+  }
+}

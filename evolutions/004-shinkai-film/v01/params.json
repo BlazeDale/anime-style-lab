@@ -1,0 +1,13 @@
+{
+  "seeds": [
+    1001,
+    2002
+  ],
+  "steps": 25,
+  "cfg": 1,
+  "aspect_ratio": "3:4 (Portrait Standard)",
+  "megapixels": 1,
+  "model": "qwen_image_2.1_int8_convrot.safetensors",
+  "sampler": "euler",
+  "scheduler": "simple"
+}

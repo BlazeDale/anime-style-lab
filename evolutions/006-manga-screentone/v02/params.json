@@ -1,0 +1,20 @@
+{
+  "seeds": [
+    1001
+  ],
+  "steps": 25,
+  "cfg": 1,
+  "aspect_ratio": "3:4 (Portrait Standard)",
+  "megapixels": 1,
+  "model": "qwen_image_2.1_int8_convrot.safetensors",
+  "sampler": "euler",
+  "scheduler": "simple",
+  "subjects": [
+    "f-modern",
+    "m-modern",
+    "f-scifi",
+    "m-scifi",
+    "f-fantasy",
+    "m-fantasy"
+  ]
+}

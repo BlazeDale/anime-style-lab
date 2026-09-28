@@ -1,0 +1,5 @@
+{
+  "change": "Subject becomes a {subject} slot filled from subjects.json (6 subjects, seed 1001); scene-specific style words neutralized: 'Hyper-detailed luminous sky with towering clouds' → 'Hyper-detailed luminous atmosphere'; 'intense golden-hour rim light on her hair' → 'intense rim light on the hair'",
+  "why": "User wants every style tested on 1 male + 1 female, each in modern / sci-fi space / D&D fantasy (1 seed each).",
+  "verdict": ""
+}
