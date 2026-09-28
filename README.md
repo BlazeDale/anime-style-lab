@@ -24,6 +24,9 @@ feedback loop, how to create a new style version or lineage, casting rules, vide
 
 ## Requirements
 
+Tested on **Windows** with an NVIDIA GPU. The tools are written to also run on macOS/Linux (they find `.venv/bin/`
+there), but that hasn't been tested yet: issues and fixes welcome.
+
 - A recent **ComfyUI** install with the Qwen Image 2.1 custom nodes (`TextEncodeQwenImage21`,
   `ResolutionSelector`) available. These ship with a sufficiently recent ComfyUI frontend/core; if they're
   missing, update ComfyUI.
