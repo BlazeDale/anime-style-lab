@@ -18,6 +18,7 @@ Usage:
 import importlib
 import json
 import random
+import re
 import sys
 import time
 import urllib.parse
@@ -40,8 +41,11 @@ CANDID = ("A candid in-world moment, like a still from the film: the character i
           "lived-in environment filling the whole frame, with depth, atmosphere and small storytelling details. "
           "Keep the character's face, hair, outfit and colors exactly as in the reference image, but ONLY their appearance: "
           "the pose, action, hands, props and place come from this description, not from the reference image.")
-# (2026-09-25 Paperwork ch01: the clerk's source portrait shows him pinning a poster, and 3 of 6 scenes copied that pose,
-# even the rooftop standoff that asked for raised hands)
+# (the reference image leaks its POSE too: if the source portrait shows a specific action, scenes copy it; CANDID says the
+# reference is appearance only, but still check every chapter)
+# scenes with a director's `camera` field: the camera leads the prompt and CANDID drops its fixed "three-quarter view,
+# profile or from behind", which fights every framing that isn't one of those three
+CANDID_DIRECTED = CANDID.replace("seen in three-quarter view, profile or from behind, ", "")
 
 
 def load(chdir: Path):
@@ -62,10 +66,19 @@ def scene_refs(j, sc):
     Only same-style library characters get a `ref` (a portrait in another style would drag that style in); cross-style
     cameos stay text-only and are redrawn in the journey's style."""
     # scene `refs` override the lead's references (e.g. an in-cockpit scene instead of the standing source portrait,
-    # whose pose kept coming back: Death Race ch03 s3-s5 showed Gus holding his helmet instead of piloting)
-    # scene `noref`: no lead reference at all, for wide shots where the lead is tiny (Skyhawk ch01 s5/s6: with the
-    # face ref present the model pasted a big portrait of Jo over the dogfight)
-    refs = [] if sc.get("noref") else [(r, j["name"]) for r in (sc.get("refs") or j.get("refs") or [j["source"]])]
+    # whose pose can keep coming back)
+    # scene `noref`: no lead reference at all, for wide shots where the lead is tiny (with the face ref present the
+    # model can paste a big portrait of the lead over the action)
+    # journey `ref_for` {png: cast member}: a ref that is NOT the lead's face (e.g. a cropped egg) goes only to scenes whose
+    # `with` names that member (noref scenes too), and is named in the prompt
+    rf = j.get("ref_for") or {}
+    lead_all = sc.get("refs") or j.get("refs") or [j["source"]]
+    lead = [r for r in lead_all if rf.get(r, j["name"]) == j["name"] or sc.get("refs")] or [j["source"]]
+    refs = [] if sc.get("noref") else [(r, j["name"]) for r in lead]
+    for r in (j.get("refs") or []):
+        who = rf.get(r)
+        if who and who != j["name"] and who in sc.get("with", []):
+            refs.append((r, who))
     for n in sc.get("with", []):
         v = j.get("cast", {}).get(n)
         if isinstance(v, dict) and v.get("ref"):
@@ -73,24 +86,47 @@ def scene_refs(j, sc):
     return refs
 
 
+NOFIG_RE = re.compile(r"NO (person|people|face|faces|woman|man|human|figure)", re.I)
+
+
+def is_nofigure(sc):
+    """an insert / empty landscape with nobody in frame: explicit `nofigure`, or a noref scene whose camera says NO person/face.
+    Without this, inserts (hands, an egg, a shackle) grow a stranger's face, because every prompt would still end with
+    CANDID ('the character is absorbed ... keep the character's face, hair ...') and '<lead> is the only person in the scene'."""
+    return bool(sc.get("nofigure")) or (bool(sc.get("noref")) and bool(NOFIG_RE.search(sc.get("camera", ""))))
+
+
 def scene_prompt(j, sc):
     """journey `cast` {name: look} + scene `with` [names]: only the people actually in the scene are described
-    (2026-09-25 Choir ch01: with every NPC + the ship's lab in the shared world text, a grey-haired man stood in for the
-    female captain in two scenes and lab mugs/sticky notes leaked into the alien ship). Journeys without a cast keep
-    the old behavior (everything in `world`)."""
-    # noref wide shots: the scene is the subject; the lead is only mentioned inside the scene prompt (Skyhawk ch01:
-    # with the character sheet leading the prompt, Jo was still drawn big in the foreground even without a reference)
+    (with every NPC and every location in the shared world text, characters blend together and props leak between
+    places). Journeys without a cast keep the old behavior (everything in `world`)."""
+    # noref wide shots: the scene is the subject; the lead is only mentioned inside the scene prompt (with the
+    # character sheet leading the prompt, the lead is still drawn big in the foreground even without a reference)
     subject = sc["prompt"] if sc.get("noref") else f"{j['name']}, {j['character']}, {sc['prompt']}"
     style = j["style"]
     body = style.replace("{subject}", subject) if "{subject}" in style else f"{style} {subject}."
+    cam = sc.get("camera", "").strip().rstrip(".")
+    if cam:  # the frame first: shot size, angle, lens, where each figure sits, what is cropped
+        body = f"Camera: {cam}. {body}"
+    candid = CANDID_DIRECTED if cam else CANDID
+    if is_nofigure(sc):  # no character to be candid about: say so, and describe only non-human cast (a beast, an egg)
+        idx = {w: i for i, (_, w) in enumerate(scene_refs(j, sc), 1) if w != j["name"]}
+        things = [f"{n} is {look(j.get('cast', {})[n])}" + (f" (reference image {idx[n]})" if n in idx else "")
+                  for n in sc.get("with", []) if n in j.get("cast", {})]
+        return (f"{body} {'In the frame: ' + '; '.join(things) + '. ' if things else ''}"
+                f"There are no people in this image: no faces, no heads, no bodies except what the camera line names. "
+                f"Setting: {sc.get('place') or j.get('world', '')}")
     if "cast" not in j:
-        return f"{body} World: {j['world']} {CANDID}"
+        return f"{body} World: {j['world']} {candid}"
     people = [f"{n} is {look(j['cast'][n])}" for n in sc.get("with", [])]
     who = ("Also in the scene: " + "; ".join(people) + ".") if people else f"{j['name']} is the only person in the scene."
     refs = scene_refs(j, sc)
-    if len(refs) > len(sc.get("refs") or j.get("refs") or [j["source"]]):  # cameo portraits: say which reference image is whom
-        who += " " + " ".join(f"Reference image {i} shows {w}." for i, (_, w) in enumerate(refs, 1))
-    return f"{body} {who} Setting: {sc.get('place') or j['world']} {CANDID}"
+    notes = j.get("ref_notes") or {}
+    if any(w != j["name"] or notes.get(r) for r, w in refs):  # cameos / targeted / noted refs: say which image is whom
+        who += " " + " ".join(
+            f"Reference image {i} shows {w}: {notes[r]}." if w == j["name"] and notes.get(r)
+            else f"Reference image {i} shows {notes[r] if notes.get(r) else w}." for i, (r, w) in enumerate(refs, 1))
+    return f"{body} {who} Setting: {sc.get('place') or j['world']} {candid}"
 
 
 def upload(png: Path):

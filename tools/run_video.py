@@ -222,7 +222,8 @@ def clip(a):
             raise SystemExit("this character already did that action in an earlier clip: pick a new action (or --allow-repeat)")
     if a.motion:
         sys.path.insert(0, str(Path(__file__).parent)); import video_prompt
-        a.prompt = video_prompt.build(a.image, a.motion, a.camera, a.shot, a.sound, a.music, a.line, a.voice, a.vocal, a.face, a.sfx)
+        a.prompt = video_prompt.build(a.image, a.motion, a.camera, a.shot, a.sound, a.music, a.line, a.voice, a.vocal, a.face, a.sfx,
+                                      getattr(a, "speaker", ""), getattr(a, "soundscape", ""))
     run(a.image, a.engine, a.prompt, a.seconds, a.seed, a.out, tag=a.tag, note=a.note)
 
 
@@ -237,6 +238,8 @@ if __name__ == "__main__":
     ap.add_argument("--line", default="", help="short spoken NPC line"); ap.add_argument("--voice", default="")
     ap.add_argument("--vocal", default="", help="expressed non-word sound: sigh, giggle, gasp"); ap.add_argument("--face", default="", help="micro-expressions")
     ap.add_argument("--sfx", default="", help="action sounds in order, each tied to a visible action (play before the line)")
+    ap.add_argument("--soundscape", default="", help="silent clips: 'Only the sounds of <this> can be heard' (e.g. battle, a burning city)")
+    ap.add_argument("--speaker", default="", help="who says --line in a multi-character frame (journeys): no look to camera, others silent")
     ap.add_argument("--tag", default=""); ap.add_argument("--note", default="")
     ap.add_argument("--allow-repeat", action="store_true", help="skip the check that a re-animated character gets a new line + action")
     ap.add_argument("--seconds", type=float, default=5)

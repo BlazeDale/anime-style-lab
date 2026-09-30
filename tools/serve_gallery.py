@@ -23,11 +23,16 @@ Also the feedback API behind the gallery's buttons:
                                  saved to <dir>/_upscaled/<name>.png; same one-at-a-time worker as reroll
   POST /api/refit             {src, aspect} -> ⬚ re-render the image's prompt at a new aspect ratio with the image as
                                  reference (tools/refit.py), saved to <dir>/_resized/<name>__<w>x<h>.png
+  POST /api/fix_area          {src, box:[x0,y0,x1,y1] fractions, text} -> ✎ inpaint only that box (tools/fix_area.py); same one-at-a-time worker
   POST /api/reveal            {src} -> opens Windows Explorer with that video clip selected (existing .mp4 under evolutions/ or journeys/)
   GET  /api/journeys          -> {requests: [...]}: 🧭 journey requests (feedback/journeys.json)
   POST /api/journeys          {op: start, src, cap, text}  -> "🧭 explore their world" on an image: the coding agent writes chapter 1
                               {op: direct, journey, text}  -> the user directs the journey's next chapter
                               {op: ref, journey, src}      -> ⚓ toggle a scene as an extra character reference (journey.json refs)
+                              {op: ref_crop, journey, src, crop:[x0,y0,x1,y1]|null} -> ✂ crop a reference to head and shoulders (journey.json ref_crop)
+                              {op: ref_note, journey, src, note, for} -> what a reference shows + which character it is for (ref_notes / ref_for)
+                              {op: animate, journey, chapter, text} -> 🎬 "Animate chapter": the coding agent writes per-scene motion
+                                 and runs tools/animate_chapter.py (ONE run_video --batch)
                               each start/direct = a "journey" event in log.jsonl; answer with feedback.py jreply
   GET  /api/blur              -> {img_path: true}: images the user blurred (feedback/blur.json)
   POST /api/blur              {src} -> toggle the blur on that image (stays until turned off)
@@ -137,8 +142,11 @@ def reroll_worker():
             key = REROLLS[0]
             up = key[len("upscale:"):] if key.startswith("upscale:") else None
             fit = key[len("refit:"):].split("|", 1) if key.startswith("refit:") else None
+            fix = key[len("fixarea:"):].split("|", 2) if key.startswith("fixarea:") else None  # box@mtime|src|text, see /api/fix_area
             cmd = ([PY, str(ROOT / "tools" / "hires_card.py"), up, upscaled_path(up), "--size", "2048", "--denoise", "0.45", "--detail"] if up else
                    [PY, str(ROOT / "tools" / "refit.py"), fit[1], fit[0]] if fit else
+                   [PY, str(ROOT / "tools" / "fix_area.py"), fix[1], *fix[0].split("@")[0].split(","), fix[2]]
+                   + (["--if-mtime", fix[0].split("@")[1]] if "@" in fix[0] else []) if fix else
                    [PY, str(ROOT / "tools" / "run_journey.py"), "--reroll", key] if key.startswith("journeys/") else
                    [PY, str(ROOT / "tools" / "run_version.py"), "--reroll", key] + (["--fix"] if wants_fix(key) else []))
             PIPE.mkdir(parents=True, exist_ok=True)
@@ -242,7 +250,7 @@ def queue_view():
     waiting = REROLLS[1:]  # REROLLS[0] is already running as its own pipeline job
     if waiting:
         jobs.append({"pid": 0, "kind": "reroll-queue", "started": now,
-                     "items": [{"kind": "image", "out": k, "status": "queued", "label": "🎲 " + k.split("/", 1)[1].replace("_seed1001", "")} for k in waiting]})
+                     "items": [{"kind": "image", "out": k, "status": "queued", "label": ("✎ " + k.split("|")[1].split("/", 1)[1] if k.startswith("fixarea:") else "🎲 " + k.split("/", 1)[1]).replace("_seed1001", "")} for k in waiting]})
     # averages from GPU time only (gsecs); submit-to-done "secs" include waiting in a shared queue
     done = [it for j in jobs for it in j["items"] if it["status"] == "done" and it.get("gsecs")]
     avg = {k: round(sum(x) / len(x)) if (x := [it["gsecs"] for it in done if it["kind"] == k]) else d
@@ -282,6 +290,16 @@ def is_img(key):
 def jdir(journey):
     d = (ROOT / "journeys" / str(journey)).resolve()
     return d if d.parent == (ROOT / "journeys") and (d / "journey.json").exists() else None
+
+
+def valid_crop(c):
+    """[x0,y0,x1,y1] fractions in [0,1] with at least 2% each way -> rounded list, else None (also None for null)."""
+    if not isinstance(c, (list, tuple)) or len(c) != 4 or not all(isinstance(v, (int, float)) and not isinstance(v, bool) for v in c):
+        return None
+    x0, y0, x1, y1 = (float(v) for v in c)
+    if not all(0 <= v <= 1 for v in (x0, y0, x1, y1)) or x1 <= x0 + 0.02 or y1 <= y0 + 0.02:
+        return None
+    return [round(v, 4) for v in (x0, y0, x1, y1)]
 
 
 MEDIA_EXT = (".png", ".jpg", ".jpeg", ".webp", ".mp4", ".flac", ".wav", ".mp3")
@@ -417,6 +435,26 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 REROLL_WAKE.set()
                 log({"event": "refit", "img": key, "aspect": aspect, "ts": ts})
             return self.send_json({"ok": True, "position": REROLLS.index(k)})
+        if self.path == "/api/fix_area":
+            # ✎ fix area: inpaint a user-drawn box only (tools/fix_area.py); same one-at-a-time worker as rerolls
+            key, text, box = norm(str(body.get("src", ""))), str(body.get("text", "")).strip().replace("|", "/"), body.get("box")
+            f = (ROOT / key).resolve()
+            ok_evo = f.is_relative_to(ROOT / "evolutions") and f.parent.name.startswith("v")
+            ok_jrn = f.is_relative_to(ROOT / "journeys") and f.parent.name.startswith("ch") and f.stem.startswith("s")
+            try:
+                b = [float(v) for v in box]
+                good = len(b) == 4 and all(0 <= v <= 1 for v in b) and b[2] - b[0] >= 0.02 and b[3] - b[1] >= 0.02
+            except (TypeError, ValueError):
+                good = False
+            if not ((ok_evo or ok_jrn) and f.suffix == ".png" and f.is_file() and good and 0 < len(text) <= 300):
+                return self.send_json({"error": "bad request"}, 400)
+            # "@mtime": the picture version the box was drawn on (fix_area.py --if-mtime skips it if a reroll replaced the file meanwhile)
+            k = "fixarea:" + ",".join(f"{v:.4f}" for v in b) + f"@{f.stat().st_mtime:.3f}" + "|" + key + "|" + text
+            if k not in REROLLS:
+                REROLLS.append(k)
+                REROLL_WAKE.set()
+                log({"event": "fix_area", "img": key, "box": b, "text": text, "ts": ts})
+            return self.send_json({"ok": True, "position": REROLLS.index(k)})
         if self.path == "/api/reveal":
             f = (ROOT / norm(str(body.get("src", "")))).resolve()
             if not ((f.is_relative_to(ROOT / "evolutions") or f.is_relative_to(ROOT / "journeys")) and f.suffix == ".mp4" and f.is_file()):
@@ -443,9 +481,70 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                     refs = j.get("refs") or [j["source"]]
                     refs = [r for r in refs if r != key] if key in refs else refs + [key]
                     j["refs"] = refs or [j["source"]]  # never empty: the source portrait is the fallback identity
+                    if key not in j["refs"] and isinstance(j.get("ref_crop"), dict):
+                        j["ref_crop"].pop(key, None)  # un-anchored: its crop goes too
+                        if not j["ref_crop"]:
+                            del j["ref_crop"]
+                    for fld in ("ref_notes", "ref_for"):  # its note + target go too
+                        if key not in j["refs"] and isinstance(j.get(fld), dict):
+                            j[fld].pop(key, None)
+                            if not j[fld]:
+                                del j[fld]
                     (d / "journey.json").write_text(json.dumps(j, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
                     log({"event": "journey-ref", "journey": d.name, "refs": j["refs"], "ts": ts})
-                    return self.send_json({"requests": reqs, "refs": j["refs"]})
+                    return self.send_json({"requests": reqs, "refs": j["refs"], "ref_crop": j.get("ref_crop", {}),
+                                           "ref_notes": j.get("ref_notes", {}), "ref_for": j.get("ref_for", {})})
+                if op == "ref_crop":  # ✂ click-drag crop of a reference: fractions of width/height, or null to clear
+                    d, key = jdir(body.get("journey")), norm(str(body.get("src", "")))
+                    if not d:
+                        return self.send_json({"error": "bad request"}, 400)
+                    j = json.loads((d / "journey.json").read_text(encoding="utf-8"))
+                    if key not in (j.get("refs") or [j["source"]]):
+                        return self.send_json({"error": "not a reference of this journey"}, 400)
+                    crop = valid_crop(body.get("crop"))
+                    if body.get("crop") is not None and crop is None:
+                        return self.send_json({"error": "bad crop"}, 400)
+                    rc = j.get("ref_crop") if isinstance(j.get("ref_crop"), dict) else {}
+                    if crop:
+                        rc[key] = crop
+                    else:
+                        rc.pop(key, None)
+                    if rc:
+                        j["ref_crop"] = rc
+                    else:
+                        j.pop("ref_crop", None)
+                    (d / "journey.json").write_text(json.dumps(j, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+                    log({"event": "journey-ref-crop", "journey": d.name, "src": key, "crop": crop, "ts": ts})
+                    return self.send_json({"requests": reqs, "refs": j.get("refs") or [j["source"]], "ref_crop": rc})
+                if op == "ref_note":  # what an anchored reference IS + which character it is for (default: the lead)
+                    d, key = jdir(body.get("journey")), norm(str(body.get("src", "")))
+                    if not d:
+                        return self.send_json({"error": "bad request"}, 400)
+                    j = json.loads((d / "journey.json").read_text(encoding="utf-8"))
+                    if key not in (j.get("refs") or [j["source"]]):
+                        return self.send_json({"error": "not a reference of this journey"}, 400)
+                    note, who = str(body.get("note", "")).strip()[:300], str(body.get("for", "")).strip() or j["name"]
+                    if who != j["name"] and who not in (j.get("cast") or {}):
+                        return self.send_json({"error": "unknown character"}, 400)
+                    notes = j.get("ref_notes") if isinstance(j.get("ref_notes"), dict) else {}
+                    rf = j.get("ref_for") if isinstance(j.get("ref_for"), dict) else {}
+                    if note:
+                        notes[key] = note
+                    else:
+                        notes.pop(key, None)
+                    if who != j["name"]:
+                        rf[key] = who
+                    else:
+                        rf.pop(key, None)  # the lead is the default
+                    for fld, val in (("ref_notes", notes), ("ref_for", rf)):
+                        if val:
+                            j[fld] = val
+                        else:
+                            j.pop(fld, None)
+                    (d / "journey.json").write_text(json.dumps(j, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+                    log({"event": "journey-ref-note", "journey": d.name, "src": key, "note": note, "for": who, "ts": ts})
+                    return self.send_json({"requests": reqs, "refs": j.get("refs") or [j["source"]], "ref_crop": j.get("ref_crop", {}),
+                                           "ref_notes": notes, "ref_for": rf})
                 if op == "start":
                     key = norm(str(body.get("src", "")))
                     if not is_img(key) or not key.endswith(".png"):
@@ -456,6 +555,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                     if not d or not text:
                         return self.send_json({"error": "bad request"}, 400)
                     r = {"kind": "direct", "journey": d.name}
+                elif op == "animate":  # 🎬 Animate chapter: the coding agent writes per-scene motion and runs one run_video --batch
+                    d, ch = jdir(body.get("journey")), str(body.get("chapter", ""))
+                    if not d or not re.fullmatch(r"ch\d\d", ch) or not (d / ch / "chapter.json").is_file():
+                        return self.send_json({"error": "bad request"}, 400)
+                    r = {"kind": "animate", "journey": d.name, "chapter": ch}
                 else:
                     return self.send_json({"error": "bad request"}, 400)
                 r = {"id": f"j{len(reqs) + 1}", **r, "text": text, "ts": ts, "status": "sent"}

@@ -14,12 +14,18 @@ import sys
 import time
 from pathlib import Path
 
+# always emit UTF-8: the 👥 picker's note ("👥 types: ...") and emoji crash print() on a cp1252 Windows console
+try:
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+except Exception:
+    pass
+
 ROOT = Path(__file__).resolve().parent.parent
 LOG = ROOT / "feedback" / "log.jsonl"
 OFFSET = ROOT / "feedback" / "pipeline" / "watch.offset"  # byte offset the last watch had read up to
 
 # events the gallery server handles by itself: shown, but flagged so nobody starts duplicate work
-INFO_ONLY = {"reroll", "upscale", "refit", "style_mark", "blur"}
+INFO_ONLY = {"reroll", "upscale", "refit", "style_mark", "blur", "fix_area", "journey-ref", "journey-ref-crop"}
 
 
 def fmt(line):

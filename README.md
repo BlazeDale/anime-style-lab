@@ -111,6 +111,21 @@ Runs a battery of logic checks against the built gallery page using a stub DOM. 
 count, not just "no FAIL lines" — a JS syntax error crashes the run with zero output, which can look green if you
 only grep for FAIL.
 
+Run the Python tool tests (no ComfyUI needed, they use temp dirs):
+
+```
+python tools/test_labkit.py
+python tools/test_journey_tools.py
+```
+
+## More features
+
+- **👥 more characters**: pick types (or write your own) and get a new cast in the same style (`tools/new_cast.py`).
+- **✎ Fix area**: draw a box on an image, say what should be there, and only that area is repainted.
+- **Journeys**: a ✂ crop editor and per-reference notes, no-person shots, scene reshoots (`tools/scene_fix.py`), a ▶ reel that
+  prefers your ❤ clips, clip comments in place, and 🎬 Animate chapter (`tools/animate_chapter.py`).
+- **Mobile lightbox**: swipe up / down for the details panel.
+
 ## Layout
 
 ```

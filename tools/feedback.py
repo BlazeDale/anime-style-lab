@@ -6,7 +6,7 @@
   python tools/feedback.py creply <target> "<text>"     reply in a comment thread (target e.g. general, round:2)
   python tools/feedback.py sets                         submitted 📌 sets (evolve = 1 image, cross = 2+) still waiting
   python tools/feedback.py sreply <set-id> "<text>"     marks a set done; the reply also shows on each of its images
-  python tools/feedback.py journeys                     🧭 journey requests still waiting (start = new journey, direct = next chapter)
+  python tools/feedback.py journeys                     🧭 journey requests still waiting (start = new journey, direct = next chapter, animate = reel of a chapter)
   python tools/feedback.py jreply <req-id> "<text>"     marks a journey request done; the reply shows on the journey page
   python tools/feedback.py inbox                        unhandled marks + open threads (run by the prompt hooks)
 """
@@ -86,7 +86,7 @@ def main():
         print(f"GALLERY INBOX: {len(open_j)} 🧭 journey request(s), {len(open_s)} 📌 set(s), {len(marks)} sent mark(s) and {len(open_c)} comment thread(s) "
               "are waiting on you. Act on them (see CLAUDE.md 'User feedback' / 'Journeys'), then reply with tools/feedback.py reply / creply / sreply / jreply.")
         for x in open_j:
-            print(f"  journey {x['id']} {x['kind']}: {x.get('image') or x.get('journey')}" + (f"  text: {expand_refs(x['text'])}" if x["text"] else ""))
+            print(f"  journey {x['id']} {x['kind']}: {x.get('image') or x.get('journey')}" + (f" {x['chapter']}" if x.get("chapter") else "") + (f"  text: {expand_refs(x['text'])}" if x["text"] else ""))
         for x in open_s:
             print(f"  set {x['id']} {x['kind']} ({x.get('count', 3)} variations): {' × '.join(x['images'])}" + (f"  directions: {expand_refs(x['directions'])}" if x["directions"] else ""))
         for k, v in marks:
@@ -118,7 +118,7 @@ def main():
         if cmd == "journeys":
             for x in reqs:
                 if x["status"] == "sent":
-                    print(f"{x['id']} {x['kind']} {x['ts']}  {x.get('image') or x.get('journey')}" + (f"\n  text: {expand_refs(x['text'])}" if x["text"] else ""))
+                    print(f"{x['id']} {x['kind']} {x['ts']}  {x.get('image') or x.get('journey')}" + (f" {x['chapter']}" if x.get("chapter") else "") + (f"\n  text: {expand_refs(x['text'])}" if x["text"] else ""))
             return
         x = next(x for x in reqs if x["id"] == sys.argv[2])
         x.update(status="done", reply=sys.argv[3], replied=time.strftime("%Y-%m-%d %H:%M:%S"))

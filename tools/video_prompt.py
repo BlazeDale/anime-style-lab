@@ -33,7 +33,15 @@ def image_context(image):
         j = json.loads((ldir / "journey.json").read_text(encoding="utf-8"))
         ch = json.loads((vdir / "chapter.json").read_text(encoding="utf-8"))
         sc = next(s for s in ch["scenes"] if s["id"] == p.stem)
-        return f"journey:{ldir.name}", f"{j['name']}, {j['character']}, {sc['prompt']}", j.get("title", ldir.name), j["style"]
+        cast = j.get("cast", {})
+        others = "; ".join(f"{n} is {c['look'] if isinstance(c, dict) else c}" for n, c in cast.items() if n in sc.get("with", []))
+        # a noref scene describes the scene itself: giving the lead's full sheet to a scene she isn't in turns the
+        # scene's other characters into the lead. The lead is only named if the scene prompt names her.
+        if sc.get("noref"):
+            subject = f"the scene, {sc['prompt']}"
+        else:
+            subject = f"{j['name']}, {j['character']}, {sc['prompt']}"
+        return f"journey:{ldir.name}", subject + (f". In the scene: {others}" if others else ""), j.get("title", ldir.name), j["style"]
     subjects = json.loads((ROOT / "subjects.json").read_text(encoding="utf-8"))
     key = p.stem.split("_seed")[0] if not p.stem.startswith("seed") else "f-modern"
     lineage = json.loads((ldir / "lineage.json").read_text(encoding="utf-8"))
@@ -80,7 +88,8 @@ def is_menacing(key):
     return bool(MENACE_LABEL.search((subjects.get(key) or {}).get("label", "")))
 
 
-def build(image, motion, camera="the camera slowly pushes in", shots=None, sound="", music="", line="", voice="", vocal="", face="", sfx=""):
+def build(image, motion, camera="the camera slowly pushes in", shots=None, sound="", music="", line="", voice="", vocal="", face="", sfx="",
+          speaker="", soundscape=""):
     # sfx: action sounds IN ORDER, each tied to a visible action ("the bolt clacks, a sharp crack of the shot"); they play before the line
     # vocal: an expressed, non-word sound ("a short amused giggle", "a weary sigh"); face: micro-expressions
     # line: one short spoken NPC-style bark (4-8 words fits 5 s); voice: e.g. a clear, cocky young woman's voice
@@ -91,8 +100,10 @@ def build(image, motion, camera="the camera slowly pushes in", shots=None, sound
     lines = [
         f"{medium[0].upper() + medium[1:]} in the style of {title}. {who[0].upper() + who[1:]} from <Picture 1> in their original scene: {subject}. "
         f"Art style: {lock}. The environment is constant throughout."
-        # 2026-09-26: fasth3 burned the Warden's spoken line into the frame as a subtitle
-        " No subtitles, captions or on-screen text: spoken words are heard only."
+        # fasth3 can burn a spoken line into the frame as a subtitle, so say so explicitly
+        + (" No subtitles, captions or on-screen text: spoken words are heard only." if line
+           # with no line, "spoken words are heard" invites made-up speech
+           else " No subtitles, captions or on-screen text.")
     ]
     menace = is_menacing(key)
     if menace:
@@ -107,25 +118,38 @@ def build(image, motion, camera="the camera slowly pushes in", shots=None, sound
         motion = f"{motion.rstrip('. ')}, and {pron} lets out {vocal.rstrip('. ')} without saying any words"
         sound = f"{vocal.rstrip('. ')} from {voice or 'the character'}, no words" + (f", over {sound}" if sound else "")
         music = ""
-    if line:  # the character speaks: put it in the action and lead the audio with it; no music over dialogue
+    if line and speaker:  # multi-character scene (journeys): name who talks, no look to camera, nobody else speaks
+        # "they ... says" in a crowded frame gives the line to the wrong person
+        motion = f'{motion.rstrip(". ")}, then {speaker} says: "{line}"; only {speaker} speaks, everyone else stays silent'
+        voice = voice or "a clear voice"
+        sound = (f"{sfx.rstrip('. ')}, then " if sfx else "") + f'{voice} of {speaker} saying "{line}", lip-synced to {speaker} only'             + (f", over {sound}" if sound else "")
+        music = ""
+    elif line:  # the character speaks: put it in the action and lead the audio with it; no music over dialogue
         lead = f", {pron} lets out {vocal.rstrip('. ')}," if vocal else ","
         motion = f'{motion.rstrip(". ")}{lead} then {pron} looks at the camera and says: "{line}"'
         voice = voice or ("a clear young woman's voice" if pron == "she" else "a clear man's voice" if pron == "he" else "a clear voice")
         sound = (f"{sfx.rstrip('. ')}, then " if sfx else "") + (f"{vocal.rstrip('. ')} then " if vocal else "") \
             + f'{voice} saying "{line}", lip-synced' + (f", over {sound}" if sound else "")
         music = ""
+    elif not vocal:  # no line: H3 invents gibberish speech. Describing the people as stoic and wordless works better
+        # than mentioning speech at all ("no speech, no voices" made it worse)
+        motion = f"{motion.rstrip('. ')}; every figure is stoic and wordless, lips pressed firmly together, faces still as masks"
     if sfx and not line:
         sound = f"{sfx.rstrip('. ')}" + (f", over {sound}" if sound else "")
     shots = shots or [f"{motion.rstrip('. ')}; {camera.rstrip('. ')}"]
     for i, sh in enumerate(shots, 1):
         opener = "The scene opens exactly on image 1; " if i == 1 else "Cut to "
         lines.append(f"SHOT {i}: {opener}{sh.rstrip('. ')}.")
-    # generated music comes out as off-key "jack-in-the-box" tunes (user, 2026-09-24) and H3 adds music unless told not to
+    silent = not line and not vocal
+    if silent and sound:
+        # lead with the soundscape as the ONLY sound; no mention of speech/voices and no "silence between sounds" (gaps get filled with babble)
+        sound = f"Only the sounds of {soundscape or 'the action'} can be heard: {sound.rstrip('. ')}, continuous from start to end"
+    # generated music tends to come out off-key and H3 adds music unless told not to
     if menace and sound:  # its sounds are deep and heavy too (still tied to visible actions, no drone bed)
         sound = f"{sound.rstrip('. ')}, every sound eerie and unsettling"
     audio = ", ".join(x.rstrip(". ") for x in (sound, music) if x)
     if not music:
-        audio = (audio + "; " if audio else "") + "no music" + ("" if ambient else ", no background hum or drone, clean silence between sounds")
+        audio = (audio + "; " if audio else "") + "no music" + ("" if ambient or silent else ", no background hum or drone, clean silence between sounds")
     if audio:
         lines.append(f"Audio: {audio}.")
     return "\n".join(lines)
@@ -139,4 +163,4 @@ if __name__ == "__main__":
     ap.add_argument("--line", default=""); ap.add_argument("--voice", default="")
     ap.add_argument("--vocal", default=""); ap.add_argument("--face", default=""); ap.add_argument("--sfx", default="")
     a = ap.parse_args()
-    print(build(a.image, a.motion, a.camera, a.shot, a.sound, a.music, a.line, a.voice, a.vocal, a.face, a.sfx))
+    print(build(a.image, a.motion, a.camera, a.shot, a.sound, a.music, a.line, a.voice, a.vocal, a.face, a.sfx, getattr(a, "speaker", "")))
