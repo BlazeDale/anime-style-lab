@@ -1,0 +1,3116 @@
+{
+ "version": 1,
+ "kind": "emotion",
+ "features": [
+  "valence",
+  "arousal",
+  "intimacy",
+  "temporal",
+  "moral_weight",
+  "agency",
+  "absurdity"
+ ],
+ "layout": {
+  "mean": [
+   0.52575,
+   0.533375,
+   0.25525,
+   0.5195,
+   0.43775,
+   0.441,
+   0.105375
+  ],
+  "basis": [
+   [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  ],
+  "origin": [
+   0.0,
+   0.0
+  ],
+  "sx": [
+   2.201431,
+   2.017146
+  ],
+  "sy": [
+   2.239015,
+   2.068787
+  ],
+  "gap": 0.12,
+  "mode": "valence x arousal plane",
+  "explained": [
+   0.357,
+   0.563
+  ]
+ },
+ "nodes": [
+  {
+   "id": "longing",
+   "name": "Longing",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.38,
+    "arousal": 0.42,
+    "intimacy": 0.2,
+    "temporal": 0.75,
+    "moral_weight": 0.25,
+    "agency": 0.35,
+    "absurdity": 0.02
+   },
+   "picture": "a figure at a window turned toward a far horizon, soft warm light on one side of the face, empty space ahead, hand resting on glass",
+   "voice": "Reaching, unfinished sentences; wanting named but never quite reached.",
+   "beats": "A wish is set just out of reach, and each chapter shows a step toward it or away from it.",
+   "aka": [
+    "yearning",
+    "craving",
+    "pining"
+   ],
+   "legacy": true,
+   "added_by": "seed",
+   "x": -0.2899,
+   "y": -0.2294
+  },
+  {
+   "id": "unrequited-love",
+   "name": "Unrequited love",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.3,
+    "arousal": 0.45,
+    "intimacy": 0.05,
+    "temporal": 0.55,
+    "moral_weight": 0.35,
+    "agency": 0.15,
+    "absurdity": 0.02
+   },
+   "picture": "someone watching another person laugh across a room, gentle light on the beloved, the watcher half in shadow, hands held tight",
+   "voice": "Careful, understated lines that circle the thing unsaid.",
+   "beats": "One character loves openly or secretly while the other looks elsewhere; small kindnesses go unnoticed.",
+   "aka": [
+    "one-sided love",
+    "secret crush"
+   ],
+   "added_by": "seed",
+   "x": -0.45,
+   "y": -0.2136
+  },
+  {
+   "id": "forbidden-love",
+   "name": "Forbidden love",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.45,
+    "arousal": 0.72,
+    "intimacy": 0.2,
+    "temporal": 0.6,
+    "moral_weight": 0.8,
+    "agency": 0.4,
+    "absurdity": 0.02
+   },
+   "picture": "two adults standing close but not touching, a barrier or watching eyes between them, warm light against cold surroundings, fully clothed, intense eye contact",
+   "voice": "Hushed, urgent, stolen words with a risk under every line.",
+   "beats": "Two people from opposed sides meet in secret; every meeting raises the cost of being found out.",
+   "aka": [
+    "star-crossed",
+    "taboo romance"
+   ],
+   "added_by": "seed",
+   "x": -0.146,
+   "y": 0.4154
+  },
+  {
+   "id": "tenderness",
+   "name": "Tenderness",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.85,
+    "arousal": 0.18,
+    "intimacy": 0.05,
+    "temporal": 0.5,
+    "moral_weight": 0.4,
+    "agency": 0.55,
+    "absurdity": 0.02
+   },
+   "picture": "two figures close together, one adjusting the other's scarf, soft glowing light, warm muted palette, relaxed shoulders, gentle expressions",
+   "voice": "Soft, plain, small words that say a lot.",
+   "beats": "A quiet act of care in the middle of hardship, noticed and returned.",
+   "aka": [
+    "gentleness",
+    "affection",
+    "caring"
+   ],
+   "added_by": "seed",
+   "x": 0.609,
+   "y": -0.6104
+  },
+  {
+   "id": "saudade",
+   "name": "Saudade",
+   "family": "longing and home",
+   "features": {
+    "valence": 0.38,
+    "arousal": 0.25,
+    "intimacy": 0.15,
+    "temporal": 0.15,
+    "moral_weight": 0.2,
+    "agency": 0.2,
+    "absurdity": 0.03
+   },
+   "picture": "a lone figure by the sea gazing at empty water, golden haze, faded warm tones, a keepsake of someone absent held lightly",
+   "voice": "Lyrical and slow, warmth tinged with ache for what is gone.",
+   "beats": "A person keeps a token of a lost love or place and returns to it in thought, content and hurt at once.",
+   "aka": [
+    "sweet sorrow",
+    "missing someone"
+   ],
+   "added_by": "seed",
+   "x": -0.2517,
+   "y": -0.5553
+  },
+  {
+   "id": "hiraeth",
+   "name": "Hiraeth",
+   "family": "longing and home",
+   "features": {
+    "valence": 0.35,
+    "arousal": 0.22,
+    "intimacy": 0.35,
+    "temporal": 0.1,
+    "moral_weight": 0.3,
+    "agency": 0.1,
+    "absurdity": 0.02
+   },
+   "picture": "a traveler on a hill looking toward misty distant mountains of a home that may no longer exist, cool soft light, small figure with hands at sides",
+   "voice": "Spare, old-sounding, rooted in land and names.",
+   "beats": "An exile remembers a homeland through songs, objects and landscape that cannot be returned to.",
+   "aka": [
+    "homeland longing",
+    "exile"
+   ],
+   "added_by": "seed",
+   "x": -0.3309,
+   "y": -0.6457
+  },
+  {
+   "id": "homesickness",
+   "name": "Homesickness",
+   "family": "longing and home",
+   "features": {
+    "valence": 0.3,
+    "arousal": 0.35,
+    "intimacy": 0.08,
+    "temporal": 0.2,
+    "moral_weight": 0.15,
+    "agency": 0.25,
+    "absurdity": 0.03
+   },
+   "picture": "someone sitting alone holding a small keepsake, strange cold surroundings, warm lamplight on the keepsake only, hunched shoulders",
+   "voice": "Plain, a little childlike; small details of home repeated.",
+   "beats": "A newcomer in a foreign place clings to familiar rituals, a letter, a taste, a song.",
+   "aka": [
+    "missing home",
+    "far from home"
+   ],
+   "added_by": "seed",
+   "x": -0.4399,
+   "y": -0.3484
+  },
+  {
+   "id": "grief",
+   "name": "Grief",
+   "family": "loss and grief",
+   "features": {
+    "valence": 0.05,
+    "arousal": 0.4,
+    "intimacy": 0.1,
+    "temporal": 0.05,
+    "moral_weight": 0.5,
+    "agency": 0.05,
+    "absurdity": 0.0
+   },
+   "picture": "a figure bowed over a still object, desaturated cold tones, heavy shadow, limp hands, dim light falling from one side",
+   "voice": "Short, broken, stunned sentences; silence between them.",
+   "beats": "A death lands and the story stays with those left behind in the empty hours after.",
+   "aka": [
+    "mourning",
+    "bereavement",
+    "loss"
+   ],
+   "added_by": "seed",
+   "x": -0.9638,
+   "y": -0.2667
+  },
+  {
+   "id": "heartbreak",
+   "name": "Heartbreak",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.08,
+    "arousal": 0.65,
+    "intimacy": 0.05,
+    "temporal": 0.2,
+    "moral_weight": 0.55,
+    "agency": 0.1,
+    "absurdity": 0.02
+   },
+   "picture": "a person turned away mid-parting with tears and tight shoulders, cool blue light, a hand reaching out and falling short",
+   "voice": "Raw, direct, a sentence that stops halfway.",
+   "beats": "A bond breaks in a single moment of truth, and the aftermath shows what remains.",
+   "aka": [
+    "broken heart",
+    "lovesick",
+    "parting"
+   ],
+   "added_by": "seed",
+   "x": -0.9292,
+   "y": 0.2128
+  },
+  {
+   "id": "melancholy",
+   "name": "Melancholy",
+   "family": "loss and grief",
+   "features": {
+    "valence": 0.25,
+    "arousal": 0.15,
+    "intimacy": 0.15,
+    "temporal": 0.3,
+    "moral_weight": 0.25,
+    "agency": 0.3,
+    "absurdity": 0.03
+   },
+   "picture": "a figure in hushed cool blues and grey, head slightly bowed, soft diffuse light, quiet stillness, muted palette",
+   "voice": "Slow, hushed, reflective sentences; long pauses.",
+   "beats": "Nothing dramatic happens; a quiet loss colours ordinary moments and the story lingers on them.",
+   "aka": [
+    "wistful sadness",
+    "blues",
+    "gloom"
+   ],
+   "legacy": true,
+   "added_by": "seed",
+   "x": -0.4605,
+   "y": -0.7292
+  },
+  {
+   "id": "bittersweet",
+   "name": "Bittersweet",
+   "family": "loss and grief",
+   "features": {
+    "valence": 0.5,
+    "arousal": 0.3,
+    "intimacy": 0.1,
+    "temporal": 0.3,
+    "moral_weight": 0.35,
+    "agency": 0.35,
+    "absurdity": 0.04
+   },
+   "picture": "a smile with wet eyes, warm golden light fading into cool shadow, two tones in one frame, a farewell embrace",
+   "voice": "Warm words with a catch in them; joy and loss named together.",
+   "beats": "A hard-won happy moment arrives at a cost, or a happy ending requires saying goodbye.",
+   "aka": [
+    "happy sad",
+    "tearful smile",
+    "farewell"
+   ],
+   "added_by": "seed",
+   "x": -0.0488,
+   "y": -0.4825
+  },
+  {
+   "id": "mono-no-aware",
+   "name": "Mono no aware",
+   "family": "loss and grief",
+   "features": {
+    "valence": 0.5,
+    "arousal": 0.12,
+    "intimacy": 0.55,
+    "temporal": 0.35,
+    "moral_weight": 0.15,
+    "agency": 0.2,
+    "absurdity": 0.0
+   },
+   "picture": "falling petals or leaves drifting past a still figure, pale soft light, delicate muted palette, empty space around them, calm acceptance",
+   "voice": "Gentle, observational, noticing how brief beautiful things are.",
+   "beats": "The story pauses on a passing season, a fading light, a small beauty that will not last.",
+   "aka": [
+    "impermanence",
+    "transience",
+    "fleeting beauty"
+   ],
+   "added_by": "seed",
+   "x": -0.0414,
+   "y": -0.8546
+  },
+  {
+   "id": "nostalgia",
+   "name": "Nostalgia",
+   "family": "loss and grief",
+   "features": {
+    "valence": 0.6,
+    "arousal": 0.22,
+    "intimacy": 0.12,
+    "temporal": 0.05,
+    "moral_weight": 0.15,
+    "agency": 0.4,
+    "absurdity": 0.05
+   },
+   "picture": "warm faded film tones, soft grain and golden haze, a worn childhood object, relaxed figure smiling at something far away",
+   "voice": "Fond, drifting, 'back then' sentences full of small sensory detail.",
+   "beats": "A present moment triggers a memory, and the story drifts into the remembered scene.",
+   "aka": [
+    "remembering",
+    "good old days",
+    "throwback"
+   ],
+   "added_by": "seed",
+   "x": 0.1398,
+   "y": -0.6449
+  },
+  {
+   "id": "disillusionment",
+   "name": "Disillusionment",
+   "family": "loss and grief",
+   "features": {
+    "valence": 0.2,
+    "arousal": 0.3,
+    "intimacy": 0.4,
+    "temporal": 0.4,
+    "moral_weight": 0.65,
+    "agency": 0.25,
+    "absurdity": 0.1
+   },
+   "picture": "a figure looking at a cracked banner or faded ideal, flat grey light, slumped posture, drained colour, eyes lowered",
+   "voice": "Dry, tired, quiet bitterness; 'so this is how it is'.",
+   "beats": "A cause or hero is revealed as flawed and a believer must decide what is left to believe.",
+   "aka": [
+    "disenchantment",
+    "cynicism",
+    "lost faith"
+   ],
+   "added_by": "seed",
+   "x": -0.6176,
+   "y": -0.4275
+  },
+  {
+   "id": "dread",
+   "name": "Dread",
+   "family": "fear and dread",
+   "features": {
+    "valence": 0.1,
+    "arousal": 0.7,
+    "intimacy": 0.25,
+    "temporal": 0.85,
+    "moral_weight": 0.5,
+    "agency": 0.15,
+    "absurdity": 0.02
+   },
+   "picture": "long deep shadows closing around a small figure, sickly muted colour, something just out of sight, rigid wary posture",
+   "voice": "Short, flat, ominous sentences; things not said.",
+   "beats": "Small wrong details accumulate before anything happens, and characters sense what is coming.",
+   "aka": [
+    "foreboding",
+    "ominous",
+    "unease"
+   ],
+   "legacy": true,
+   "added_by": "seed",
+   "x": -0.8289,
+   "y": 0.2789
+  },
+  {
+   "id": "existential-dread",
+   "name": "Existential dread",
+   "family": "fear and dread",
+   "features": {
+    "valence": 0.1,
+    "arousal": 0.45,
+    "intimacy": 0.8,
+    "temporal": 0.8,
+    "moral_weight": 0.6,
+    "agency": 0.08,
+    "absurdity": 0.12
+   },
+   "picture": "a tiny figure beneath an enormous empty sky, cold desaturated void, vast negative space, still and silent",
+   "voice": "Quiet, abstract, questions with no answer.",
+   "beats": "A character glimpses the scale of time or the lack of meaning and cannot unsee it.",
+   "aka": [
+    "meaninglessness",
+    "the void",
+    "nihilism"
+   ],
+   "added_by": "seed",
+   "x": -0.8034,
+   "y": -0.1524
+  },
+  {
+   "id": "cosmic-horror",
+   "name": "Cosmic horror",
+   "family": "fear and dread",
+   "features": {
+    "valence": 0.03,
+    "arousal": 0.85,
+    "intimacy": 0.95,
+    "temporal": 0.65,
+    "moral_weight": 0.4,
+    "agency": 0.02,
+    "absurdity": 0.15
+   },
+   "picture": "colossal incomprehensible shapes in a sickly sky, tiny witnesses frozen in awe and terror, wrong colours and impossible geometry",
+   "voice": "Stammering, awed, struggling to describe the indescribable.",
+   "beats": "Characters uncover something vast that does not notice or care about them, and understanding is the damage.",
+   "aka": [
+    "lovecraftian",
+    "eldritch",
+    "the unknowable"
+   ],
+   "added_by": "seed",
+   "x": -0.8653,
+   "y": 0.5013
+  },
+  {
+   "id": "sublime-terror",
+   "name": "Sublime terror",
+   "family": "fear and dread",
+   "features": {
+    "valence": 0.25,
+    "arousal": 0.95,
+    "intimacy": 0.9,
+    "temporal": 0.6,
+    "moral_weight": 0.3,
+    "agency": 0.05,
+    "absurdity": 0.02
+   },
+   "picture": "a towering storm wall or colossal wave over a small figure, dramatic hard light, cold saturated blues, braced bodies, awed faces",
+   "voice": "Breathless, overwhelmed, beautiful and frightening at once.",
+   "beats": "Nature or a vast power appears, magnificent and lethal, and the characters can only watch.",
+   "aka": [
+    "terrifying beauty",
+    "overwhelming power"
+   ],
+   "added_by": "seed",
+   "x": -0.4181,
+   "y": 0.8576
+  },
+  {
+   "id": "uncanny-calm",
+   "name": "Uncanny calm",
+   "family": "fear and dread",
+   "features": {
+    "valence": 0.3,
+    "arousal": 0.3,
+    "intimacy": 0.3,
+    "temporal": 0.6,
+    "moral_weight": 0.35,
+    "agency": 0.2,
+    "absurdity": 0.3
+   },
+   "picture": "an eerily tidy scene with everything slightly too perfect, flat even light, pastel palette, still figures with fixed smiles",
+   "voice": "Pleasant, polite and slightly off; cheerful words with nothing behind them.",
+   "beats": "A quiet, orderly place feels wrong, and the unease grows from how normal everyone acts.",
+   "aka": [
+    "eerie",
+    "creepy calm",
+    "wrongness"
+   ],
+   "added_by": "seed",
+   "x": -0.4268,
+   "y": -0.4679
+  },
+  {
+   "id": "vertigo",
+   "name": "Vertigo",
+   "family": "fear and dread",
+   "features": {
+    "valence": 0.22,
+    "arousal": 0.8,
+    "intimacy": 0.25,
+    "temporal": 0.45,
+    "moral_weight": 0.2,
+    "agency": 0.1,
+    "absurdity": 0.2
+   },
+   "picture": "a figure gripping a ledge over a deep drop, tilted horizon, stretched perspective, pale-knuckled hands, cold light",
+   "voice": "Clipped, reeling, repeated words that lose their footing.",
+   "beats": "The ground literally or figuratively gives way and a character loses their sense of what is real.",
+   "aka": [
+    "dizzy",
+    "disorientation",
+    "falling feeling"
+   ],
+   "added_by": "seed",
+   "x": -0.5731,
+   "y": 0.5688
+  },
+  {
+   "id": "righteous-fury",
+   "name": "Righteous fury",
+   "family": "anger and justice",
+   "features": {
+    "valence": 0.15,
+    "arousal": 0.92,
+    "intimacy": 0.6,
+    "temporal": 0.55,
+    "moral_weight": 0.95,
+    "agency": 0.8,
+    "absurdity": 0.0
+   },
+   "picture": "a figure standing firm with blazing hard light behind them, red and gold palette, clenched fists, a crowd or injustice before them",
+   "voice": "Forceful, declarative, stern; each sentence a verdict.",
+   "beats": "A wrong crosses a line and a character finally speaks or acts for those who cannot.",
+   "aka": [
+    "moral outrage",
+    "just anger",
+    "wrath"
+   ],
+   "added_by": "seed",
+   "x": -0.5994,
+   "y": 0.7308
+  },
+  {
+   "id": "revenge",
+   "name": "Revenge",
+   "family": "anger and justice",
+   "features": {
+    "valence": 0.2,
+    "arousal": 0.78,
+    "intimacy": 0.15,
+    "temporal": 0.65,
+    "moral_weight": 0.85,
+    "agency": 0.85,
+    "absurdity": 0.03
+   },
+   "picture": "a cold-eyed figure with a worn weapon or a name written down, hard side light, dark red and slate palette, controlled stillness",
+   "voice": "Clipped, patient, quiet menace.",
+   "beats": "A past wrong drives a long plan; the path forces the avenger to weigh what it will cost them.",
+   "aka": [
+    "vengeance",
+    "payback",
+    "vendetta"
+   ],
+   "added_by": "seed",
+   "x": -0.6278,
+   "y": 0.4619
+  },
+  {
+   "id": "betrayal",
+   "name": "Betrayal",
+   "family": "anger and justice",
+   "features": {
+    "valence": 0.06,
+    "arousal": 0.75,
+    "intimacy": 0.25,
+    "temporal": 0.25,
+    "moral_weight": 0.9,
+    "agency": 0.12,
+    "absurdity": 0.03
+   },
+   "picture": "a figure frozen in shock as a trusted companion turns away, light cutting across the faces, cold shadow, an outstretched hand left hanging",
+   "voice": "Stunned and cold; the one word that cuts.",
+   "beats": "A trusted ally reveals their true loyalty at the worst moment, and every earlier scene is recast.",
+   "aka": [
+    "treachery",
+    "backstab",
+    "double-cross"
+   ],
+   "added_by": "seed",
+   "x": -0.8966,
+   "y": 0.3781
+  },
+  {
+   "id": "resentment",
+   "name": "Resentment",
+   "family": "anger and justice",
+   "features": {
+    "valence": 0.12,
+    "arousal": 0.5,
+    "intimacy": 0.1,
+    "temporal": 0.2,
+    "moral_weight": 0.7,
+    "agency": 0.2,
+    "absurdity": 0.05
+   },
+   "picture": "a figure with folded arms and a sideways glare, muddy greens and greys, flat unfriendly light, tight jaw, turned shoulder",
+   "voice": "Terse, sour, old grievances in dry asides.",
+   "beats": "A grievance is held for years and surfaces in small slights until it is finally said aloud.",
+   "aka": [
+    "bitterness",
+    "grudge",
+    "spite"
+   ],
+   "added_by": "seed",
+   "x": -0.7946,
+   "y": -0.0326
+  },
+  {
+   "id": "schadenfreude",
+   "name": "Schadenfreude",
+   "family": "anger and justice",
+   "features": {
+    "valence": 0.55,
+    "arousal": 0.45,
+    "intimacy": 0.1,
+    "temporal": 0.5,
+    "moral_weight": 0.6,
+    "agency": 0.65,
+    "absurdity": 0.35
+   },
+   "picture": "a smug grin at another's mishap, sharp bright light, chin lifted, a rival stumbling in the background, knowing glance",
+   "voice": "Smooth, wry, delighted and a touch guilty.",
+   "beats": "A rival's plan falls apart in front of everyone, and the watcher cannot hide their glee.",
+   "aka": [
+    "gloating",
+    "smug delight"
+   ],
+   "added_by": "seed",
+   "x": 0.053,
+   "y": -0.1724
+  },
+  {
+   "id": "joy",
+   "name": "Joy",
+   "family": "joy and delight",
+   "features": {
+    "valence": 0.9,
+    "arousal": 0.65,
+    "intimacy": 0.25,
+    "temporal": 0.55,
+    "moral_weight": 0.2,
+    "agency": 0.65,
+    "absurdity": 0.08
+   },
+   "picture": "bright warm golden light, open smiling faces, saturated colour, loose open-armed posture, motion in the clothes and hair",
+   "voice": "Bright, lively, short exclamations.",
+   "beats": "Good news or a shared success breaks through, and the story lets everyone celebrate.",
+   "aka": [
+    "happiness",
+    "delight",
+    "gladness"
+   ],
+   "legacy": true,
+   "added_by": "seed",
+   "x": 0.8199,
+   "y": 0.2254
+  },
+  {
+   "id": "euphoria",
+   "name": "Euphoria",
+   "family": "joy and delight",
+   "features": {
+    "valence": 0.98,
+    "arousal": 0.95,
+    "intimacy": 0.45,
+    "temporal": 0.6,
+    "moral_weight": 0.15,
+    "agency": 0.6,
+    "absurdity": 0.15
+   },
+   "picture": "blazing radiant light, spinning figures with arms flung wide, vivid saturated colour, confetti or sparks, ecstatic laughter",
+   "voice": "Breathless run-ons and exclamations tumbling over each other.",
+   "beats": "After a long ordeal the impossible comes true and the characters burst out in pure release.",
+   "aka": [
+    "elation",
+    "ecstasy",
+    "overjoyed"
+   ],
+   "added_by": "seed",
+   "x": 0.751,
+   "y": 0.6604
+  },
+  {
+   "id": "bliss",
+   "name": "Bliss",
+   "family": "joy and delight",
+   "features": {
+    "valence": 0.95,
+    "arousal": 0.25,
+    "intimacy": 0.15,
+    "temporal": 0.5,
+    "moral_weight": 0.1,
+    "agency": 0.65,
+    "absurdity": 0.05
+   },
+   "picture": "eyes closed with a soft smile, warm glowing light, pastel and gold palette, loose relaxed limbs, a sense of floating",
+   "voice": "Slow, soft, drifting sentences with no worries in them.",
+   "beats": "A character reaches a perfect still moment and the story lets it linger without conflict.",
+   "aka": [
+    "contentment",
+    "peace of mind",
+    "happy sigh"
+   ],
+   "added_by": "seed",
+   "x": 0.8499,
+   "y": -0.4402
+  },
+  {
+   "id": "rapture",
+   "name": "Rapture",
+   "family": "joy and delight",
+   "features": {
+    "valence": 0.88,
+    "arousal": 0.82,
+    "intimacy": 0.55,
+    "temporal": 0.7,
+    "moral_weight": 0.3,
+    "agency": 0.35,
+    "absurdity": 0.05
+   },
+   "picture": "upturned face lit by overhead radiance, hands lifted, shimmering light motes, rich gold and violet palette, tears of wonder",
+   "voice": "Hushed, swept up, almost prayer-like.",
+   "beats": "A character is moved to the edge of tears by something beautiful or transcendent.",
+   "aka": [
+    "enchantment",
+    "transport",
+    "spellbound"
+   ],
+   "added_by": "seed",
+   "x": 0.6679,
+   "y": 0.5649
+  },
+  {
+   "id": "triumph",
+   "name": "Triumph",
+   "family": "joy and delight",
+   "features": {
+    "valence": 0.92,
+    "arousal": 0.8,
+    "intimacy": 0.6,
+    "temporal": 0.55,
+    "moral_weight": 0.6,
+    "agency": 0.95,
+    "absurdity": 0.04
+   },
+   "picture": "a figure standing victorious with raised fist or arms, strong golden backlight, wind in cloth, cheering crowd, upright confident posture",
+   "voice": "Bold, ringing, short declarations of victory.",
+   "beats": "A hard-fought goal is finally reached after setbacks, with allies gathering around the winner.",
+   "aka": [
+    "victory",
+    "winning",
+    "glory"
+   ],
+   "added_by": "seed",
+   "x": 0.7979,
+   "y": 0.5498
+  },
+  {
+   "id": "wonder",
+   "name": "Wonder",
+   "family": "wonder and awe",
+   "features": {
+    "valence": 0.8,
+    "arousal": 0.55,
+    "intimacy": 0.6,
+    "temporal": 0.75,
+    "moral_weight": 0.2,
+    "agency": 0.5,
+    "absurdity": 0.1
+   },
+   "picture": "wide eyes and parted lips looking up at something marvelous, clear luminous light, fresh bright colour, a small figure drawn forward",
+   "voice": "Curious, hushed, full of questions and 'look at that'.",
+   "beats": "A character discovers something new and extraordinary, and the story slows to let it be seen.",
+   "aka": [
+    "amazement",
+    "marvel",
+    "curiosity"
+   ],
+   "legacy": true,
+   "added_by": "seed",
+   "x": 0.5994,
+   "y": 0.0437
+  },
+  {
+   "id": "awe",
+   "name": "Awe",
+   "family": "wonder and awe",
+   "features": {
+    "valence": 0.72,
+    "arousal": 0.62,
+    "intimacy": 0.88,
+    "temporal": 0.5,
+    "moral_weight": 0.35,
+    "agency": 0.2,
+    "absurdity": 0.0
+   },
+   "picture": "a tiny figure before something immense, luminous glowing light, vast scale, still reverent posture, expansive composition",
+   "voice": "Slow, grand and reverent; short sentences that hold their breath.",
+   "beats": "Characters stand before something far larger than themselves, a vista, a being, a truth.",
+   "aka": [
+    "grandeur",
+    "majesty",
+    "sublime"
+   ],
+   "legacy": true,
+   "added_by": "seed",
+   "x": 0.4076,
+   "y": 0.169
+  },
+  {
+   "id": "yearning-for-adventure",
+   "name": "Yearning for adventure",
+   "family": "wonder and awe",
+   "features": {
+    "valence": 0.75,
+    "arousal": 0.7,
+    "intimacy": 0.5,
+    "temporal": 0.92,
+    "moral_weight": 0.15,
+    "agency": 0.8,
+    "absurdity": 0.1
+   },
+   "picture": "a figure at the edge of a cliff or gate with a pack on their back, bright wind-swept light, open road beyond, eager forward-leaning stance",
+   "voice": "Eager, quick, full of 'what if' and 'someday'.",
+   "beats": "A restless character hears the call and leaves the familiar behind for the unknown.",
+   "aka": [
+    "call to adventure",
+    "itchy feet",
+    "eager to go"
+   ],
+   "added_by": "seed",
+   "x": 0.4712,
+   "y": 0.3745
+  },
+  {
+   "id": "wanderlust",
+   "name": "Wanderlust",
+   "family": "wonder and awe",
+   "features": {
+    "valence": 0.65,
+    "arousal": 0.5,
+    "intimacy": 0.4,
+    "temporal": 0.85,
+    "moral_weight": 0.1,
+    "agency": 0.65,
+    "absurdity": 0.05
+   },
+   "picture": "a traveler walking a long open road with a worn bag, warm travel-stained palette, wide soft horizon, relaxed unhurried stride",
+   "voice": "Easygoing, observant, a travel diary in short entries.",
+   "beats": "A character keeps moving, collecting places and people and never settling.",
+   "aka": [
+    "travel bug",
+    "restless roaming",
+    "drifter"
+   ],
+   "added_by": "seed",
+   "x": 0.2732,
+   "y": -0.0677
+  },
+  {
+   "id": "reverence",
+   "name": "Reverence",
+   "family": "wonder and awe",
+   "features": {
+    "valence": 0.65,
+    "arousal": 0.2,
+    "intimacy": 0.8,
+    "temporal": 0.4,
+    "moral_weight": 0.7,
+    "agency": 0.3,
+    "absurdity": 0.0
+   },
+   "picture": "figures bowed or standing silent before an old monument or sacred object, soft shafts of light, symmetrical calm composition, hushed tones",
+   "voice": "Formal, quiet, measured; names spoken softly.",
+   "beats": "Characters enter a place or ritual of great meaning and behave with deliberate care.",
+   "aka": [
+    "respect",
+    "sacred",
+    "hushed devotion"
+   ],
+   "added_by": "seed",
+   "x": 0.254,
+   "y": -0.6819
+  },
+  {
+   "id": "serenity",
+   "name": "Serenity",
+   "family": "calm and comfort",
+   "features": {
+    "valence": 0.85,
+    "arousal": 0.05,
+    "intimacy": 0.3,
+    "temporal": 0.5,
+    "moral_weight": 0.1,
+    "agency": 0.7,
+    "absurdity": 0.0
+   },
+   "picture": "calm, soft diffused light and gentle pastel colour, still water, relaxed upright figure with closed or soft eyes, open quiet space",
+   "voice": "Still, clear, unhurried sentences.",
+   "beats": "A conflict-free pause where nothing needs doing and the world is simply quiet.",
+   "aka": [
+    "calm",
+    "peace",
+    "tranquility"
+   ],
+   "legacy": true,
+   "added_by": "seed",
+   "x": 0.4834,
+   "y": -0.8754
+  },
+  {
+   "id": "cozy-comfort",
+   "name": "Cozy comfort",
+   "family": "calm and comfort",
+   "features": {
+    "valence": 0.85,
+    "arousal": 0.1,
+    "intimacy": 0.05,
+    "temporal": 0.5,
+    "moral_weight": 0.05,
+    "agency": 0.75,
+    "absurdity": 0.06
+   },
+   "picture": "warm amber glow, soft blankets and steaming cups, close small space, relaxed curled posture, rich homey texture",
+   "voice": "Warm, small, gently funny; the pleasure of little things.",
+   "beats": "A safe snug scene after hardship: food, shelter, company, and nothing pressing.",
+   "aka": [
+    "hygge",
+    "snug",
+    "homey"
+   ],
+   "added_by": "seed",
+   "x": 0.552,
+   "y": -0.7767
+  },
+  {
+   "id": "relief",
+   "name": "Relief",
+   "family": "calm and comfort",
+   "features": {
+    "valence": 0.75,
+    "arousal": 0.35,
+    "intimacy": 0.15,
+    "temporal": 0.45,
+    "moral_weight": 0.25,
+    "agency": 0.55,
+    "absurdity": 0.08
+   },
+   "picture": "a figure exhaling with slumped shoulders and a weak smile, light breaking through, tension draining from the colours",
+   "voice": "Shaky, laughing, 'it's over' sentences.",
+   "beats": "The danger passes at last and the characters let out a breath they did not know they were holding.",
+   "aka": [
+    "phew",
+    "thank goodness",
+    "danger passed"
+   ],
+   "added_by": "seed",
+   "x": 0.4772,
+   "y": -0.3674
+  },
+  {
+   "id": "ennui",
+   "name": "Ennui",
+   "family": "calm and comfort",
+   "features": {
+    "valence": 0.3,
+    "arousal": 0.05,
+    "intimacy": 0.1,
+    "temporal": 0.45,
+    "moral_weight": 0.05,
+    "agency": 0.25,
+    "absurdity": 0.2
+   },
+   "picture": "a figure slumped in a chair staring at nothing, flat even light, washed-out beige and grey, loose limp posture, bare surroundings",
+   "voice": "Flat, languid, bored witty asides.",
+   "beats": "Days repeat without meaning or appeal, and a character drifts through them waiting for something to matter.",
+   "aka": [
+    "boredom",
+    "apathy",
+    "listlessness"
+   ],
+   "added_by": "seed",
+   "x": -0.322,
+   "y": -0.9467
+  },
+  {
+   "id": "tension",
+   "name": "Tension",
+   "family": "tension and drive",
+   "features": {
+    "valence": 0.25,
+    "arousal": 0.8,
+    "intimacy": 0.35,
+    "temporal": 0.7,
+    "moral_weight": 0.4,
+    "agency": 0.4,
+    "absurdity": 0.02
+   },
+   "picture": "taut high contrast with cold edges, rigid bodies, narrowed eyes, sharp angles and hard light on the faces",
+   "voice": "Clipped and short, nearly stripped of adjectives.",
+   "beats": "Two forces face off and a decision hangs, with time running down.",
+   "aka": [
+    "suspense",
+    "standoff",
+    "on edge"
+   ],
+   "legacy": true,
+   "added_by": "seed",
+   "x": -0.4627,
+   "y": 0.5217
+  },
+  {
+   "id": "slow-burn-tension",
+   "name": "Slow-burn tension",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.3,
+    "arousal": 0.55,
+    "intimacy": 0.3,
+    "temporal": 0.78,
+    "moral_weight": 0.45,
+    "agency": 0.3,
+    "absurdity": 0.0
+   },
+   "picture": "a still room with two figures watching each other, thin light, small guarded gestures, simmering quiet, clenched hands under a table",
+   "voice": "Measured and quiet, with the weight of what is not said.",
+   "beats": "Pressure builds across scenes through small signs, not action, until it finally breaks.",
+   "aka": [
+    "simmering",
+    "creeping suspense",
+    "building pressure"
+   ],
+   "added_by": "seed",
+   "x": -0.5082,
+   "y": 0.0348
+  },
+  {
+   "id": "anticipation",
+   "name": "Anticipation",
+   "family": "tension and drive",
+   "features": {
+    "valence": 0.62,
+    "arousal": 0.68,
+    "intimacy": 0.35,
+    "temporal": 0.88,
+    "moral_weight": 0.2,
+    "agency": 0.55,
+    "absurdity": 0.05
+   },
+   "picture": "a figure poised at the start of something, bright crisp light, leaning forward, eyes fixed on a door or road, restless hands",
+   "voice": "Quick, bright, counting down.",
+   "beats": "A big event is close, and the story builds expectation through preparation and nervous energy.",
+   "aka": [
+    "excited waiting",
+    "eve of the event",
+    "anxious excitement"
+   ],
+   "added_by": "seed",
+   "x": 0.2018,
+   "y": 0.3247
+  },
+  {
+   "id": "catharsis",
+   "name": "Catharsis",
+   "family": "tension and drive",
+   "features": {
+    "valence": 0.55,
+    "arousal": 0.85,
+    "intimacy": 0.3,
+    "temporal": 0.4,
+    "moral_weight": 0.55,
+    "agency": 0.5,
+    "absurdity": 0.03
+   },
+   "picture": "a figure releasing a long-held cry or tearful laugh, light breaking through clouds, loosened posture, rain or tears catching light",
+   "voice": "Raw and pouring out, then suddenly quiet.",
+   "beats": "Pent-up pressure from many chapters finally breaks, and the release changes who they are.",
+   "aka": [
+    "emotional release",
+    "breakthrough",
+    "letting go"
+   ],
+   "added_by": "seed",
+   "x": 0.4781,
+   "y": 0.8008
+  },
+  {
+   "id": "found-family-warmth",
+   "name": "Found-family warmth",
+   "family": "belonging and bonds",
+   "features": {
+    "valence": 0.9,
+    "arousal": 0.38,
+    "intimacy": 0.2,
+    "temporal": 0.55,
+    "moral_weight": 0.45,
+    "agency": 0.6,
+    "absurdity": 0.08
+   },
+   "picture": "a mismatched group close together around a shared table or fire, warm golden light, overlapping laughter, hands on shoulders",
+   "voice": "Warm, teasing, easy overlapping talk with an undercurrent of devotion.",
+   "beats": "Outcasts discover they belong with each other and choose each other as family.",
+   "aka": [
+    "chosen family",
+    "belonging",
+    "home with friends"
+   ],
+   "added_by": "seed",
+   "x": 0.8029,
+   "y": -0.2579
+  },
+  {
+   "id": "camaraderie",
+   "name": "Camaraderie",
+   "family": "belonging and bonds",
+   "features": {
+    "valence": 0.85,
+    "arousal": 0.6,
+    "intimacy": 0.3,
+    "temporal": 0.5,
+    "moral_weight": 0.3,
+    "agency": 0.7,
+    "absurdity": 0.2
+   },
+   "picture": "friends side by side in good humor, bright warm light, shoulders bumping, grinning, a shared task or toast between them",
+   "voice": "Banter, inside jokes, quick back-and-forth.",
+   "beats": "A team under strain trades jokes and bears the work together, growing closer through it.",
+   "aka": [
+    "teamwork",
+    "brotherhood",
+    "comrades"
+   ],
+   "added_by": "seed",
+   "x": 0.7438,
+   "y": 0.1325
+  },
+  {
+   "id": "protectiveness",
+   "name": "Protectiveness",
+   "family": "belonging and bonds",
+   "features": {
+    "valence": 0.55,
+    "arousal": 0.65,
+    "intimacy": 0.1,
+    "temporal": 0.65,
+    "moral_weight": 0.8,
+    "agency": 0.7,
+    "absurdity": 0.0
+   },
+   "picture": "a figure standing between a smaller companion and a threat, strong side light, braced stance, steady unflinching gaze",
+   "voice": "Low, firm, short assurances.",
+   "beats": "Someone vulnerable is threatened and a character steps forward and takes the danger on.",
+   "aka": [
+    "guardian instinct",
+    "shielding",
+    "watching over"
+   ],
+   "added_by": "seed",
+   "x": 0.0525,
+   "y": 0.2609
+  },
+  {
+   "id": "loneliness",
+   "name": "Loneliness",
+   "family": "belonging and bonds",
+   "features": {
+    "valence": 0.12,
+    "arousal": 0.12,
+    "intimacy": 0.05,
+    "temporal": 0.4,
+    "moral_weight": 0.2,
+    "agency": 0.2,
+    "absurdity": 0.0
+   },
+   "picture": "a small figure alone in a wide empty space, cold desaturated tones, one lit window far away, hunched posture, long distance from others",
+   "voice": "Sparse, quiet, talking to no one.",
+   "beats": "A character moves through crowds or empty rooms without anyone knowing them.",
+   "aka": [
+    "isolation",
+    "solitude",
+    "alone"
+   ],
+   "added_by": "seed",
+   "x": -0.6519,
+   "y": -0.6974
+  },
+  {
+   "id": "trust",
+   "name": "Trust",
+   "family": "belonging and bonds",
+   "features": {
+    "valence": 0.78,
+    "arousal": 0.15,
+    "intimacy": 0.08,
+    "temporal": 0.55,
+    "moral_weight": 0.6,
+    "agency": 0.45,
+    "absurdity": 0.0
+   },
+   "picture": "two figures with open palms or one handing the other something precious, soft even light, steady eye contact, relaxed shoulders",
+   "voice": "Plain, direct, a sincere short line.",
+   "beats": "A guarded character takes a risk by relying on someone, and the other proves worthy.",
+   "aka": [
+    "faith in someone",
+    "reliance",
+    "confidence in a friend"
+   ],
+   "added_by": "seed",
+   "x": 0.4459,
+   "y": -0.7205
+  },
+  {
+   "id": "shame",
+   "name": "Shame",
+   "family": "self and shame",
+   "features": {
+    "valence": 0.08,
+    "arousal": 0.5,
+    "intimacy": 0.05,
+    "temporal": 0.25,
+    "moral_weight": 0.85,
+    "agency": 0.1,
+    "absurdity": 0.0
+   },
+   "picture": "a figure with lowered head and covering hands, harsh exposing light, shrunken posture, eyes turned from the viewer",
+   "voice": "Quiet, halting, self-accusing.",
+   "beats": "A mistake is exposed and a character cannot meet others' eyes or their own.",
+   "aka": [
+    "embarrassed guilt",
+    "disgrace",
+    "mortification"
+   ],
+   "added_by": "seed",
+   "x": -0.9147,
+   "y": -0.0338
+  },
+  {
+   "id": "pride",
+   "name": "Pride",
+   "family": "self and shame",
+   "features": {
+    "valence": 0.85,
+    "arousal": 0.55,
+    "intimacy": 0.2,
+    "temporal": 0.4,
+    "moral_weight": 0.55,
+    "agency": 0.85,
+    "absurdity": 0.05
+   },
+   "picture": "a figure with lifted chin and straight back, strong warm light, bold saturated colour, hands on hips or hand over heart",
+   "voice": "Firm, composed, a short line that says 'look what we did'.",
+   "beats": "A character stands before someone who matters and shows what they have earned.",
+   "aka": [
+    "self-respect",
+    "dignity",
+    "pride in work"
+   ],
+   "added_by": "seed",
+   "x": 0.7231,
+   "y": 0.0142
+  },
+  {
+   "id": "survivor-s-guilt",
+   "name": "Survivor's guilt",
+   "family": "self and shame",
+   "features": {
+    "valence": 0.05,
+    "arousal": 0.4,
+    "intimacy": 0.15,
+    "temporal": 0.1,
+    "moral_weight": 0.95,
+    "agency": 0.15,
+    "absurdity": 0.0
+   },
+   "picture": "a lone figure standing among empty chairs or belongings of others, grey flat light, heavy shoulders, hands closed on a keepsake",
+   "voice": "Low, repetitive, why-me questions turned inward.",
+   "beats": "A survivor lives with the question of why they were spared when others were not.",
+   "aka": [
+    "why me",
+    "carrying the dead",
+    "guilt of living"
+   ],
+   "added_by": "seed",
+   "x": -0.9234,
+   "y": -0.1535
+  },
+  {
+   "id": "jealousy",
+   "name": "Jealousy",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.12,
+    "arousal": 0.7,
+    "intimacy": 0.08,
+    "temporal": 0.45,
+    "moral_weight": 0.6,
+    "agency": 0.3,
+    "absurdity": 0.05
+   },
+   "picture": "a figure watching two others from a doorway, sharp green-tinted shadow, tight jaw, clenched fingers on the frame",
+   "voice": "Tense, clipped, clipped comparisons.",
+   "beats": "Someone sees another get the attention, praise or love they wanted, and it sours their view of everything.",
+   "aka": [
+    "envy",
+    "green-eyed",
+    "possessive"
+   ],
+   "added_by": "seed",
+   "x": -0.7291,
+   "y": 0.3458
+  },
+  {
+   "id": "humiliation",
+   "name": "Humiliation",
+   "family": "self and shame",
+   "features": {
+    "valence": 0.08,
+    "arousal": 0.62,
+    "intimacy": 0.08,
+    "temporal": 0.15,
+    "moral_weight": 0.6,
+    "agency": 0.05,
+    "absurdity": 0.15
+   },
+   "picture": "a figure in the center of a ring of watching faces, harsh spotlight, flushed cheeks, shrinking posture, laughter around them",
+   "voice": "Stiff, flustered, every word a mistake.",
+   "beats": "A character is exposed or laughed at in public, and the story stays inside the burn of it.",
+   "aka": [
+    "public embarrassment",
+    "mocked",
+    "laughingstock"
+   ],
+   "added_by": "seed",
+   "x": -0.8909,
+   "y": 0.0989
+  },
+  {
+   "id": "whimsy",
+   "name": "Whimsy",
+   "family": "absurd and playful",
+   "features": {
+    "valence": 0.85,
+    "arousal": 0.35,
+    "intimacy": 0.08,
+    "temporal": 0.5,
+    "moral_weight": 0.02,
+    "agency": 0.6,
+    "absurdity": 0.65
+   },
+   "picture": "playful pastel colours and gentle odd details, tilted hats and floating objects, soft bright light, light skipping poses",
+   "voice": "Light, odd and delighted, with tiny digressions.",
+   "beats": "Strange small marvels appear without explanation, and everyone accepts them cheerfully.",
+   "aka": [
+    "playful charm",
+    "quirky",
+    "fanciful"
+   ],
+   "added_by": "seed",
+   "x": 0.6877,
+   "y": -0.3275
+  },
+  {
+   "id": "absurdity",
+   "name": "Absurdity",
+   "family": "absurd and playful",
+   "features": {
+    "valence": 0.5,
+    "arousal": 0.5,
+    "intimacy": 0.5,
+    "temporal": 0.5,
+    "moral_weight": 0.05,
+    "agency": 0.3,
+    "absurdity": 0.98
+   },
+   "picture": "a deadpan figure amid a ridiculous impossible scene, flat bright light, stiff composed faces, logic-defying objects, symmetrical framing",
+   "voice": "Straight-faced and matter-of-fact about nonsense.",
+   "beats": "A ridiculous situation is handled with total seriousness, and logic gives way.",
+   "aka": [
+    "surreal",
+    "nonsense",
+    "deadpan comedy"
+   ],
+   "added_by": "seed",
+   "x": -0.0519,
+   "y": -0.069
+  },
+  {
+   "id": "gallows-humor",
+   "name": "Gallows humor",
+   "family": "absurd and playful",
+   "features": {
+    "valence": 0.35,
+    "arousal": 0.55,
+    "intimacy": 0.45,
+    "temporal": 0.55,
+    "moral_weight": 0.5,
+    "agency": 0.45,
+    "absurdity": 0.85
+   },
+   "picture": "a grinning figure in grim surroundings, harsh uneven light, tired eyes, a joke raised with a cup, ragged cheerful bravado",
+   "voice": "Dark, quick, quips thrown at the worst moment.",
+   "beats": "Characters in dire straits crack jokes to hold fear off, and the laughter is half a sob.",
+   "aka": [
+    "dark humor",
+    "laughing at doom",
+    "black comedy"
+   ],
+   "added_by": "seed",
+   "x": -0.2679,
+   "y": 0.0367
+  },
+  {
+   "id": "mischief",
+   "name": "Mischief",
+   "family": "absurd and playful",
+   "features": {
+    "valence": 0.78,
+    "arousal": 0.62,
+    "intimacy": 0.05,
+    "temporal": 0.65,
+    "moral_weight": 0.3,
+    "agency": 0.88,
+    "absurdity": 0.6
+   },
+   "picture": "a sly sideways grin, bright warm light, a hand hidden behind the back, quick light poses, sparkling eyes",
+   "voice": "Sly, quick, tongue-in-cheek.",
+   "beats": "A trickster sets a prank in motion and enjoys the chaos it makes.",
+   "aka": [
+    "prank",
+    "trickster",
+    "naughty fun"
+   ],
+   "added_by": "seed",
+   "x": 0.5568,
+   "y": 0.1561
+  },
+  {
+   "id": "awkwardness",
+   "name": "Awkwardness",
+   "family": "absurd and playful",
+   "features": {
+    "valence": 0.35,
+    "arousal": 0.55,
+    "intimacy": 0.03,
+    "temporal": 0.45,
+    "moral_weight": 0.15,
+    "agency": 0.15,
+    "absurdity": 0.55
+   },
+   "picture": "stiff figures with averted eyes, bright flat light, a gap between them, fidgeting hands, forced half smiles",
+   "voice": "Stumbling, over-polite, trailing off.",
+   "beats": "A social moment goes wrong and both people try to pretend it did not happen.",
+   "aka": [
+    "cringe",
+    "social discomfort",
+    "uneasy silence"
+   ],
+   "added_by": "seed",
+   "x": -0.388,
+   "y": 0.0358
+  },
+  {
+   "id": "hope-against-the-odds",
+   "name": "Hope against the odds",
+   "family": "resolve and hope",
+   "features": {
+    "valence": 0.75,
+    "arousal": 0.65,
+    "intimacy": 0.65,
+    "temporal": 0.9,
+    "moral_weight": 0.75,
+    "agency": 0.4,
+    "absurdity": 0.02
+   },
+   "picture": "a small group lifting their eyes to a thin break of dawnlike light in a stormy sky, bruised but upright, light on their faces",
+   "voice": "Steady, simple, defiantly bright sentences.",
+   "beats": "All seems lost, then a small sign makes the characters choose to try one more time.",
+   "aka": [
+    "against all odds",
+    "last chance",
+    "light in the dark"
+   ],
+   "added_by": "seed",
+   "x": 0.4904,
+   "y": 0.2561
+  },
+  {
+   "id": "defiance",
+   "name": "Defiance",
+   "family": "resolve and hope",
+   "features": {
+    "valence": 0.55,
+    "arousal": 0.85,
+    "intimacy": 0.45,
+    "temporal": 0.6,
+    "moral_weight": 0.85,
+    "agency": 0.85,
+    "absurdity": 0.03
+   },
+   "picture": "a figure facing a much larger force with feet planted, hard rim light, torn clothes, raised chin, fists or weapon steady",
+   "voice": "Hard, loud, 'no' repeated.",
+   "beats": "A character refuses to submit when yielding is easy, and their stand inspires others.",
+   "aka": [
+    "rebellion",
+    "standing up",
+    "refusal"
+   ],
+   "added_by": "seed",
+   "x": -0.3943,
+   "y": 0.6204
+  },
+  {
+   "id": "liberation",
+   "name": "Liberation",
+   "family": "resolve and hope",
+   "features": {
+    "valence": 0.92,
+    "arousal": 0.78,
+    "intimacy": 0.6,
+    "temporal": 0.7,
+    "moral_weight": 0.7,
+    "agency": 0.88,
+    "absurdity": 0.03
+   },
+   "picture": "broken chains or an opened gate with a figure running into bright open light, arms wide, wind in hair, flooding colour",
+   "voice": "Open and breathless, long free-running sentences.",
+   "beats": "Chains fall, a gate opens, and the freed move into a world with no walls.",
+   "aka": [
+    "freedom",
+    "breaking free",
+    "escape"
+   ],
+   "added_by": "seed",
+   "x": 0.8105,
+   "y": 0.3771
+  },
+  {
+   "id": "redemption",
+   "name": "Redemption",
+   "family": "resolve and hope",
+   "features": {
+    "valence": 0.7,
+    "arousal": 0.55,
+    "intimacy": 0.3,
+    "temporal": 0.55,
+    "moral_weight": 0.95,
+    "agency": 0.7,
+    "absurdity": 0.02
+   },
+   "picture": "a figure kneeling then rising in dawn-warm light, scarred but steady, hands open, shadow behind them lifting",
+   "voice": "Honest, plain, spare confession and then a step forward.",
+   "beats": "A wrongdoer pays for what they did through action, and others slowly let them back in.",
+   "aka": [
+    "atonement",
+    "second chance",
+    "making amends"
+   ],
+   "added_by": "seed",
+   "x": 0.3835,
+   "y": 0.0358
+  },
+  {
+   "id": "quiet-resolve",
+   "name": "Quiet resolve",
+   "family": "resolve and hope",
+   "features": {
+    "valence": 0.55,
+    "arousal": 0.25,
+    "intimacy": 0.25,
+    "temporal": 0.75,
+    "moral_weight": 0.65,
+    "agency": 0.85,
+    "absurdity": 0.0
+   },
+   "picture": "a figure tightening a strap or lacing boots with a steady gaze ahead, calm neutral light, grounded stance, minimal gesture",
+   "voice": "Calm, brief, no speeches; 'I'll go'.",
+   "beats": "A character makes the hard choice without fanfare and simply begins.",
+   "aka": [
+    "steely calm",
+    "determination",
+    "set jaw"
+   ],
+   "added_by": "seed",
+   "x": 0.0388,
+   "y": -0.5797
+  },
+  {
+   "id": "infatuation",
+   "name": "Infatuation",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.86,
+    "arousal": 0.72,
+    "intimacy": 0.05,
+    "temporal": 0.75,
+    "moral_weight": 0.12,
+    "agency": 0.3,
+    "absurdity": 0.15
+   },
+   "picture": "a young adult stealing glances across a room, flushed cheeks, a half-hidden smile, bright warm light, hands fidgeting with a sleeve",
+   "voice": "Giddy run-on sentences, exclamation, lists of tiny details about them.",
+   "beats": "A new person lights up an ordinary day; the lead keeps finding reasons to look, to be near, to blush.",
+   "aka": [
+    "crush",
+    "butterflies",
+    "smitten"
+   ],
+   "added_by": "seed",
+   "x": 0.6935,
+   "y": 0.3406
+  },
+  {
+   "id": "first-love",
+   "name": "First love",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.84,
+    "arousal": 0.5,
+    "intimacy": 0.04,
+    "temporal": 0.62,
+    "moral_weight": 0.2,
+    "agency": 0.28,
+    "absurdity": 0.1
+   },
+   "picture": "two young adults sitting a careful distance apart on a step, shy glances, soft spring light, awkward hands, everything freshly washed in colour",
+   "voice": "Hesitant, earnest, every small thing treated as enormous.",
+   "beats": "Two people learn each other for the first time; every touch, note and joke is new and carries too much weight.",
+   "aka": [
+    "young love",
+    "first crush",
+    "puppy love"
+   ],
+   "added_by": "seed",
+   "x": 0.7,
+   "y": -0.1037
+  },
+  {
+   "id": "love-at-first-sight",
+   "name": "Love at first sight",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.9,
+    "arousal": 0.8,
+    "intimacy": 0.1,
+    "temporal": 0.66,
+    "moral_weight": 0.14,
+    "agency": 0.12,
+    "absurdity": 0.08
+   },
+   "picture": "one face in a crowd lit as if by a spotlight, the surrounding figures soft and blurred, wide eyes, a held breath, shimmering warm light",
+   "voice": "Hushed, stunned, time suspended mid-sentence.",
+   "beats": "The world stops when two strangers meet each other's eyes; nothing else is heard until the moment breaks.",
+   "aka": [
+    "love at first glance",
+    "instant connection",
+    "the spark"
+   ],
+   "added_by": "seed",
+   "x": 0.7212,
+   "y": 0.4574
+  },
+  {
+   "id": "flirtatious-spark",
+   "name": "Flirtatious spark",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.84,
+    "arousal": 0.62,
+    "intimacy": 0.02,
+    "temporal": 0.55,
+    "moral_weight": 0.06,
+    "agency": 0.72,
+    "absurdity": 0.38
+   },
+   "picture": "two adults trading teasing looks across a table, raised eyebrows, playful half-smiles, warm bright light, leaning in a little",
+   "voice": "Quick, teasing, double-edged banter with a wink in every line.",
+   "beats": "Sharp witty exchanges between two people who clearly enjoy sparring; the chemistry shows before either admits it.",
+   "aka": [
+    "banter",
+    "chemistry",
+    "teasing"
+   ],
+   "added_by": "seed",
+   "x": 0.6597,
+   "y": 0.2182
+  },
+  {
+   "id": "enemies-to-lovers",
+   "name": "Enemies to lovers",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.52,
+    "arousal": 0.86,
+    "intimacy": 0.08,
+    "temporal": 0.6,
+    "moral_weight": 0.42,
+    "agency": 0.5,
+    "absurdity": 0.22
+   },
+   "picture": "two rivals face to face with locked stares and clenched fists, sparks of warm and cold light meeting between them, tension softening at the edges",
+   "voice": "Clipped insults that slowly lose their edge and start to mean something else.",
+   "beats": "Rivals forced together keep clashing until a shared danger or a quiet moment shows each the other's worth.",
+   "aka": [
+    "rivals to lovers",
+    "friction",
+    "sparring"
+   ],
+   "added_by": "seed",
+   "x": -0.0099,
+   "y": 0.7313
+  },
+  {
+   "id": "burning-passion",
+   "name": "Burning passion",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.8,
+    "arousal": 0.98,
+    "intimacy": 0.1,
+    "temporal": 0.5,
+    "moral_weight": 0.3,
+    "agency": 0.32,
+    "absurdity": 0.0
+   },
+   "picture": "two adults in a desperate embrace, rain streaming over them, fully clothed and drenched, deep red and amber light, eyes closed, faces close",
+   "voice": "Breathless, urgent, fragmentary, everything said at once.",
+   "beats": "Held-back feeling finally breaks open; the scene runs on urgency, weather and a point of no return.",
+   "aka": [
+    "fiery love",
+    "consuming passion",
+    "desperate kiss"
+   ],
+   "added_by": "seed",
+   "x": 0.4216,
+   "y": 0.9068
+  },
+  {
+   "id": "devotion",
+   "name": "Devotion",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.8,
+    "arousal": 0.26,
+    "intimacy": 0.16,
+    "temporal": 0.6,
+    "moral_weight": 0.78,
+    "agency": 0.86,
+    "absurdity": 0.0
+   },
+   "picture": "an older couple's steady hands working side by side, a hand placed on a shoulder, low steady golden light, calm upright posture, quiet certainty",
+   "voice": "Plain, steady, repeated promises kept in small acts.",
+   "beats": "Love shown by showing up again and again over years; a hard season tests it and the lead chooses them anyway.",
+   "aka": [
+    "steadfast love",
+    "loyalty",
+    "faithfulness"
+   ],
+   "added_by": "seed",
+   "x": 0.5502,
+   "y": -0.5058
+  },
+  {
+   "id": "adoration-from-afar",
+   "name": "Adoration from afar",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.74,
+    "arousal": 0.4,
+    "intimacy": 0.1,
+    "temporal": 0.66,
+    "moral_weight": 0.52,
+    "agency": 0.22,
+    "absurdity": 0.0
+   },
+   "picture": "a figure gazing up at a distant balcony or stage, hand pressed to the chest, soft golden glow on the beloved, long distance between them",
+   "voice": "Courtly, lyrical, idealising, praise too large to be said aloud.",
+   "beats": "One person quietly worships another who never notices; the devotion shows in rituals, letters and watching from the edge.",
+   "aka": [
+    "worship from afar",
+    "courtly love",
+    "idealising"
+   ],
+   "added_by": "seed",
+   "x": 0.461,
+   "y": -0.2483
+  },
+  {
+   "id": "the-confession",
+   "name": "The confession",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.66,
+    "arousal": 0.86,
+    "intimacy": 0.05,
+    "temporal": 0.82,
+    "moral_weight": 0.52,
+    "agency": 0.62,
+    "absurdity": 0.02
+   },
+   "picture": "two adults facing each other, one taking a held breath with a trembling hand reaching out, tight framing on both faces, warm light waiting to break",
+   "voice": "Halting, stripped back, the one true sentence finally said.",
+   "beats": "The story builds toward the held breath before 'I love you'; the pause is longer than the words.",
+   "aka": [
+    "i love you",
+    "declaration",
+    "telling the truth"
+   ],
+   "added_by": "seed",
+   "x": 0.253,
+   "y": 0.7152
+  },
+  {
+   "id": "reunion",
+   "name": "Reunion",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.96,
+    "arousal": 0.76,
+    "intimacy": 0.1,
+    "temporal": 0.34,
+    "moral_weight": 0.3,
+    "agency": 0.72,
+    "absurdity": 0.0
+   },
+   "picture": "two adults running toward each other across a platform or open field, arms opening into an embrace, wind in their coats, luminous warm light",
+   "voice": "Overlapping half-sentences, laughter caught in tears.",
+   "beats": "After a long separation the lovers see each other and close the distance at a run; the embrace is the payoff.",
+   "aka": [
+    "homecoming embrace",
+    "finding each other again",
+    "return"
+   ],
+   "added_by": "seed",
+   "x": 0.9302,
+   "y": 0.3671
+  },
+  {
+   "id": "love-s-sacrifice",
+   "name": "Love's sacrifice",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.44,
+    "arousal": 0.62,
+    "intimacy": 0.3,
+    "temporal": 0.72,
+    "moral_weight": 0.96,
+    "agency": 0.86,
+    "absurdity": 0.0
+   },
+   "picture": "an adult placing a keepsake in a loved one's hand and stepping back, a calm face with wet eyes, one bright shaft of light between them, an empty road behind",
+   "voice": "Quiet, certain, nearly gentle; the cost is never mentioned.",
+   "beats": "One lover gives up what they most want so the other can have a future; the act is calm and the aftermath heavy.",
+   "aka": [
+    "giving everything up",
+    "self-sacrifice",
+    "sacrificial love"
+   ],
+   "added_by": "seed",
+   "x": -0.1713,
+   "y": 0.1925
+  },
+  {
+   "id": "rekindled-love",
+   "name": "Rekindled love",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.8,
+    "arousal": 0.5,
+    "intimacy": 0.08,
+    "temporal": 0.4,
+    "moral_weight": 0.46,
+    "agency": 0.56,
+    "absurdity": 0.0
+   },
+   "picture": "two adults meeting years later, an old letter or photograph between their hands, warm light slowly returning to their faces, cautious hopeful smiles",
+   "voice": "Careful, a little wry, old jokes returning one at a time.",
+   "beats": "An old flame catches again; the leads carry their past with them and decide to try anyway.",
+   "aka": [
+    "second chance romance",
+    "old flame",
+    "rekindling"
+   ],
+   "added_by": "seed",
+   "x": 0.5833,
+   "y": -0.0753
+  },
+  {
+   "id": "obsessive-love",
+   "name": "Obsessive love",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.14,
+    "arousal": 0.86,
+    "intimacy": 0.05,
+    "temporal": 0.6,
+    "moral_weight": 0.82,
+    "agency": 0.76,
+    "absurdity": 0.1
+   },
+   "picture": "a figure watching from a doorway or window with fixed eyes, a wall of clippings and photos behind, harsh cold light, tight clenched hands",
+   "voice": "Fixed, repetitive, tender words with a chill under them.",
+   "beats": "Devotion turns possessive and dangerous; the object of it begins to feel watched and the story becomes a warning.",
+   "aka": [
+    "possessive love",
+    "dangerous attachment",
+    "fixation"
+   ],
+   "added_by": "seed",
+   "x": -0.6823,
+   "y": 0.619
+  },
+  {
+   "id": "love-hate",
+   "name": "Love-hate",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.36,
+    "arousal": 0.82,
+    "intimacy": 0.05,
+    "temporal": 0.5,
+    "moral_weight": 0.5,
+    "agency": 0.3,
+    "absurdity": 0.32
+   },
+   "picture": "two adults leaning in to argue then pulling back, one turning away while still holding the other's sleeve, hard and warm light split across their faces",
+   "voice": "Barbed, contradictory, 'I can't stand you' with the door left open.",
+   "beats": "Two people cannot stay apart and cannot agree; each fight pulls them closer and each retreat hurts.",
+   "aka": [
+    "can't live with or without",
+    "push and pull",
+    "ambivalent love"
+   ],
+   "added_by": "seed",
+   "x": -0.2743,
+   "y": 0.6269
+  },
+  {
+   "id": "secret-love",
+   "name": "Secret love",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.6,
+    "arousal": 0.56,
+    "intimacy": 0.05,
+    "temporal": 0.6,
+    "moral_weight": 0.62,
+    "agency": 0.4,
+    "absurdity": 0.05
+   },
+   "picture": "two adults exchanging a glance across a crowded room, hands brushing out of sight, one eye on the door, dim intimate light with watching figures in shadow",
+   "voice": "Coded, murmured, double meanings in ordinary words.",
+   "beats": "A love no one may know about lives in hidden glances, notes and stolen minutes; discovery is always one step away.",
+   "aka": [
+    "hidden love",
+    "stolen glances",
+    "clandestine love"
+   ],
+   "added_by": "seed",
+   "x": 0.1633,
+   "y": 0.0592
+  },
+  {
+   "id": "mature-love",
+   "name": "Mature love",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.88,
+    "arousal": 0.12,
+    "intimacy": 0.08,
+    "temporal": 0.45,
+    "moral_weight": 0.56,
+    "agency": 0.76,
+    "absurdity": 0.02
+   },
+   "picture": "an old couple on a bench with their hands held, fully clothed in worn comfortable coats, soft late-afternoon light, relaxed shoulders, quiet shared smiles",
+   "voice": "Slow, dry, affectionate; whole histories in a few words.",
+   "beats": "Decades of shared life show in small habits; the story treasures the quiet over the dramatic.",
+   "aka": [
+    "old couple",
+    "lifelong love",
+    "growing old together"
+   ],
+   "added_by": "seed",
+   "x": 0.6579,
+   "y": -0.7202
+  },
+  {
+   "id": "parting",
+   "name": "Parting",
+   "family": "love and passion",
+   "features": {
+    "valence": 0.3,
+    "arousal": 0.46,
+    "intimacy": 0.08,
+    "temporal": 0.46,
+    "moral_weight": 0.62,
+    "agency": 0.3,
+    "absurdity": 0.0
+   },
+   "picture": "two adults at a train station or dock, one stepping away while the other holds on to a hand until it slips, a last long look, cool evening light, a small bag on the ground",
+   "voice": "Few words, said evenly, with everything else in the pauses.",
+   "beats": "A farewell is drawn out as long as it can be; the last look and the moment the hands separate carry the scene.",
+   "aka": [
+    "farewell",
+    "goodbye",
+    "last look"
+   ],
+   "added_by": "seed",
+   "x": -0.4547,
+   "y": -0.0935
+  }
+ ],
+ "edges": [
+  {
+   "a": "absurdity",
+   "b": "awkwardness",
+   "w": 0.27,
+   "uses": 0
+  },
+  {
+   "a": "absurdity",
+   "b": "gallows-humor",
+   "w": 0.47,
+   "uses": 0
+  },
+  {
+   "a": "absurdity",
+   "b": "whimsy",
+   "w": 0.24,
+   "uses": 0
+  },
+  {
+   "a": "adoration-from-afar",
+   "b": "first-love",
+   "w": 0.68,
+   "uses": 0
+  },
+  {
+   "a": "adoration-from-afar",
+   "b": "secret-love",
+   "w": 0.77,
+   "uses": 0
+  },
+  {
+   "a": "adoration-from-afar",
+   "b": "trust",
+   "w": 0.69,
+   "uses": 0
+  },
+  {
+   "a": "anticipation",
+   "b": "rapture",
+   "w": 0.56,
+   "uses": 0
+  },
+  {
+   "a": "anticipation",
+   "b": "wanderlust",
+   "w": 0.85,
+   "uses": 0
+  },
+  {
+   "a": "anticipation",
+   "b": "wonder",
+   "w": 0.69,
+   "uses": 0
+  },
+  {
+   "a": "anticipation",
+   "b": "yearning-for-adventure",
+   "w": 0.74,
+   "uses": 0
+  },
+  {
+   "a": "awe",
+   "b": "rapture",
+   "w": 0.51,
+   "uses": 0
+  },
+  {
+   "a": "awe",
+   "b": "reverence",
+   "w": 0.4,
+   "uses": 0
+  },
+  {
+   "a": "awe",
+   "b": "sublime-terror",
+   "w": 0.36,
+   "uses": 0
+  },
+  {
+   "a": "awe",
+   "b": "wonder",
+   "w": 0.47,
+   "uses": 0
+  },
+  {
+   "a": "awkwardness",
+   "b": "love-hate",
+   "w": 0.47,
+   "uses": 0
+  },
+  {
+   "a": "awkwardness",
+   "b": "uncanny-calm",
+   "w": 0.48,
+   "uses": 0
+  },
+  {
+   "a": "awkwardness",
+   "b": "vertigo",
+   "w": 0.49,
+   "uses": 0
+  },
+  {
+   "a": "betrayal",
+   "b": "resentment",
+   "w": 0.68,
+   "uses": 0
+  },
+  {
+   "a": "betrayal",
+   "b": "shame",
+   "w": 0.74,
+   "uses": 0
+  },
+  {
+   "a": "betrayal",
+   "b": "survivor-s-guilt",
+   "w": 0.64,
+   "uses": 0
+  },
+  {
+   "a": "bittersweet",
+   "b": "homesickness",
+   "w": 0.75,
+   "uses": 0
+  },
+  {
+   "a": "bittersweet",
+   "b": "melancholy",
+   "w": 0.76,
+   "uses": 0
+  },
+  {
+   "a": "bittersweet",
+   "b": "nostalgia",
+   "w": 0.71,
+   "uses": 0
+  },
+  {
+   "a": "bittersweet",
+   "b": "saudade",
+   "w": 0.79,
+   "uses": 0
+  },
+  {
+   "a": "bliss",
+   "b": "cozy-comfort",
+   "w": 0.86,
+   "uses": 0
+  },
+  {
+   "a": "bliss",
+   "b": "relief",
+   "w": 0.79,
+   "uses": 0
+  },
+  {
+   "a": "bliss",
+   "b": "serenity",
+   "w": 0.81,
+   "uses": 0
+  },
+  {
+   "a": "bliss",
+   "b": "whimsy",
+   "w": 0.33,
+   "uses": 0
+  },
+  {
+   "a": "burning-passion",
+   "b": "enemies-to-lovers",
+   "w": 0.58,
+   "uses": 0
+  },
+  {
+   "a": "burning-passion",
+   "b": "infatuation",
+   "w": 0.59,
+   "uses": 0
+  },
+  {
+   "a": "burning-passion",
+   "b": "love-at-first-sight",
+   "w": 0.68,
+   "uses": 0
+  },
+  {
+   "a": "camaraderie",
+   "b": "euphoria",
+   "w": 0.56,
+   "uses": 0
+  },
+  {
+   "a": "camaraderie",
+   "b": "flirtatious-spark",
+   "w": 0.62,
+   "uses": 0
+  },
+  {
+   "a": "camaraderie",
+   "b": "found-family-warmth",
+   "w": 0.74,
+   "uses": 0
+  },
+  {
+   "a": "camaraderie",
+   "b": "joy",
+   "w": 0.9,
+   "uses": 0
+  },
+  {
+   "a": "camaraderie",
+   "b": "mischief",
+   "w": 0.46,
+   "uses": 0
+  },
+  {
+   "a": "camaraderie",
+   "b": "pride",
+   "w": 0.7,
+   "uses": 0
+  },
+  {
+   "a": "camaraderie",
+   "b": "reunion",
+   "w": 0.67,
+   "uses": 0
+  },
+  {
+   "a": "catharsis",
+   "b": "enemies-to-lovers",
+   "w": 0.67,
+   "uses": 0
+  },
+  {
+   "a": "catharsis",
+   "b": "forbidden-love",
+   "w": 0.66,
+   "uses": 0
+  },
+  {
+   "a": "catharsis",
+   "b": "secret-love",
+   "w": 0.57,
+   "uses": 0
+  },
+  {
+   "a": "cosmic-horror",
+   "b": "existential-dread",
+   "w": 0.49,
+   "uses": 0
+  },
+  {
+   "a": "cosmic-horror",
+   "b": "sublime-terror",
+   "w": 0.78,
+   "uses": 0
+  },
+  {
+   "a": "cosmic-horror",
+   "b": "tension",
+   "w": 0.2,
+   "uses": 0
+  },
+  {
+   "a": "cozy-comfort",
+   "b": "relief",
+   "w": 0.63,
+   "uses": 0
+  },
+  {
+   "a": "cozy-comfort",
+   "b": "serenity",
+   "w": 0.82,
+   "uses": 0
+  },
+  {
+   "a": "defiance",
+   "b": "liberation",
+   "w": 0.58,
+   "uses": 0
+  },
+  {
+   "a": "defiance",
+   "b": "love-s-sacrifice",
+   "w": 0.73,
+   "uses": 0
+  },
+  {
+   "a": "defiance",
+   "b": "protectiveness",
+   "w": 0.59,
+   "uses": 0
+  },
+  {
+   "a": "defiance",
+   "b": "redemption",
+   "w": 0.62,
+   "uses": 0
+  },
+  {
+   "a": "defiance",
+   "b": "righteous-fury",
+   "w": 0.57,
+   "uses": 0
+  },
+  {
+   "a": "defiance",
+   "b": "triumph",
+   "w": 0.52,
+   "uses": 0
+  },
+  {
+   "a": "devotion",
+   "b": "mature-love",
+   "w": 0.73,
+   "uses": 0
+  },
+  {
+   "a": "devotion",
+   "b": "quiet-resolve",
+   "w": 0.74,
+   "uses": 0
+  },
+  {
+   "a": "devotion",
+   "b": "redemption",
+   "w": 0.62,
+   "uses": 0
+  },
+  {
+   "a": "disillusionment",
+   "b": "existential-dread",
+   "w": 0.34,
+   "uses": 0
+  },
+  {
+   "a": "disillusionment",
+   "b": "parting",
+   "w": 0.65,
+   "uses": 0
+  },
+  {
+   "a": "disillusionment",
+   "b": "resentment",
+   "w": 0.6,
+   "uses": 0
+  },
+  {
+   "a": "disillusionment",
+   "b": "reverence",
+   "w": 0.34,
+   "uses": 0
+  },
+  {
+   "a": "disillusionment",
+   "b": "uncanny-calm",
+   "w": 0.59,
+   "uses": 0
+  },
+  {
+   "a": "dread",
+   "b": "jealousy",
+   "w": 0.54,
+   "uses": 0
+  },
+  {
+   "a": "dread",
+   "b": "slow-burn-tension",
+   "w": 0.77,
+   "uses": 0
+  },
+  {
+   "a": "dread",
+   "b": "tension",
+   "w": 0.68,
+   "uses": 0
+  },
+  {
+   "a": "enemies-to-lovers",
+   "b": "love-hate",
+   "w": 0.77,
+   "uses": 0
+  },
+  {
+   "a": "enemies-to-lovers",
+   "b": "tension",
+   "w": 0.56,
+   "uses": 0
+  },
+  {
+   "a": "enemies-to-lovers",
+   "b": "the-confession",
+   "w": 0.69,
+   "uses": 0
+  },
+  {
+   "a": "ennui",
+   "b": "homesickness",
+   "w": 0.59,
+   "uses": 0
+  },
+  {
+   "a": "ennui",
+   "b": "loneliness",
+   "w": 0.74,
+   "uses": 0
+  },
+  {
+   "a": "ennui",
+   "b": "melancholy",
+   "w": 0.74,
+   "uses": 0
+  },
+  {
+   "a": "euphoria",
+   "b": "joy",
+   "w": 0.66,
+   "uses": 0
+  },
+  {
+   "a": "euphoria",
+   "b": "rapture",
+   "w": 0.67,
+   "uses": 0
+  },
+  {
+   "a": "existential-dread",
+   "b": "slow-burn-tension",
+   "w": 0.34,
+   "uses": 0
+  },
+  {
+   "a": "existential-dread",
+   "b": "sublime-terror",
+   "w": 0.31,
+   "uses": 0
+  },
+  {
+   "a": "first-love",
+   "b": "infatuation",
+   "w": 0.81,
+   "uses": 0
+  },
+  {
+   "a": "first-love",
+   "b": "love-at-first-sight",
+   "w": 0.7,
+   "uses": 0
+  },
+  {
+   "a": "flirtatious-spark",
+   "b": "mischief",
+   "w": 0.67,
+   "uses": 0
+  },
+  {
+   "a": "flirtatious-spark",
+   "b": "whimsy",
+   "w": 0.63,
+   "uses": 0
+  },
+  {
+   "a": "forbidden-love",
+   "b": "protectiveness",
+   "w": 0.72,
+   "uses": 0
+  },
+  {
+   "a": "forbidden-love",
+   "b": "secret-love",
+   "w": 0.75,
+   "uses": 0
+  },
+  {
+   "a": "found-family-warmth",
+   "b": "joy",
+   "w": 0.68,
+   "uses": 0
+  },
+  {
+   "a": "found-family-warmth",
+   "b": "pride",
+   "w": 0.7,
+   "uses": 0
+  },
+  {
+   "a": "found-family-warmth",
+   "b": "rekindled-love",
+   "w": 0.82,
+   "uses": 0
+  },
+  {
+   "a": "found-family-warmth",
+   "b": "relief",
+   "w": 0.8,
+   "uses": 0
+  },
+  {
+   "a": "found-family-warmth",
+   "b": "tenderness",
+   "w": 0.81,
+   "uses": 0
+  },
+  {
+   "a": "found-family-warmth",
+   "b": "trust",
+   "w": 0.69,
+   "uses": 0
+  },
+  {
+   "a": "gallows-humor",
+   "b": "schadenfreude",
+   "w": 0.27,
+   "uses": 0
+  },
+  {
+   "a": "gallows-humor",
+   "b": "uncanny-calm",
+   "w": 0.27,
+   "uses": 0
+  },
+  {
+   "a": "grief",
+   "b": "heartbreak",
+   "w": 0.77,
+   "uses": 0
+  },
+  {
+   "a": "grief",
+   "b": "humiliation",
+   "w": 0.77,
+   "uses": 0
+  },
+  {
+   "a": "grief",
+   "b": "resentment",
+   "w": 0.75,
+   "uses": 0
+  },
+  {
+   "a": "heartbreak",
+   "b": "humiliation",
+   "w": 0.93,
+   "uses": 0
+  },
+  {
+   "a": "heartbreak",
+   "b": "jealousy",
+   "w": 0.73,
+   "uses": 0
+  },
+  {
+   "a": "heartbreak",
+   "b": "resentment",
+   "w": 0.85,
+   "uses": 0
+  },
+  {
+   "a": "hiraeth",
+   "b": "homesickness",
+   "w": 0.66,
+   "uses": 0
+  },
+  {
+   "a": "hiraeth",
+   "b": "melancholy",
+   "w": 0.68,
+   "uses": 0
+  },
+  {
+   "a": "hiraeth",
+   "b": "mono-no-aware",
+   "w": 0.63,
+   "uses": 0
+  },
+  {
+   "a": "hiraeth",
+   "b": "saudade",
+   "w": 0.84,
+   "uses": 0
+  },
+  {
+   "a": "homesickness",
+   "b": "loneliness",
+   "w": 0.69,
+   "uses": 0
+  },
+  {
+   "a": "homesickness",
+   "b": "melancholy",
+   "w": 0.82,
+   "uses": 0
+  },
+  {
+   "a": "homesickness",
+   "b": "nostalgia",
+   "w": 0.65,
+   "uses": 0
+  },
+  {
+   "a": "homesickness",
+   "b": "saudade",
+   "w": 0.92,
+   "uses": 0
+  },
+  {
+   "a": "hope-against-the-odds",
+   "b": "liberation",
+   "w": 0.41,
+   "uses": 0
+  },
+  {
+   "a": "hope-against-the-odds",
+   "b": "rapture",
+   "w": 0.43,
+   "uses": 0
+  },
+  {
+   "a": "hope-against-the-odds",
+   "b": "wonder",
+   "w": 0.37,
+   "uses": 0
+  },
+  {
+   "a": "humiliation",
+   "b": "resentment",
+   "w": 0.84,
+   "uses": 0
+  },
+  {
+   "a": "infatuation",
+   "b": "love-at-first-sight",
+   "w": 0.86,
+   "uses": 0
+  },
+  {
+   "a": "jealousy",
+   "b": "love-hate",
+   "w": 0.64,
+   "uses": 0
+  },
+  {
+   "a": "jealousy",
+   "b": "parting",
+   "w": 0.77,
+   "uses": 0
+  },
+  {
+   "a": "jealousy",
+   "b": "resentment",
+   "w": 0.71,
+   "uses": 0
+  },
+  {
+   "a": "joy",
+   "b": "reunion",
+   "w": 0.75,
+   "uses": 0
+  },
+  {
+   "a": "liberation",
+   "b": "redemption",
+   "w": 0.42,
+   "uses": 0
+  },
+  {
+   "a": "liberation",
+   "b": "triumph",
+   "w": 0.9,
+   "uses": 0
+  },
+  {
+   "a": "loneliness",
+   "b": "melancholy",
+   "w": 0.87,
+   "uses": 0
+  },
+  {
+   "a": "longing",
+   "b": "slow-burn-tension",
+   "w": 0.81,
+   "uses": 0
+  },
+  {
+   "a": "longing",
+   "b": "uncanny-calm",
+   "w": 0.63,
+   "uses": 0
+  },
+  {
+   "a": "longing",
+   "b": "unrequited-love",
+   "w": 0.72,
+   "uses": 0
+  },
+  {
+   "a": "love-hate",
+   "b": "vertigo",
+   "w": 0.56,
+   "uses": 0
+  },
+  {
+   "a": "love-s-sacrifice",
+   "b": "obsessive-love",
+   "w": 0.48,
+   "uses": 0
+  },
+  {
+   "a": "love-s-sacrifice",
+   "b": "protectiveness",
+   "w": 0.74,
+   "uses": 0
+  },
+  {
+   "a": "love-s-sacrifice",
+   "b": "quiet-resolve",
+   "w": 0.5,
+   "uses": 0
+  },
+  {
+   "a": "love-s-sacrifice",
+   "b": "redemption",
+   "w": 0.7,
+   "uses": 0
+  },
+  {
+   "a": "love-s-sacrifice",
+   "b": "revenge",
+   "w": 0.71,
+   "uses": 0
+  },
+  {
+   "a": "love-s-sacrifice",
+   "b": "righteous-fury",
+   "w": 0.44,
+   "uses": 0
+  },
+  {
+   "a": "mature-love",
+   "b": "tenderness",
+   "w": 0.81,
+   "uses": 0
+  },
+  {
+   "a": "mature-love",
+   "b": "trust",
+   "w": 0.72,
+   "uses": 0
+  },
+  {
+   "a": "melancholy",
+   "b": "mono-no-aware",
+   "w": 0.5,
+   "uses": 0
+  },
+  {
+   "a": "melancholy",
+   "b": "saudade",
+   "w": 0.84,
+   "uses": 0
+  },
+  {
+   "a": "mischief",
+   "b": "whimsy",
+   "w": 0.48,
+   "uses": 0
+  },
+  {
+   "a": "mono-no-aware",
+   "b": "reverence",
+   "w": 0.32,
+   "uses": 0
+  },
+  {
+   "a": "mono-no-aware",
+   "b": "saudade",
+   "w": 0.52,
+   "uses": 0
+  },
+  {
+   "a": "nostalgia",
+   "b": "saudade",
+   "w": 0.75,
+   "uses": 0
+  },
+  {
+   "a": "obsessive-love",
+   "b": "protectiveness",
+   "w": 0.53,
+   "uses": 0
+  },
+  {
+   "a": "obsessive-love",
+   "b": "revenge",
+   "w": 0.9,
+   "uses": 0
+  },
+  {
+   "a": "parting",
+   "b": "resentment",
+   "w": 0.71,
+   "uses": 0
+  },
+  {
+   "a": "parting",
+   "b": "secret-love",
+   "w": 0.69,
+   "uses": 0
+  },
+  {
+   "a": "parting",
+   "b": "unrequited-love",
+   "w": 0.75,
+   "uses": 0
+  },
+  {
+   "a": "pride",
+   "b": "rekindled-love",
+   "w": 0.73,
+   "uses": 0
+  },
+  {
+   "a": "pride",
+   "b": "triumph",
+   "w": 0.48,
+   "uses": 0
+  },
+  {
+   "a": "protectiveness",
+   "b": "quiet-resolve",
+   "w": 0.52,
+   "uses": 0
+  },
+  {
+   "a": "protectiveness",
+   "b": "redemption",
+   "w": 0.75,
+   "uses": 0
+  },
+  {
+   "a": "protectiveness",
+   "b": "revenge",
+   "w": 0.63,
+   "uses": 0
+  },
+  {
+   "a": "protectiveness",
+   "b": "schadenfreude",
+   "w": 0.53,
+   "uses": 0
+  },
+  {
+   "a": "protectiveness",
+   "b": "the-confession",
+   "w": 0.62,
+   "uses": 0
+  },
+  {
+   "a": "rapture",
+   "b": "wonder",
+   "w": 0.72,
+   "uses": 0
+  },
+  {
+   "a": "rekindled-love",
+   "b": "relief",
+   "w": 0.79,
+   "uses": 0
+  },
+  {
+   "a": "rekindled-love",
+   "b": "reunion",
+   "w": 0.66,
+   "uses": 0
+  },
+  {
+   "a": "rekindled-love",
+   "b": "schadenfreude",
+   "w": 0.53,
+   "uses": 0
+  },
+  {
+   "a": "relief",
+   "b": "serenity",
+   "w": 0.61,
+   "uses": 0
+  },
+  {
+   "a": "relief",
+   "b": "tenderness",
+   "w": 0.81,
+   "uses": 0
+  },
+  {
+   "a": "resentment",
+   "b": "shame",
+   "w": 0.89,
+   "uses": 0
+  },
+  {
+   "a": "resentment",
+   "b": "survivor-s-guilt",
+   "w": 0.77,
+   "uses": 0
+  },
+  {
+   "a": "revenge",
+   "b": "righteous-fury",
+   "w": 0.5,
+   "uses": 0
+  },
+  {
+   "a": "schadenfreude",
+   "b": "secret-love",
+   "w": 0.61,
+   "uses": 0
+  },
+  {
+   "a": "secret-love",
+   "b": "the-confession",
+   "w": 0.57,
+   "uses": 0
+  },
+  {
+   "a": "shame",
+   "b": "survivor-s-guilt",
+   "w": 0.86,
+   "uses": 0
+  },
+  {
+   "a": "slow-burn-tension",
+   "b": "tension",
+   "w": 0.79,
+   "uses": 0
+  },
+  {
+   "a": "slow-burn-tension",
+   "b": "unrequited-love",
+   "w": 0.64,
+   "uses": 0
+  },
+  {
+   "a": "tenderness",
+   "b": "trust",
+   "w": 0.85,
+   "uses": 0
+  },
+  {
+   "a": "tension",
+   "b": "vertigo",
+   "w": 0.52,
+   "uses": 0
+  },
+  {
+   "a": "uncanny-calm",
+   "b": "unrequited-love",
+   "w": 0.63,
+   "uses": 0
+  },
+  {
+   "a": "unrequited-love",
+   "b": "vertigo",
+   "w": 0.52,
+   "uses": 0
+  },
+  {
+   "a": "wanderlust",
+   "b": "wonder",
+   "w": 0.74,
+   "uses": 0
+  },
+  {
+   "a": "wanderlust",
+   "b": "yearning-for-adventure",
+   "w": 0.77,
+   "uses": 0
+  },
+  {
+   "a": "wonder",
+   "b": "yearning-for-adventure",
+   "w": 0.65,
+   "uses": 0
+  }
+ ],
+ "meta": {
+  "title": "Emotion atlas",
+  "placeholder": "Find a feeling… (bittersweet, saudade, dread)",
+  "noun": "emotion",
+  "axes": {
+   "top": "I N T E N S E",
+   "bottom": "S T I L L",
+   "left": "u n p l e a s a n t",
+   "right": "p l e a s a n t"
+  },
+  "hues": {
+   "loss and grief": [
+    222,
+    55
+   ],
+   "fear and dread": [
+    275,
+    62
+   ],
+   "anger and justice": [
+    8,
+    78
+   ],
+   "joy and delight": [
+    48,
+    88
+   ],
+   "wonder and awe": [
+    190,
+    75
+   ],
+   "calm and comfort": [
+    150,
+    50
+   ],
+   "tension and drive": [
+    24,
+    82
+   ],
+   "belonging and bonds": [
+    95,
+    58
+   ],
+   "self and shame": [
+    310,
+    38
+   ],
+   "absurd and playful": [
+    168,
+    80
+   ],
+   "resolve and hope": [
+    60,
+    70
+   ],
+   "love and passion": [
+    346,
+    80
+   ],
+   "longing and home": [
+    255,
+    45
+   ]
+  }
+ }
+}

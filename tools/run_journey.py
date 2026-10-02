@@ -14,6 +14,7 @@ latents), and every scene prompt repeats the same character sheet in the source 
 Usage:
     .venv/Scripts/python tools/run_journey.py journeys/001-x/ch01 [...more]
     .venv/Scripts/python tools/run_journey.py --reroll journeys/001-x/ch01/s3.png
+    .venv/Scripts/python tools/run_journey.py musicvideos/001-x/sb01     (🎵 storyboard: the parent has mv.json instead of journey.json)
 """
 import importlib
 import json
@@ -33,8 +34,7 @@ import run_version as rv
 ROOT = rv.ROOT
 DEFAULTS = {**rv.DEFAULTS, "aspect_ratio": "16:9 (Widescreen)", "megapixels": 1.2}
 
-# every scene: the character lives in the world, never poses for the viewer (user 2026-09-25: "They should not be
-# posing for the picture but existing in their world", "much more detail given to the world")
+# every scene: the character lives in the world and never poses for the viewer (more detail goes to the world)
 CANDID = ("A candid in-world moment, like a still from the film: the character is absorbed in what they are doing and "
           "unaware of the viewer, not posing, not looking at the camera, seen in three-quarter view, profile or from behind, "
           "eyes on their task or on the world around them. The world is the co-star: a richly detailed, "
@@ -48,16 +48,30 @@ CANDID = ("A candid in-world moment, like a still from the film: the character i
 CANDID_DIRECTED = CANDID.replace("seen in three-quarter view, profile or from behind, ", "")
 
 
+def mv_as_journey(m):
+    """🎵 musicvideos/NNN/mv.json -> the journey dict the renderer reads (storyboards are chapters of a music video:
+    musicvideos/NNN-x/sbNN/chapter.json). The singer is the lead; refs may be empty (then no lead reference at all)."""
+    refs = m.get("refs") or []
+    return {"title": m.get("title", ""), "name": m.get("name") or "the singer", "source": refs[0] if refs else "", "refs": refs,
+            "style": m.get("style", ""), "character": m.get("character", ""), "world": m.get("world", ""), "cast": m.get("cast") or {},
+            "ref_crop": m.get("ref_crop") or {}, "ref_notes": m.get("ref_notes") or {}, "ref_for": m.get("ref_for") or {},
+            "ref_resolution": m.get("ref_resolution", 768)}
+
+
 def load(chdir: Path):
-    j = json.loads((chdir.parent / "journey.json").read_text(encoding="utf-8"))
+    jf = chdir.parent / "journey.json"
+    if jf.exists():
+        j = json.loads(jf.read_text(encoding="utf-8"))
+    else:
+        j = mv_as_journey(json.loads((chdir.parent / "mv.json").read_text(encoding="utf-8")))
     ch = json.loads((chdir / "chapter.json").read_text(encoding="utf-8"))
     params = {**DEFAULTS, **ch.get("params", {})}
     return j, ch, params
 
 
 def look(v):
-    """cast entries: "look text" or {"look": text, "ref": lab png, "from": caption}: a library cameo (user 2026-09-25:
-    "remember characters from that person's style ... if a need for one arises it can be someone from our library")"""
+    """cast entries: "look text" or {"look": text, "ref": lab png, "from": caption}: a library cameo
+    (a character from the same style's library, used when a story needs one)"""
     return v["look"] if isinstance(v, dict) else v
 
 
@@ -72,8 +86,9 @@ def scene_refs(j, sc):
     # journey `ref_for` {png: cast member}: a ref that is NOT the lead's face (e.g. a cropped egg) goes only to scenes whose
     # `with` names that member (noref scenes too), and is named in the prompt
     rf = j.get("ref_for") or {}
-    lead_all = sc.get("refs") or j.get("refs") or [j["source"]]
-    lead = [r for r in lead_all if rf.get(r, j["name"]) == j["name"] or sc.get("refs")] or [j["source"]]
+    src = [j["source"]] if j.get("source") else []  # a music video may have no reference at all
+    lead_all = sc.get("refs") or j.get("refs") or src
+    lead = [r for r in lead_all if rf.get(r, j["name"]) == j["name"] or sc.get("refs")] or src
     refs = [] if sc.get("noref") else [(r, j["name"]) for r in lead]
     for r in (j.get("refs") or []):
         who = rf.get(r)
@@ -86,7 +101,7 @@ def scene_refs(j, sc):
     return refs
 
 
-NOFIG_RE = re.compile(r"NO (person|people|face|faces|woman|man|human|figure)", re.I)
+NOFIG_RE = re.compile(r"\bNO (person|people|face|faces|woman|man|human|figure)\b", re.I)
 
 
 def is_nofigure(sc):
@@ -151,6 +166,7 @@ def png_size(png: Path):
 
 def build_graph(j, params, prompt, seed, prefix, refs=None):
     tmp = ROOT / "journeys" / "_tmp_workflow.json"
+    tmp.parent.mkdir(exist_ok=True)  # music videos may be the only thing rendered
     tmp.write_bytes(rv.BASE.read_bytes())
     sets = {"459.prompt": prompt, "459.seed": seed, "459.steps": params["steps"], "459.cfg": params["cfg"],
             "459.scheduler": params["sampler"], "459.scheduler_1": params["scheduler"], "459.unet_name": params["model"],
@@ -161,7 +177,7 @@ def build_graph(j, params, prompt, seed, prefix, refs=None):
     te = next(k for k, n in graph.items() if n["class_type"] == "TextEncodeQwenImage21")
     vae = next(k for k, n in graph.items() if n["class_type"] == "VAELoader")
     crops = j.get("ref_crop", {})  # {png: [x0, y0, x1, y1] fractions}: e.g. head-and-shoulders only
-    for i, ref in enumerate(refs if refs is not None else (j.get("refs") or [j["source"]]), 1):
+    for i, ref in enumerate(refs if refs is not None else (j.get("refs") or ([j["source"]] if j.get("source") else [])), 1):
         graph[f"ref{i}"] = {"class_type": "LoadImage", "inputs": {"image": upload(ROOT / ref)}}
         src = [f"ref{i}", 0]
         if ref in crops:
@@ -212,7 +228,7 @@ def render(chdir: Path, j, params, sc, seed=None):
 
 
 def label(chdir, sc):
-    return f"🧭 {chdir.parent.name} {chdir.name} · {sc['id']} {sc.get('shot', '')}".strip()
+    return f"{'🎵' if chdir.parent.parent.name == 'musicvideos' else '🧭'} {chdir.parent.name} {chdir.name} · {sc['id']} {sc.get('shot', '')}".strip()
 
 
 def reroll(png: Path):

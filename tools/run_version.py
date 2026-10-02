@@ -9,6 +9,7 @@ Existing images are skipped unless --force, so re-running a version only fills i
 """
 import importlib
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -41,7 +42,9 @@ DEFAULTS = {
 
 def comfy(*args):
     out = subprocess.run([COMFY, "--json", *args], capture_output=True, text=True,
-                         encoding="utf-8", errors="replace")
+                         encoding="utf-8", errors="replace",
+                         # UTF-8 mode: a prompt with a non-cp1252 character would otherwise make comfy-cli print nothing
+                         env={**os.environ, "PYTHONUTF8": "1", "PYTHONIOENCODING": "utf-8"})
     try:
         env = json.loads(out.stdout.strip().splitlines()[-1])
     except (json.JSONDecodeError, IndexError):
@@ -49,6 +52,26 @@ def comfy(*args):
     if not env.get("ok", True):
         raise RuntimeError(f"comfy {args[0]} error: {json.dumps(env)[:2000]}")
     return env
+
+
+EDIT_WRAP = "Description of the original image (apply the edit on top of it): "  # same text as fix_area.WRAP
+
+
+def plain_t2i(g):
+    """An image's saved graph back to plain text-to-image. After a fix-area pass the image's workflow.json is the
+    INPAINT graph (KSampler latent = the old picture + noise mask, prompt led by "In the marked area: ..."), so refit / face
+    close-ups built on it would just reproduce the old picture. Sampler back on the empty latent at full denoise, wrappers stripped."""
+    import re
+    ks = next((k for k, n in g.items() if n["class_type"] == "KSampler"), None)
+    lat = next((k for k, n in g.items() if n["class_type"] == "EmptyLatentImage"), None)
+    if ks and lat:
+        g[ks]["inputs"].update(latent_image=[lat, 0], denoise=1.0)
+    for n in g.values():
+        if n["class_type"] == "TextEncodeQwenImage21" and isinstance(n["inputs"].get("prompt"), str):
+            p = n["inputs"]["prompt"]
+            p = p.split(EDIT_WRAP, 1)[1] if EDIT_WRAP in p else p
+            n["inputs"]["prompt"] = re.sub(r"^In the marked area: .*?Everything else stays as it is\. ", "", p, flags=re.S)
+    return g
 
 
 def http_json(path, body=None):
@@ -77,7 +100,7 @@ def _submit_and_wait(graph, timeout=1800):
     except urllib.error.HTTPError as e:
         raise RuntimeError(f"server rejected prompt: {e.read().decode()[:2000]}")
     # the timeout only counts time the job is actually RUNNING (or missing): waiting behind a long shared queue is fine
-    # (2026-09-26: with ~20 jobs queued, a 30 min wall-clock timeout killed a whole batch before its first image started)
+    # (with ~20 jobs queued, a 30 min wall-clock timeout would kill a whole batch before its first image started)
     t0, last_q = time.time(), 0.0
     while True:
         h = http_json(f"/history/{pid}").get(pid)
@@ -117,8 +140,8 @@ JOB = None  # pipeline.Job: shows this run's plan in the gallery's ⚙ Queue pan
 
 def render(vdir: Path, params, name, prompt, seed, force=False):
     out_png = vdir / f"{name}.png"
-    if out_png.exists() and not force:  # a reroll always writes (2026-09-27: a stale batch re-filled the moved-away file
-        return                          # first, and the reroll then skipped its own new image)
+    if out_png.exists() and not force:  # a reroll always writes (a stale batch could re-fill the moved-away file
+        return                          # first, and the reroll would then skip its own new image)
     if JOB:
         JOB.start(pipeline.rel(out_png))
     try:
@@ -175,7 +198,7 @@ def _render(vdir, params, name, prompt, seed, out_png):
     print(f"done {out_png.relative_to(ROOT)} in {time.time() - t0:.0f}s", flush=True)
 
 
-# "fix" rerolls (user 2026-09-24): negatives stay off by default; a 🎲 on an image whose latest comment reports bad
+# "fix" rerolls: negatives stay off by default; a 🎲 on an image whose latest comment reports bad
 # hands/anatomy re-renders with this negative prompt and CFG 2.5 (at CFG 1 a negative prompt has no effect)
 FIX_NEG = ("bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, deformed hands, extra limbs, "
            "malformed limbs, twisted torso, text, logo, lettering, watermark, signage")

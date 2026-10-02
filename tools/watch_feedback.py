@@ -14,18 +14,26 @@ import sys
 import time
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parent.parent
 # always emit UTF-8: the 👥 picker's note ("👥 types: ...") and emoji crash print() on a cp1252 Windows console
 try:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 except Exception:
     pass
-
-ROOT = Path(__file__).resolve().parent.parent
 LOG = ROOT / "feedback" / "log.jsonl"
 OFFSET = ROOT / "feedback" / "pipeline" / "watch.offset"  # byte offset the last watch had read up to
 
 # events the gallery server handles by itself: shown, but flagged so nobody starts duplicate work
-INFO_ONLY = {"reroll", "upscale", "refit", "style_mark", "blur", "fix_area", "journey-ref", "journey-ref-crop"}
+INFO_ONLY = {"reroll", "upscale", "refit", "revision_restore", "style_mark", "blur", "fix_area", "journey-ref", "journey-ref-crop", "mv_upload", "mv-ref", "mv-ref-remove", "mv-ref-crop", "mv-ref-note", "mv_face", "mv_lyrics", "mv_assemble", "atlas_learn", "atlas_reset"}
+
+
+def is_info(ev):
+    """🎵 "mv" events: kinds "submit" (storyboard it) and "ref_request" (write a prompt, render a reference) are requests; start / add_refs just record the 📌 tray landing"""
+    if ev.get("event") == "explore":  # 🌌 start / continue = plan the next episode, tune = re-steer the one in flight, atlas_add = map a new formality neuron (all ACT); stop = informational
+        return ev.get("kind") not in ("start", "continue", "tune", "atlas_add")  # tune = Apply = re-steer the story in flight
+    if ev.get("event") == "mv":
+        return ev.get("kind") not in ("submit", "ref_request")
+    return ev.get("event") in INFO_ONLY
 
 
 def fmt(line):
@@ -33,7 +41,7 @@ def fmt(line):
         ev = json.loads(line)
     except json.JSONDecodeError:
         return line[:400]
-    tag = "info" if ev.get("event") in INFO_ONLY else "ACT"
+    tag = "info" if is_info(ev) else "ACT"
     return f"[{tag}] " + json.dumps(ev, ensure_ascii=False)[:400]
 
 

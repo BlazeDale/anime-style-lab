@@ -44,7 +44,7 @@ def original_graph_and_prompt(png: Path):
     te = next(k for k, n in g.items() if n["class_type"] == "TextEncodeQwenImage21")
     prompt = g[te]["inputs"].get("prompt")
     if not prompt:
-        if png.parent.name.startswith("ch"):
+        if png.parent.name.startswith(("ch", "sb")):  # journey chapter or music-video storyboard
             j, ch, _ = run_journey.load(png.parent)
             prompt = run_journey.scene_prompt(j, next(s for s in ch["scenes"] if s["id"] == png.stem))
         else:
@@ -57,13 +57,32 @@ def arg(flag, default=None):
     return sys.argv[sys.argv.index(flag) + 1] if flag in sys.argv else default
 
 
+TARGET = re.compile(r"\b(?:remove|erase|delete|get rid of|no|without)\s+(?:the |a |an |any |those |that |these |this )?([a-z][a-z -]{1,40}?)(?=[:,.;!]|\s+(?:and|from|in|on|at|near|to)\b|$)", re.I)
+
+
+def strip_named(prompt, text):
+    """Removing X: also drop the prompt clauses that NAME X, or the pass paints X straight back
+    ('remove the boots' repainted a boot because the outfit line said 'black combat boots')."""
+    names = {w for m in TARGET.finditer(text) for w in [m.group(1).strip().split()[-1].lower()] if len(w) > 2}
+    names |= {n[:-1] for n in names if n.endswith("s")}  # boots -> boot
+    if not names:
+        return prompt
+    pat = re.compile(r"\b(" + "|".join(map(re.escape, sorted(names))) + r")s?\b", re.I)
+    out = []
+    for sent in re.split(r"(?<=[.!?])\s+", prompt):
+        kept = [c for c in re.split(r",\s+|\s+and\s+(?=[a-z])", sent) if not pat.search(c)] if pat.search(sent) else [sent]
+        if kept:
+            out.append(", ".join(kept).rstrip(",") + ("" if kept[-1].rstrip().endswith((".", "!", "?")) else "."))
+    return " ".join(out)
+
+
 def clean_prompt(p):
     """the image's real prompt, even if a saved workflow wrapped the original in an edit instruction"""
     return p.split(WRAP, 1)[1] if WRAP in p else p
 
 
 def strip_faces(prompt):
-    """drop the clauses that ask for faces: sentence by sentence, then comma clause by comma clause inside the survivors"""
+    """drop the clauses that ask for faces: sentence by sentence, then comma clause by comma clause inside the kept ones"""
     out = []
     for sent in re.split(r"(?<=[.!?])\s+", prompt):
         if not FACEY.search(sent):
@@ -80,7 +99,7 @@ def make_prompt(orig, text, box):
     base = clean_prompt(orig)
     removing = bool(REMOVE.search(text))
     if removing:
-        base = strip_faces(base)
+        base = strip_named(strip_faces(base), text)
     return f"In the marked area: {text}. Everything else stays as it is. " + base, removing
 
 
@@ -105,6 +124,8 @@ def build(png: Path, box, text, denoise, seed, dry=False):
     ks = next(k for k, n in g.items() if n["class_type"] == "KSampler")
     vae = next(k for k, n in g.items() if n["class_type"] == "VAELoader")
     prompt, removing = make_prompt(orig, text, box)
+    if arg("--prompt", None):  # clean plates: describe ONLY the background (the image's own prompt names the person being removed)
+        prompt = f"In the marked area: {text.strip().rstrip('.')}. Everything else stays as it is. " + arg("--prompt")
     for k in [k for k, n in g.items() if k.startswith("edit_") or k.startswith("fix_")]:  # leftovers of a previous edit graph
         del g[k]
     for a in [a for a in g[te]["inputs"] if a.startswith("images.")]:
@@ -171,7 +192,9 @@ def main():
     # full denoise erases what was there (shape, colours), which suits removals; a fix ("purple boot to match the
     # others") needs the old content as a guide -> 0.65 unless the text removes something
     removal = re.search(r"\b(remove|removing|delete|erase|get rid|no \w+|without|take out|nothing)\b", text, re.I)
-    denoise = float(arg("--denoise", 1.0 if removal else 0.65))
+    # a new size/shape/object needs room to redraw (shrinking an oversized prop works at 0.9, not 0.65)
+    reshape = re.search(r"\b(smaller|bigger|larger|shrink|enlarge|reduce|increase|resize|size|scale|too (big|large|small)|replace|instead|swap|different|vintage|change it to)\b", text, re.I)
+    denoise = float(arg("--denoise", 1.0 if removal else 0.9 if reshape else 0.65))
     # stale guard: the box was drawn on a specific version of the picture; if a reroll replaced it since, the box no longer fits
     want_mtime = arg("--if-mtime", None)
     if want_mtime is not None and abs(png.stat().st_mtime - float(want_mtime)) > 1:
@@ -192,7 +215,7 @@ def main():
         print(f"image: {png.relative_to(ROOT)} {size[0]}x{size[1]}  box {box}  sampled (grown) box {[round(v, 3) for v in grown]}  "
               f"denoise {denoise}  feather {feather}px  seed {seed}  face-clauses-stripped {removing}\nmask preview: {dbg}\n--- prompt ---\n{prompt}")
         return
-    is_jrn = png.parent.name.startswith("ch")
+    is_jrn = png.parent.name.startswith(("ch", "sb"))  # journeys chNN + music-video storyboards sbNN
     vdir, name = png.parent, png.stem
     wf = vdir / (f"{name}.workflow.json" if is_jrn or not name.startswith("seed") else "workflow.json")
     key = pipeline.rel(png)
@@ -210,6 +233,14 @@ def main():
     except BaseException:
         job.finish(key, ok=False)
         raise
+    out_path = arg("--out", None)  # write the result elsewhere and leave the source + its metadata untouched (clean plates)
+    if out_path:
+        out_path = Path(out_path) if Path(out_path).is_absolute() else ROOT / out_path
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_bytes(data)
+        job.finish(key)
+        print(f"done {key} -> {out_path} in {time.time() - t0:.0f}s (fix area to --out, denoise {denoise})", flush=True)
+        return
     arch = vdir / "_rerolled"
     arch.mkdir(exist_ok=True)
     stamp = time.strftime("%Y%m%d-%H%M%S")
@@ -219,8 +250,9 @@ def main():
     png.write_bytes(data)
     wf.write_text(json.dumps(g, indent=1, ensure_ascii=False), encoding="utf-8")
     entry = {"box": box, "text": text, "denoise": denoise, "feather": feather, "seed": seed, "ts": time.strftime("%Y-%m-%d %H:%M:%S")}
-    meta = vdir / ("chapter.json" if is_jrn else "params.json")
-    raw = json.loads(meta.read_text(encoding="utf-8"))
+    is_ref = vdir.name == "refs" and vdir.parent.parent.name == "musicvideos"  # generated mv reference: the sidecar <stem>.json holds its metadata
+    meta = png.with_suffix(".json") if is_ref else vdir / ("chapter.json" if is_jrn else "params.json")
+    raw = json.loads(meta.read_text(encoding="utf-8")) if meta.exists() else {}
     raw.setdefault("fixes_area", {}).setdefault(name, []).append(entry)
     meta.write_text(json.dumps(raw, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     job.finish(key)

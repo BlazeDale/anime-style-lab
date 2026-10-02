@@ -29,8 +29,12 @@ def image_context(image):
     """-> (subject_key, subject_text, style_title, style_prompt) for an evolutions/<lin>/<vNN>/<name>.png"""
     p = Path(image).resolve()
     vdir, ldir = p.parent, p.parent.parent
-    if (ldir / "journey.json").exists():  # a 🧭 journey scene: journeys/<j>/chNN/sN.png
-        j = json.loads((ldir / "journey.json").read_text(encoding="utf-8"))
+    if (ldir / "journey.json").exists() or (ldir / "mv.json").exists():  # a 🧭 journey scene / 🎵 storyboard frame (sbNN/sN.png)
+        if (ldir / "journey.json").exists():
+            j = json.loads((ldir / "journey.json").read_text(encoding="utf-8"))
+        else:
+            import run_journey  # the renderer's own mv.json -> journey mapping (singer = lead)
+            j = run_journey.mv_as_journey(json.loads((ldir / "mv.json").read_text(encoding="utf-8")))
         ch = json.loads((vdir / "chapter.json").read_text(encoding="utf-8"))
         sc = next(s for s in ch["scenes"] if s["id"] == p.stem)
         cast = j.get("cast", {})
@@ -68,13 +72,12 @@ def style_lock(title, style_prompt):
     return medium, f"{traits}. Every frame keeps the exact art style of <Picture 1>: {guard}"
 
 
-# monsters, undead and bosses keep their gravitas even in a cozy toy-like style (user 2026-09-26: "take a more ominous
-# approach with any videos for monster or bosses, even though it's comfy graphics the gravitas around those
-# characters should be intact")
+# monsters, undead and bosses keep their gravitas even in a cozy toy-like style: a more ominous approach, the weight of
+# those characters stays intact
 MENACE_KEY = re.compile(r"^(z-|b-|boss)", re.I)
 MENACE_LABEL = re.compile(r"\b(boss|dangerous|undead|zombie|monster|shambler)\b", re.I)
-# 2026-09-26 v2: "ominous ... light dimming, shadows deepening" darkened the whole clip (user: "darkened a tad too much ...
-# maybe try eerie"): the mood now comes from motion and sound, and the scene's own lighting is kept
+# "ominous ... light dimming, shadows deepening" darkened the whole clip: the mood now comes from motion and sound,
+# and the scene's own lighting is kept
 MENACE = ("Mood: eerie and unsettling, played completely straight despite the cozy toy-like look: slow, deliberate, "
           "unnatural movement with real weight, uncanny stillness between motions, low camera angles that make it loom; "
           "never comedic, cute or bouncy. Keep the scene's original lighting, brightness and colours exactly as in "
@@ -108,7 +111,7 @@ def build(image, motion, camera="the camera slowly pushes in", shots=None, sound
     menace = is_menacing(key)
     if menace:
         lines[0] += " " + MENACE
-    # background ambience/drone is rated "meh" every time (user, 2026-09-24): with no explicit --sound, voices and SFX play over silence
+    # background ambience/drone is rated "meh" every time: with no explicit --sound, voices and SFX play over silence
     ambient = bool(sound)
     pron = "she" if key.startswith("f-") else "he" if key.startswith("m-") else "they"
     poss = {"she": "her", "he": "his"}.get(pron, "their")
@@ -140,13 +143,13 @@ def build(image, motion, camera="the camera slowly pushes in", shots=None, sound
     for i, sh in enumerate(shots, 1):
         opener = "The scene opens exactly on image 1; " if i == 1 else "Cut to "
         lines.append(f"SHOT {i}: {opener}{sh.rstrip('. ')}.")
+    # generated music tends to come out off-key and H3 adds music unless told not to
+    if menace and sound:  # its sounds are deep and heavy too (still tied to visible actions, no drone bed)
+        sound = f"{sound.rstrip('. ')}, every sound eerie and unsettling"
     silent = not line and not vocal
     if silent and sound:
         # lead with the soundscape as the ONLY sound; no mention of speech/voices and no "silence between sounds" (gaps get filled with babble)
         sound = f"Only the sounds of {soundscape or 'the action'} can be heard: {sound.rstrip('. ')}, continuous from start to end"
-    # generated music tends to come out off-key and H3 adds music unless told not to
-    if menace and sound:  # its sounds are deep and heavy too (still tied to visible actions, no drone bed)
-        sound = f"{sound.rstrip('. ')}, every sound eerie and unsettling"
     audio = ", ".join(x.rstrip(". ") for x in (sound, music) if x)
     if not music:
         audio = (audio + "; " if audio else "") + "no music" + ("" if ambient or silent else ", no background hum or drone, clean silence between sounds")

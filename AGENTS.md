@@ -26,9 +26,17 @@ journeys/NNN-slug/            one character exploring their own world (🧭 in t
   journey.json                 {title, name, source, source_cap, style ("...{subject}..."), character, world, cast, refs, ref_resolution}
   chNN/chapter.json            {title, direction, summary, choices, verdict, revisions, params, scenes: [...]}
   chNN/sN.png                  scenes (+ sN.workflow.json)
+musicvideos/NNN-slug/         one music-video project (🎵 in the gallery; NOT an evolution/journey): see "Music videos"
+  mv.json                      {id, title, idea, lyrics, status, audio, vocals, refs, ref_crop, ref_notes, ref_for, markers, ref_requests,
+                               gen_requests, name/style/character/world/cast/ref_resolution, headline_tag}
+  audio/                       song + vocals (+ stems/, analysis.json, stems.json, lyrics_timing.json)
+  sbNN/chapter.json            a storyboard = the journeys chapter schema + per scene t0/t1/lyric/headline; frames sbNN/sN.png
+  edit.json, cut/              the final-cut edit list and the assembled videos
+explore/                       📖 Nev Novel: formality_atlas.json + emotion_atlas.json (starter maps), NNN-slug/ one-off episodes,
+                               sagas/NNN-slug/{saga.json, chNN/episode.json} (see "Nev Novel")
 gallery/index.html             GENERATED explorable gallery; gallery/data.json feeds live updates
 subjects.json                  the character cast(s): {key: {label, text}}
-config.json                    local machine config (comfy_url, comfy_python, gallery_port) — see tools/config.py
+config.json                    local machine config (comfy_url, comfy_python, gallery_port, ffmpeg, ffprobe, font, headline_font) — see tools/config.py
 tools/
   build_gallery.py              evolutions/ + journeys/ -> gallery/index.html (+ lineage READMEs); rerun after any edit
   serve_gallery.py               local server: gallery + feedback API (marks, comments, pins, journeys, reroll, upscale, refit, queue)
@@ -50,8 +58,26 @@ tools/
   doctor.py                      first-run check (--fix creates config.json, .venv, the gallery page)
   smoke_test.py                  render one image into feedback/smoke/ to prove the pipeline works
   pipeline.py                    render-queue registry + GPU ticket lock (used by run_version/run_journey/run_video)
+  housekeeping.py                🧹 daily prune (run by serve_gallery): old _rerolled revisions and old 👎 clips; each one's lesson is saved first
+  ref_reroll.py                  🎲 on a generated image that has a saved graph (music-video references, Nev Novel shots): same graph, new seed
+  --- 🎵 music videos (need ffmpeg; analysis/lyrics need requirements.txt's librosa/soundfile/faster-whisper) ---
+  mv_analyze.py / mv_stems.py    song analysis (waveform peaks, beats, sections) / stems analysis (roles, entrances, solos, breakdowns, fills, downbeats)
+  mv_lyrics.py                   🎤 place your lyric lines in time (faster-whisper on the vocal stem, aligned to your text)
+  mv_cut.py / mv_audio.py        phrase-snapped vocal cut with a silent lead-in / the song slice laid under a storyboard clip
+  mv_assemble.py                 🎞 final cut: clips + the original song -> cut/*.mp4 (edit list edit.json, transitions, looks, headlines, captions)
+  mv_hooks.py                    export each scene as a standalone widescreen clip with its headline and song slice
+  mv_ref_gen.py / mv_face.py     render a reference image from a request / 🙂 face close-ups from a reference
+  mv_plates.py / mv_composite.py EXPERIMENTAL two-plate lip-sync composite (singer on green + a moving background plate)
+  clip_motion.py                 where a clip moves or goes still (to cut frozen tails)
+  lipsync.py                     EXPERIMENTAL LatentSync lip-sync pass (needs the VideoHelperSuite + LatentSync custom nodes)
+  --- 📖 Nev Novel ---
+  atlas.py / formality_atlas.py  the Emotion + Formality Atlas engine (neurons, synapses, layout, add, reinforce, describe, near, path, reset, backups)
+  maturity.py                    the 7-stop maturity dial and its hard content ceiling
+  saga.py / saga_render.py       saga bible + chapter validation / shot prompts with cast reference images
+  explore_state.py / explore_render.py / explore_edit.py   the 15-minute window / render an episode or chapter / re-steer the story in flight
   test_gallery.js                node tools/test_gallery.js gallery/index.html — logic checks against a stub DOM
-  test_labkit.py / test_journey_tools.py   python tools/test_labkit.py, python tools/test_journey_tools.py — no ComfyUI, temp dirs only
+  test_labkit.py / test_journey_tools.py / test_revisions.py / test_mv_*.py / test_atlas.py / test_deck.py / test_explore.py /
+  test_formality_atlas.py / test_saga.py   python tools/<name>.py — no ComfyUI, temp dirs and synthetic data only
 ```
 
 ## First run
@@ -94,6 +120,9 @@ waiting on a reply, not just a render.
 | `journey-ref-note` | the user noted what a ⚓ reference shows / which character it is for | read the note (`run_journey` already applies it); nothing to render |
 | `comment` | a new comment thread message | answer with `creply` (and act on it if it asks for something) |
 | `reroll` / `upscale` / `refit` / `fix_area` / `journey-ref` / `journey-ref-crop` | 🎲 / ⤢ / ⬚ / ✎ buttons, ⚓ and ✂ on a reference | nothing: the server runs these itself. If one fails, see `feedback/pipeline/worker.log` |
+| `mv` (`kind: submit`, `kind: ref_request`) | 🎵 a music video was submitted for storyboarding, or a reference image was requested | "Music videos" below, then `mvreply` / `mvgen` |
+| `explore` (`start`, `continue`, `tune`, `atlas_add`) | 📖 Nev Novel: write the next chapter, re-steer the chapter in flight, or map a new atlas node | "Nev Novel" below, then `explorereply` |
+| `mv_upload` / `mv-ref*` / `mv_assemble` / `mv_lyrics` / `revision_restore` / `atlas_learn` / `atlas_reset` / `explore` `stop` | uploads, reference edits, builds, restores | nothing: informational |
 | `style_mark` | ❤/👎 on a whole style | nothing now; weigh it when choosing what to evolve |
 
 ## The feedback loop
@@ -111,6 +140,11 @@ python tools/feedback.py sets                          open 📌 sets (evolve = 
 python tools/feedback.py sreply <set-id> "<text>"      mark a set done; reply shows on every image in it
 python tools/feedback.py journeys                      open 🧭 journey requests (start = new journey, direct = next chapter)
 python tools/feedback.py jreply <req-id> "<text>" [journey-id]   mark a journey request done
+python tools/feedback.py mvs                           open 🎵 music-video submissions and reference requests
+python tools/feedback.py mvreply <mv-id> "<text>"      answer a submission
+python tools/feedback.py mvgen <mv-id> <req-id> <png> ["<text>"]   close a 🖼 reference request with the rendered image
+python tools/feedback.py explore                       📖 Nev Novel state, the steer in words, open atlas requests, episodes
+python tools/feedback.py explorereply "<text>"         mark the current Nev Novel request handled
 ```
 
 ### Marks (❤ / 👎 / 🎬 / 📌)
@@ -241,7 +275,8 @@ independent styles, each one a variant:
 `python tools/run_video.py <image.png> <engine> --motion "..." [--camera "..." --sound "..." --line "..." --voice "..." --seconds 5]`
 
 - Engines: `fasth3` (FastVideo FastH3, 8-step MiniMax H3 distill — default, best motion-prompt adherence) and
-  `h3turbo` (full H3 + a 4-step lightx2v LoRA). Default to `fasth3` unless you have a specific reason not to.
+  `h3turbo` (full H3 + a 4-step lightx2v LoRA). Default to `fasth3` unless you have a specific reason not to. Further optional
+  engines (LTX, Wan 2.2, audio-driven lip sync) are listed under "Video engines (optional)".
 - Prompts are built by `tools/video_prompt.py` in H3's native structured format: a header (medium + subject "from
   <Picture 1> in its original scene" + style traits + a style-lock sentence) / `SHOT n:` lines / an `Audio:` line.
   Structured beats prose here — prose has been seen to break a style's medium (e.g. a watercolor look drifting
@@ -338,6 +373,146 @@ detail.
   open space in the upper frame for scenes that need it, then **look at the actual render** and place `pos`/`tail`
   with `tools/place_bubbles.py journeys/NNN/chNN sN "0:x,y,tail,w" ...` so no bubble covers a face and each tail
   points at its speaker.
+
+## More gallery tools
+
+- **Grouping and counts**: each style strip (survey, evolution layers, the Images page) shows its image count, collapses with ▾ / ▸
+  (toolbar: Collapse all / Expand all; state kept in the browser), and "Sort: Most / Fewest images" orders them by count. The Videos
+  page groups clips per style or journey the same way, with a small meta row per clip (source, engine, tag, seconds, 📂 reveal).
+- **🕘 Past revisions**: every reroll, fix, refit or reshoot keeps the replaced picture as `<dir>/_rerolled/<stem>__YYYYMMDD-HHMMSS.png`
+  (+ its workflow). A `🕘 N` chip on a tile and a lightbox button open a viewer that compares the current picture with an earlier
+  one (side by side, flip, wipe), steps through versions with the arrow keys, and can **restore** one (`POST /api/revision/restore`:
+  a swap, nothing is deleted, restoring again undoes it). Python test: `python tools/test_revisions.py`.
+- **⚙ Queue**: every row shows the model that runs it (QI2.1, H3F, LTX2.3, Wan2.2, ...: `pipeline.ENGINE_ABBR`). GPU times per model
+  are kept in `feedback/model_times.json` (last 30 each) and drive the ETAs and the average line.
+- **Reference cards** (journeys and music videos share them): a 4:5 image cell with the ✂ crop drawn as an overlay, the note and "Use
+  for" target in a collapsible editor, 🗑 remove (two clicks; a lone source reference can't be removed). Pictures are cache-busted by
+  mtime, so a reroll or fix never shows the old image.
+- **🧹 Housekeeping**: `serve_gallery.py` runs `tools/housekeeping.py` daily: it prunes `_rerolled` revisions older than 30 days and
+  👎-marked clips older than 7 days, and first writes each one's lesson (prompt, marks, comments, a preview) to
+  `feedback/discards.jsonl` + `feedback/discards/`, so the "why" survives the file. It never touches ComfyUI's own output folder.
+  `--dry-run` shows what it would do.
+- **🎲 on generated references / Nev Novel shots**: `tools/ref_reroll.py <png> [--seed N]` re-runs the image's saved graph with a new
+  seed (old file to `_rerolled/`). ✎ Fix area, ⤢ Upscale and ⬚ Refit also work on storyboard frames and music-video references.
+
+## Video engines (optional)
+
+`run_video.py` engines beyond `fasth3` / `h3turbo`. They are all optional: each needs its own model files in ComfyUI, `doctor.py` lists
+which are missing, and the tool names the missing files in its error. Model names in the templates are the stock ones; if a file is
+installed under a sub-folder, the tool finds it by file name.
+
+- `ltx25`: LTX-2.5 22B distilled image-to-video (sharper than H3, follows motion prompts less closely).
+- `wan22`: Wan 2.2 14B image-to-video with the 4-step lightx2v LoRAs: 16 fps, plain-prose prompt, no audio of its own. Good for clips
+  without vocals.
+- `s2v` / `s2vfull`: Wan 2.2 S2V 14B, audio (speech or singing) + image -> clip. `s2vfull` drops the speed LoRA (20 steps, CFG 6).
+- `ltxia2v`: LTX-2.3 22B image + audio -> video (lip sync) with the distilled LoRA. The best lip-sync engine tried: give it a silent
+  lead-in of about two seconds before the vocal (`mv_cut.py` does that). A still background tends to freeze: see the two-plate composite.
+- Audio-driven engines take `--audio <file>` (uploaded to ComfyUI over HTTP). Their prompts are plain prose, not the H3 format.
+- Other `run_video.py` flags: `--reverse` (play the clip backwards), `--as-frame`, `--song-at <s>` and `--lead-in <s>` (music videos).
+
+## Music videos (🎵)
+
+A music video is its own project (`musicvideos/NNN-slug/`), a sibling of journeys: a song, optional isolated vocals/stems, lyrics, a
+general idea, reference images (the 📌 tray can become the references of a new project), and a waveform timeline where the user marks
+what is sung when and what should be on screen. You storyboard it with images; clips and the final cut follow.
+
+- **Server ops** (`/api/mv`, state `feedback/mvs.json`): new | from_pins | save | marker_set / marker_del | ref / ref_remove / ref_crop /
+  ref_note | request_done | submit | lyrics_place | assemble | cover | ref_gen_request / ref_gen_cancel. Uploads:
+  `POST /api/mv/upload?mv=&kind=audio|vocals|stems&name=` (raw body; a `.zip` of stems up to 1.5 GB). Of the resulting events only
+  **submit** and **ref_request** are requests for you; the rest is informational.
+- **Workflow on a submit** (`feedback.py mvs`): read `mv.json` (lyrics, idea, markers, refs, notes). If references would help, write
+  `ref_requests` into it and `mvreply` saying so. Fill in `name`, `style` (a prompt with a `{subject}` slot, look only: same rule as every
+  style), `character`, `world`, `cast`. Write `sb01/chapter.json` with one scene per marker or section (`t0`, `t1`, `lyric`, a director's
+  `camera`; the journeys rules apply: vary shots, no look-alike frames, characters live in the world and don't pose). Render with
+  `python tools/run_journey.py musicvideos/NNN-slug/sb01` (it reads `mv.json` when the parent has no `journey.json`; `--reroll` works), then
+  `feedback.py mvreply <id> "..."`. Direct the visuals from the song: anticipation frames before a big moment, movement and dance, close and
+  intimate frames for quiet lines, face-only reference crops.
+- **🎚 Stems**: drop a zip of the separate tracks on any drop zone. The full mix in the zip becomes `audio/song.<ext>` (otherwise an ffmpeg
+  mixdown of all stems), the lead vocal becomes `audio/vocals.<ext>`; a hand-uploaded song or vocal is never overwritten. Then
+  `tools/mv_stems.py` writes `audio/stems.json`. Read it with `python tools/mv_stems.py musicvideos/NNN-slug --summary`: per-stem role,
+  activity and offset, entrances, and a table of moments (enter, exit, solo, feature, breakdown, fill, drop, build) plus beats and
+  downbeats. Cut on downbeats, cut to a band member at their solo or entrance, hard cut on fills, hold on breakdowns, swell on a drop.
+- **🎤 Place lyrics**: `python tools/mv_lyrics.py musicvideos/NNN-slug [--summary] [--exact]` runs faster-whisper (CPU) on the vocals and
+  aligns YOUR lyric lines to the recognised words -> `audio/lyrics_timing.json`. The server queues it after a vocals upload, a lyrics edit,
+  or the 🎤 button. Prefer these times over guessing; `~` marks estimated lines in `--summary`.
+- **🖼 Reference requests**: the References header has "Request a reference" (text + who it is for) and every reference has an "Ask" box.
+  Answer with `python tools/mv_ref_gen.py musicvideos/NNN "<subject>" [--aspect 3:4] [--ref png] [--dry-run]` (renders `refs/gen_<n>.png` in the
+  project style), look at it, then `feedback.py mvgen <mv> <req-id> <png> ["reply"]`. Reference tiles have the same ❤ 👎 🎲 💬 ✎ ⤢ ⬚ 🕘
+  buttons as storyboard frames.
+- **Singing clips**: `tools/mv_cut.py` makes a phrase-snapped vocal cut with a silent lead-in; `mv_audio.py` lays the song slice under every
+  storyboard clip (run_video does this for music-video frames), so clips can be cut together against the original audio.
+- **📰 Headlines**: a scene's `headline` (+ `headline_tag`, else `mv.json` `headline_tag`) is drawn as a lower-third overlay in the gallery
+  (switchable) and burned in by the final cut. Never painted into the image.
+- **🎞 Final cut**: `python tools/mv_assemble.py musicvideos/NNN-slug [--draft] [--plan|--replan] [--keep] [--out cut/x.mp4]` assembles
+  `cut/<slug>.mp4` (+ `.json`, a contact strip and a status file) from the storyboard clips and the original song, which is used untouched.
+  The edit list `edit.json` is generated by `--plan` from the chapter and `stems.json` (never overwritten without `--replan`): output
+  settings (size, fps, grain, vignette, lyric captions, headlines, labels, preroll), looks, `cuts` (frame, times, reverse, clip choice, look,
+  transition `in`, fx) and `overlays`. Defaults: hard cuts, dissolves on now/memory switches, a fade to black at a breakdown, a flash at the
+  drop, beat flashes on downbeats. Singing clips are never stretched (frame 0 at the clip's song time); other clips trim, slow up to 1.25x,
+  then hold. The build is published atomically (the previous build is kept in `cut/_old/`), so a playing video never reads a half-written
+  file. The mv page's "Final cut" section plays it, lists builds, takes ❤ / 👎 and time-stamped comments, and offers "newer build ready".
+- **🪝 Hooks**: `python tools/mv_hooks.py musicvideos/NNN-slug [s1 s2 ...] [--join s27,s28]` exports each scene (or joined scenes) from the
+  newest full build as a standalone widescreen clip with its headline and the matching song slice, plus a `.txt` with headline and lyric.
+- **🟩 Two-plate lip-sync composite (experimental)**: ltxia2v freezes the background. `tools/mv_plates.py <frame.png> --x 0.62` cuts the
+  singer out onto a green plate (+ matte, box, free side); make a clean background plate with `fix_area.py --out ... --prompt "<background only>"`;
+  render LTX from the green still and Wan from the clean plate; `tools/mv_composite.py <ltx_green.mp4> <wan_clean.mp4>` keys the green and
+  retimes the plate, keeping the LTX audio. Results vary: check every composite.
+- **🙂 Face close-ups** (`mv_face.py same|front`) and **clip motion** (`clip_motion.py <clip>...`: where a clip moves or freezes, to cut dead tails).
+- Tests: `python tools/test_mv_assemble.py`, `test_mv_refgen.py`, `test_mv_stems.py` (synthetic audio/video, temp trees; the server parts use a
+  second instance on a spare port).
+
+## Nev Novel (📖, formerly "Explore")
+
+A never-ending visual novel: you invent the lore, characters, world and continuity as you go; the gallery gives you a bible, consistency
+machinery and a full-screen visual-novel player. Internal names stay `explore` (folders, tools, `/api/explore`, events). **Stills only: no
+video, no camera motion.** A start/continue opens a 15-minute window (`tools/explore_state.py status|active`, exit 0 = exploring); when it
+runs out, nothing continues until the user presses **Continue**. Check it before every chapter and stop writing when it is over.
+
+- **Layout**: `explore/sagas/NNN-slug/saga.json` is the bible {title, logline, style (look only, `{subject}` slot), world, lore, factions, places,
+  cast {name: {look, role, voice, ref, ref_crop, status}}, timeline, threads, cores, maturity}; `chNN/episode.json` is a chapter
+  {title, summary, opens, closes, shots [{id, prompt, caption, aspect, hold, with, place, camera, narration, dialogue, noref, nofigure}]}
+  with `eK.png` pictures. Plain `explore/NNN-slug/episode.json` one-offs still work.
+- **`tools/saga.py`** keeps the books and enforces the rules (you write the creative JSON): `new "<title>" --logline ... --style ...` | `current` |
+  `bible [<saga>] [--brief]` | `cast|place|lore|faction <saga> "<name>" --look ... [--update]` | `thread <saga> open "<text>" | close <id>` |
+  `chapter <saga> chapter.json [--replace]` | `setref <saga> "<name>" chNN/eK.png [--crop x0,y0,x1,y1 | --clear]` |
+  `cores <saga> show|set|log|resolve|reopen|weight`. `chapter` refuses (and writes nothing) a `with` name that is not in the cast, a
+  dialogue speaker not in frame (unless `off`), more than 4 lines in a shot, unknown or closed threads, a shot without a prompt, a bad aspect.
+- **Authoring loop** (on a `start` / `continue` event): read the steer (`feedback.py explore`), then
+  1. First start with a seed: `saga.py new` and invent the world from it (setting, rules, tech or magic, tone, lore, a faction or two, 3-5
+     places with concrete looks, 3-5 original style-independent characters, 2-3 open threads).
+  2. Continue: `saga.py bible --brief`, then write the next chapter: advance or pay off open threads (close one every 2-3 chapters), keep
+     looks, places and statuses continuous (`status_changes`), add at most one new character or place per chapter (record it with `saga.py`
+     BEFORE the chapter uses it), end on a hook.
+  3. 12-20 shots in graphic-novel rhythm: establishing splash, mid shots with dialogue, close-ups on emotional beats, `nofigure` inserts, a
+     turn, a closing image. Every shot gets narration and/or 1-4 short dialogue lines. Give `camera` on shots that matter; characters live in
+     the world. Describe characters by NAME in the prompt (looks and reference images are added for you); describe the scene, not the face.
+  4. `saga.py chapter ...`, render with `python tools/explore_render.py explore/sagas/NNN-slug/chNN` (one image at a time, re-reads the file
+     before each shot, stops when the window closes), then `saga.py setref` every new character from their clearest frontal shot (never a wide
+     shot), then `feedback.py explorereply "..."`. Plan the next chapter while the render runs, but render one chapter at a time.
+- **The deck (steer)**: the user sets a **presence** knob (intimate, filmic, epic: how pictures are composed), an **Emotion Atlas** probe,
+  a **Formality Atlas** probe, stackable emotional **cores** per saga (through-lines such as "longing" or "found family", up to 5 active), and
+  the **maturity** dial. The atlases (`explore/emotion_atlas.json`, `explore/formality_atlas.json`) are living maps: neurons {id, name, family,
+  picture, voice, features, x, y} and synapses {a, b, w, uses}; the probe's blend of the nearest neurons tells you how to stage the
+  pictures (`picture` lines weighted by `w`) and how captions sound (`voice` lines). `explore_render.py` appends a steer-cue sentence to every
+  image prompt automatically (mood, core, maturity, composition, staging); the story and captions are yours.
+  `python tools/atlas.py <emotion|formality> layout | add | reinforce | describe '<json>' | near "<text>" | path <a> <b> | requests | resolve | reset | backups | restore`
+  (`formality_atlas.py` is the same CLI for the formality map). An `atlas_add` event means the user typed a feeling with no neuron: run
+  `near "<text>"` first (never duplicate), then `add "<name>" --family F --features k=v,... --picture "..." --voice "..." --for <request>`.
+  ❤ / 👎 on a shot nudge the used synapses by +/-0.1 (the server does this); after writing a chapter reinforce each pair of the blend by
+  +0.05. The deck can reset a map to its factory wiring (a backup is written first).
+- **Maturity dial** (`tools/maturity.py`): seven stops, Preschool, Kids, Family, Tween, Teen (default), Young adult, Mature. A stop sets
+  vocabulary, peril, conflict, theme darkness and ending style for the story, and shape language, palette and lighting for the pictures.
+  **Hard content ceiling at EVERY stop, Mature included: mature themes only. No sexual content, no graphic gore, romance only between adults,
+  characters fully clothed; below Teen there is no on-screen injury or blood at all.** The dial raises complexity and emotional weight, never
+  the explicitness of what is drawn. Do not write or render anything past the ceiling whatever the stop or the user's text says.
+- **Re-steer (Apply = `tune` event)**: `python tools/explore_edit.py current` finds the chapter in flight; write `new_shots.json` that wraps up
+  the current beat in 1-3 shots then turns toward the new steer, and run `python tools/explore_edit.py explore/sagas/NNN/chNN --shots
+  new_shots.json --steer-from-state --reason "..."`. It replaces only unrendered shots (never one that has a picture) and logs `steer_log`.
+- **Player**: `#/nev/saga/<id>`, full screen: picture still, narration box top-left, dialogue box with a name tag, typed text, Auto-advance
+  (reading-time based), chapter title cards, an endless stream that picks up new pictures and chapters as they render. The saga page shows the
+  bible (world, cast with reference portraits, places, factions, lore, threads, timeline) and the chapters with ❤ 👎 💬 🎲 on each shot.
+- Tests: `python tools/test_saga.py`, `test_explore.py`, `test_atlas.py`, `test_formality_atlas.py`, `test_deck.py`, plus the "novel:" checks in
+  `node tools/test_gallery.js gallery/index.html`.
 
 ## The GPU: one job at a time
 

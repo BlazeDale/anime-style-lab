@@ -13,6 +13,29 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DIR = ROOT / "feedback" / "pipeline"
+# the model behind each item, shown in the ⚙ Queue; callers may set item["model"], else it defaults by kind
+MODEL_DEFAULT = {"image": "QI2.1", "video": "video"}
+ENGINE_ABBR = {"fasth3": "H3F", "h3turbo": "H3T", "ltxia2v": "LTX2.3", "ltx25": "LTX2.5", "wan22": "Wan2.2", "s2v": "S2V", "s2vfull": "S2V-full"}
+TIMES = ROOT / "feedback" / "model_times.json"  # {model: [gpu seconds, ... last 30]}: per-model averages that outlive the 30-min job files
+
+
+def model_times():
+    try:
+        return json.loads(TIMES.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def _note_time(model, secs):
+    t = model_times()
+    t[model] = (t.get(model, []) + [round(secs, 1)])[-30:]
+    tmp = TIMES.with_suffix(".tmp")
+    try:
+        tmp.parent.mkdir(parents=True, exist_ok=True)
+        tmp.write_text(json.dumps(t), encoding="utf-8")
+        tmp.replace(TIMES)
+    except OSError:
+        pass
 
 
 class Job:
@@ -21,7 +44,7 @@ class Job:
         DIR.mkdir(parents=True, exist_ok=True)
         self.path = DIR / f"{os.getpid()}.json"
         self.state = {"pid": os.getpid(), "kind": kind, "started": time.time(),
-                      "items": [{**it, "status": "queued"} for it in items]}
+                      "items": [{"model": MODEL_DEFAULT.get(it.get("kind"), ""), **it, "status": "queued"} for it in items]}
         self.save()
         global ACTIVE
         ACTIVE = self
@@ -29,7 +52,7 @@ class Job:
 
     def save(self):
         # best-effort: on Windows the replace fails while serve_gallery is reading the file, and a status write must
-        # never kill a render (2026-09-24 a 96-image job died on this). Retry briefly, then skip this update.
+        # never kill a render (a long batch once died on this). Retry briefly, then skip this update.
         tmp = self.path.with_suffix(".tmp")
         tmp.write_text(json.dumps(self.state, ensure_ascii=False), encoding="utf-8")
         for _ in range(20):
@@ -61,10 +84,12 @@ class Job:
         if it:
             now = time.time()
             # secs = time on the GPU when known (g0), else since submit; the ⚙ Queue averages only use gsecs, so a long
-            # shared queue doesn't inflate the estimates (2026-09-26: 713 s/image "average" = mostly waiting)
+            # shared queue doesn't inflate the estimates
             it.update(status="done" if ok else "failed", secs=round(now - it.get("g0", it.get("t0", now)), 1))
             if "g0" in it:
                 it["gsecs"] = it["secs"]
+                if ok and it.get("model"):
+                    _note_time(it["model"], it["gsecs"])
             self.save()
 
     def close(self):

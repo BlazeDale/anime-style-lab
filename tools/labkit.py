@@ -86,3 +86,10 @@ def add_cast(cast_id, entries):
     d.update(new)
     save_subjects(d)
     return keys
+
+
+def parent_subject(png):
+    """Subject key of a rendered lab image ("<key>_seed<N>.png"), if it's a known subject; else None (old "seedN.png", scenes)."""
+    stem = Path(png).stem
+    key = stem.rsplit("_seed", 1)[0] if "_seed" in stem else None
+    return key if key and key in load_subjects() else None

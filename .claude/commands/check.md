@@ -1,5 +1,5 @@
 ---
-description: Read the gallery inbox and act on every open request (marks, 📌 sets, 🧭 journeys, comments)
+description: Read the gallery inbox and act on every open request (marks, 📌 sets, 🧭 journeys, 🎵 music videos, 📖 Nev Novel, comments)
 ---
 Run `python tools/feedback.py inbox`. For each item it reports, follow AGENTS.md ("Which events need you" and the
 section for that kind of request): do the work, then reply with the matching feedback.py command (reply / sreply /

@@ -1,5 +1,9 @@
 {
   "comfy_url": "http://127.0.0.1:8188",
   "comfy_python": null,
-  "gallery_port": 8765
+  "gallery_port": 8765,
+  "ffmpeg": null,
+  "ffprobe": null,
+  "font": null,
+  "headline_font": null
 }

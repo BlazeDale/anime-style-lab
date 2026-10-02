@@ -1,5 +1,6 @@
 """Evolve/cross set from the pin tray: one new lineage per variant (v01 only).
 usage: new_set.py <spec.json> [--render] [--dry-run]
+parents[0]'s subject is always added to the set (the picked image reimagined in each new style).
 spec: {"parents":[png..], "why", "tags":[..], "cast":{"id"?, "entries":[..]} | "subjects":[keys],
        "aspect_ratio"?, "variants":[{slug,title,change:"LABEL: goal",prompt,aspect_ratio?}]}"""
 import sys, json, subprocess
@@ -43,6 +44,12 @@ def main(argv):
             sys.exit(f"unknown subjects: {miss}")
     else:
         sys.exit("spec needs cast or subjects")
+    # the picked image redrawn in every new style: evolve = its subject, cross = the FIRST pinned image's only
+    carried = labkit.parent_subject(parents[0])
+    if carried and carried not in subjects:
+        subjects = [carried, *subjects]
+    elif not carried:
+        print(f"note: no subject key for {parents[0]} (old seedN.png / scene?), set gets the new cast only")
     num = labkit.next_lineage_num()
     for v in spec["variants"]:  # check collisions before writing anything
         if (R / "evolutions" / f"{num:03d}-{v['slug']}").exists():

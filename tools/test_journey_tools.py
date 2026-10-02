@@ -277,10 +277,116 @@ def demo():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def test_mv():
+    """music-video storyboards: run_journey.load() on a musicvideos/NNN (mv.json instead of journey.json) + tools/mv_analyze.py"""
+    import run_journey as rjn
+    tmp = Path(tempfile.mkdtemp(prefix="mvtools_"))
+    try:
+        d = tmp / "musicvideos" / "001-x"
+        (d / "sb01").mkdir(parents=True)
+        lead = "evolutions/t/v01/lead.png"
+        mv = {"title": "T", "name": "", "style": "Style of {subject}.", "character": "a singer in a red coat", "world": "a pier", "cast": {"Drummer": "a tall drummer"},
+              "refs": [lead], "ref_crop": {lead: [0.1, 0.1, 0.6, 0.6]}, "ref_notes": {lead: "face only"}, "ref_for": {}, "ref_resolution": 640, "markers": [], "lyrics": "la"}
+        (d / "mv.json").write_text(json.dumps(mv), encoding="utf-8")
+        (d / "sb01" / "chapter.json").write_text(json.dumps({"title": "sb", "scenes": [{"id": "s1", "prompt": "she sings on the pier", "with": ["Drummer"], "t0": 1, "t1": 4, "lyric": "la"}]}), encoding="utf-8")
+        j, ch, params = rjn.load(d / "sb01")
+        check("mv load: name defaults to the singer, refs/style/world carried over", j["name"] == "the singer" and j["refs"] == [lead] and j["source"] == lead and j["world"] == "a pier" and j["ref_resolution"] == 640)
+        check("mv load: chapter + default params", ch["scenes"][0]["lyric"] == "la" and params["aspect_ratio"].startswith("16:9"))
+        sc = ch["scenes"][0]
+        check("mv scene_refs: the lead's reference", rjn.scene_refs(j, sc) == [(lead, "the singer")])
+        pr = rjn.scene_prompt(j, sc)
+        check("mv scene_prompt: singer + cast + setting", "the singer, a singer in a red coat, she sings on the pier" in pr and "Drummer is a tall drummer" in pr and "Reference image 1 shows the singer: face only." in pr, pr)
+        mv["name"] = "Mira"; (d / "mv.json").write_text(json.dumps(mv), encoding="utf-8")
+        check("mv load: a filled name wins", rjn.load(d / "sb01")[0]["name"] == "Mira")
+        mv["refs"] = []; (d / "mv.json").write_text(json.dumps(mv), encoding="utf-8")
+        j0 = rjn.load(d / "sb01")[0]
+        check("mv without references: no lead reference at all", rjn.scene_refs(j0, sc) == [] and j0["source"] == "")
+        # a real journey still loads from journey.json
+        jd = tmp / "journeys" / "001-y"; (jd / "ch01").mkdir(parents=True)
+        (jd / "journey.json").write_text(json.dumps({"name": "Anselm", "source": lead, "style": "S {subject}", "character": "c", "world": "w"}), encoding="utf-8")
+        (jd / "ch01" / "chapter.json").write_text(json.dumps({"scenes": []}), encoding="utf-8")
+        check("journey load unchanged", rjn.load(jd / "ch01")[0]["name"] == "Anselm")
+        check("label: music video vs journey icons", rjn.label(d / "sb01", {"id": "s1"}).startswith("🎵") and rjn.label(jd / "ch01", {"id": "s1"}).startswith("🧭"))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    # mv_analyze under the helper interpreter (config comfy_python: librosa + soundfile + numpy)
+    import math
+    import subprocess
+    import wave
+    from config import COMFY_PYTHON
+    probe = subprocess.run([COMFY_PYTHON, "-c", "import librosa, soundfile, numpy"], capture_output=True)
+    if probe.returncode:
+        check("mv_analyze (skipped: librosa/soundfile not installed)", True)
+        return
+    tmp = Path(tempfile.mkdtemp(prefix="mvan_"))
+    try:
+        sr, secs = 22050, 30
+        frames = bytearray()
+        for i in range(sr * secs):
+            t = i / sr
+            v = 0.3 * math.sin(2 * math.pi * (220 if t < 15 else 330) * t) + (0.5 * math.sin(2 * math.pi * 1000 * t) if (t % 0.5) < 0.02 else 0)
+            frames += int(max(-1, min(1, v)) * 32000).to_bytes(2, "little", signed=True)
+        w = tmp / "t.wav"
+        with wave.open(str(w), "wb") as f:
+            f.setnchannels(1); f.setsampwidth(2); f.setframerate(sr); f.writeframes(bytes(frames))
+        out = tmp / "a.json"
+        r = subprocess.run([str(COMFY_PYTHON), str(Path(__file__).parent / "mv_analyze.py"), str(w), str(out)], capture_output=True, text=True)
+        check("mv_analyze runs", r.returncode == 0 and out.exists(), r.stderr[-300:])
+        a = json.loads(out.read_text(encoding="utf-8"))
+        check("mv_analyze: duration, ~3000 peak buckets in -1..1, beats, tempo",
+              abs(a["duration"] - secs) < 0.1 and 2900 <= len(a["peaks"]) <= 3000 and all(-1 <= lo <= hi <= 1 for lo, hi in a["peaks"]) and len(a["beats"]) > 10 and a["tempo"] > 0)
+        check("mv_analyze: sections are seconds inside the track", all(0 < t < secs for t in a["sections"]), str(a["sections"]))
+        check("mv_analyze: no temp file left", not list(tmp.glob("*.tmp")))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def test_render_helpers():
+    """run_video model resolution (stock name -> same-basename file in a sub-folder -> missing), plain_t2i, fix_area.strip_named"""
+    import run_video as rvid
+    import run_version as rv
+    import fix_area as fa
+    sub_lora = "Sub\\wan_lora.safetensors"
+    listing = {"loras": {sub_lora, "other.safetensors"}, "vae": {"a.safetensors", "alt.safetensors"},
+               "diffusion_models": {"x/model.safetensors"}, "checkpoints": set()}
+    saved = dict(rvid._INSTALLED)
+    rvid._INSTALLED.clear(); rvid._INSTALLED.update(listing)
+    try:
+        check("resolve_model: stock name kept", rvid.resolve_model("other.safetensors", "loras") == ("other.safetensors", True))
+        check("resolve_model: basename found in a sub-folder", rvid.resolve_model("wan_lora.safetensors", "loras") == (sub_lora, True))
+        check("resolve_model: missing is reported", rvid.resolve_model("nope.safetensors", "loras") == ("nope.safetensors", False))
+        check("resolve_model: unlistable folder is trusted", rvid.resolve_model("anything.safetensors", "checkpoints") == ("anything.safetensors", True))
+        rvid._INSTALLED["text_encoders"] = {"real.safetensors"}
+        g = {"1": {"class_type": "LoraLoaderModelOnly", "inputs": {"lora_name": "wan_lora.safetensors", "strength_model": 1}},
+             "2": {"class_type": "VAELoader", "inputs": {"vae_name": "orig.safetensors"}},
+             "3": {"class_type": "UNETLoader", "inputs": {"unet_name": "model.safetensors"}}}
+        rvid.resolve_models(g, {"vae": {"orig.safetensors": "alt.safetensors"}})
+        check("resolve_models: lora by basename, vae alternate, unet by basename",
+              g["1"]["inputs"]["lora_name"] == sub_lora and g["2"]["inputs"]["vae_name"] == "alt.safetensors"
+              and g["3"]["inputs"]["unet_name"] == "x/model.safetensors" and rvid.MISSING == [], str(rvid.MISSING))
+        g["4"] = {"class_type": "CLIPLoader", "inputs": {"clip_name": "gone.safetensors"}}
+        rvid.resolve_models(g, {})
+        check("resolve_models: missing text encoder reported", rvid.MISSING == [("text_encoders", "gone.safetensors")]
+              and "gone.safetensors" in rvid.missing_message("wan22"))
+    finally:
+        rvid._INSTALLED.clear(); rvid._INSTALLED.update(saved); rvid.MISSING.clear()
+    g = {"k": {"class_type": "KSampler", "inputs": {"latent_image": ["m", 0], "denoise": 0.5}},
+         "l": {"class_type": "EmptyLatentImage", "inputs": {}},
+         "t": {"class_type": "TextEncodeQwenImage21", "inputs": {"prompt": "In the marked area: a hat. Everything else stays as it is. A girl by a lake."}}}
+    rv.plain_t2i(g)
+    check("plain_t2i: sampler back on the empty latent, wrapper stripped",
+          g["k"]["inputs"]["latent_image"] == ["l", 0] and g["k"]["inputs"]["denoise"] == 1.0 and g["t"]["inputs"]["prompt"] == "A girl by a lake.")
+    out = fa.strip_named("A girl in black combat boots, a red scarf and a grey coat. She stands on a pier.", "remove the boots")
+    check("strip_named: drops the clause naming the removed thing", "boot" not in out and "scarf" in out and "pier" in out, out)
+    check("strip_named: nothing to remove -> unchanged", fa.strip_named("A girl.", "make the sky pink") == "A girl.")
+
+
 if __name__ == "__main__":
     test_scene_fix()
     test_animate()
     test_ref_targeting()
+    test_mv()
+    test_render_helpers()
     print(f"\n{PASSES} PASS, {len(FAILS)} FAIL {FAILS}")
     if "--demo" in sys.argv:
         demo()

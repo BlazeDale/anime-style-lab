@@ -1,5 +1,4 @@
-"""⬚ Refit an image to another aspect ratio (user 2026-09-27: "a resize option where the subject is reposed to fit an aspect ratio
-selected by the user"): re-render the image's own prompt at the new aspect ratio with the image itself as Qwen 2.1 reference
+"""⬚ Refit an image to another aspect ratio (a resize where the subject is reposed to fit the chosen aspect ratio): re-render the image's own prompt at the new aspect ratio with the image itself as Qwen 2.1 reference
 image 1, so the same character/outfit/style/colours come back, re-posed and recomposed to fill the new frame (not cropped or
 stretched). Reference edits harden contrast, so the result is matched back to the source afterwards (match_contrast.py).
   python tools/refit.py <image.png> "<aspect ratio as ResolutionSelector names it, e.g. 16:9 (Widescreen)>" [--seed N]
@@ -37,6 +36,7 @@ def main():
     raw = json.loads(wf.read_text(encoding="utf-8"))
     g = raw if raw and all(isinstance(v, dict) and "class_type" in v for v in raw.values()) else \
         rv.comfy("run", "--workflow", str(wf), "--print-prompt")["data"]["prompt"]
+    rv.plain_t2i(g)  # a fix-area image saved its inpaint graph: without this, refit would re-make the old picture
     te = next(k for k, n in g.items() if n["class_type"] == "TextEncodeQwenImage21")
     ks = next(k for k, n in g.items() if n["class_type"] == "KSampler")
     vae = next(k for k, n in g.items() if n["class_type"] == "VAELoader")

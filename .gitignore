@@ -8,3 +8,13 @@ feedback/pipeline/
 gallery/data.json
 config.json
 feedback/smoke/
+# your own work: music-video projects, Nev Novel episodes/sagas, atlas backups, generated scratch
+musicvideos/
+explore/[0-9]*/
+explore/sagas/
+explore/*.backup-*.json
+feedback/discards/
+gallery/_shot.html
+journeys/_tmp_workflow.json
+.claude/settings.local.json
+*.part

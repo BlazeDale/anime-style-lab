@@ -102,4 +102,14 @@ check(l["goal"] == "go big: yes" and l["parent"] is None and l["round"] == 0 and
 pp = json.loads((tmp / "evolutions/009-bb/v01/params.json").read_text(encoding="utf-8"))
 check(pp["aspect_ratio"] == "16:9" and pp["subjects"] == ["f-fantasy@cast121~1"] and pp["steps"] == 25, "variant params")
 check(json.loads((tmp / "evolutions/008-aa/v01/params.json").read_text(encoding="utf-8"))["aspect_ratio"].startswith("3:4"), "default aspect")
+# the picked image's subject rides along: evolve = parent's subject, cross = only the first parent's
+check(labkit.parent_subject("x/f-fantasy@cast119~1_seed1001.png") == "f-fantasy@cast119~1" and labkit.parent_subject("x/seed1001.png") is None
+      and labkit.parent_subject("x/f-nope@zz~1_seed1001.png") is None, "parent_subject")
+pa, pb = "evolutions/005-foo/v01/f-fantasy@cast119~1_seed1001.png", "evolutions/005-foo/v01/m-modern@cast119~1_seed1001.png"
+for q in (pa, pb):
+    (tmp / q).write_bytes(b"")
+w(sp, {**sspec, "parents": [pa, pb], "variants": sspec["variants"][:1]})
+expect_exit(new_set.main, [str(sp)])
+subs = json.loads(sorted((tmp / "evolutions").glob("*-aa/v01/params.json"))[-1].read_text(encoding="utf-8"))["subjects"]
+check(subs[0] == "f-fantasy@cast119~1" and "m-modern@cast119~1" not in subs and len(subs) == 2, "cross carries only the first parent's subject")
 print(f"ALL PASS ({n_pass})")

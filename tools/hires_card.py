@@ -31,6 +31,7 @@ def main():
         g = raw  # journeys save the exact API graph already
     else:
         g = rv.comfy("run", "--workflow", str(wf), "--print-prompt")["data"]["prompt"]
+    rv.plain_t2i(g)  # a fix-area image's saved graph is its inpaint pass; drop the "In the marked area" wrapper from the prompt
     te = next(k for k, n in g.items() if n["class_type"] == "TextEncodeQwenImage21")
     ks = next(k for k, n in g.items() if n["class_type"] == "KSampler")
     vae = next(k for k, n in g.items() if n["class_type"] == "VAELoader")
@@ -76,7 +77,7 @@ def main():
         g["posts"] = {"class_type": "ImageScale", "inputs": {"image": ["postx", 0], "upscale_method": "lanczos", "width": FW, "height": FH, "crop": "disabled"}}
         g[save]["inputs"]["images"] = ["posts", 0]
     g[save]["inputs"]["filename_prefix"] = "anime-style-lab/hires_" + out.stem
-    # show in the ⚙ Queue like any lab render (2026-09-27: hires jobs were invisible there, so the panel looked idle)
+    # show in the ⚙ Queue like any lab render (otherwise hires jobs would be invisible there)
     import pipeline
     rel = out.relative_to(ROOT).as_posix()
     job = pipeline.Job("hires", [{"kind": "image", "out": rel, "label": f"🔍 {out.parent.name} · {out.stem}"}])

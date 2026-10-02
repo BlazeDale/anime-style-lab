@@ -1,0 +1,2182 @@
+{
+ "version": 1,
+ "features": [
+  "rigidity",
+  "hierarchy",
+  "ritual",
+  "ornament",
+  "tradition",
+  "publicness",
+  "intimacy",
+  "chaos"
+ ],
+ "layout": {
+  "mean": [
+   0.534603,
+   0.446825,
+   0.403175,
+   0.449206,
+   0.475397,
+   0.538095,
+   0.345238,
+   0.243333
+  ],
+  "basis": [
+   [
+    -0.250351,
+    -0.159622,
+    0.198911,
+    0.750832,
+    0.069072,
+    0.281351,
+    -0.015827,
+    0.473658
+   ],
+   [
+    0.471207,
+    0.43101,
+    0.409033,
+    0.205946,
+    0.418198,
+    0.217491,
+    -0.261842,
+    -0.302852
+   ]
+  ],
+  "origin": [
+   -0.206644,
+   -0.451717
+  ],
+  "sx": [
+   1.042247,
+   2.96696
+  ],
+  "sy": [
+   0.59013,
+   1.258457
+  ],
+  "gap": 0.12
+ },
+ "nodes": [
+  {
+   "id": "white-tie",
+   "name": "White tie",
+   "family": "dress codes",
+   "picture": "tailcoats, white waistcoats, floor-length gowns and gloves under chandeliers, every figure precise and upright",
+   "voice": "ornate, measured, impeccably courteous",
+   "features": {
+    "rigidity": 0.95,
+    "hierarchy": 0.85,
+    "ritual": 0.8,
+    "ornament": 0.9,
+    "tradition": 0.9,
+    "publicness": 0.7,
+    "intimacy": 0.1,
+    "chaos": 0.0
+   },
+   "x": 0.3769,
+   "y": 0.7295,
+   "added_by": "seed"
+  },
+  {
+   "id": "black-tie",
+   "name": "Black tie",
+   "family": "dress codes",
+   "picture": "dinner jackets and evening gowns at a gala, polished floors, champagne, posed elegance",
+   "voice": "polished, gracious, restrained",
+   "features": {
+    "rigidity": 0.85,
+    "hierarchy": 0.7,
+    "ritual": 0.6,
+    "ornament": 0.75,
+    "tradition": 0.75,
+    "publicness": 0.65,
+    "intimacy": 0.2,
+    "chaos": 0.05
+   },
+   "x": 0.2401,
+   "y": 0.5806,
+   "added_by": "seed"
+  },
+  {
+   "id": "cocktail",
+   "name": "Cocktail",
+   "family": "dress codes",
+   "picture": "short evening dresses and sharp suits, small groups mingling with glasses, warm party lighting",
+   "voice": "light, witty, quick",
+   "features": {
+    "rigidity": 0.6,
+    "hierarchy": 0.4,
+    "ritual": 0.3,
+    "ornament": 0.6,
+    "tradition": 0.4,
+    "publicness": 0.6,
+    "intimacy": 0.3,
+    "chaos": 0.15
+   },
+   "x": 0.2648,
+   "y": 0.2741,
+   "added_by": "seed"
+  },
+  {
+   "id": "business-formal",
+   "name": "Business formal",
+   "family": "dress codes",
+   "picture": "dark suits and ties, conference tables, lanyards, tidy posture, neutral rooms",
+   "voice": "crisp, professional, matter-of-fact",
+   "features": {
+    "rigidity": 0.85,
+    "hierarchy": 0.75,
+    "ritual": 0.4,
+    "ornament": 0.25,
+    "tradition": 0.55,
+    "publicness": 0.7,
+    "intimacy": 0.1,
+    "chaos": 0.0
+   },
+   "x": -0.3623,
+   "y": 0.5065,
+   "added_by": "seed"
+  },
+  {
+   "id": "business-casual",
+   "name": "Business casual",
+   "family": "dress codes",
+   "picture": "open collars, blazers without ties, open-plan offices, coffee mugs, relaxed competence",
+   "voice": "friendly, efficient, plain",
+   "features": {
+    "rigidity": 0.55,
+    "hierarchy": 0.45,
+    "ritual": 0.15,
+    "ornament": 0.15,
+    "tradition": 0.3,
+    "publicness": 0.6,
+    "intimacy": 0.25,
+    "chaos": 0.1
+   },
+   "x": -0.3938,
+   "y": 0.172,
+   "added_by": "seed"
+  },
+  {
+   "id": "smart-casual",
+   "name": "Smart-casual",
+   "family": "dress codes",
+   "picture": "neat but easy clothes, cafes and weekends, tidy sneakers, soft daylight, nothing stiff",
+   "voice": "light, friendly, easygoing",
+   "features": {
+    "rigidity": 0.4,
+    "hierarchy": 0.25,
+    "ritual": 0.1,
+    "ornament": 0.2,
+    "tradition": 0.25,
+    "publicness": 0.5,
+    "intimacy": 0.4,
+    "chaos": 0.15
+   },
+   "x": -0.1395,
+   "y": 0.0232,
+   "added_by": "seed"
+  },
+  {
+   "id": "streetwear",
+   "name": "Streetwear",
+   "family": "dress codes",
+   "picture": "oversized hoodies, graphic tees, fresh sneakers, crews on pavements, bold logos and layering",
+   "voice": "cool, clipped, a little swagger",
+   "features": {
+    "rigidity": 0.15,
+    "hierarchy": 0.15,
+    "ritual": 0.05,
+    "ornament": 0.5,
+    "tradition": 0.1,
+    "publicness": 0.7,
+    "intimacy": 0.3,
+    "chaos": 0.4
+   },
+   "x": 0.4243,
+   "y": -0.219,
+   "added_by": "seed"
+  },
+  {
+   "id": "athleisure",
+   "name": "Athleisure",
+   "family": "dress codes",
+   "picture": "leggings, track jackets, sports shoes, gyms and park paths, bodies in easy motion",
+   "voice": "upbeat, breathless, practical",
+   "features": {
+    "rigidity": 0.15,
+    "hierarchy": 0.1,
+    "ritual": 0.0,
+    "ornament": 0.1,
+    "tradition": 0.0,
+    "publicness": 0.5,
+    "intimacy": 0.45,
+    "chaos": 0.25
+   },
+   "x": -0.0865,
+   "y": -0.4079,
+   "added_by": "seed"
+  },
+  {
+   "id": "loungewear",
+   "name": "Loungewear",
+   "family": "dress codes",
+   "picture": "pyjamas, oversized knits and socks, slumped on couches, blankets, morning-after softness",
+   "voice": "sleepy, murmured, comfortable",
+   "features": {
+    "rigidity": 0.05,
+    "hierarchy": 0.0,
+    "ritual": 0.0,
+    "ornament": 0.05,
+    "tradition": 0.0,
+    "publicness": 0.1,
+    "intimacy": 0.9,
+    "chaos": 0.3
+   },
+   "x": -0.282,
+   "y": -0.8201,
+   "added_by": "seed"
+  },
+  {
+   "id": "festival-wear",
+   "name": "Festival wear",
+   "family": "dress codes",
+   "picture": "glitter, flower crowns, painted faces, mismatched colour, crowds in fields at dusk",
+   "voice": "exuberant, giddy, run-on",
+   "features": {
+    "rigidity": 0.05,
+    "hierarchy": 0.05,
+    "ritual": 0.2,
+    "ornament": 0.9,
+    "tradition": 0.2,
+    "publicness": 0.8,
+    "intimacy": 0.4,
+    "chaos": 0.7
+   },
+   "x": 0.9912,
+   "y": -0.1324,
+   "added_by": "seed"
+  },
+  {
+   "id": "coronation",
+   "name": "Coronation",
+   "family": "ceremony and ritual",
+   "picture": "crowns on cushions, ermine, an enthroned figure crowned by robed clergy, a hushed nave of witnesses",
+   "voice": "solemn, archaic, grand",
+   "features": {
+    "rigidity": 1.0,
+    "hierarchy": 0.95,
+    "ritual": 1.0,
+    "ornament": 1.0,
+    "tradition": 1.0,
+    "publicness": 0.9,
+    "intimacy": 0.05,
+    "chaos": 0.0
+   },
+   "x": 0.4223,
+   "y": 0.9065,
+   "added_by": "seed"
+  },
+  {
+   "id": "state-funeral",
+   "name": "State funeral",
+   "family": "ceremony and ritual",
+   "picture": "flag-draped coffin on a gun carriage, black-clad mourners in perfect ranks, bowed heads",
+   "voice": "hushed, grave, slow",
+   "features": {
+    "rigidity": 0.95,
+    "hierarchy": 0.85,
+    "ritual": 0.95,
+    "ornament": 0.5,
+    "tradition": 0.95,
+    "publicness": 0.9,
+    "intimacy": 0.1,
+    "chaos": 0.0
+   },
+   "x": 0.1436,
+   "y": 0.9797,
+   "added_by": "seed"
+  },
+  {
+   "id": "wedding",
+   "name": "Wedding",
+   "family": "ceremony and ritual",
+   "picture": "white dress, flowers, an aisle, a gathered congregation, rice and tears, held hands",
+   "voice": "tender, festive, hopeful",
+   "features": {
+    "rigidity": 0.7,
+    "hierarchy": 0.5,
+    "ritual": 0.85,
+    "ornament": 0.8,
+    "tradition": 0.8,
+    "publicness": 0.6,
+    "intimacy": 0.55,
+    "chaos": 0.2
+   },
+   "x": 0.5428,
+   "y": 0.4672,
+   "added_by": "seed"
+  },
+  {
+   "id": "graduation",
+   "name": "Graduation",
+   "family": "ceremony and ritual",
+   "picture": "gowns and mortarboards, a stage, rows of folding chairs, diplomas, thrown caps",
+   "voice": "proud, formal, brief",
+   "features": {
+    "rigidity": 0.75,
+    "hierarchy": 0.7,
+    "ritual": 0.8,
+    "ornament": 0.4,
+    "tradition": 0.7,
+    "publicness": 0.8,
+    "intimacy": 0.2,
+    "chaos": 0.1
+   },
+   "x": 0.1277,
+   "y": 0.5376,
+   "added_by": "seed"
+  },
+  {
+   "id": "tea-ceremony",
+   "name": "Tea ceremony",
+   "family": "ceremony and ritual",
+   "picture": "a bare tatami room, a kneeling host, bowls and a whisk, deliberate gestures, one flower",
+   "voice": "quiet, precise, unhurried",
+   "features": {
+    "rigidity": 0.9,
+    "hierarchy": 0.4,
+    "ritual": 0.9,
+    "ornament": 0.35,
+    "tradition": 0.95,
+    "publicness": 0.15,
+    "intimacy": 0.7,
+    "chaos": 0.0
+   },
+   "x": -0.1529,
+   "y": 0.5097,
+   "added_by": "seed"
+  },
+  {
+   "id": "high-mass",
+   "name": "High mass",
+   "family": "ceremony and ritual",
+   "picture": "candles, incense smoke in light shafts, vestments, an altar, a singers' loft, a kneeling congregation",
+   "voice": "liturgical, reverent, cadenced",
+   "features": {
+    "rigidity": 0.9,
+    "hierarchy": 0.8,
+    "ritual": 0.95,
+    "ornament": 0.85,
+    "tradition": 0.95,
+    "publicness": 0.7,
+    "intimacy": 0.15,
+    "chaos": 0.0
+   },
+   "x": 0.4751,
+   "y": 0.7987,
+   "added_by": "seed"
+  },
+  {
+   "id": "temple-procession",
+   "name": "Temple procession",
+   "family": "ceremony and ritual",
+   "picture": "a palanquin and banners carried through streets, drums, marigolds and incense, devout crowds",
+   "voice": "devout, rhythmic, ecstatic",
+   "features": {
+    "rigidity": 0.7,
+    "hierarchy": 0.5,
+    "ritual": 0.9,
+    "ornament": 0.85,
+    "tradition": 0.95,
+    "publicness": 0.85,
+    "intimacy": 0.2,
+    "chaos": 0.25
+   },
+   "x": 0.6256,
+   "y": 0.5818,
+   "added_by": "seed"
+  },
+  {
+   "id": "military-parade",
+   "name": "Military parade",
+   "family": "ceremony and ritual",
+   "picture": "ranked columns in step, rifles at the same angle, banners and a reviewing stand, absolute symmetry",
+   "voice": "clipped, commanding, rhythmic",
+   "features": {
+    "rigidity": 0.98,
+    "hierarchy": 0.9,
+    "ritual": 0.8,
+    "ornament": 0.5,
+    "tradition": 0.8,
+    "publicness": 0.95,
+    "intimacy": 0.05,
+    "chaos": 0.0
+   },
+   "x": 0.0348,
+   "y": 0.8263,
+   "added_by": "seed"
+  },
+  {
+   "id": "changing-of-the-guard",
+   "name": "Changing of the guard",
+   "family": "ceremony and ritual",
+   "picture": "sentries in tall hats exchanging posts in exact choreography before a palace gate, watched by tourists",
+   "voice": "exact, ceremonial, dry",
+   "features": {
+    "rigidity": 0.98,
+    "hierarchy": 0.8,
+    "ritual": 0.85,
+    "ornament": 0.6,
+    "tradition": 0.9,
+    "publicness": 0.9,
+    "intimacy": 0.05,
+    "chaos": 0.0
+   },
+   "x": 0.144,
+   "y": 0.7762,
+   "added_by": "seed"
+  },
+  {
+   "id": "royal-court",
+   "name": "Royal court",
+   "family": "social register",
+   "picture": "audience hall, courtiers bowing in order of rank, a dais, tapestries, whispered protocol",
+   "voice": "formal, deferential, ornate",
+   "features": {
+    "rigidity": 0.95,
+    "hierarchy": 1.0,
+    "ritual": 0.85,
+    "ornament": 0.9,
+    "tradition": 0.95,
+    "publicness": 0.6,
+    "intimacy": 0.1,
+    "chaos": 0.0
+   },
+   "x": 0.301,
+   "y": 0.9536,
+   "added_by": "seed"
+  },
+  {
+   "id": "diplomatic-summit",
+   "name": "Diplomatic summit",
+   "family": "social register",
+   "picture": "a long table with flags and nameplates, translators, handshakes for the cameras, careful distance",
+   "voice": "courteous, guarded, measured",
+   "features": {
+    "rigidity": 0.85,
+    "hierarchy": 0.8,
+    "ritual": 0.5,
+    "ornament": 0.3,
+    "tradition": 0.6,
+    "publicness": 0.8,
+    "intimacy": 0.1,
+    "chaos": 0.05
+   },
+   "x": -0.0859,
+   "y": 0.6094,
+   "added_by": "seed"
+  },
+  {
+   "id": "boardroom",
+   "name": "Boardroom",
+   "family": "social register",
+   "picture": "a glass-walled room, a long polished table, slides, a head of table, folded hands",
+   "voice": "crisp, strategic, understated",
+   "features": {
+    "rigidity": 0.75,
+    "hierarchy": 0.8,
+    "ritual": 0.3,
+    "ornament": 0.15,
+    "tradition": 0.4,
+    "publicness": 0.4,
+    "intimacy": 0.2,
+    "chaos": 0.05
+   },
+   "x": -0.8121,
+   "y": 0.3081,
+   "added_by": "seed"
+  },
+  {
+   "id": "faculty-senate",
+   "name": "Faculty senate",
+   "family": "social register",
+   "picture": "robed academics around a horseshoe table, stacks of paper, wood panelling, solemn debate",
+   "voice": "dry, learned, precise",
+   "features": {
+    "rigidity": 0.65,
+    "hierarchy": 0.65,
+    "ritual": 0.5,
+    "ornament": 0.25,
+    "tradition": 0.8,
+    "publicness": 0.4,
+    "intimacy": 0.3,
+    "chaos": 0.1
+   },
+   "x": -0.2146,
+   "y": 0.4066,
+   "added_by": "seed"
+  },
+  {
+   "id": "family-sunday-dinner",
+   "name": "Family Sunday dinner",
+   "family": "social register",
+   "picture": "a crowded table of dishes, grandparents at the head, passed plates, the good tablecloth",
+   "voice": "warm, chatty, affectionate",
+   "features": {
+    "rigidity": 0.35,
+    "hierarchy": 0.35,
+    "ritual": 0.45,
+    "ornament": 0.3,
+    "tradition": 0.7,
+    "publicness": 0.2,
+    "intimacy": 0.85,
+    "chaos": 0.2
+   },
+   "x": 0.0597,
+   "y": 0.1255,
+   "added_by": "seed"
+  },
+  {
+   "id": "sleepover",
+   "name": "Sleepover",
+   "family": "social register",
+   "picture": "a floor of sleeping bags, pillow forts, fairy lights, snacks, whispering friends in pyjamas",
+   "voice": "giggly, whispered, rambling",
+   "features": {
+    "rigidity": 0.0,
+    "hierarchy": 0.0,
+    "ritual": 0.0,
+    "ornament": 0.1,
+    "tradition": 0.0,
+    "publicness": 0.0,
+    "intimacy": 1.0,
+    "chaos": 0.5
+   },
+   "x": -0.0012,
+   "y": -1.0,
+   "added_by": "seed"
+  },
+  {
+   "id": "dive-bar",
+   "name": "Dive bar",
+   "family": "social register",
+   "picture": "a low-lit counter, neon beer signs, a jukebox, mismatched stools, regulars slumped over drinks",
+   "voice": "gruff, wry, slangy",
+   "features": {
+    "rigidity": 0.05,
+    "hierarchy": 0.05,
+    "ritual": 0.0,
+    "ornament": 0.2,
+    "tradition": 0.1,
+    "publicness": 0.4,
+    "intimacy": 0.6,
+    "chaos": 0.5
+   },
+   "x": 0.1746,
+   "y": -0.6116,
+   "added_by": "seed"
+  },
+  {
+   "id": "rave",
+   "name": "Rave",
+   "family": "social register",
+   "picture": "a dark warehouse of strobes and lasers, a swarm of dancing bodies, smoke, light trails",
+   "voice": "fragmentary, pulsing, wild",
+   "features": {
+    "rigidity": 0.0,
+    "hierarchy": 0.0,
+    "ritual": 0.1,
+    "ornament": 0.7,
+    "tradition": 0.0,
+    "publicness": 0.7,
+    "intimacy": 0.3,
+    "chaos": 1.0
+   },
+   "x": 0.8721,
+   "y": -0.4158,
+   "added_by": "seed"
+  },
+  {
+   "id": "campfire",
+   "name": "Campfire",
+   "family": "social register",
+   "picture": "a circle on logs around a fire, faces lit orange, sparks, a guitar, stories",
+   "voice": "low, shared, storytelling",
+   "features": {
+    "rigidity": 0.05,
+    "hierarchy": 0.05,
+    "ritual": 0.2,
+    "ornament": 0.1,
+    "tradition": 0.4,
+    "publicness": 0.1,
+    "intimacy": 0.9,
+    "chaos": 0.3
+   },
+   "x": -0.0586,
+   "y": -0.5323,
+   "added_by": "seed"
+  },
+  {
+   "id": "perfect-symmetry",
+   "name": "Perfect symmetry",
+   "family": "spatial order",
+   "picture": "a mirror-image composition on a central axis, matched columns, identical figures either side",
+   "voice": "exact, balanced, stately",
+   "features": {
+    "rigidity": 1.0,
+    "hierarchy": 0.7,
+    "ritual": 0.6,
+    "ornament": 0.7,
+    "tradition": 0.6,
+    "publicness": 0.6,
+    "intimacy": 0.0,
+    "chaos": 0.0
+   },
+   "x": 0.1468,
+   "y": 0.6562,
+   "added_by": "seed"
+  },
+  {
+   "id": "grid-order",
+   "name": "Grid order",
+   "family": "spatial order",
+   "picture": "figures and objects in modular rows, repeated units, aligned shelves and desks, orthogonal calm",
+   "voice": "neutral, orderly, flat",
+   "features": {
+    "rigidity": 0.9,
+    "hierarchy": 0.5,
+    "ritual": 0.2,
+    "ornament": 0.1,
+    "tradition": 0.2,
+    "publicness": 0.5,
+    "intimacy": 0.1,
+    "chaos": 0.0
+   },
+   "x": -0.9774,
+   "y": 0.2112,
+   "added_by": "seed"
+  },
+  {
+   "id": "procession-axis",
+   "name": "Procession axis",
+   "family": "spatial order",
+   "picture": "a long central aisle drawing the eye to a distant focal point, flanked by ranks of onlookers",
+   "voice": "stately, directed, inevitable",
+   "features": {
+    "rigidity": 0.9,
+    "hierarchy": 0.85,
+    "ritual": 0.85,
+    "ornament": 0.7,
+    "tradition": 0.8,
+    "publicness": 0.8,
+    "intimacy": 0.05,
+    "chaos": 0.0
+   },
+   "x": 0.2553,
+   "y": 0.7095,
+   "added_by": "seed"
+  },
+  {
+   "id": "organic-sprawl",
+   "name": "Organic sprawl",
+   "family": "spatial order",
+   "picture": "winding paths, uneven buildings, things growing every direction, no axis, lived-in spread",
+   "voice": "meandering, loose, curious",
+   "features": {
+    "rigidity": 0.1,
+    "hierarchy": 0.0,
+    "ritual": 0.0,
+    "ornament": 0.4,
+    "tradition": 0.1,
+    "publicness": 0.4,
+    "intimacy": 0.3,
+    "chaos": 0.6
+   },
+   "x": 0.3642,
+   "y": -0.4885,
+   "added_by": "seed"
+  },
+  {
+   "id": "cluttered-nest",
+   "name": "Cluttered nest",
+   "family": "spatial order",
+   "picture": "piles, nooks, blankets and shelves overflowing, a lived-in den with a warm centre",
+   "voice": "cosy, rambling, intimate",
+   "features": {
+    "rigidity": 0.05,
+    "hierarchy": 0.0,
+    "ritual": 0.1,
+    "ornament": 0.5,
+    "tradition": 0.2,
+    "publicness": 0.0,
+    "intimacy": 0.9,
+    "chaos": 0.7
+   },
+   "x": 0.396,
+   "y": -0.6879,
+   "added_by": "seed"
+  },
+  {
+   "id": "wilderness",
+   "name": "Wilderness",
+   "family": "spatial order",
+   "picture": "untouched ridges, tangled forest, weather, no human arrangement at all",
+   "voice": "raw, sparse, breathless",
+   "features": {
+    "rigidity": 0.0,
+    "hierarchy": 0.0,
+    "ritual": 0.0,
+    "ornament": 0.2,
+    "tradition": 0.0,
+    "publicness": 0.0,
+    "intimacy": 0.4,
+    "chaos": 0.8
+   },
+   "x": 0.1645,
+   "y": -0.8783,
+   "added_by": "seed"
+  },
+  {
+   "id": "regency-ballroom",
+   "name": "Regency ballroom",
+   "family": "eras and aesthetics",
+   "picture": "empire-waist gowns and tailcoats in lines for a country dance, candles, mirrors, chaperones watching",
+   "voice": "arch, coded, elegantly teasing",
+   "features": {
+    "rigidity": 0.85,
+    "hierarchy": 0.75,
+    "ritual": 0.7,
+    "ornament": 0.8,
+    "tradition": 0.85,
+    "publicness": 0.65,
+    "intimacy": 0.2,
+    "chaos": 0.05
+   },
+   "x": 0.3561,
+   "y": 0.6111,
+   "added_by": "seed"
+  },
+  {
+   "id": "victorian-parlour",
+   "name": "Victorian parlour",
+   "family": "eras and aesthetics",
+   "picture": "dark wood, heavy drapes, doilies, stiff upholstery, portraits, a ticking clock, buttoned collars",
+   "voice": "prim, ornate, sentimental",
+   "features": {
+    "rigidity": 0.8,
+    "hierarchy": 0.7,
+    "ritual": 0.6,
+    "ornament": 0.9,
+    "tradition": 0.85,
+    "publicness": 0.3,
+    "intimacy": 0.5,
+    "chaos": 0.1
+   },
+   "x": 0.3425,
+   "y": 0.4918,
+   "added_by": "seed"
+  },
+  {
+   "id": "art-deco-gala",
+   "name": "Art Deco gala",
+   "family": "eras and aesthetics",
+   "picture": "gold geometry, sunburst motifs, long gloves and sleek tuxedos, a grand staircase, jazz-age sparkle",
+   "voice": "glittering, confident, rhythmic",
+   "features": {
+    "rigidity": 0.75,
+    "hierarchy": 0.65,
+    "ritual": 0.5,
+    "ornament": 0.95,
+    "tradition": 0.6,
+    "publicness": 0.7,
+    "intimacy": 0.2,
+    "chaos": 0.05
+   },
+   "x": 0.4633,
+   "y": 0.5572,
+   "added_by": "seed"
+  },
+  {
+   "id": "mid-century-office",
+   "name": "Mid-century office",
+   "family": "eras and aesthetics",
+   "picture": "rows of identical desks, typewriters, ties and pencil skirts, filing cabinets, venetian blinds",
+   "voice": "clipped, polite, period-brisk",
+   "features": {
+    "rigidity": 0.7,
+    "hierarchy": 0.65,
+    "ritual": 0.3,
+    "ornament": 0.2,
+    "tradition": 0.45,
+    "publicness": 0.5,
+    "intimacy": 0.2,
+    "chaos": 0.05
+   },
+   "x": -0.4823,
+   "y": 0.327,
+   "added_by": "seed"
+  },
+  {
+   "id": "brutalist-civic",
+   "name": "Brutalist civic",
+   "family": "eras and aesthetics",
+   "picture": "raw concrete halls, enormous empty plazas, tiny officials, hard shadows, monumental repetition",
+   "voice": "bureaucratic, impersonal, stark",
+   "features": {
+    "rigidity": 0.8,
+    "hierarchy": 0.75,
+    "ritual": 0.3,
+    "ornament": 0.1,
+    "tradition": 0.3,
+    "publicness": 0.8,
+    "intimacy": 0.0,
+    "chaos": 0.0
+   },
+   "x": -0.7106,
+   "y": 0.3988,
+   "added_by": "seed"
+  },
+  {
+   "id": "bauhaus",
+   "name": "Bauhaus",
+   "family": "eras and aesthetics",
+   "picture": "primary-colour geometry, tubular steel, clean sans type, asymmetrical balance, honest materials",
+   "voice": "minimal, rational, declarative",
+   "features": {
+    "rigidity": 0.7,
+    "hierarchy": 0.3,
+    "ritual": 0.1,
+    "ornament": 0.15,
+    "tradition": 0.2,
+    "publicness": 0.5,
+    "intimacy": 0.2,
+    "chaos": 0.0
+   },
+   "x": -0.6968,
+   "y": 0.1048,
+   "added_by": "seed"
+  },
+  {
+   "id": "punk",
+   "name": "Punk",
+   "family": "eras and aesthetics",
+   "picture": "safety pins, torn denim, spiked hair, flyers on walls, a cramped gig, raised fists",
+   "voice": "shouted, defiant, ragged",
+   "features": {
+    "rigidity": 0.0,
+    "hierarchy": 0.0,
+    "ritual": 0.05,
+    "ornament": 0.5,
+    "tradition": 0.0,
+    "publicness": 0.6,
+    "intimacy": 0.3,
+    "chaos": 0.9
+   },
+   "x": 0.6313,
+   "y": -0.5446,
+   "added_by": "seed"
+  },
+  {
+   "id": "grunge",
+   "name": "Grunge",
+   "family": "eras and aesthetics",
+   "picture": "flannel and thrifted layers, dim basements, tangled hair, tape-spooled posters, slouching",
+   "voice": "mumbled, ironic, drowsy",
+   "features": {
+    "rigidity": 0.0,
+    "hierarchy": 0.0,
+    "ritual": 0.0,
+    "ornament": 0.3,
+    "tradition": 0.0,
+    "publicness": 0.4,
+    "intimacy": 0.6,
+    "chaos": 0.7
+   },
+   "x": 0.3336,
+   "y": -0.7905,
+   "added_by": "seed"
+  },
+  {
+   "id": "y2k",
+   "name": "Y2K",
+   "family": "eras and aesthetics",
+   "picture": "glossy plastics, butterfly clips, metallic fabrics, chunky early gadgets, bubbly futurism",
+   "voice": "bubbly, hyper, chatty",
+   "features": {
+    "rigidity": 0.1,
+    "hierarchy": 0.1,
+    "ritual": 0.05,
+    "ornament": 0.6,
+    "tradition": 0.0,
+    "publicness": 0.6,
+    "intimacy": 0.3,
+    "chaos": 0.5
+   },
+   "x": 0.5439,
+   "y": -0.3065,
+   "added_by": "seed"
+  },
+  {
+   "id": "liturgical",
+   "name": "Liturgical",
+   "family": "speech register",
+   "picture": "a congregation mid-response, open books, lifted hands, candlelight, a cadence of repetition",
+   "voice": "chanted, repetitive, sacred",
+   "features": {
+    "rigidity": 0.95,
+    "hierarchy": 0.8,
+    "ritual": 1.0,
+    "ornament": 0.7,
+    "tradition": 1.0,
+    "publicness": 0.7,
+    "intimacy": 0.1,
+    "chaos": 0.0
+   },
+   "x": 0.2076,
+   "y": 0.8781,
+   "added_by": "seed"
+  },
+  {
+   "id": "legalese",
+   "name": "Legalese",
+   "family": "speech register",
+   "picture": "clerks and judges, stamped documents, a raised bench, wigs or robes, the weight of procedure",
+   "voice": "exhaustive, hereby, clause by clause",
+   "features": {
+    "rigidity": 0.95,
+    "hierarchy": 0.8,
+    "ritual": 0.5,
+    "ornament": 0.4,
+    "tradition": 0.8,
+    "publicness": 0.5,
+    "intimacy": 0.0,
+    "chaos": 0.0
+   },
+   "x": -0.1948,
+   "y": 0.6599,
+   "added_by": "seed"
+  },
+  {
+   "id": "newsreader",
+   "name": "Newsreader",
+   "family": "speech register",
+   "picture": "a desk and camera, a straight-backed presenter, a neutral backdrop, even lighting, steady eye contact",
+   "voice": "even, authoritative, headline-short",
+   "features": {
+    "rigidity": 0.8,
+    "hierarchy": 0.6,
+    "ritual": 0.1,
+    "ornament": 0.1,
+    "tradition": 0.4,
+    "publicness": 0.9,
+    "intimacy": 0.0,
+    "chaos": 0.0
+   },
+   "x": -0.5931,
+   "y": 0.3734,
+   "added_by": "seed"
+  },
+  {
+   "id": "chatty",
+   "name": "Chatty",
+   "family": "speech register",
+   "picture": "people talking over each other at a table, hands moving, laughing, leaning in",
+   "voice": "rambling, warm, full of asides",
+   "features": {
+    "rigidity": 0.1,
+    "hierarchy": 0.0,
+    "ritual": 0.0,
+    "ornament": 0.2,
+    "tradition": 0.1,
+    "publicness": 0.3,
+    "intimacy": 0.8,
+    "chaos": 0.4
+   },
+   "x": 0.0764,
+   "y": -0.6809,
+   "added_by": "seed"
+  },
+  {
+   "id": "slang",
+   "name": "Slang",
+   "family": "speech register",
+   "picture": "friends hanging off a wall, phones out, shoulder bumps, in-jokes, loose posture",
+   "voice": "clipped, playful, in-group",
+   "features": {
+    "rigidity": 0.0,
+    "hierarchy": 0.0,
+    "ritual": 0.0,
+    "ornament": 0.3,
+    "tradition": 0.0,
+    "publicness": 0.4,
+    "intimacy": 0.7,
+    "chaos": 0.6
+   },
+   "x": 0.2307,
+   "y": -0.7283,
+   "added_by": "seed"
+  },
+  {
+   "id": "silence",
+   "name": "Silence",
+   "family": "speech register",
+   "picture": "a still room, no one speaking, a long held look, empty space around each figure",
+   "voice": "nothing but a pause",
+   "features": {
+    "rigidity": 0.5,
+    "hierarchy": 0.3,
+    "ritual": 0.7,
+    "ornament": 0.0,
+    "tradition": 0.6,
+    "publicness": 0.2,
+    "intimacy": 0.6,
+    "chaos": 0.0
+   },
+   "x": -0.7303,
+   "y": 0.2202,
+   "added_by": "seed"
+  },
+  {
+   "id": "everyday",
+   "name": "Everyday",
+   "family": "stick registers",
+   "picture": "relaxed but composed, ordinary life done well, neat rooms and plain clothes",
+   "voice": "plain-spoken, easy",
+   "features": {
+    "rigidity": 0.35,
+    "hierarchy": 0.25,
+    "ritual": 0.15,
+    "ornament": 0.2,
+    "tradition": 0.35,
+    "publicness": 0.4,
+    "intimacy": 0.5,
+    "chaos": 0.25
+   },
+   "x": 0.0,
+   "y": 0.0,
+   "added_by": "seed",
+   "legacy": true
+  },
+  {
+   "id": "feral",
+   "name": "Feral",
+   "family": "stick registers",
+   "picture": "untamed, chaotic, wild-haired, nothing arranged, mud and weather and motion",
+   "voice": "breathless fragments",
+   "features": {
+    "rigidity": 0.0,
+    "hierarchy": 0.0,
+    "ritual": 0.0,
+    "ornament": 0.2,
+    "tradition": 0.0,
+    "publicness": 0.1,
+    "intimacy": 0.3,
+    "chaos": 1.0
+   },
+   "x": 0.2826,
+   "y": -0.8994,
+   "added_by": "seed",
+   "legacy": true
+  },
+  {
+   "id": "slacker",
+   "name": "Slacker",
+   "family": "stick registers",
+   "picture": "rumpled, lounging, unmade beds and couches, crumbs, an afternoon going nowhere",
+   "voice": "lazy, deadpan",
+   "features": {
+    "rigidity": 0.02,
+    "hierarchy": 0.0,
+    "ritual": 0.0,
+    "ornament": 0.05,
+    "tradition": 0.0,
+    "publicness": 0.1,
+    "intimacy": 0.8,
+    "chaos": 0.5
+   },
+   "x": -0.0401,
+   "y": -0.8864,
+   "added_by": "seed",
+   "legacy": true
+  },
+  {
+   "id": "street",
+   "name": "Street",
+   "family": "stick registers",
+   "picture": "candid, graffiti, sneakers, caught in passing, crowds, quick glances and city edges",
+   "voice": "slangy, quick",
+   "features": {
+    "rigidity": 0.15,
+    "hierarchy": 0.05,
+    "ritual": 0.0,
+    "ornament": 0.4,
+    "tradition": 0.05,
+    "publicness": 0.8,
+    "intimacy": 0.3,
+    "chaos": 0.55
+   },
+   "x": 0.4271,
+   "y": -0.3391,
+   "added_by": "seed",
+   "legacy": true
+  },
+  {
+   "id": "domestic",
+   "name": "Domestic",
+   "family": "stick registers",
+   "picture": "homey, kitchen tables, cardigans and aprons, the mess of real life, hands busy",
+   "voice": "warm, chatty",
+   "features": {
+    "rigidity": 0.15,
+    "hierarchy": 0.1,
+    "ritual": 0.15,
+    "ornament": 0.2,
+    "tradition": 0.4,
+    "publicness": 0.05,
+    "intimacy": 0.95,
+    "chaos": 0.35
+   },
+   "x": 0.03,
+   "y": -0.4511,
+   "added_by": "seed",
+   "legacy": true
+  },
+  {
+   "id": "festive",
+   "name": "Festive",
+   "family": "stick registers",
+   "picture": "parties, festivals, crowds, colour and play, banners, streamers, raised cups",
+   "voice": "exclamations",
+   "features": {
+    "rigidity": 0.2,
+    "hierarchy": 0.1,
+    "ritual": 0.5,
+    "ornament": 0.85,
+    "tradition": 0.5,
+    "publicness": 0.9,
+    "intimacy": 0.4,
+    "chaos": 0.6
+   },
+   "x": 0.9725,
+   "y": 0.0995,
+   "added_by": "seed",
+   "legacy": true
+  },
+  {
+   "id": "professional",
+   "name": "Professional",
+   "family": "stick registers",
+   "picture": "offices, uniforms of work, tidy desks, name tags, purposeful posture",
+   "voice": "matter-of-fact, crisp",
+   "features": {
+    "rigidity": 0.7,
+    "hierarchy": 0.65,
+    "ritual": 0.2,
+    "ornament": 0.15,
+    "tradition": 0.4,
+    "publicness": 0.6,
+    "intimacy": 0.15,
+    "chaos": 0.05
+   },
+   "x": -0.6155,
+   "y": 0.2553,
+   "added_by": "seed",
+   "legacy": true
+  },
+  {
+   "id": "academic",
+   "name": "Academic",
+   "family": "stick registers",
+   "picture": "libraries, gowns, lecterns, quiet order, long shelves, bent heads",
+   "voice": "measured, learned",
+   "features": {
+    "rigidity": 0.6,
+    "hierarchy": 0.55,
+    "ritual": 0.45,
+    "ornament": 0.35,
+    "tradition": 0.8,
+    "publicness": 0.4,
+    "intimacy": 0.35,
+    "chaos": 0.1
+   },
+   "x": 0.0242,
+   "y": 0.3974,
+   "added_by": "seed",
+   "legacy": true
+  },
+  {
+   "id": "diplomatic",
+   "name": "Diplomatic",
+   "family": "stick registers",
+   "picture": "state dinners, flags, protocol, careful distance, interpreters at shoulders",
+   "voice": "courteous, guarded",
+   "features": {
+    "rigidity": 0.85,
+    "hierarchy": 0.8,
+    "ritual": 0.55,
+    "ornament": 0.35,
+    "tradition": 0.65,
+    "publicness": 0.85,
+    "intimacy": 0.1,
+    "chaos": 0.03
+   },
+   "x": 0.0341,
+   "y": 0.6144,
+   "added_by": "seed",
+   "legacy": true
+  },
+  {
+   "id": "martial",
+   "name": "Martial",
+   "family": "stick registers",
+   "picture": "parade grounds, ranks, drill, strict symmetry, saluting hands",
+   "voice": "clipped, commanding",
+   "features": {
+    "rigidity": 0.97,
+    "hierarchy": 0.9,
+    "ritual": 0.7,
+    "ornament": 0.4,
+    "tradition": 0.7,
+    "publicness": 0.7,
+    "intimacy": 0.05,
+    "chaos": 0.0
+   },
+   "x": -0.0262,
+   "y": 0.7228,
+   "added_by": "seed",
+   "legacy": true
+  },
+  {
+   "id": "ritual",
+   "name": "Ritual",
+   "family": "stick registers",
+   "picture": "vestments, altars, processions, sacred ceremony, ordered gestures",
+   "voice": "liturgical",
+   "features": {
+    "rigidity": 0.9,
+    "hierarchy": 0.75,
+    "ritual": 1.0,
+    "ornament": 0.8,
+    "tradition": 0.95,
+    "publicness": 0.6,
+    "intimacy": 0.25,
+    "chaos": 0.05
+   },
+   "x": 0.4841,
+   "y": 0.6755,
+   "added_by": "seed",
+   "legacy": true
+  },
+  {
+   "id": "courtly",
+   "name": "Courtly",
+   "family": "stick registers",
+   "picture": "thrones, regalia, absolute symmetry and hierarchy, silks and gold",
+   "voice": "high, archaic",
+   "features": {
+    "rigidity": 0.98,
+    "hierarchy": 1.0,
+    "ritual": 0.9,
+    "ornament": 0.95,
+    "tradition": 0.95,
+    "publicness": 0.6,
+    "intimacy": 0.1,
+    "chaos": 0.0
+   },
+   "x": 0.3197,
+   "y": 0.835,
+   "added_by": "seed",
+   "legacy": true
+  },
+  {
+   "id": "flirty",
+   "name": "Flirty",
+   "family": "social register",
+   "picture": "playful glances over a shoulder, a light touch on the arm, dressed up just a little, warm low light, two people standing closer than they need to",
+   "voice": "teasing, light and playful, quick banter and knowing smiles",
+   "features": {
+    "rigidity": 0.2,
+    "hierarchy": 0.15,
+    "ritual": 0.25,
+    "ornament": 0.6,
+    "tradition": 0.3,
+    "publicness": 0.4,
+    "intimacy": 0.8,
+    "chaos": 0.35
+   },
+   "x": 0.4298,
+   "y": -0.099,
+   "added_by": "seed"
+  },
+  {
+   "id": "scandalous",
+   "name": "Scandalous",
+   "family": "social register",
+   "picture": "a breach of decorum at a formal occasion: a daring outfit in a room of gowns, gasps behind fans, a spilled glass, whispering guests turning to stare, a defiant smile",
+   "voice": "gossipy and delicious, arch asides, rumours passed behind gloved hands",
+   "features": {
+    "rigidity": 0.55,
+    "hierarchy": 0.6,
+    "ritual": 0.4,
+    "ornament": 0.75,
+    "tradition": 0.45,
+    "publicness": 0.85,
+    "intimacy": 0.45,
+    "chaos": 0.7
+   },
+   "x": 0.7193,
+   "y": 0.2407,
+   "added_by": "seed",
+   "aka": [
+    "scandelous",
+    "scandal",
+    "risque",
+    "outrageous"
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "a": "academic",
+   "b": "cocktail",
+   "w": 0.42,
+   "uses": 0
+  },
+  {
+   "a": "academic",
+   "b": "faculty-senate",
+   "w": 0.93,
+   "uses": 0
+  },
+  {
+   "a": "academic",
+   "b": "mid-century-office",
+   "w": 0.54,
+   "uses": 0
+  },
+  {
+   "a": "academic",
+   "b": "silence",
+   "w": 0.32,
+   "uses": 0
+  },
+  {
+   "a": "academic",
+   "b": "tea-ceremony",
+   "w": 0.23,
+   "uses": 0
+  },
+  {
+   "a": "art-deco-gala",
+   "b": "black-tie",
+   "w": 0.78,
+   "uses": 0
+  },
+  {
+   "a": "art-deco-gala",
+   "b": "perfect-symmetry",
+   "w": 0.59,
+   "uses": 0
+  },
+  {
+   "a": "art-deco-gala",
+   "b": "regency-ballroom",
+   "w": 0.66,
+   "uses": 0
+  },
+  {
+   "a": "art-deco-gala",
+   "b": "scandalous",
+   "w": 0.18,
+   "uses": 0
+  },
+  {
+   "a": "athleisure",
+   "b": "chatty",
+   "w": 0.55,
+   "uses": 0
+  },
+  {
+   "a": "athleisure",
+   "b": "dive-bar",
+   "w": 0.7,
+   "uses": 0
+  },
+  {
+   "a": "athleisure",
+   "b": "everyday",
+   "w": 0.53,
+   "uses": 0
+  },
+  {
+   "a": "athleisure",
+   "b": "smart-casual",
+   "w": 0.61,
+   "uses": 0
+  },
+  {
+   "a": "bauhaus",
+   "b": "business-casual",
+   "w": 0.8,
+   "uses": 0
+  },
+  {
+   "a": "bauhaus",
+   "b": "grid-order",
+   "w": 0.75,
+   "uses": 0
+  },
+  {
+   "a": "bauhaus",
+   "b": "smart-casual",
+   "w": 0.64,
+   "uses": 0
+  },
+  {
+   "a": "black-tie",
+   "b": "perfect-symmetry",
+   "w": 0.77,
+   "uses": 0
+  },
+  {
+   "a": "black-tie",
+   "b": "regency-ballroom",
+   "w": 0.93,
+   "uses": 0
+  },
+  {
+   "a": "black-tie",
+   "b": "victorian-parlour",
+   "w": 0.5,
+   "uses": 0
+  },
+  {
+   "a": "boardroom",
+   "b": "business-formal",
+   "w": 0.65,
+   "uses": 0
+  },
+  {
+   "a": "boardroom",
+   "b": "mid-century-office",
+   "w": 0.89,
+   "uses": 0
+  },
+  {
+   "a": "boardroom",
+   "b": "professional",
+   "w": 0.81,
+   "uses": 0
+  },
+  {
+   "a": "brutalist-civic",
+   "b": "business-formal",
+   "w": 0.72,
+   "uses": 0
+  },
+  {
+   "a": "brutalist-civic",
+   "b": "newsreader",
+   "w": 0.8,
+   "uses": 0
+  },
+  {
+   "a": "brutalist-civic",
+   "b": "professional",
+   "w": 0.74,
+   "uses": 0
+  },
+  {
+   "a": "business-casual",
+   "b": "cocktail",
+   "w": 0.51,
+   "uses": 0
+  },
+  {
+   "a": "business-casual",
+   "b": "everyday",
+   "w": 0.56,
+   "uses": 0
+  },
+  {
+   "a": "business-casual",
+   "b": "professional",
+   "w": 0.78,
+   "uses": 0
+  },
+  {
+   "a": "business-casual",
+   "b": "smart-casual",
+   "w": 0.75,
+   "uses": 0
+  },
+  {
+   "a": "business-formal",
+   "b": "diplomatic",
+   "w": 0.83,
+   "uses": 0
+  },
+  {
+   "a": "business-formal",
+   "b": "diplomatic-summit",
+   "w": 0.92,
+   "uses": 0
+  },
+  {
+   "a": "business-formal",
+   "b": "legalese",
+   "w": 0.65,
+   "uses": 0
+  },
+  {
+   "a": "business-formal",
+   "b": "mid-century-office",
+   "w": 0.74,
+   "uses": 0
+  },
+  {
+   "a": "business-formal",
+   "b": "newsreader",
+   "w": 0.56,
+   "uses": 0
+  },
+  {
+   "a": "campfire",
+   "b": "chatty",
+   "w": 0.57,
+   "uses": 0
+  },
+  {
+   "a": "campfire",
+   "b": "domestic",
+   "w": 0.91,
+   "uses": 0
+  },
+  {
+   "a": "campfire",
+   "b": "family-sunday-dinner",
+   "w": 0.33,
+   "uses": 0
+  },
+  {
+   "a": "campfire",
+   "b": "loungewear",
+   "w": 0.57,
+   "uses": 0
+  },
+  {
+   "a": "changing-of-the-guard",
+   "b": "military-parade",
+   "w": 0.91,
+   "uses": 0
+  },
+  {
+   "a": "changing-of-the-guard",
+   "b": "procession-axis",
+   "w": 0.9,
+   "uses": 0
+  },
+  {
+   "a": "changing-of-the-guard",
+   "b": "state-funeral",
+   "w": 0.92,
+   "uses": 0
+  },
+  {
+   "a": "chatty",
+   "b": "cluttered-nest",
+   "w": 0.43,
+   "uses": 0
+  },
+  {
+   "a": "chatty",
+   "b": "dive-bar",
+   "w": 0.83,
+   "uses": 0
+  },
+  {
+   "a": "chatty",
+   "b": "domestic",
+   "w": 0.55,
+   "uses": 0
+  },
+  {
+   "a": "chatty",
+   "b": "flirty",
+   "w": 0.43,
+   "uses": 0
+  },
+  {
+   "a": "chatty",
+   "b": "loungewear",
+   "w": 0.77,
+   "uses": 0
+  },
+  {
+   "a": "chatty",
+   "b": "slacker",
+   "w": 0.78,
+   "uses": 0
+  },
+  {
+   "a": "chatty",
+   "b": "slang",
+   "w": 0.78,
+   "uses": 0
+  },
+  {
+   "a": "chatty",
+   "b": "sleepover",
+   "w": 0.62,
+   "uses": 0
+  },
+  {
+   "a": "cluttered-nest",
+   "b": "domestic",
+   "w": 0.46,
+   "uses": 0
+  },
+  {
+   "a": "cluttered-nest",
+   "b": "sleepover",
+   "w": 0.48,
+   "uses": 0
+  },
+  {
+   "a": "cocktail",
+   "b": "mid-century-office",
+   "w": 0.48,
+   "uses": 0
+  },
+  {
+   "a": "cocktail",
+   "b": "scandalous",
+   "w": 0.27,
+   "uses": 0
+  },
+  {
+   "a": "cocktail",
+   "b": "smart-casual",
+   "w": 0.43,
+   "uses": 0
+  },
+  {
+   "a": "coronation",
+   "b": "courtly",
+   "w": 0.74,
+   "uses": 0
+  },
+  {
+   "a": "coronation",
+   "b": "high-mass",
+   "w": 0.74,
+   "uses": 0
+  },
+  {
+   "a": "coronation",
+   "b": "white-tie",
+   "w": 0.73,
+   "uses": 0
+  },
+  {
+   "a": "courtly",
+   "b": "high-mass",
+   "w": 0.82,
+   "uses": 0
+  },
+  {
+   "a": "courtly",
+   "b": "royal-court",
+   "w": 0.98,
+   "uses": 0
+  },
+  {
+   "a": "courtly",
+   "b": "white-tie",
+   "w": 0.87,
+   "uses": 0
+  },
+  {
+   "a": "diplomatic",
+   "b": "diplomatic-summit",
+   "w": 0.97,
+   "uses": 0
+  },
+  {
+   "a": "diplomatic",
+   "b": "graduation",
+   "w": 0.75,
+   "uses": 0
+  },
+  {
+   "a": "diplomatic",
+   "b": "martial",
+   "w": 0.81,
+   "uses": 0
+  },
+  {
+   "a": "diplomatic-summit",
+   "b": "graduation",
+   "w": 0.67,
+   "uses": 0
+  },
+  {
+   "a": "diplomatic-summit",
+   "b": "martial",
+   "w": 0.76,
+   "uses": 0
+  },
+  {
+   "a": "dive-bar",
+   "b": "grunge",
+   "w": 0.83,
+   "uses": 0
+  },
+  {
+   "a": "dive-bar",
+   "b": "organic-sprawl",
+   "w": 0.67,
+   "uses": 0
+  },
+  {
+   "a": "dive-bar",
+   "b": "slang",
+   "w": 0.88,
+   "uses": 0
+  },
+  {
+   "a": "domestic",
+   "b": "family-sunday-dinner",
+   "w": 0.38,
+   "uses": 0
+  },
+  {
+   "a": "domestic",
+   "b": "flirty",
+   "w": 0.4,
+   "uses": 0
+  },
+  {
+   "a": "domestic",
+   "b": "loungewear",
+   "w": 0.52,
+   "uses": 0
+  },
+  {
+   "a": "everyday",
+   "b": "flirty",
+   "w": 0.43,
+   "uses": 0
+  },
+  {
+   "a": "everyday",
+   "b": "smart-casual",
+   "w": 0.88,
+   "uses": 0
+  },
+  {
+   "a": "faculty-senate",
+   "b": "legalese",
+   "w": 0.51,
+   "uses": 0
+  },
+  {
+   "a": "faculty-senate",
+   "b": "mid-century-office",
+   "w": 0.59,
+   "uses": 0
+  },
+  {
+   "a": "faculty-senate",
+   "b": "silence",
+   "w": 0.3,
+   "uses": 0
+  },
+  {
+   "a": "family-sunday-dinner",
+   "b": "silence",
+   "w": 0.45,
+   "uses": 0
+  },
+  {
+   "a": "feral",
+   "b": "grunge",
+   "w": 0.46,
+   "uses": 0
+  },
+  {
+   "a": "feral",
+   "b": "organic-sprawl",
+   "w": 0.42,
+   "uses": 0
+  },
+  {
+   "a": "feral",
+   "b": "wilderness",
+   "w": 0.85,
+   "uses": 0
+  },
+  {
+   "a": "festival-wear",
+   "b": "festive",
+   "w": 0.53,
+   "uses": 0
+  },
+  {
+   "a": "festival-wear",
+   "b": "rave",
+   "w": 0.57,
+   "uses": 0
+  },
+  {
+   "a": "festival-wear",
+   "b": "y2k",
+   "w": 0.5,
+   "uses": 0
+  },
+  {
+   "a": "festive",
+   "b": "scandalous",
+   "w": 0.32,
+   "uses": 0
+  },
+  {
+   "a": "festive",
+   "b": "streetwear",
+   "w": 0.2,
+   "uses": 0
+  },
+  {
+   "a": "graduation",
+   "b": "martial",
+   "w": 0.68,
+   "uses": 0
+  },
+  {
+   "a": "grid-order",
+   "b": "mid-century-office",
+   "w": 0.65,
+   "uses": 0
+  },
+  {
+   "a": "grid-order",
+   "b": "professional",
+   "w": 0.72,
+   "uses": 0
+  },
+  {
+   "a": "grunge",
+   "b": "organic-sprawl",
+   "w": 0.7,
+   "uses": 0
+  },
+  {
+   "a": "grunge",
+   "b": "slang",
+   "w": 0.95,
+   "uses": 0
+  },
+  {
+   "a": "grunge",
+   "b": "wilderness",
+   "w": 0.54,
+   "uses": 0
+  },
+  {
+   "a": "high-mass",
+   "b": "liturgical",
+   "w": 0.91,
+   "uses": 0
+  },
+  {
+   "a": "high-mass",
+   "b": "regency-ballroom",
+   "w": 0.78,
+   "uses": 0
+  },
+  {
+   "a": "high-mass",
+   "b": "ritual",
+   "w": 0.92,
+   "uses": 0
+  },
+  {
+   "a": "high-mass",
+   "b": "royal-court",
+   "w": 0.83,
+   "uses": 0
+  },
+  {
+   "a": "high-mass",
+   "b": "white-tie",
+   "w": 0.91,
+   "uses": 0
+  },
+  {
+   "a": "legalese",
+   "b": "martial",
+   "w": 0.75,
+   "uses": 0
+  },
+  {
+   "a": "legalese",
+   "b": "perfect-symmetry",
+   "w": 0.64,
+   "uses": 0
+  },
+  {
+   "a": "liturgical",
+   "b": "procession-axis",
+   "w": 0.8,
+   "uses": 0
+  },
+  {
+   "a": "liturgical",
+   "b": "ritual",
+   "w": 0.86,
+   "uses": 0
+  },
+  {
+   "a": "loungewear",
+   "b": "slacker",
+   "w": 0.87,
+   "uses": 0
+  },
+  {
+   "a": "loungewear",
+   "b": "sleepover",
+   "w": 0.83,
+   "uses": 0
+  },
+  {
+   "a": "martial",
+   "b": "military-parade",
+   "w": 0.77,
+   "uses": 0
+  },
+  {
+   "a": "mid-century-office",
+   "b": "professional",
+   "w": 0.93,
+   "uses": 0
+  },
+  {
+   "a": "military-parade",
+   "b": "procession-axis",
+   "w": 0.81,
+   "uses": 0
+  },
+  {
+   "a": "military-parade",
+   "b": "state-funeral",
+   "w": 0.86,
+   "uses": 0
+  },
+  {
+   "a": "newsreader",
+   "b": "professional",
+   "w": 0.68,
+   "uses": 0
+  },
+  {
+   "a": "organic-sprawl",
+   "b": "punk",
+   "w": 0.64,
+   "uses": 0
+  },
+  {
+   "a": "organic-sprawl",
+   "b": "street",
+   "w": 0.62,
+   "uses": 0
+  },
+  {
+   "a": "organic-sprawl",
+   "b": "streetwear",
+   "w": 0.63,
+   "uses": 0
+  },
+  {
+   "a": "organic-sprawl",
+   "b": "wilderness",
+   "w": 0.47,
+   "uses": 0
+  },
+  {
+   "a": "organic-sprawl",
+   "b": "y2k",
+   "w": 0.73,
+   "uses": 0
+  },
+  {
+   "a": "perfect-symmetry",
+   "b": "regency-ballroom",
+   "w": 0.65,
+   "uses": 0
+  },
+  {
+   "a": "procession-axis",
+   "b": "state-funeral",
+   "w": 0.78,
+   "uses": 0
+  },
+  {
+   "a": "procession-axis",
+   "b": "white-tie",
+   "w": 0.83,
+   "uses": 0
+  },
+  {
+   "a": "punk",
+   "b": "rave",
+   "w": 0.84,
+   "uses": 0
+  },
+  {
+   "a": "punk",
+   "b": "y2k",
+   "w": 0.59,
+   "uses": 0
+  },
+  {
+   "a": "rave",
+   "b": "y2k",
+   "w": 0.44,
+   "uses": 0
+  },
+  {
+   "a": "regency-ballroom",
+   "b": "temple-procession",
+   "w": 0.55,
+   "uses": 0
+  },
+  {
+   "a": "regency-ballroom",
+   "b": "victorian-parlour",
+   "w": 0.51,
+   "uses": 0
+  },
+  {
+   "a": "regency-ballroom",
+   "b": "wedding",
+   "w": 0.49,
+   "uses": 0
+  },
+  {
+   "a": "regency-ballroom",
+   "b": "white-tie",
+   "w": 0.85,
+   "uses": 0
+  },
+  {
+   "a": "ritual",
+   "b": "temple-procession",
+   "w": 0.54,
+   "uses": 0
+  },
+  {
+   "a": "ritual",
+   "b": "white-tie",
+   "w": 0.76,
+   "uses": 0
+  },
+  {
+   "a": "royal-court",
+   "b": "white-tie",
+   "w": 0.9,
+   "uses": 0
+  },
+  {
+   "a": "silence",
+   "b": "tea-ceremony",
+   "w": 0.27,
+   "uses": 0
+  },
+  {
+   "a": "slacker",
+   "b": "sleepover",
+   "w": 0.86,
+   "uses": 0
+  },
+  {
+   "a": "street",
+   "b": "streetwear",
+   "w": 0.85,
+   "uses": 0
+  },
+  {
+   "a": "street",
+   "b": "y2k",
+   "w": 0.77,
+   "uses": 0
+  },
+  {
+   "a": "streetwear",
+   "b": "y2k",
+   "w": 0.88,
+   "uses": 0
+  },
+  {
+   "a": "tea-ceremony",
+   "b": "wedding",
+   "w": 0.22,
+   "uses": 0
+  },
+  {
+   "a": "temple-procession",
+   "b": "wedding",
+   "w": 0.55,
+   "uses": 0
+  },
+  {
+   "a": "victorian-parlour",
+   "b": "wedding",
+   "w": 0.53,
+   "uses": 0
+  }
+ ],
+ "kind": "formality",
+ "meta": {
+  "title": "Formality atlas",
+  "placeholder": "Find a feeling of formality…",
+  "noun": "formality",
+  "axes": {
+   "top": "F O R M A L",
+   "bottom": "C A S U A L",
+   "left": "p l a i n",
+   "right": "e x p r e s s i v e"
+  },
+  "hues": {
+   "dress codes": [
+    38,
+    85
+   ],
+   "ceremony and ritual": [
+    292,
+    70
+   ],
+   "social register": [
+    160,
+    65
+   ],
+   "spatial order": [
+    205,
+    80
+   ],
+   "eras and aesthetics": [
+    345,
+    78
+   ],
+   "speech register": [
+    68,
+    72
+   ],
+   "stick registers": [
+    228,
+    38
+   ]
+  }
+ }
+}
