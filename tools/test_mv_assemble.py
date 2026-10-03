@@ -191,6 +191,51 @@ def bottom_max(n):
     return int(np.frombuffer(x, dtype=np.uint8).max())
 ok(bottom_max(int((1.0 + 1.75) * 24)) > 200, "lyric line (conf 0.9) is drawn in the bottom third")
 ok(bottom_max(int((1.0 + 3.5) * 24)) < 200, "a low-confidence line (conf 0.2) is not drawn by default")
+# ---- 4b. build targets: ▶ YouTube master, 🎵 Suno (size-capped, reuses a current master), 🪝 Hooks ----------------
+import mv_hooks as HK
+def contiguous(p, total):
+    return abs(p[0][0]) < 1e-6 and abs(p[-1][1] - total) < 1e-6 and all(abs(a[1] - b[0]) < 1e-6 for a, b in zip(p, p[1:]))
+starts = [i * 6.0 for i in range(10)]                     # scenes every 6 s over a 60 s song
+lines = [(5.0, 7.5), (11.0, 13.0), (17.5, 19.0), (23.0, 25.5), (29.0, 31.0), (40.0, 43.0), (47.0, 49.0)]  # 6, 12, 24, 30, 42, 48 are mid-line
+hp = HK.plan_hooks(starts, lines, 60.0)
+ok(contiguous(hp, 60.0) and all(10 <= b - a <= 30 for a, b in hp), "hooks cover the whole song, each 10-30 s: %s" % hp)
+ok(not any(HK.in_line(a, lines) for a, _ in hp[1:]), "no hook starts in the middle of a sung line when a gap is available: %s" % hp)
+ok(set(round(a, 3) for a, _ in hp[1:]) <= set(starts) | {round((b1 + a2) / 2, 3) for (_, b1), (a2, _) in zip(lines, lines[1:])},
+   "boundaries are scene changes or vocal-gap midpoints")
+hp2 = HK.plan_hooks([i * 5.0 for i in range(1, 12)], [], 60.0)
+ok(contiguous(hp2, 60.0) and all(set([a, b]) <= set(i * 5.0 for i in range(13)) for a, b in hp2) and all(15 <= b - a <= 25 for a, b in hp2), "no vocals: scene changes, lengths near 20 s: %s" % hp2)
+hp3 = HK.plan_hooks([], [(0.5, 59.5)], 60.0)              # one endless line, no scenes: still split (mid-line is the last resort)
+ok(contiguous(hp3, 60.0) and len(hp3) >= 2, "a song with no clean boundary still gets split: %s" % hp3)
+ok(contiguous(HK.plan_hooks([3.0], [], 8.0), 8.0), "a song shorter than a hook: one piece, relaxed")
+voc = tmp / "voc.wav"   # a 'vocal' that never stops except one 0.2 s breath at 2.9-3.1 s, and a 20 ms click-gap at 4.5 s (a consonant)
+ff("-f", "lavfi", "-i", "aevalsrc='0.5*sin(2*PI*300*t)*(1-between(t,2.9,3.1))*(1-between(t,4.5,4.52))':s=48000:d=6", str(voc))
+dips, level_at = HK.vocal_dips(voc, offset=1.0)
+ok(any(3.9 <= t <= 4.1 and lv < 0.05 for t, lv in dips), "the breath is found as a quiet dip (video time = song + offset): %s" % dips)
+ok(level_at(2.5) > 0.5 and level_at(5.51) > 0.5, "a 20 ms gap inside a 'word' is not quiet (+-60 ms rule): %.2f" % level_at(5.51))
+hp4 = HK.plan_hooks([], [(1.0, 7.0)], 7.0, lo=1, hi=6, aim=3, dips=dips, level_at=level_at)
+ok(any(abs(a - 4.0) < 0.1 for a, _ in hp4[1:]), "the planner cuts at the breath: %s" % hp4)
+vk, ak = A.suno_rates(240, 150)
+ok(abs((vk + ak) * 240 / 8000 - 150 * 0.93) < 1 and A.suno_rates(10, 150)[0] == 12000 and A.suno_rates(5000, 10)[0] == 800, "suno bitrate: fills the cap with margin, clamped 800k-12M: %s" % vk)
+ed = json.loads((mv / "edit.json").read_text()); ed["output"]["suno_mb"] = 0.15; wj(mv / "edit.json", ed)
+time.sleep(1.2)
+ry = A.build_target(mv, "youtube")
+master = mv / "cut" / "test.mp4"
+ok(master.is_file() and json.loads(master.with_suffix(".json").read_text())["target"] == "youtube" and ry["target"] == "youtube", "▶ YouTube = the master cut/<slug>.mp4, target recorded")
+ok(A.master_current(mv)[0], "a fresh master is current: %s" % (A.master_current(mv),))
+mt = master.stat().st_mtime
+rs = A.build_target(mv, "suno")
+suno = mv / "cut" / "test-suno.mp4"
+sj = json.loads(suno.with_suffix(".json").read_text())
+ok(suno.is_file() and sj["target"] == "suno" and sj["from"] == "test.mp4" and master.stat().st_mtime == mt, "🎵 Suno re-encodes the current master (not rebuilt)")
+pr = json.loads(subprocess.run([A.FFPROBE, "-v", "error", "-show_entries", "format=duration:stream=width,height", "-of", "json", str(suno)], capture_output=True, text=True).stdout)
+ok(abs(float(pr["format"]["duration"]) - 9.0) < 0.1 and pr["streams"][0]["width"] == W, "Suno: whole song, same size as the master: %s" % pr)
+rh = A.build_target(mv, "hooks")
+hj = json.loads((mv / "export" / "hooks" / "auto" / "hooks.json").read_text())
+ok(hj["from"] == "test.mp4" and hj["hooks"] and all((mv / "export" / "hooks" / "auto" / h["file"]).is_file() for h in hj["hooks"])
+   and contiguous([(h["t0"], h["t1"]) for h in hj["hooks"]], 9.0), "🪝 hooks: files + hooks.json covering the cut: %s" % hj["hooks"])
+ok(json.loads((mv / "cut" / "_status.json").read_text())["state"] == "done", "status done after hooks")
+os.utime(mv / "sb01" / "chapter.json", (time.time() + 5, time.time() + 5))
+ok(not A.master_current(mv)[0] and "chapter.json" in A.master_current(mv)[1], "an edit after the master makes it stale (Suno / Hooks then rebuild it first)")
 # --plan never overwrites, --replan does
 (mv / "edit.json").write_text(json.dumps({"marker": 1}), encoding="utf-8")
 A.assemble(mv, plan_only=True)
@@ -252,7 +297,11 @@ if sg:
             mvpost({"op": "assemble", "mv": "997-asm-test", "draft": True})
             ok(sg.REROLLS == ["mvasm:997-asm-test|draft"], "the same build is queued once")
             mvpost({"op": "assemble", "mv": "997-asm-test"})
-            ok(sg.REROLLS == ["mvasm:997-asm-test|draft", "mvasm:997-asm-test|full"], "full quality is its own queue entry")
+            ok(sg.REROLLS == ["mvasm:997-asm-test|draft", "mvasm:997-asm-test|youtube"], "no target = the YouTube master, its own queue entry")
+            mvpost({"op": "assemble", "mv": "997-asm-test", "target": "suno"}); mvpost({"op": "assemble", "mv": "997-asm-test", "target": "hooks"})
+            ok(sg.REROLLS[-2:] == ["mvasm:997-asm-test|suno", "mvasm:997-asm-test|hooks"], "Suno and Hooks queue as their own entries")
+            ok(json.loads((d / "cut" / "_status.json").read_text())["target"] == "hooks", "the queued status names the target")
+            ok(mvpost({"op": "assemble", "mv": "997-asm-test", "target": "tiktok"}).get("status") == 400, "an unknown target is refused")
             ev = [json.loads(l) for l in sg.LOG.read_text().splitlines()]
             ok(any(e.get("event") == "mv_assemble" and e.get("draft") for e in ev), "logs an informational mv_assemble event")
             import watch_feedback

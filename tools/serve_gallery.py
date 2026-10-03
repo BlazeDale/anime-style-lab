@@ -180,23 +180,29 @@ def mv_lyrics_queue(d):
     return True
 
 
-def mv_asm_queue(d, draft):
-    """🎞 queue the final-cut assembly: cut/_status.json says queued until the
-    worker starts tools/mv_assemble.py (which keeps it updated)"""
+MV_TARGETS = ("draft", "youtube", "suno", "hooks")  # Build for YouTube / Suno / Hooks (+ the draft)
+
+
+def mv_asm_queue(d, target):
+    """🎞 queue a final-cut build (all clips put together over the original full song): cut/_status.json
+    says queued until the worker starts tools/mv_assemble.py (which keeps it updated). target: draft | youtube | suno | hooks (True/False = old draft flag)"""
+    if target is True or target is False:
+        target = "draft" if target else "youtube"
     (d / "cut").mkdir(exist_ok=True)
-    (d / "cut" / "_status.json").write_text(json.dumps({"state": "queued", "draft": bool(draft), "stage": "waiting in the queue", "ts": int(time.time())}), encoding="utf-8")
-    k = f"mvasm:{d.name}|{'draft' if draft else 'full'}"
+    (d / "cut" / "_status.json").write_text(json.dumps({"state": "queued", "draft": target == "draft", "target": target, "stage": "waiting in the queue", "ts": int(time.time())}), encoding="utf-8")
+    k = f"mvasm:{d.name}|{target}"
     if k not in REROLLS:
         REROLLS.append(k)
     REROLL_WAKE.set()
-    log({"event": "mv_assemble", "mv": d.name, "draft": bool(draft), "ts": time.strftime("%Y-%m-%d %H:%M:%S")})
+    log({"event": "mv_assemble", "mv": d.name, "draft": target == "draft", "target": target, "ts": time.strftime("%Y-%m-%d %H:%M:%S")})
     rebuild_bg()
     return k
 
 
 def mv_asm_run(key):
     mvid, mode = key[len("mvasm:"):].split("|")
-    cmd = [PY, str(ROOT / "tools" / "mv_assemble.py"), f"musicvideos/{mvid}"] + (["--draft"] if mode == "draft" else [])
+    mode = "youtube" if mode == "full" else mode
+    cmd = [PY, str(ROOT / "tools" / "mv_assemble.py"), f"musicvideos/{mvid}"] + (["--draft"] if mode == "draft" else ["--target", mode])
     try:
         r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace")
         if r.returncode:
@@ -345,7 +351,7 @@ def queue_view():
     if waiting:
         jobs.append({"pid": 0, "kind": "reroll-queue", "started": now,
                      "items": [{"kind": "image", "out": k, "status": "running" if k == REROLLS[0] and k.startswith(("mvlyrics:", "mvasm:")) else "queued",
-                                "label": ("🎤 placing lyrics · " + k[9:] if k.startswith("mvlyrics:") else "🎞 assembling " + (load_json(ROOT / "musicvideos" / k[6:].split("|")[0] / "mv.json", {}) or {}).get("title", k[6:]) + (" (draft)" if k.endswith("|draft") else "") if k.startswith("mvasm:") else "✎ " + k.split("|")[1].split("/", 1)[1] if k.startswith("fixarea:") else "🙂 face close-up · " + k.split("|")[1] if k.startswith("mvface:") else "🎲 " + k.split("/", 1)[1]).replace("_seed1001", "")} for k in waiting]})
+                                "label": ("🎤 placing lyrics · " + k[9:] if k.startswith("mvlyrics:") else "🎞 assembling " + (load_json(ROOT / "musicvideos" / k[6:].split("|")[0] / "mv.json", {}) or {}).get("title", k[6:]) + " (" + {"full": "YouTube", "youtube": "YouTube", "suno": "Suno", "hooks": "hooks"}.get(k.split("|")[-1], k.split("|")[-1]) + ")" if k.startswith("mvasm:") else "✎ " + k.split("|")[1].split("/", 1)[1] if k.startswith("fixarea:") else "🙂 face close-up · " + k.split("|")[1] if k.startswith("mvface:") else "🎲 " + k.split("/", 1)[1]).replace("_seed1001", "")} for k in waiting]})
     # averages from GPU time only (gsecs); submit-to-done "secs" include waiting in a shared queue
     done = [it for j in jobs for it in j["items"] if it["status"] == "done" and it.get("gsecs")]
     avg = {k: round(sum(x) / len(x)) if (x := [it["gsecs"] for it in done if it["kind"] == k]) else d
@@ -435,6 +441,27 @@ def explore_png(f):
             and f.with_name(f.stem + ".workflow.json").is_file())
 
 
+ENGAGE_ACTS = {"auto", "next", "skip", "back", "jump", "close"}
+
+
+def engage_clean(events):
+    """the player's engagement rows -> validated dicts (src must be an explore png path; numbers clamped; at most 200 per post)"""
+    out = []
+    for e in (events if isinstance(events, list) else [])[:200]:
+        if not isinstance(e, dict):
+            continue
+        src = norm(str(e.get("src", "")))
+        if not re.fullmatch(r"explore/(sagas/[\w.-]+/ch\d+|[\w.-]+)/e\d+\.png", src) or e.get("act") not in ENGAGE_ACTS:
+            continue
+        try:
+            row = {"src": src, "act": e["act"], "dwell": max(0, min(3_600_000, int(e.get("dwell") or 0))), "read": max(0, min(600_000, int(e.get("read") or 0))),
+                   "beats": max(0, min(20, int(e.get("beats") or 0))), "seen": max(0, min(20, int(e.get("seen") or 0))), "paused": max(0, min(3_600_000, int(e.get("paused") or 0)))}
+        except (TypeError, ValueError):
+            continue
+        out.append(row)
+    return out
+
+
 def explore_api(body, ts, by="gallery"):
     """POST /api/explore: start | continue | stop; returns {state, episodes}"""
     sys.path.insert(0, str(Path(__file__).parent)); import explore_state
@@ -443,7 +470,7 @@ def explore_api(body, ts, by="gallery"):
     steer = lambda st: {k: st.get(k) for k in ("presence", "emotion", "formality", "cores", "maturity")}  # noqa: E731
     if op == "start":
         st = explore_state.start(path, by, tune=tune)
-        log({"event": "explore", "kind": "start", "seed": str(body.get("seed") or "").strip()[:500], "until": st["until"], **steer(st), "ts": ts})
+        log({"event": "explore", "kind": "start", "seed": str(body.get("seed") or "").strip()[:2000], "until": st["until"], **steer(st), "ts": ts})
     elif op == "continue":
         st = explore_state.cont(path, by, tune=tune)
         save_saga_cores(st)
@@ -615,7 +642,7 @@ def mv_new(title, refs, ts):
     d.mkdir()
     mv_save(d, {"title": title or "Untitled music video", "idea": "", "lyrics": "", "status": "draft", "created": ts,
                 "audio": None, "vocals": None, "refs": refs, "markers": [], "ref_requests": [],
-                "name": "", "style": "", "character": "", "world": "", "cast": {}, "ref_resolution": 768})
+                "name": "", "style": "", "character": "", "world": "", "cast": {}, "ref_resolution": 512})
     return d
 
 
@@ -1085,6 +1112,15 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             if not ((ok_evo or ok_jrn) and f.suffix == ".png" and f.is_file()):
                 return self.send_json({"error": "bad request"}, 400)
             k = "upscale:" + key
+        if self.path == "/api/explore/engage":
+            # 📖 reader engagement from the Nev Novel player (make sure the story is entertaining): per shot left, how long it was on screen vs
+            # its reading time, how far the lines got, and how it was left (auto / next / skip / back / pause). Appended to feedback/engage.jsonl; no log event
+            rows = engage_clean(body.get("events"))
+            if rows:
+                with LOCK, (FB / "engage.jsonl").open("a", encoding="utf-8") as fh:
+                    for r in rows:
+                        fh.write(json.dumps({**r, "ts": ts}, ensure_ascii=False) + "\n")
+            return self.send_json({"ok": True, "n": len(rows)})
             if k not in REROLLS:
                 REROLLS.append(k)
                 REROLL_WAKE.set()
@@ -1379,10 +1415,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             if not mv_lyrics_queue(d):
                 return bad("needs lyrics (Save them first) and the vocals or the song")
             return self.send_json({"mv": m, "requests": reqs})
-        elif op == "assemble":  # 🎞 build the final cut (draft = 1280x720, fast) on the reroll worker
+        elif op == "assemble":  # 🎞 build on the reroll worker: target draft (1280x720, fast) | youtube (master) | suno (size-capped) | hooks (10-30 s pieces)
             if not m.get("audio") or not (d / "sb01" / "chapter.json").exists():
                 return bad("needs the song and a storyboard (sb01)")
-            k = mv_asm_queue(d, bool(body.get("draft")))
+            target = body.get("target") or ("draft" if body.get("draft") else "youtube")
+            if target not in MV_TARGETS:
+                return bad("target must be one of " + ", ".join(MV_TARGETS))
+            k = mv_asm_queue(d, target)
             return self.send_json({"mv": m, "requests": reqs, "queued": REROLLS.index(k) + 1 if k in REROLLS else 0})
         elif op == "stems_clear":  # 🎚 remove the stems (the song / vocals picked from them stay)
             import shutil

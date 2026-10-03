@@ -150,15 +150,24 @@ python tools/test_saga.py
   every band member's entrances, solos, breakdowns and fills; **🎤 place lyrics** aligns your lyric lines to the vocal with
   faster-whisper; your agent storyboards with images (`run_journey.py` on `musicvideos/NNN/sbNN`), you request references
   or ask a reference for a variation, add scene **headlines** (lower-third overlays), and `mv_assemble.py` builds the **final
-  cut** with the original song untouched (edit list, transitions, looks, dust, beat flashes, lyric captions). `mv_hooks.py`
-  exports each scene as a standalone clip with its headline and song slice. Experimental: the two-plate lip-sync composite
+  cut** with the original song untouched (edit list, transitions, looks, dust, beat flashes, lyric captions), with build
+  targets for a draft, a full-quality YouTube master, a size-capped Suno upload and **hooks**. `mv_hooks.py` exports each scene
+  as a standalone clip with its headline and song slice, or (`--auto`) the whole song as 10-30 s hooks cut at scene changes and
+  vocal pauses. A ✓ Hide approved toggle on the storyboard shows only the frames still to do. Experimental: the two-plate lip-sync composite
   (`mv_plates.py` + `mv_composite.py`) and the LatentSync pass (`lipsync.py`).
 - **📖 Nev Novel** (`explore/`, `tools/saga.py`, `tools/explore_*.py`): a never-ending visual novel your agent writes as you
   watch. A saga bible (lore, cast, places, threads) keeps continuity; cast reference images keep faces consistent; a full-screen
   visual-novel player shows stills with narration and dialogue. A deck steers it: composition **presence**, an **Emotion Atlas**
-  and a **Formality Atlas** (living maps of ~140 concepts whose connections strengthen with your likes), stackable emotional
+  and a **Formality Atlas** (living maps of ~140 concepts wired by researched story links, browsed as a little solar system of
+  related feelings, whose connections strengthen with your likes), stackable emotional
   **cores**, and a **maturity** dial (Preschool to Mature) with a hard content ceiling at every stop: mature themes only, never
-  sexual content or graphic gore. Each session runs in a 15-minute window and waits for you to press Continue.
+  sexual content or graphic gore. Each session runs in a 15-minute window and waits for you to press Continue. Chapters are
+  checked for story craft (scenes with goals and stakes, a costly choice, a hook, faces that show the moment) and paced so the
+  reading keeps up with the renders; the player shows your place, the render queue and the timer, copies or drags out the
+  current picture, and has a chat panel for your agent.
+- **🧪 Render bake-offs** (`tools/saga_bench.py`, `tools/style_bench.py`, `tools/bench_page.py`): try render settings (steps,
+  reference resolution, megapixels + upscaler) on real lineages and saga shots and compare speed and quality per style on
+  `gallery/bench.html`. `tools/shot.py` screenshots the running gallery in headless Edge.
 - **Engines**: optional LTX, Wan 2.2 and audio-driven lip-sync video engines (see Requirements).
 
 ## Layout

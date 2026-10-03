@@ -159,6 +159,20 @@ def render(vdir: Path, params, name, prompt, seed, force=False):
 def _render(vdir, params, name, prompt, seed, out_png):
     # single-image versions keep the original workflow.json name
     wf = vdir / ("workflow.json" if name.startswith("seed") else f"{name}.workflow.json")
+    graph = version_graph(vdir, params, name, prompt, seed, wf)
+    t0 = time.time()
+    hist = submit_and_wait(graph)
+    imgs = [i for o in hist["outputs"].values() for i in o.get("images", [])]
+    if not imgs:
+        raise RuntimeError(f"no image output for {vdir} {name}")
+    q = urllib.parse.urlencode({k: imgs[0][k] for k in ("filename", "subfolder", "type")})
+    with urllib.request.urlopen(f"{SERVER}/view?{q}") as r:
+        out_png.write_bytes(r.read())
+    print(f"done {out_png.relative_to(ROOT)} in {time.time() - t0:.0f}s", flush=True)
+
+
+def version_graph(vdir, params, name, prompt, seed, wf):
+    """the API graph for one image of a version (the UI workflow copy goes to `wf`; the style bake-off passes a scratch path so nothing in vNN changes)"""
     shutil.copyfile(BASE, wf)
     sets = {
         "459.prompt": prompt,
@@ -186,16 +200,8 @@ def _render(vdir, params, name, prompt, seed, out_png):
             graph[f"ref{i}"] = {"class_type": "LoadImage", "inputs": {"image": run_journey.upload(ROOT / ref)}}
             graph[te]["inputs"][f"images.image_{i}"] = [f"ref{i}", 0]
         graph[te]["inputs"]["vae"] = [vae, 0]
-        graph[te]["inputs"]["resolution"] = params.get("ref_resolution", 768)
-    t0 = time.time()
-    hist = submit_and_wait(graph)
-    imgs = [i for o in hist["outputs"].values() for i in o.get("images", [])]
-    if not imgs:
-        raise RuntimeError(f"no image output for {vdir} {name}")
-    q = urllib.parse.urlencode({k: imgs[0][k] for k in ("filename", "subfolder", "type")})
-    with urllib.request.urlopen(f"{SERVER}/view?{q}") as r:
-        out_png.write_bytes(r.read())
-    print(f"done {out_png.relative_to(ROOT)} in {time.time() - t0:.0f}s", flush=True)
+        graph[te]["inputs"]["resolution"] = params.get("ref_resolution", 512)
+    return graph
 
 
 # "fix" rerolls: negatives stay off by default; a 🎲 on an image whose latest comment reports bad

@@ -37,6 +37,129 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 ROOT = Path(__file__).resolve().parent.parent
 MAX_DIALOGUE = 4
+# pacing (the dialogue per shot scales with the average time the next picture takes to render, so the story keeps the reader busy
+# while it renders): each shot's READING time in the player should cover
+# PACE_SHARE of the median image render time, so the story keeps moving while the next picture renders
+PACE_SHARE = 0.6
+PACE_FALLBACK_S = 38.0
+VN_TYPE_MS = 34  # mirrors gallery_template.html vnTypeMs / vnReadMs
+
+
+def beat_secs(text):
+    """seconds the player spends on one line (typing + reading dwell), same formula as the template's vnBeatMs"""
+    t = str(text or "").strip()
+    if not t:
+        return 0.0
+    words = len(t.split())
+    return (max(250, len(t) * VN_TYPE_MS) + max(2200, 900 + words * 330)) / 1000
+
+
+def reading_secs(shot):
+    """seconds of reading in one shot: the narration, then each dialogue line (a shot with neither shows its caption for its hold)"""
+    beats = [shot.get("narration")] + [d.get("text") for d in (shot.get("dialogue") or []) if isinstance(d, dict)]
+    s = sum(beat_secs(b) for b in beats)
+    return s if s else float(shot.get("hold") or 6)
+
+
+def render_median(times=None):
+    """median GPU seconds per Qwen image (feedback/model_times.json via pipeline), fallback PACE_FALLBACK_S"""
+    if times is None:
+        try:
+            sys.path.insert(0, str(Path(__file__).resolve().parent))
+            import pipeline
+            times = pipeline.model_times().get("QI2.1") or []
+        except Exception:
+            times = []
+    xs = sorted(float(x) for x in times if x)
+    if not xs:
+        return PACE_FALLBACK_S
+    m = len(xs) // 2
+    return xs[m] if len(xs) % 2 else (xs[m - 1] + xs[m]) / 2
+
+
+def pacing(shots, render_s=None):
+    """-> {render_s, target_s, per_shot [secs], short [(index, secs)], avg_s, ok}: shots whose reading time is under PACE_SHARE of a render"""
+    r = render_median() if render_s is None else render_s
+    target = round(PACE_SHARE * r, 1)
+    per = [round(reading_secs(s), 1) for s in shots if isinstance(s, dict)]
+    short = [(i, v) for i, v in enumerate(per, 1) if v < 0.8 * target]  # "don't have to be 100%": only shots well under count as short
+    avg = round(sum(per) / len(per), 1) if per else 0.0
+    return {"render_s": round(r, 1), "target_s": target, "per_shot": per, "short": short, "avg_s": avg, "ok": avg >= 0.95 * target}
+
+
+# ---------------------------------------------------------------------------------------------------------------- story lint
+# (beautiful pictures still need an entertaining story): catches the mechanical causes before a chapter renders. A chapter.json may (should) carry
+#   scenes  [{title, shots: [first, last] (1-based, inclusive), goal, obstacle, turn, stakes}]   2-4 real scenes, each with someone wanting something against resistance
+#   choices [{who, choice, cost}]                                                                  at least one decision by the lead that costs something
+#   hook    "the open question the chapter ends on"
+TELLING = re.compile(r"\b(had always|had never|never once|always had|used to|for years|in (his|her|their) life|the kind of (man|woman|person)|was the kind|she knew|he knew|"
+                     r"they knew|felt like|the way you|which meant|it turned out|of course)\b", re.I)
+STORY_FIELDS = ("goal", "obstacle", "turn", "stakes")
+
+
+def _words(t):
+    return len(str(t or "").split())
+
+
+def story_lint(spec, shots, bible=None, n=None):
+    """-> [warning]: telling vs showing, montage (a new place every shot), missing / thin scenes, no costly choice by the lead, no closing hook,
+    every speaker sounding alike, a mystery opened and closed too fast"""
+    out = []
+    shots = [s for s in shots or [] if isinstance(s, dict)]
+    if not shots:
+        return out
+    narr = sum(_words(s.get("narration")) for s in shots)
+    dlg = sum(_words(d.get("text")) for s in shots for d in (s.get("dialogue") or []) if isinstance(d, dict))
+    if narr + dlg and narr / (narr + dlg) > 0.45:
+        out.append(f"story: telling, not showing: {round(100 * narr / (narr + dlg))}% of the words are narration (aim under 45%): let scenes play out in dialogue and action")
+    tell = [i for i, s in enumerate(shots, 1) if TELLING.search(str(s.get("narration") or ""))]
+    if len(tell) >= 3:
+        out.append("story: summary / backstory narration in shots " + ", ".join(map(str, tell)) + " ('had always', 'used to', 'the way you'...): dramatise it or cut it")
+    nonly = [i for i, s in enumerate(shots, 1) if str(s.get("narration") or "").strip() and not (s.get("dialogue") or [])]
+    if len(nonly) > len(shots) // 2:
+        out.append(f"story: {len(nonly)} of {len(shots)} shots are narration only: give more of them a voice in the scene")
+    moves = sum(1 for a, b in zip(shots, shots[1:]) if (a.get("place") or "") != (b.get("place") or ""))
+    scenes = spec.get("scenes") or []
+    if not scenes:
+        out.append("story: no `scenes` [{title, shots: [first, last], goal, obstacle, turn, stakes}]: plan 2-4 scenes where someone wants something against resistance")
+        if len(shots) > 3 and moves / (len(shots) - 1) > 0.45:
+            out.append(f"story: montage: the place changes {moves} times in {len(shots)} shots: stay in a scene long enough for it to build")
+    else:
+        if not 2 <= len(scenes) <= 4:
+            out.append(f"story: {len(scenes)} scenes (2-4 keeps each one long enough to build)")
+        for k, sc in enumerate(scenes, 1):
+            miss = [f for f in STORY_FIELDS if not str((sc or {}).get(f) or "").strip()]
+            rng = (sc or {}).get("shots") or []
+            span = (int(rng[1]) - int(rng[0]) + 1) if isinstance(rng, list) and len(rng) == 2 and all(str(x).isdigit() for x in rng) else 0
+            if miss:
+                out.append(f"story: scene {k} ({(sc or {}).get('title') or '?'}) has no {', '.join(miss)}")
+            if span and span < 3:
+                out.append(f"story: scene {k} is only {span} shot(s): too short to build")
+    lead = next(iter((bible or {}).get("cast") or {}), None)
+    ch = [c for c in spec.get("choices") or [] if isinstance(c, dict) and str(c.get("choice") or "").strip() and str(c.get("cost") or "").strip()]
+    if not ch:
+        out.append("story: no `choices` [{who, choice, cost}]: the lead should decide something that costs her")
+    elif lead and not any(c.get("who") == lead for c in ch):
+        out.append(f"story: no costly choice by the lead ({lead}): she reacts instead of driving")
+    blank = [i for i, s in enumerate(shots, 1) if (s.get("with") or []) and not s.get("nofigure") and not (s.get("faces") or {})
+             and not re.search(r"\b(wide|extreme wide|establishing|silhouette|from behind|aerial)\b", str(s.get("camera") or ""), re.I)]
+    if len(blank) >= 2:
+        out.append("story: no `faces` cue in shots " + ", ".join(map(str, blank)) + " (character shots that aren't wide): say what each face shows in this moment, in physical terms (eyes, jaw, mouth, brows)")
+    if not str(spec.get("hook") or "").strip():
+        out.append("story: no `hook`: end on an open question the reader has to see answered")
+    lens = {}
+    for s in shots:
+        for d in s.get("dialogue") or []:
+            if isinstance(d, dict) and d.get("who"):
+                lens.setdefault(d["who"], []).append(_words(d.get("text")))
+    avg = {w: sum(v) / len(v) for w, v in lens.items() if len(v) >= 2}
+    if len(avg) >= 3 and max(avg.values()) <= 1.3 * min(avg.values()):
+        out.append("story: every speaker talks in the same rhythm (" + ", ".join(f"{w} {a:.0f}w" for w, a in avg.items()) + "): give each a voice (clipped, rambling, formal, halting...)")
+    if bible and n:
+        fast = [t["id"] for t in bible.get("threads") or [] if t["id"] in (spec.get("closes") or []) and t.get("opened") and int(str(t["opened"])[2:] or 0) >= n - 1]
+        if fast:
+            out.append(f"story: thread(s) {', '.join(fast)} close within a chapter of opening: let a mystery breathe (or replace it with a bigger question)")
+    return out
 SETTING_WORDS = re.compile(r"\b(night|dawn|dusk|sunset|sunrise|midday|morning|evening|rain|snow|fog|storm|interior|candlelit|moonlit|firelit|forest|city|street|room)\b", re.I)
 
 
@@ -313,6 +436,13 @@ def validate_shot(bible, shot, label="shot"):
             errs.append(f"{label}: dialogue #{k}: unknown speaker {d['who']!r}")
     if not (str(shot.get("narration", "")).strip() or dlg or str(shot.get("caption", "")).strip()):
         errs.append(f"{label}: needs narration, dialogue or a caption (a silent picture still gets one line)")
+    fc = shot.get("faces")
+    if fc is not None and not isinstance(fc, dict):
+        errs.append(f"{label}: faces must be {{cast name: expression}}")
+    elif fc:
+        for nm in fc:
+            if nm not in with_:
+                warns.append(f"{label}: faces names {nm!r}, who is not in frame (`with`)")
     if shot.get("nofigure") and with_:
         warns.append(f"{label}: nofigure with `with` {with_}: only non-human cast (a creature, an egg) should be named")
     return errs, warns
@@ -326,7 +456,7 @@ def normalize_shot(shot, n):
     cap = str(shot.get("caption", "")).strip() or str(shot.get("narration", "")).strip() or (dlg[0]["text"] if dlg else "")
     out = {"id": f"e{n}", "prompt": str(shot["prompt"]).strip(), "caption": cap, "aspect": shot.get("aspect") or "16:9", "hold": shot.get("hold") or 6,
            "with": list(shot.get("with") or []), "place": shot.get("place") or "", "narration": str(shot.get("narration", "")).strip(), "dialogue": dlg}
-    for k in ("seed", "camera", "steer"):
+    for k in ("seed", "camera", "steer", "faces"):
         if shot.get(k):
             out[k] = shot[k]
     for k in ("noref", "nofigure"):
@@ -347,6 +477,10 @@ def write_chapter(sdir, spec, replace=False, steer=None, now=None, root=None):
     if not summary:
         errs.append("chapter: no summary (two sentences: what happens and what changes)")
     n = int(spec.get("chapter") or next_chapter(sdir))
+    if replace and not spec.get("chapter"):  # --replace without a number = rewrite the newest chapter that has no pictures yet
+        unrendered = sorted(int(d.name[2:]) for d in sdir.glob("ch[0-9][0-9]") if (d / "episode.json").exists() and not list(d.glob("e*.png")))
+        if unrendered:
+            n = unrendered[-1]
     cdir = sdir / ch_name(n)
     if cdir.exists():
         pngs = list(cdir.glob("e*.png"))
@@ -364,6 +498,11 @@ def write_chapter(sdir, spec, replace=False, steer=None, now=None, root=None):
         e, w = validate_shot(b, s, f"shot {i}")
         errs += e
         warns += w
+    pace = pacing(shots) if shots else None
+    if pace and (not pace["ok"] or len(pace["short"]) > len(shots) // 3):
+        warns.append(f"pacing: shots read {pace['avg_s']} s on average, target {pace['target_s']} s ({int(PACE_SHARE * 100)}% of the {pace['render_s']} s median render); "
+                     f"short: " + ", ".join(f"shot {i} {v}s" for i, v in pace["short"]) + " (add a dialogue exchange that moves the scene, rather than narration)")
+    warns += story_lint(spec, shots, b, n)
     # threads
     ths = {t["id"]: t for t in b["threads"]}
     new_threads = []
@@ -442,11 +581,14 @@ def write_chapter(sdir, spec, replace=False, steer=None, now=None, root=None):
     ep = {"id": f"{b['id']}/{ch_name(n)}", "saga": b["id"], "chapter": n, "title": title, "topic": b["title"], "premise": summary, "summary": summary,
           "style": b["style"], "created": now or time.strftime("%Y-%m-%d %H:%M:%S"), "status": "draft", **steer, "steer_log": [],
           "opens": opens, "closes": closes, "shots": norm}
+    for k in ("scenes", "choices", "hook"):   # the story plan travels with the chapter (the lint reads it; the bible shows it)
+        if spec.get(k):
+            ep[k] = spec[k]
     cdir.mkdir(exist_ok=True)
     (cdir / "episode.json.tmp").write_text(json.dumps(ep, indent=2, ensure_ascii=False), encoding="utf-8")
     (cdir / "episode.json.tmp").replace(cdir / "episode.json")
     save(sdir, b)
-    return {"chapter": ch_name(n), "dir": cdir, "shots": len(norm), "opens": opens, "closes": closes, "warnings": warns}
+    return {"chapter": ch_name(n), "dir": cdir, "shots": len(norm), "opens": opens, "closes": closes, "warnings": warns, "pacing": pace}
 
 
 # ---------------------------------------------------------------------------------------------------------------- emotional cores (per saga)
@@ -587,8 +729,51 @@ def bible_text(sdir, brief=False):
         L.append(f"- {i['chapter']} {i['title']} [{i['status']} {i['rendered']}/{i['shots']}]: {i['summary']}")
     if not chs:
         L.append("- none yet")
+    eng = engagement(sdir)
+    if eng:
+        L.append("\n## Reader engagement (from the player: where attention held or dropped; write the next chapter against it)")
+        for c, e in eng.items():
+            sk = ", ".join(f"{s['shot']}{' (narration only)' if s['nonly'] else ''}" for s in e["skipped"]) or "none"
+            L.append(f"- {c}: {e['shots']} shots seen, skipped early {len(e['skipped'])} ({e['skip_pct']}%), went back {e['backs']}; skipped: {sk}")
     L.append(f"\nNEXT: {ch_name(next_chapter(sdir))}")
     return "\n".join(L)
+
+
+def engagement(sdir, root=None):
+    """feedback/engage.jsonl (the player's rows) for this saga -> {chNN: {shots, skipped [{shot, nonly}], skip_pct, backs}}: a shot counts as skipped when the reader
+    moved on early on its LATEST viewing (so re-reading it later fixes the record)"""
+    root = Path(root or ROOT)
+    f = root / "feedback" / "engage.jsonl"
+    if not f.is_file():
+        return {}
+    pre = f"explore/sagas/{Path(sdir).name}/"
+    last, backs = {}, {}
+    for line in f.read_text(encoding="utf-8").splitlines():
+        try:
+            r = json.loads(line)
+        except ValueError:
+            continue
+        src = str(r.get("src", ""))
+        if not src.startswith(pre):
+            continue
+        m = re.match(re.escape(pre) + r"(ch\d+)/(e\d+)\.png$", src)
+        if not m:
+            continue
+        last[(m.group(1), m.group(2))] = r
+        if r.get("act") == "back":
+            backs[m.group(1)] = backs.get(m.group(1), 0) + 1
+    out = {}
+    for (ch, shot), r in sorted(last.items(), key=lambda kv: (kv[0][0], int(kv[0][1][1:]))):
+        e = out.setdefault(ch, {"shots": 0, "skipped": [], "backs": backs.get(ch, 0)})
+        e["shots"] += 1
+        if r.get("act") == "skip":
+            ef = Path(sdir) / ch / "episode.json"
+            ep = json.loads(ef.read_text(encoding="utf-8")) if ef.is_file() else {}
+            s = next((x for x in ep.get("shots") or [] if x.get("id") == shot), {})
+            e["skipped"].append({"shot": shot, "nonly": bool(s.get("narration")) and not s.get("dialogue")})
+    for e in out.values():
+        e["skip_pct"] = round(100 * len(e["skipped"]) / e["shots"]) if e["shots"] else 0
+    return out
 
 
 # ---------------------------------------------------------------------------------------------------------------- CLI
@@ -644,6 +829,12 @@ def main(argv=None):
     p.add_argument("saga")
     p.add_argument("file")
     p.add_argument("--replace", action="store_true")
+    p = sub.add_parser("lint")  # the story lint (+ pacing) on a chapter dir (chNN) or a chapter.json, before it is registered
+    p.add_argument("saga")
+    p.add_argument("target", help="chNN or a chapter.json path")
+    p = sub.add_parser("pace")  # reading time per shot vs PACE_SHARE of the median render; a chapter dir (chNN) or a chapter.json
+    p.add_argument("saga")
+    p.add_argument("target", help="chNN or a chapter.json path")
     p = sub.add_parser("setref")
     p.add_argument("saga")
     p.add_argument("name")
@@ -700,8 +891,29 @@ def main(argv=None):
                 r = write_chapter(sdir, spec, a.replace)
                 for w in r["warnings"]:
                     print("WARN", w)
+                if r.get("pacing"):
+                    pc = r["pacing"]
+                    print(f"pacing: {pc['avg_s']} s reading per shot on average (target {pc['target_s']} s = {int(PACE_SHARE * 100)}% of a {pc['render_s']} s render)")
                 print(f"wrote {r['dir']}/episode.json: {r['shots']} shots; opens {r['opens'] or '-'}; closes {r['closes'] or '-'}\n"
                       f"render: python tools/explore_render.py explore/sagas/{sdir.name}/{r['chapter']}")
+            elif a.cmd in ("lint",):
+                tp = Path(a.target)
+                f = tp if tp.suffix == ".json" else sdir / a.target / "episode.json"
+                spec = json.loads(f.read_text(encoding="utf-8"))
+                n = int(spec.get("chapter") or (a.target[2:] if a.target.startswith("ch") and a.target[2:].isdigit() else next_chapter(sdir)))
+                ws = story_lint(spec, spec.get("shots") or [], load(sdir), n)
+                pc = pacing(spec.get("shots") or [])
+                print(f"pacing: {pc['avg_s']} s per shot (target {pc['target_s']} s)")
+                print("\n".join(ws) if ws else "story: clean (scenes with goals, obstacles, turns and stakes; a costly choice; a hook; mostly shown, not told)")
+            elif a.cmd == "pace":
+                tp = Path(a.target)
+                f = tp if tp.suffix == ".json" else sdir / a.target / "episode.json"
+                shots = json.loads(f.read_text(encoding="utf-8")).get("shots") or []
+                pc = pacing(shots)
+                print(f"target {pc['target_s']} s per shot = {int(PACE_SHARE * 100)}% of the {pc['render_s']} s median render; average {pc['avg_s']} s "
+                      + ("OK" if pc["ok"] else "SHORT"))
+                for i, v in enumerate(pc["per_shot"], 1):
+                    print(f"  shot {i:2d} {v:5.1f} s {'#' * int(v)}{'  <- short' if v < 0.8 * pc['target_s'] else ''}")
             elif a.cmd == "cores":
                 if a.op == "show":
                     print(cores_text(sdir))

@@ -52,7 +52,8 @@ tools/
   scene_fix.py                   journey reshoot: edit one scene, log it in `revisions`, re-render with a new seed
   animate_chapter.py             🎬 chapter reel: ONE run_video --batch for a journey chapter, audio rules built in
   fix_area.py                    ✎ inpaint one drawn box of an image (the gallery's Fix area button runs this)
-  contact_sheet.py               numbered review grid of images / version dirs / chapter dirs (needs Pillow)
+  contact_sheet.py               numbered review grid of images / version dirs / chapter dirs (needs Pillow); an .mp4 adds N frames (--frames 6)
+  shot.py                        screenshot the running gallery in headless Edge: shot.py out.png [--hash "#/nev"] [--js "..."] [--store key=json]
   feedback.py                    inbox / reply / creply / sreply / jreply — read and answer the user's marks
   watch_feedback.py              background watcher: one line per new gallery event (polls; resumes after a restart)
   doctor.py                      first-run check (--fix creates config.json, .venv, the gallery page)
@@ -65,7 +66,7 @@ tools/
   mv_lyrics.py                   🎤 place your lyric lines in time (faster-whisper on the vocal stem, aligned to your text)
   mv_cut.py / mv_audio.py        phrase-snapped vocal cut with a silent lead-in / the song slice laid under a storyboard clip
   mv_assemble.py                 🎞 final cut: clips + the original song -> cut/*.mp4 (edit list edit.json, transitions, looks, headlines, captions)
-  mv_hooks.py                    export each scene as a standalone widescreen clip with its headline and song slice
+  mv_hooks.py                    export each scene as a standalone widescreen clip with its headline and song slice; --auto = the whole song as 10-30 s hooks
   mv_ref_gen.py / mv_face.py     render a reference image from a request / 🙂 face close-ups from a reference
   mv_plates.py / mv_composite.py EXPERIMENTAL two-plate lip-sync composite (singer on green + a moving background plate)
   clip_motion.py                 where a clip moves or goes still (to cut frozen tails)
@@ -75,6 +76,9 @@ tools/
   maturity.py                    the 7-stop maturity dial and its hard content ceiling
   saga.py / saga_render.py       saga bible + chapter validation / shot prompts with cast reference images
   explore_state.py / explore_render.py / explore_edit.py   the 15-minute window / render an episode or chapter / re-steer the story in flight
+  --- 🧪 render bake-offs ---
+  saga_bench.py                  one saga shot under several render-knob variants (steps, ref_resolution, max_refs, ...), GPU time of each
+  style_bench.py / bench_page.py lineages + saga shots x variants (native vs 0.8 MP + upscaler) -> bench/<run>/results.json -> gallery/bench.html
   test_gallery.js                node tools/test_gallery.js gallery/index.html — logic checks against a stub DOM
   test_labkit.py / test_journey_tools.py / test_revisions.py / test_mv_*.py / test_atlas.py / test_deck.py / test_explore.py /
   test_formality_atlas.py / test_saga.py   python tools/<name>.py — no ComfyUI, temp dirs and synthetic data only
@@ -322,7 +326,7 @@ detail.
 - **Direct**: a "what happens next?" request (or a comment on the last scene of the latest chapter) → new `chNN`
   whose `direction` quotes the user verbatim; add any new places/NPCs to `world` as they appear.
 - **Consistency**: `run_journey.py` feeds the journey's `refs` into `TextEncodeQwenImage21` as reference images
-  (plus VAE, `ref_resolution` default 768) alongside a repeated character-sheet description and a CANDID clause
+  (plus VAE, `ref_resolution` default 512: as good a likeness as 768 and much faster on shots with several references) alongside a repeated character-sheet description and a CANDID clause
   (unaware of the viewer, three-quarter/profile/behind). The reference image's own background and pose can leak
   into scenes — watch for it and redo affected scenes (move the bad render to `chNN/_rerolled/`, edit the scene,
   re-run, and log it in the chapter's `revisions`). Never use a 16:9 scene as the *only* reference — the model
@@ -451,8 +455,16 @@ what is sung when and what should be on screen. You storyboard it with images; c
   drop, beat flashes on downbeats. Singing clips are never stretched (frame 0 at the clip's song time); other clips trim, slow up to 1.25x,
   then hold. The build is published atomically (the previous build is kept in `cut/_old/`), so a playing video never reads a half-written
   file. The mv page's "Final cut" section plays it, lists builds, takes ❤ / 👎 and time-stamped comments, and offers "newer build ready".
+- **Build targets**: the Final cut section has four buttons (`mv_assemble.py --target draft|youtube|suno|hooks`, server op `assemble {target}`):
+  **Draft** (fast preview), **▶ YouTube** = the master `cut/<slug>.mp4` (quality first, no size cap), **🎵 Suno** = the whole song re-encoded
+  from the master to fit Suno's 200 MB upload limit (`edit.json` `output.suno_mb`, ~7% margin kept) -> `cut/<slug>-suno.mp4`, **🪝 Hooks** =
+  `mv_hooks.py --auto`. Suno and Hooks reuse the master when it is current (same clips, nothing newer), else they build it first.
 - **🪝 Hooks**: `python tools/mv_hooks.py musicvideos/NNN-slug [s1 s2 ...] [--join s27,s28]` exports each scene (or joined scenes) from the
   newest full build as a standalone widescreen clip with its headline and the matching song slice, plus a `.txt` with headline and lyric.
+  `--auto [--dry-run] [--rel-db 28]` splits the WHOLE song into consecutive 10-30 s hooks -> `export/hooks/auto/` (+ `hooks.json`): boundaries
+  prefer a scene change between sung lines, then the quiet moments of the isolated vocal, mid-line only as a last resort.
+- The storyboard header has **✓ Hide approved (N)** (per viewer): hides the frames you ❤ (or whose clip you ❤) so only the ones still to do
+  remain. Comment threads on music-video frames and clips put the box on top, newest first.
 - **🟩 Two-plate lip-sync composite (experimental)**: ltxia2v freezes the background. `tools/mv_plates.py <frame.png> --x 0.62` cuts the
   singer out onto a green plate (+ matte, box, free side); make a clean background plate with `fix_area.py --out ... --prompt "<background only>"`;
   render LTX from the green still and Wan from the clean plate; `tools/mv_composite.py <ltx_green.mp4> <wan_clean.mp4>` keys the green and
@@ -486,8 +498,21 @@ runs out, nothing continues until the user presses **Continue**. Check it before
   3. 12-20 shots in graphic-novel rhythm: establishing splash, mid shots with dialogue, close-ups on emotional beats, `nofigure` inserts, a
      turn, a closing image. Every shot gets narration and/or 1-4 short dialogue lines. Give `camera` on shots that matter; characters live in
      the world. Describe characters by NAME in the prompt (looks and reference images are added for you); describe the scene, not the face.
-  4. `saga.py chapter ...`, render with `python tools/explore_render.py explore/sagas/NNN-slug/chNN` (one image at a time, re-reads the file
-     before each shot, stops when the window closes), then `saga.py setref` every new character from their clearest frontal shot (never a wide
+  Story craft (`saga.py chapter` warns, `saga.py lint <saga> <chNN|chapter.json>` checks a draft): give the chapter 2-4 `scenes`
+     [{title, shots: [first, last], goal, obstacle, turn, stakes}], `choices` [{who, choice, cost}] made by the lead, and a `hook`; keep
+     narration under ~45 % of the words, avoid backstory telling ("had always", "used to"), give speakers distinct rhythms, don't close a
+     thread within a chapter of opening it. Every non-wide character shot gets `faces` {name: "eyes wide, jaw tight, fighting tears"}: the
+     expression for THIS moment (it leads the prompt; references never lend their expression). Cast looks carry NO expression ("easy
+     smile" makes a character grin through every scene); pick calm, non-smiling reference shots.
+     **Pacing**: a shot's reading time in the player (typing + dwell, the template's `vnBeatMs`) should reach `saga.PACE_SHARE` (60 %) of the
+     median image render time, so the story keeps the reader busy while the next picture renders (~15-25 words of narration + 3-4 lines of
+     8-14 words). `saga.py pace <saga> <chNN|chapter.json>` prints a per-shot bar chart. Fill with story, not padding.
+     **Reader engagement**: the player posts one row per shot left (dwell vs reading time, skip / back / auto) to `feedback/engage.jsonl`;
+     `saga.py bible` shows it per chapter. Read it before the next chapter and cut what readers skipped.
+  4. `saga.py chapter ...` (`--replace` without a chapter number rewrites the newest chapter that has no pictures), render with
+     `python tools/explore_render.py explore/sagas/NNN-slug/chNN` (one image at a time, re-reads the file before each shot, stops when the
+     window closes; `--only e6 e8 --redo` re-renders shots from their CURRENT text with a fresh seed after you fix a look or a prompt, the
+     old picture staying until its replacement is ready, then moving to `_rerolled/`), then `saga.py setref` every new character from their clearest frontal shot (never a wide
      shot), then `feedback.py explorereply "..."`. Plan the next chapter while the render runs, but render one chapter at a time.
 - **The deck (steer)**: the user sets a **presence** knob (intimate, filmic, epic: how pictures are composed), an **Emotion Atlas** probe,
   a **Formality Atlas** probe, stackable emotional **cores** per saga (through-lines such as "longing" or "found family", up to 5 active), and
@@ -496,7 +521,15 @@ runs out, nothing continues until the user presses **Continue**. Check it before
   pictures (`picture` lines weighted by `w`) and how captions sound (`voice` lines). `explore_render.py` appends a steer-cue sentence to every
   image prompt automatically (mood, core, maturity, composition, staging); the story and captions are yours.
   `python tools/atlas.py <emotion|formality> layout | add | reinforce | describe '<json>' | near "<text>" | path <a> <b> | requests | resolve | reset | backups | restore`
-  (`formality_atlas.py` is the same CLI for the formality map). An `atlas_add` event means the user typed a feeling with no neuron: run
+  (`formality_atlas.py` is the same CLI for the formality map). The factory wiring is RESEARCHED STORY LINKS: atlas `story` {sources, notes,
+  links [{a, b, w, kind transition|cooccur|arc_pair|contrast, why, src}]} (emotion transitions, plot prototypes, dress-code and speech-register
+  ladders, ...) plus each neuron's 2 nearest look-alikes at half weight; `atlas.py <kind> import-story research.json` (needs numpy) replaces it.
+  The deck draws each atlas as an **orbit view**, a little solar system: the chosen neuron is the sun, three planets are its strongest links
+  (each dealing from its own deck), each with two moons (their sub-links). Click a planet / moon for its next neuron, double-click for a new
+  sun, shift-click to lock one, hold the sun (or a planet) to make its orbits race and deal new neurons; a racing deck that has come round
+  a few times grows by the next-best relatives. The value weights the sun 40 %, each planet 12 %, each moon 4 %. When a deck has nothing
+  left it sends one `atlas_add` "more subgenres of <Name>": add 2-4 genuine sub-kinds and link each with `reinforce <new> <that> +0.6`.
+  The steer cue takes only the MOOD of the emotion (light, colour, tone), never its staging: emotion shapes the story, not every frame. An `atlas_add` event means the user typed a feeling with no neuron: run
   `near "<text>"` first (never duplicate), then `add "<name>" --family F --features k=v,... --picture "..." --voice "..." --for <request>`.
   ❤ / 👎 on a shot nudge the used synapses by +/-0.1 (the server does this); after writing a chapter reinforce each pair of the blend by
   +0.05. The deck can reset a map to its factory wiring (a backup is written first).
@@ -509,7 +542,15 @@ runs out, nothing continues until the user presses **Continue**. Check it before
   the current beat in 1-3 shots then turns toward the new steer, and run `python tools/explore_edit.py explore/sagas/NNN/chNN --shots
   new_shots.json --steer-from-state --reason "..."`. It replaces only unrendered shots (never one that has a picture) and logs `steer_log`.
 - **Player**: `#/nev/saga/<id>`, full screen: picture still, narration box top-left, dialogue box with a name tag, typed text, Auto-advance
-  (reading-time based), chapter title cards, an endless stream that picks up new pictures and chapters as they render. The saga page shows the
+  (reading-time based), chapter title cards, an endless stream that picks up new pictures and chapters as they render, a "Ch 4 · Title · 6 / 15"
+  position pill, the render queue line (what is on the GPU, how many follow, the chapters still waiting), the 15-minute timer with a
+  Continue button, ⧉ copy (C) and drag-out of the current picture (as a file), a 💬 panel with the General comment thread, and a retry for
+  pictures that fail to load. The 🎲 surprise premise follows the deck (maturity, presence, mood, register, cores); the premise box takes
+  2000 characters; while a novel is being written the new-novel button reads "Building novel…". 🎬 works on Nev Novel shots too
+  (video_prompt reads the episode / saga for subject and style).
+- **Render knobs** (per saga): `saga.json` `render` {steps, ref_resolution, max_refs, megapixels, upscaler, up_scale} (`upscaler` = a file in
+  ComfyUI/models/upscale_models, or "plain" for a lanczos resize). Measure before changing them: `saga_bench.py` / `style_bench.py` +
+  `bench_page.py` (results page `gallery/bench.html`). The saga page shows the
   bible (world, cast with reference portraits, places, factions, lore, threads, timeline) and the chapters with ❤ 👎 💬 🎲 on each shot.
 - Tests: `python tools/test_saga.py`, `test_explore.py`, `test_atlas.py`, `test_formality_atlas.py`, `test_deck.py`, plus the "novel:" checks in
   `node tools/test_gallery.js gallery/index.html`.

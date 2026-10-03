@@ -296,6 +296,48 @@ finally:
 import watch_feedback as wf  # noqa: E402
 ok(wf.is_info({"event": "atlas_reset"}), "atlas_reset is an informational event for the watcher")
 
+# ---- researched story links (import-story): they become the factory wiring, feature fixes re-lay out, reset rebuilds from them
+import copy  # noqa: E402
+S = copy.deepcopy(emo)
+S.pop("story", None)
+res = {"sources": [{"key": "t17", "cite": "Thornton & Tamir 2017"}],
+       "links": [{"a": "grief", "b": "hope-against-the-odds", "w": 0.9, "kind": "arc_pair", "dir": "a->b", "why": "grief turns to hope", "src": ["t17"]},
+                 {"a": "betrayal", "b": "revenge", "w": 0.95, "kind": "transition", "why": "the revenge plot"},
+                 {"a": "betrayal", "b": "revenge", "w": 0.4, "kind": "cooccur"},
+                 {"a": "nope-not-a-node", "b": "grief", "w": 0.5}],
+       "feature_fixes": [{"id": "grief", "feature": "arousal", "to": 0.33, "why": "VAD norm"}]}
+r = A.import_story(S, res)
+eg = A.edge_of(S, "grief", "hope-against-the-odds")
+ok(r["links"] == 3 and r["skipped"] == 1 and eg and eg["w"] == 0.9 and eg["kind"] == "arc_pair" and eg.get("dir") == "a->b", "import-story: links become edges with kind/dir, unknown ids skipped")
+ok(A.edge_of(S, "betrayal", "revenge")["w"] == 0.95, "import-story: a duplicate pair keeps its strongest weight")
+ok(A.by_id(S)["grief"]["features"]["arousal"] == 0.33 and A.by_id(S)["grief"]["feature_notes"][0]["why"] == "VAD norm" and r["fixed"], "import-story: feature fixes applied and noted")
+ok(all(e["w"] <= 0.5 for e in S["edges"] if e.get("kind") == "similar") and len(A.components(S)) == 1, "import-story: nearest neighbours kept at half weight, the map stays one connected piece")
+A.reinforce(S, "grief", "hope-against-the-odds", 0.05)
+A.reset_atlas(S)
+ok(A.edge_of(S, "grief", "hope-against-the-odds")["w"] == 0.9 and A.edge_of(S, "grief", "hope-against-the-odds")["uses"] == 0, "reset rebuilds the researched wiring (learned weight gone)")
+ok(A.path(S, "betrayal", "revenge") == ["betrayal", "revenge"], "path glides along the story link")
+
+# ---- orbit values (the deck's orbit view: centre -> 3 links -> 2 sub-links each; each orbit weighs less, sub-links only colour their parent)
+ov = {"orbit": True, "intensity": 0.7, "probe": {"x": 0.1, "y": 0.1},
+      "blend": [{"id": "grief", "w": 0.4}] + [{"id": i, "w": 0.12} for i in ("bittersweet", "catharsis", "heartbreak")] + [{"id": i, "w": 0.04} for i in ("nostalgia", "tension", "relief", "dread", "jealousy", "parting")],
+      "tree": {"center": "grief", "ring1": ["bittersweet", "catharsis", "heartbreak"], "kids": {"bittersweet": ["nostalgia", "tension"], "catharsis": ["relief", "dread"], "heartbreak": ["jealousy", "parting"]}, "k1": [0, 2, 1], "k2": {"catharsis": [1, 0]}, "lp": [True, False, False], "lm": {"catharsis": [False, True]}, "d1": 3, "d2": {"catharsis": 2}}}
+si = A.story_items(ov)
+ok(si[0] == ("grief", 0.4) and len(si) == 4 and all(abs(w - 0.2) < 1e-9 for _, w in si[1:]), "story_items: the centre leads, each link carries its two sub-links' weight (sub-links only colour their parent): %s" % si)
+ok(A.tree_pairs(ov)[:3] == [("grief", "bittersweet"), ("grief", "catharsis"), ("grief", "heartbreak")] and len(A.tree_pairs(ov)) == 9 and A.tree_pairs({"blend": []}) == [], "tree_pairs: centre-link and link-sub-link pairs only")
+E2 = copy.deepcopy(emo)
+t_ = A.reinforce_value(E2, ov, 0.05)
+ok(len(t_) == 9 and A.edge_of(E2, "nostalgia", "tension") is None or A.edge_of(E2, "nostalgia", "tension")["uses"] == A.edge_of(emo, "nostalgia", "tension")["uses"], "learning: an orbit value thickens only its tree's 9 links (sub-links of one parent are not wired to each other)")
+ok(len(A.reinforce_blend(copy.deepcopy(emo), ov["blend"], 0.05)) == 3, "a 10-neuron blend reinforces only its top 3 pairs")
+dv = A.describe_value(ov, emo)
+ok(dv.startswith("orbit: Grief → Bittersweet (Nostalgia, Tension) · Catharsis (Relief, Dread) · Heartbreak (Jealousy, Parting);") and "grief 40%" in dv.lower(), "describe_value says the tree, then the flat blend: " + dv[:140])
+import explore_state as xs2  # noqa: E402
+cv = xs2.clean_atlas_value(ov, emo, "emotion")
+ok(cv["orbit"] is True and cv["tree"]["center"] == "grief" and len(cv["blend"]) == 10 and cv["tree"]["kids"]["catharsis"] == ["relief", "dread"] and cv["intensity"] == 0.7 and cv["tree"]["k1"] == [0, 2, 1] and cv["tree"]["k2"] == {"catharsis": [1, 0]} and cv["tree"]["lp"] == [True, False, False] and cv["tree"]["lm"] == {"catharsis": [False, True]} and cv["tree"]["d1"] == 3 and cv["tree"]["d2"] == {"catharsis": 2}, "the server keeps an orbit value's 10 neurons and its tree")
+ok(len(xs2.clean_atlas_value({**ov, "orbit": False}, emo, "emotion")["blend"]) == 3 and "tree" not in xs2.clean_atlas_value({**ov, "orbit": False}, emo, "emotion"), "a plain value still keeps 3")
+import explore_render as er2  # noqa: E402
+cue = er2.emotion_cue(ov, emo)
+ok(cue.startswith("an overwhelming mood of grief, tinged with") and "nostalgia" not in cue.split(":")[0], "the image cue reads the centre + a link (the sub-links fold into their link): " + cue[:90])
+
 shutil.rmtree(tmp, ignore_errors=True)
 print("PASS %d FAIL %d" % (PASS, FAIL))
 sys.exit(1 if FAIL else 0)

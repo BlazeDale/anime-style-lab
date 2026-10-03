@@ -22,7 +22,7 @@ global.MutationObserver = class { observe() {} }; global.ResizeObserver = class 
 global.getComputedStyle = () => ({ backgroundColor: "" }); global.addEventListener = () => {};
 
 // expose top-level const/let bindings for the checks below
-(0, eval)(code + "\n;globalThis.__t = {get FB(){return FB},set FB(v){FB=v},overview,layerPage,videosPage,imagesPage,allImages,vidChip,byId,DATA,get VIDS(){return VIDS},store,fbKey,atCandidates,imgRef,lineageText,qTerms,journeysPage,journeyPage,get JRN(){return JRN},get jById(){return jById},set JR(v){JR=v},set BL(v){BL=v},fbBar,isBlurred,jStartBox,set jOpen(v){jOpen=v},jAnimOpen,layerNav,fdef,castMatches,get CASTOPTS(){return CASTOPTS},castName,parseSubj,treePage,treeAncestors,treeDescendants,treeSetBox,clipPanel,sceneClipChip,sceneClipBox,JCLIP,journeyReel,castNoteParse,castNoteBuild,CAST_TYPES,decideSwipe,shouldPreventMove,rectToFractions,applyDrag,cropThumb,refThumb,refCropRect,refEditOpen,mvGenBox,get TREE_EDGES(){return TREE_EDGES},fmtT,parseT,mvTimeToX,mvXToTime,mvRegion,lyricLines,mvListPage,mvPage,mvMerge,mvStatus,mvScenesOf,headlineHtml,headlinesOn,headlineBtn,mvMarkList,mvEditHtml,MVT,refOid,refOwner,get MVS(){return MVS},set MVS(v){MVS=v},get mvById(){return mvById},set mvById(v){mvById=v},set MVR(v){MVR=v},mvSortDrop,mvDropZone,mvEdgeHit,mvShift,mvSnapBeat,fixAreaBtn,rerollBtn,upscaleBtn,refitCtl,clipPrompt,coverBtn,mvLoupeSpan,mvStemColor,mvCutSection,mvCutRows,mvCutBusy,mvLaneGeom,mvStemsInfo,mvStemsBar,mvLanesOn,mvPaint,MV_STEM_COL,mvLyricBlocks,mvLyricHit,mvPickLyric,mvLyricsBar,mvHasLyrics,mvGeo,mvReel,mvPlayBtn,sceneClips,revsOf,revChip,revBtn,revViewHtml,revOpen,revPick,revRestore,RV,get REVS(){return REVS},get MTIMES(){return MTIMES},get EXPL(){return EXPL},set EXPL(v){EXPL=v; explById=Object.fromEntries(v.map(e=>[e.id,e]))},EXST,XC,xApply,exploreBar,exploreListPage,explorePage,xpTimeline,xpLayerHtml,xpAr,xpHold,xTint,xFade,xFmt,XF_RIM,XA,xaSet,xaValueAt,xaPath,xaFind,xaScore,xaPlaceLabels,xaNodeAlpha,xaEdgeGrow,xmDraw,xMapHtml,xmPlan,xfNeutral,xfNorm,xfWord,xfHint,xfCap,xfLevelWord,xTuneHtml,xeNeutral,XAF,XAE,XE_LEGACY,xvNorm,xeNorm,xeWord,xeHint,xeIntensityWord,xdNorm,xdSnap,xdAngle,xdFromPointer,xdWord,xdHint,xdStops,get XMAT(){return XMAT},xDialHtml,xcoresClean,xcoresAdd,xcoresEdit,xcoresRemove,xcoresResolve,xcoresMove,xcoresWeightAt,xcoresSig,xcoresActive,xCoresHtml,xcSyncSaga,XCORE_MAX,xcDirty,xcAdopt,xcSetV,xcSetMaturity,xcAddCore,xpFrameRect,xpFit,atlasForceStep,xfFall,xfRamp,XF_R,xaP,xaWarped,xaPhysics,xaSettle,xaWarpLoad,xaWarpSave,xaWarpClear,xaResetStep,xMapBtnsHtml,xkSnap,xkAngle,xkDrag,xkWord,xkHint,isExpl,cmLabel,cmLink,get SAGAS(){return SAGAS},set SAGAS(v){SAGAS=v; sagaById=Object.fromEntries(v.map(g=>[g.id,g]))},sagaPage,sgTimeline,sgMore,sgStatus,sgText,sgShots,vnBeats,vnAction,vnBackAction,vnTypeMs,vnReadMs,vnBeatMs,vnTyped,vnColor,vnHue,XP,xpNext,xpPrev,xpGo,xpExtend,xpBoot,sgOpen,bindSaga,vnShowBeat,vnArm,vnAuto,xpArm,xpClose,castTyped,castTip,animBtn,animBox,jplayBtn,clipVideoFor,subjShort,toolbar,styleMark,subjMatch,get JR(){return JR},set CM(v){CM=v},set VIDS(v){VIDS=v},set JRN(v){JRN=v},set jById(v){jById=v}};");
+(0, eval)(code + "\n;globalThis.__t = {get FB(){return FB},set FB(v){FB=v},overview,layerPage,videosPage,imagesPage,allImages,vidChip,byId,DATA,get VIDS(){return VIDS},store,fbKey,atCandidates,imgRef,lineageText,qTerms,journeysPage,journeyPage,get JRN(){return JRN},get jById(){return jById},set JR(v){JR=v},set BL(v){BL=v},fbBar,isBlurred,jStartBox,set jOpen(v){jOpen=v},jAnimOpen,layerNav,fdef,castMatches,get CASTOPTS(){return CASTOPTS},castName,parseSubj,treePage,treeAncestors,treeDescendants,treeSetBox,clipPanel,sceneClipChip,sceneClipBox,JCLIP,journeyReel,castNoteParse,castNoteBuild,CAST_TYPES,decideSwipe,shouldPreventMove,rectToFractions,applyDrag,cropThumb,refThumb,refCropRect,refEditOpen,mvGenBox,get TREE_EDGES(){return TREE_EDGES},fmtT,parseT,mvTimeToX,mvXToTime,mvRegion,lyricLines,mvListPage,mvPage,mvMerge,mvStatus,mvScenesOf,mvDoneCount,hideDoneBtn,headlineHtml,headlinesOn,headlineBtn,mvMarkList,mvEditHtml,MVT,refOid,refOwner,get MVS(){return MVS},set MVS(v){MVS=v},get mvById(){return mvById},set mvById(v){mvById=v},set MVR(v){MVR=v},mvSortDrop,mvDropZone,mvEdgeHit,mvShift,mvSnapBeat,fixAreaBtn,rerollBtn,upscaleBtn,refitCtl,clipPrompt,coverBtn,mvLoupeSpan,mvStemColor,mvCutSection,mvCutRows,mvCutBusy,mvLaneGeom,mvStemsInfo,mvStemsBar,mvLanesOn,mvPaint,MV_STEM_COL,mvLyricBlocks,mvLyricHit,mvPickLyric,mvLyricsBar,mvHasLyrics,mvGeo,mvReel,mvPlayBtn,sceneClips,revsOf,revChip,revBtn,revViewHtml,revOpen,revPick,revRestore,RV,get REVS(){return REVS},get MTIMES(){return MTIMES},get EXPL(){return EXPL},set EXPL(v){EXPL=v; explById=Object.fromEntries(v.map(e=>[e.id,e]))},EXST,XC,xApply,exploreBar,exploreListPage,explorePage,xpTimeline,xpLayerHtml,xpAr,xpHold,xTint,xFade,xFmt,XF_RIM,XA,xaSet,xaValueAt,xaPath,xaFind,xaScore,xaPlaceLabels,xmDraw,xMapHtml,xfNeutral,xfNorm,xfWord,xfHint,xfCap,xfLevelWord,xTuneHtml,xeNeutral,XAF,XAE,XE_LEGACY,xvNorm,xeNorm,xeWord,xeHint,xeIntensityWord,xdNorm,xdSnap,xdAngle,xdFromPointer,xdWord,xdHint,xdStops,get XMAT(){return XMAT},xDialHtml,xcoresClean,xcoresAdd,xcoresEdit,xcoresRemove,xcoresResolve,xcoresMove,xcoresWeightAt,xcoresSig,xcoresActive,xCoresHtml,xcSyncSaga,XCORE_MAX,xcDirty,xcAdopt,xcSetV,xcSetMaturity,xcAddCore,xpFrameRect,xpFit,xaP,xaWarped,xaResetStep,xMapBtnsHtml,xSurprise,XSUR_WHO,XSUR_WHERE,xpCopy,xpDragData,xpPrefetchFile,xpRetryUrl,xpRetryDelay,xpTimerState,xpQueueLine,xpQueueRows,xpEngRow,xpPosText,xpBacklog,xpChatToggle,XNW,xoCands,xoHubs,xoTree,xoBlend,xoValue,xoSt,xoTurn1,xoTurnP,xoTurnM,xoLock,xoLockedP,xoCandsDeep,xoCentre,xoClick,xoPos,xoTick,xoNext,xoLabelLook,xoLabelDim,xoState,xoDecks,xoOrbit,xoEdge,xoRoute,XO,xkSnap,xkAngle,xkDrag,xkWord,xkHint,isExpl,cmLabel,cmLink,get SAGAS(){return SAGAS},set SAGAS(v){SAGAS=v; sagaById=Object.fromEntries(v.map(g=>[g.id,g]))},sagaPage,sgTimeline,sgMore,sgStatus,sgText,sgShots,vnBeats,vnAction,vnBackAction,vnTypeMs,vnReadMs,vnBeatMs,vnTyped,vnColor,vnHue,XP,xpNext,xpPrev,xpGo,xpExtend,xpBoot,sgOpen,bindSaga,vnShowBeat,vnArm,vnAuto,xpArm,xpClose,castTyped,castTip,animBtn,animBox,jplayBtn,clipVideoFor,subjShort,toolbar,styleMark,subjMatch,get JR(){return JR},set CM(v){CM=v},set VIDS(v){VIDS=v},set JRN(v){JRN=v},set jById(v){jById=v}};");
 const T = globalThis.__t;
 const ok = (c, m) => { console.log((c ? "PASS " : "FAIL ") + m); if (!c) process.exitCode = 1; };
 const clearFilters = () => { ["fcast", "fg", "fgenre"].forEach(k => T.store.set(k, "all"));
@@ -927,7 +927,21 @@ T.JRN = [FJ]; T.jById = {[FJ.id]: FJ};
   const hB = T.mvById, hM = T.MVS;
   T.mvById = {[id]: mk({latest, status: {state: "done"}, edit: []})}; T.MVS = [T.mvById[id]];
   let h = T.mvCutSection(T.mvById[id]);
-  ok4(h.includes("🎞 Final cut") && h.includes('data-mvasm="draft"') && h.includes('data-mvasm="full"') && h.includes("Build draft") && h.includes("Build full quality"), "title + both build buttons");
+  ok4(h.includes("🎞 Final cut") && h.includes('data-mvasm="draft"') && h.includes('data-mvasm="youtube"') && h.includes('data-mvasm="suno"') && h.includes('data-mvasm="hooks"')
+      && h.includes("Build draft") && h.includes("Build for YouTube") && h.includes("Build for Suno") && h.includes("Build for Hooks") && !h.includes("Build full quality"), "title + draft / YouTube / Suno / Hooks buttons");
+  ok4(!h.includes("mvhooks"), "no hook list before a hooks build");
+  T.mvById[id].final_cut.hooks = [{n: 1, t0: 0, t1: 18.5, mb: 9.1, headlines: ["ONE <PHONE> CALL"], src: "../musicvideos/900-fc/export/hooks/auto/01_0m00-0m18.mp4"},
+    {n: 2, t0: 18.5, t1: 41, mb: 11, headlines: [], src: "../musicvideos/900-fc/export/hooks/auto/02_0m18-0m41.mp4"}];
+  T.mvById[id].final_cut.hooks_from = "kiss.mp4";
+  h = T.mvCutSection(T.mvById[id]);
+  ok4(h.includes("🪝 2 hooks · cut from kiss.mp4") && h.includes('data-mvcutplay="../musicvideos/900-fc/export/hooks/auto/01_0m00-0m18.mp4"') && h.includes("18.5 s") && h.includes("22.5 s")
+      && h.includes("ONE &lt;PHONE&gt; CALL") && h.includes("0:18"), "hook list: span, length, escaped headline, ▶ play each");
+  T.mvById[id].final_cut.latest = {...latest, draft: false, target: "suno", all: [{src: "../musicvideos/900-fc/cut/kiss-suno.mp4", mtime: 1, mb: 140, target: "suno", w: 1920, h: 1080}, {src: "../musicvideos/900-fc/cut/kiss.mp4", mtime: 1, mb: 300, draft: false, w: 1920, h: 1080}, {src: "../musicvideos/900-fc/cut/kiss-draft.mp4", mtime: 1, mb: 40, draft: true}]};
+  h = T.mvCutSection(T.mvById[id]);
+  ok4(h.includes("✓ Suno") && h.includes("<b>Suno</b> 1920×1080 · 140 MB") && h.includes("<b>YouTube</b> 1920×1080 · 300 MB") && h.includes("<b>Draft</b>"), "builds labelled by target (old builds without one: draft flag -> Draft, else YouTube)");
+  T.mvById[id].final_cut.status = {state: "running", stage: "hook 3/9", target: "hooks"};
+  ok4(T.mvCutSection(T.mvById[id]).includes("hook 3/9 (Hooks)"), "running status names the target");
+  T.mvById[id].final_cut = {latest, status: {state: "done"}, edit: []}; h = T.mvCutSection(T.mvById[id]);
   ok4(/<video class="mvcutv" src="..\/musicvideos\/900-fc\/cut\/song-draft.mp4\?v=1790000000"/.test(h) && h.includes('data-jclipv="../musicvideos/900-fc/cut/song-draft.mp4"'), "player of the latest cut (cache-busted by mtime, position kept over redraws)");
   ok4(h.includes('data-fb="love"') && h.includes('data-fb="nope"') && h.includes('data-src="../musicvideos/900-fc/cut/song-draft.mp4"') && h.includes('data-draft="image:musicvideos/900-fc/cut/song-draft.mp4"'), "❤ / 👎 + comment thread keyed by the cut mp4 path");
   ok4((h.match(/<tr><td>\d/g) || []).length === 3 && h.includes("fade to black") === false && h.includes("dissolve 1.00 s") && h.includes("white flash 0.13 s") && h.includes("ltxia2v 🎤") && h.includes(">still<"), "edit list: one row per cut with transition + duration, singing marked, stills named");
@@ -936,7 +950,7 @@ T.JRN = [FJ]; T.jById = {[FJ.id]: FJ};
   ok4(!/data-mvasm="draft" disabled/.test(h), "buttons enabled when idle");
   T.mvById[id].final_cut.status = {state: "running", stage: "rendering piece 4/28 (s4)", draft: true};
   h = T.mvCutSection(T.mvById[id]);
-  ok4(/data-mvasm="draft" disabled/.test(h) && /data-mvasm="full" disabled/.test(h) && h.includes("rendering piece 4/28 (s4)") && T.mvCutBusy(T.mvById[id]), "building: buttons disabled, stage shown");
+  ok4(["draft", "youtube", "suno", "hooks"].every(t => new RegExp(`data-mvasm="${t}" disabled`).test(h)) && h.includes("rendering piece 4/28 (s4) (Draft)") && T.mvCutBusy(T.mvById[id]), "building: all four buttons disabled, stage + target shown");
   T.mvById[id].final_cut.status = {state: "queued"}; ok4(T.mvCutSection(T.mvById[id]).includes("Queued…"), "queued status");
   T.mvById[id].final_cut.status = {state: "error", error: "ffmpeg failed <x>"}; h = T.mvCutSection(T.mvById[id]);
   ok4(h.includes("Build failed: ffmpeg failed &lt;x&gt;") && !/data-mvasm="draft" disabled/.test(h), "error shown escaped, buttons usable again");
@@ -947,6 +961,156 @@ T.JRN = [FJ]; T.jById = {[FJ.id]: FJ};
   T.mvById[id].storyboards = []; ok4(T.mvCutSection(T.mvById[id]) === "", "hidden without a storyboard");
   T.mvById[id] = mk({latest, status: {state: "done"}}); ok4(T.mvPage(id).includes("🎞 Final cut") && T.mvPage(id).indexOf("Final cut") < T.mvPage(id).indexOf("Storyboards"), "on the music-video page, before the storyboards");
   T.mvById = hB; T.MVS = hM;
+}
+{  // a picture that failed to load mid-play (the server went away) is retried
+  const ok8 = (c, m) => ok(c, "novel stream: " + m);
+  const shot = (id, src) => ({id, src, narration: "n " + id, dialogue: [], aspect: "16:9", hold: 6});
+  const mkG = n2 => ({id: "9xx", title: "T", cast: [], chapters: [{id: "ch01", num: 1, title: "A", shots: [shot("e1", "../x/ch01/e1.png"), shot("e2", "../x/ch01/e2.png")]},
+    {id: "ch02", num: 2, title: "B", shots: Array.from({length: 6}, (_, i) => shot("e" + (i + 1), i < n2 ? `../x/ch02/e${i + 1}.png` : null))}]});
+  const segs = T.sgTimeline(mkG(2), null, true); segs.push(...T.sgMore(mkG(6), segs));
+  ok8(segs.filter(s => s.key.startsWith("ch02/")).map(s => s.id).join(",") === "e1,e2,e3,e4,e5,e6" && new Set(segs.map(s => s.key)).size === segs.length, "shots that render mid-play join the stream in order, none skipped or doubled");
+  ok8(T.sgTimeline(mkG(6), 2, false).filter(s => s.type === "shot").length === 6, "▶ From here on chapter 2 plays all of its shots");
+  ok8(T.xpRetryUrl("../x/e4.png?v=12", 1) === "../x/e4.png?v=12&r=1" && T.xpRetryUrl("../x/e4.png?v=12&r=1", 2) === "../x/e4.png?v=12&r=2" && T.xpRetryUrl("../x/e4.png", 3) === "../x/e4.png?r=3"
+      && T.xpRetryUrl("../x/e4.png?r=3", 4) === "../x/e4.png?r=4", "retry URL: a fresh r= per try, the v= cache key kept");
+  ok8([0, 1, 2, 3, 4, 7].map(T.xpRetryDelay).join(",") === "1000,2000,4000,8000,8000,8000", "retry delays back off to 8 s");
+  { const S = T.xpTimerState;
+    ok8(S({active: true}, 600).kind === "" && S({active: true}, 181).kind === "", "player timer: hidden while more than 3 minutes are left");
+    const w = S({active: true}, 161);
+    ok8(w.kind === "warn" && w.text.includes("left") && w.text.includes("2:4") && w.btn.includes("15"), "player timer: the last 3 minutes count down with a +15 min button: " + w.text);
+    const p = S({active: false, reason: "timer"}, 0);
+    ok8(p.kind === "paused" && p.btn.startsWith("Continue") && p.text.includes("Paused"), "player timer: after the window, Paused + Continue on screen");
+    ok8(S({active: false, reason: "stopped"}, 0).kind === "" && S(null, 0).kind === "", "player timer: nothing when stopped by hand or never started");
+    const Lq = T.xpQueueLine;
+    ok8(Lq(null) === "" && Lq({jobs: [{items: [{status: "done", label: "x"}]}]}) === "⟳ queue idle", "player queue: says 'queue idle' when nothing renders (hidden only before the queue loads)");
+    const qv = {now: 1000, avg: {image: 48}, avgm: {"QI2.1": 40}, jobs: [{items: [{status: "running", on_gpu: true, model: "QI2.1", kind: "image", label: "📖 003 ch05 e3", t0: 990}, {status: "queued", model: "QI2.1", kind: "image", label: "📖 003 ch05 e4"}, {status: "queued", model: "QI2.1", kind: "image", label: "📖 003 ch05 e5"}]}]};
+    const ql = Lq(qv);
+    ok8(ql.startsWith("⟳ 📖 003 ch05 e3") && ql.includes("2 more") && ql.includes("~"), "player queue: what is on the GPU, how many more, about how long: " + ql);
+    const gB = {chapters: [{id: "ch05", num: 5, shots: [{src: "a"}, {src: "b"}]}, {id: "ch06", num: 6, shots: [{src: "a"}, {src: null}, {src: null}]}, {id: "ch07", num: 7, shots: Array.from({length: 14}, () => ({src: null}))}]};
+    const qv6 = {now: 1000, avg: {image: 48}, avgm: {}, jobs: [{items: [{status: "running", kind: "image", label: "📖 003 ch06 · e2", out: "explore/sagas/003-x/ch06/e2.png", t0: 990}, {status: "queued", kind: "image", label: "📖 003 ch06 · e3", out: "explore/sagas/003-x/ch06/e3.png"}]}]};
+    ok8(Lq(qv6, gB).endsWith(" · then ch07: 14 frames") && JSON.stringify(T.xpBacklog(gB, qv6.jobs[0].items)) === JSON.stringify([{id: "ch07", left: 14}]), "player queue backlog: a written chapter not yet queued shows as 'then ch07: 14 frames' (the rendering one is not counted twice): " + Lq(qv6, gB));
+    ok8(Lq({jobs: []}, gB) === "⟳ waiting to render: ch06: 2 frames (+1 more chapter)", "player queue backlog: idle GPU with chapters waiting says so: " + Lq({jobs: []}, gB));
+    { const qv7 = {now: 1000, avg: {image: 40}, avgm: {}, jobs: [{items: [{status: "running", kind: "image", label: "📖 007 ch03 · e5", out: "explore/sagas/007-x/ch03/e5.png", t0: 990}, {status: "queued", kind: "image", label: "📖 007 ch03 · e6", out: "explore/sagas/007-x/ch03/e6.png"}]},
+        {items: [{status: "queued", kind: "image", label: "📖 007 ch02 · e6", out: "explore/sagas/007-x/ch02/e6.png"}, {status: "done", kind: "image", label: "old", out: "x"}]}]};
+      const g7 = {id: "007-x", chapters: [{id: "ch03", num: 3, shots: [{src: 1}, {}]}, {id: "ch04", num: 4, shots: Array(14).fill({})}]};
+      const r7 = T.xpQueueRows(qv7, g7);
+      ok8(r7.length === 4 && r7[0] === "▶ 📖 007 ch03 · e5" && r7[1] === "· 📖 007 ch03 · e6" && r7[2] === "· 📖 007 ch02 · e6" && r7[3].startsWith("· then ch04: 14 frames"), "player queue rows: running first, then every queued item across jobs (a chapter + a redo), then waiting chapters: " + r7.join(" | "));
+      const big = {jobs: [{items: Array(10).fill(0).map((_, i) => ({status: "queued", kind: "image", label: "f" + i, out: "x/" + i}))}]}, rb = T.xpQueueRows(big, null, 6);
+      ok8(rb.length === 6 && rb[5] === "+5 more", "player queue rows: at most 6, then '+N more'");
+      ok8(T.xpQueueRows(null, null).length === 0 && T.xpQueueRows({jobs: []}, null).length === 0, "player queue rows: none before the queue loads / when empty"); }    { const e0 = {src: "explore/sagas/007-x/ch03/e5.png", t0: 1000, read: 20000, beats: 3, seen: 3, paused: 0, pauseAt: 0};
+      ok8(T.xpEngRow(e0, 23000, "next").act === "next" && T.xpEngRow(e0, 23000, "next").dwell === 22000, "engagement: a shot read through and then advanced = next");
+      ok8(T.xpEngRow(e0, 6000, "next").act === "skip" && T.xpEngRow({...e0, seen: 1}, 40000, "next").act === "skip", "engagement: moving on before the text was read (time or lines) = skip");
+      ok8(T.xpEngRow(e0, 23000, "auto").act === "auto" && T.xpEngRow(e0, 5000, "back").act === "back" && T.xpEngRow(e0, 5000, null).act === "jump", "engagement: auto / back / jump are kept as they are");
+      ok8(T.xpEngRow({...e0, paused: 10000}, 23000, "next").dwell === 12000 && T.xpEngRow({...e0, pauseAt: 20000}, 23000, "next").dwell === 19000 && T.xpEngRow(null, 1, "next") === null, "engagement: pauses don't count as reading time"); }    ok8(T.xpPosText({type: "shot", chNum: 4, chTitle: "Collateral", n: 6, of: 15}) === "Ch 4 · Collateral · 6 / 15" && T.xpPosText({type: "chapter", num: 4}) === "" && T.xpPosText(null) === "", "player position: 'Ch 4 · Collateral · 6 / 15' on saga shots, nothing on cards");
+    { const gP = {id: "x", title: "X", cast: [], chapters: [{id: "ch02", num: 2, title: "Two", shots: [{id: "e1", src: "a.png"}, {id: "e2"}, {id: "e3", src: "c.png"}]}]}, sp = T.sgTimeline(gP, null, false).filter(s => s.type === "shot");
+      ok8(sp.length === 2 && sp[1].n === 3 && sp[1].of === 3 && sp[1].chNum === 2 && sp[1].chTitle === "Two", "player position: shot segments carry their chapter and place in it (unrendered shots still count)"); }    { const keepS = T.EXST.state, keepN = T.XNW.open;
+      T.EXST.state = {active: true, left: 600, reason: ""}; T.XNW.open = false;
+      let b = T.exploreBar(true);
+      ok8(b.includes("⏳ Building novel…") && b.includes("disabled") && !b.includes("data-xnew") && !b.includes("Start the new novel"), "new novel: while a novel is running the button reads Building novel… (disabled, no new start)");
+      T.XNW.open = true; b = T.exploreBar(true);
+      ok8(!b.includes("Start the new novel") && b.includes("Building novel"), "new novel: ... even if the premise box was open (it stays Building until Stop or the timer)");
+      T.EXST.state = {active: false, reason: "stopped"}; b = T.exploreBar(true); ok8(b.includes("▶ Start a Nev Novel") && !b.includes("Building"), "new novel: after ■ Stop, Start is back");
+      T.EXST.state = {active: false, reason: "timer"}; b = T.exploreBar(true);
+      ok8(b.includes("Continue the novel") && b.includes("＋ New novel") && b.includes("Start the new novel"), "new novel: also offered next to Continue when paused");
+      ok8(!T.exploreBar(false).includes("data-xnew"), "new novel: only on the Nev Novel home page");
+      T.EXST.state = keepS; T.XNW.open = keepN; }
+    ok8(html.includes('<button data-xp="chat"') && html.includes('<div class="xchat"></div>') && html.includes('thread("general", "Message your agent')
+        && html.includes('e.target.closest(".xchat")) { if (e.key === "Escape")') && html.includes("reelPanel(); xpChatPaint();") && typeof T.xpChatToggle === "function",
+        "player chat: 💬 opens the General thread in a side panel, player keys stand down while typing, refreshed with the comments poll");
+    ok8(html.includes('<div class="xqueue"') && /#xplayer \.xqueue \{[^}]*rgba\(255,255,255,\.72\)/.test(html) && html.includes('if (typeof xpQueue === "function") xpQueue();'), "player queue: a faint line, refreshed with the ⚙ Queue data");
+    ok8(html.includes('<div class="xtimer"></div>') && html.includes('a === "continue"') && /function xTick\(\) \{\s*xpTimer\(\);/.test(html), "player timer: in the player markup, ticks every second, Continue posts from the player"); }
+  ok8(html.includes("xpImgRetry(im)") && html.includes("picture didn't load: reconnecting"),"a picture that fails to load is retried with a note on the frame");
+}
+{  // 🎲 surprise premise follows the deck
+  const ok6 = (c, m) => ok(c, "novel dice: " + m), seq = vals => { let i = 0; return () => vals[i++ % vals.length]; };
+  const neutral = {presence: 50, maturity: {stop: 4}, emotion: {blend: [], intensity: 0}, formality: {blend: [], intensity: 0}, cores: []};
+  let s = T.xSurprise(neutral, seq([0]));
+  ok6(s === "A runaway heir in a rain-soaked port city has one night to make things right.", "neutral deck: one clean premise, no notes: " + s);
+  const kidsSafe = Array.from({length: 40}, (_, i) => T.xSurprise({...neutral, maturity: {stop: 0}}, seq([(i * 0.137) % 1, (i * 0.391) % 1, (i * 0.713) % 1])));
+  ok6(kidsSafe.every(p => T.XSUR_WHO[0].some(w => p.toLowerCase().startsWith(w)) && !/war|death|betray|exile|occupied/i.test(p)), "Preschool: toddler-cartoon leads and stakes only");
+  ok6(T.XSUR_WHO[6].some(w => T.xSurprise({...neutral, maturity: {stop: 6}}, seq([0.5])).toLowerCase().startsWith(w)), "Mature: adult-fiction leads");
+  ok6(T.XSUR_WHERE.intimate.some(w => T.xSurprise({...neutral, presence: 10}, seq([0.3])).includes(w)) && T.XSUR_WHERE.epic.some(w => T.xSurprise({...neutral, presence: 95}, seq([0.3])).includes(w)), "presence: intimate knob -> a small place, epic -> a vast one");
+  s = T.xSurprise({...neutral, emotion: {blend: [{name: "Bittersweet", w: 0.6}, {name: "Nostalgia", w: 0.3}, {name: "Hope", w: 0.1}], intensity: 0.7},
+    formality: {blend: [{name: "Black tie", w: 0.5}], intensity: 0.6}, cores: [{name: "Found family", weight: 0.8, status: "active"}, {name: "Grief", weight: 0.3, status: "resolved"}, {name: "Revenge", weight: 0.5}]}, seq([0]));
+  ok6(s.endsWith("Mood: bittersweet and nostalgia. Register: black tie. Through-line: found family and revenge."), "mood (top 2, w >= 0.2), register, active cores by weight (resolved skipped): " + s);
+  ok6(!T.xSurprise({...neutral, emotion: {blend: [{name: "Awe", w: 1}], intensity: 0.1}}, seq([0])).includes("Mood"), "a barely-on emotion (intensity < 0.15) adds no mood");
+  ok6(T.xSurprise({}, seq([0.99])).length > 20 && T.xSurprise({}, seq([0.99])).length <= 400, "an empty deck still works (Teen, filmic), <= 400 chars");
+}
+{  // 🪐 orbit view = a solar system: the sun stays; three planets (the sun's links, dealt into 3 decks: inner = strongest) on their own ellipses, two moons each;
+   // HOLD the sun = the planets race and each deals its next link per lap (different speeds = different intervals); hold a planet = its moons; click = next; double-click = new sun
+  const ok7 = (c, m) => ok(c, "atlas orbit: " + m), E = T.XAE, O = T.XO;
+  const st0 = T.xoCentre("grief"), tr = T.xoTree(E, st0), c1 = T.xoCands(E, "grief");
+  ok7(JSON.stringify(T.xoDecks([1, 2, 3, 4, 5, 6, 7], 3)) === "[[1,4,7],[2,5],[3,6]]" && JSON.stringify(T.xoDecks([1, 2], 3)) === "[[1],[2]]", "decks: the links are dealt round-robin (strongest to the inner planet first)");
+  ok7(tr.center === "grief" && JSON.stringify(tr.ring1) === JSON.stringify(c1.slice(0, 3)) && tr.decks1.every((d, i) => d[0] === c1[i]) && c1.length > 3, "the three strongest links are the first planets, inner = strongest; " + c1.length + " links in the decks");
+  ok7(c1.every((id, i) => i === 0 || E.adj.grief.find(e => e.id === c1[i - 1]).w >= E.adj.grief.find(e => e.id === id).w), "deck order = link strength");
+  ok7(tr.ring1.every(p => tr.kids[p].length === 2 && tr.kids[p].every(k => k !== "grief" && !tr.ring1.includes(k))), "each planet has two moons (never the sun or another planet)");
+  const bl = T.xoBlend(E, tr), w = id => (bl.find(b => b.id === id) || {}).w;
+  ok7(bl[0].id === "grief" && Math.abs(bl.reduce((s, b) => s + b.w, 0) - 1) < 0.03 && w("grief") > w(tr.ring1[0]) && w(tr.ring1[0]) > w(tr.kids[tr.ring1[0]][0]), "the value: each orbit from the sun weighs less (sun > planet > moon): " + bl.map(b => b.id + " " + b.w).join(", "));
+  const tp = T.xoTree(E, T.xoTurnP(st0, 0, 1));
+  ok7(tp.ring1[0] === tr.decks1[0][1] && tp.ring1[1] === tr.ring1[1] && tp.ring1[2] === tr.ring1[2] && tp.center === "grief", "one planet deals its next link; the others and the sun stay");
+  const ta = T.xoTree(E, T.xoTurn1(st0, 1)); ok7(ta.ring1.every((p, i) => p === tr.decks1[i][1 % tr.decks1[i].length]), "◀ ▶ moves every planet on one");
+  ok7(T.xoTree(E, T.xoTurnP(st0, 1, -1)).ring1[1] === tr.decks1[1][tr.decks1[1].length - 1], "turning back wraps round a planet's deck");
+  const p = tr.ring1[0], tm = T.xoTree(E, T.xoTurnM(st0, p, 1, 1));
+  ok7(tr.decks2[p][1].length < 2 || (tm.kids[p][1] === tr.decks2[p][1][1] && tm.kids[p][0] === tr.kids[p][0]), "one moon deals its next sub-link; its twin stays");
+  let r = T.xoClick(st0, tr, p, false); ok7(r.act === "planet" && r.st.center === "grief" && r.st.k1[0] === 1, "one click on a planet = its next link (never moves the sun)");
+  r = T.xoClick(st0, tr, tr.kids[p][0], false); ok7(r.st.center === "grief" && (tr.decks2[p][0].length < 2 || r.st.k2[p][0] === 1), "one click on a moon = its next sub-link");
+  r = T.xoClick(st0, tr, p, true); ok7(r.act === "center" && r.st.center === p && JSON.stringify(r.st.k1) === "[0,0,0]", "a double-click makes that body the sun");
+  ok7(T.xoClick(st0, tr, "grief", false).act === "none" && T.xoClick(st0, tr, "grief", true).act === "none", "clicking the sun does nothing (hold it instead; it stays until cleared)");
+  const ht = T.xoTree(E, {center: null}); ok7(ht.hubs && ht.cands1.length === E.fams.length && T.xoClick({center: null}, ht, ht.cands1[2], false).act === "center", "no sun (neutral): one body per colour family; one click starts there");
+  // the race: holding the sun, each planet deals per lap at its own speed (inner first); holding a planet races only its moons
+  const s0 = {ph: [0, 0, 0], mph: [[0, 0], [0, 0], [0, 0]], acc: [0, 0, 0], macc: [[0, 0], [0, 0], [0, 0]]};
+  let s = s0, laps = [0, 0, 0], first = [];
+  for (let k = 0; k < 1900; k++) { s = T.xoTick(s, {kind: "sun"}, 0.016, false); s.swaps.forEach(x => { if (x.kind === "planet") { laps[x.i]++; if (!first.includes(x.i)) first.push(x.i); } }); }
+  ok7(laps[0] > laps[1] && laps[1] > laps[2] && laps[2] >= 1 && first[0] === 0, "holding the sun for 30 s: every planet brings in new links (each half lap), inner ones more often (deals " + laps.join("/") + ")");
+  { const sp = O.ORB.map((e, i) => e.w * O.HOLD * Math.hypot(e.a, e.b) / Math.SQRT2 * 160);   // ~px/s at a 360 px canvas (R ~ 160)
+    ok7(sp.every(v2 => v2 > 35 && v2 < 95) && O.MOON.every(mo => Math.abs(mo.w) * O.MHOLD * mo.r * 160 < 70), "racing speeds stay trackable by eye: planets ~" + sp.map(Math.round).join("/") + " px/s, moons under 70 px/s");
+    const nx = T.xoNext(s0, {kind: "sun"}); ok7(nx && nx.kind === "planet" && nx.i === 0 && nx.frac === 0, "next to deal (the highlighted orbit): from a standing start the inner, fastest planet");
+    const s1 = {...s0, acc: [0.1, 3.0, 0]}; ok7(T.xoNext(s1, {kind: "sun"}).i === 1 && Math.abs(T.xoNext(s1, {kind: "sun"}).frac - 3.0 / Math.PI) < 1e-9, "next = whichever has the least time left to its gate, with how far it is");
+    ok7(T.xoNext(s1, {kind: "sun"}, (k, i) => i !== 1).i === 0 && T.xoNext(s0, null) === null, "a locked / single-deck planet is never 'next'; nothing is next without a hold");
+    ok7(T.xoNext(s0, {kind: "planet", i: 2}).kind === "moon" && T.xoNext(s0, {kind: "planet", i: 2}).i === 2, "holding a planet: the next moon to deal is highlighted"); }  { // smooth labels: opacity / size from readiness (subtle), a softer label under a solid one fades out of the way
+    const lk0 = T.xoLabelLook(0, true), lk1 = T.xoLabelLook(1, true), lkn = T.xoLabelLook(null, true);
+    ok7(lk0.alpha < lk1.alpha && lk1.alpha === 1 && lk0.alpha >= 0.6 && lk0.size < lk1.size && lk1.size - lk0.size <= 3 && lkn.alpha > lk0.alpha && T.xoLabelLook(0.2, false, true).alpha === 1, "label look: just changed = a little softer / smaller, about to change = solid / a touch larger (subtle); hover = solid");
+    ok7(T.xoLabelLook(0.5, true).size > T.xoLabelLook(0.4, true).size && T.xoLabelLook(0.41, true).alpha - T.xoLabelLook(0.4, true).alpha < 0.01, "label look changes continuously with readiness (no jumps)");
+    const mk = (x, t, hov) => ({x, y: 0, w: 60, h: 14, target: t, hov}), apart = T.xoLabelDim([mk(0, 0.7), mk(100, 0.9)]), cross = T.xoLabelDim([mk(0, 0.7), mk(10, 0.9)]);
+    ok7(apart[0].target === 0.7 && apart[1].target === 0.9, "labels apart keep their opacity");
+    ok7(cross[0].target < 0.25 && cross[1].target === 0.9, "a softer label passing under a more solid one fades away (it doesn't obstruct): " + cross[0].target.toFixed(2));
+    const brush = T.xoLabelDim([mk(0, 0.7), mk(55, 0.9)]); ok7(brush[0].target > cross[0].target && brush[0].target < 0.7, "a slight overlap dims a little, a full one a lot (smooth with the overlap)");
+    ok7(T.xoLabelDim([mk(0, 0.7, true), mk(10, 0.9)])[0].target === 0.7, "the hovered label is never dimmed"); }  s = s0; let ms = 0, ps = 0; for (let k = 0; k < 400; k++) { s = T.xoTick(s, {kind: "planet", i: 1}, 0.016, false); s.swaps.forEach(x => { if (x.kind === "moon" && x.i === 1) ms++; if (x.kind === "planet") ps++; }); }
+  ok7(ms >= 2 && ps === 0, "holding a planet races only its own moons (" + ms + " moon swaps, no planet swaps)");
+  s = s0; for (let k = 0; k < 600; k++) s = T.xoTick(s, null, 0.016, false); ok7(!s.swaps.length && s.ph[0] > 0 && s.ph[0] < 1.5 && s.mph[0][1] < 0, "no hold: everything only drifts slowly (no swaps), moons round in opposite directions");
+  ok7(T.xoTick(s0, null, 1, true).ph[0] === 0, "reduced motion: no drift");
+  { // 🔒 shift-click locks a planet / moon
+    let rl = T.xoClick(st0, tr, p, false, true); const sl = rl.st;
+    ok7(rl.act === "lock" && T.xoLockedP(sl, 0) && sl.center === "grief", "shift-click a planet locks it");
+    ok7(T.xoClick(sl, tr, p, false).act === "locked" && JSON.stringify(T.xoTurn1(sl, 1).k1) === "[0,1,1]", "a locked planet ignores clicks and ◀ ▶ (the others move on)");
+    const lk = {p: [true, false, false], m: [[false, false], [true, false], [false, false]]}; let ls = s0, sw = [];
+    for (let k = 0; k < 900; k++) { ls = T.xoTick(ls, {kind: "sun"}, 0.016, false, lk); sw = sw.concat(ls.swaps); }
+    ok7(ls.ph[0] === 0 && !sw.some(x => x.kind === "planet" && x.i === 0) && sw.some(x => x.kind === "planet" && x.i === 1), "holding the sun: the locked planet stands still and keeps its link; the rest race on");
+    ls = s0; for (let k = 0; k < 300; k++) ls = T.xoTick(ls, {kind: "planet", i: 1}, 0.016, false, lk); ok7(ls.mph[1][0] === 0 && ls.mph[1][1] !== 0, "a locked moon stands still while its twin races");
+    rl = T.xoClick(sl, tr, p, false, true); ok7(rl.act === "unlock" && !T.xoLockedP(rl.st, 0), "shift-click again unlocks");
+    const lv = T.xoValue(E, T.xoClick(st0, tr, tr.kids[p][1], false, true).st, 0.6); ok7(lv.tree.lm[p][1] === true && JSON.stringify(T.xvNorm(lv, E).tree.lm) === JSON.stringify(lv.tree.lm), "locks live in the value (saved / reloaded)"); }  { // ♾ long holds deepen the decks: 2 then 3 links out
+    const d1 = T.xoCandsDeep(E, "grief", 1), d2 = T.xoCandsDeep(E, "grief", 2), d3 = T.xoCandsDeep(E, "grief", 8);
+    ok7(JSON.stringify(d1) === JSON.stringify(c1) && d2.length === d1.length + T.XO.GROW && d3.length > d2.length && d3.length <= d1.length + 7 * T.XO.GROW && JSON.stringify(d2.slice(0, d1.length)) === JSON.stringify(d1) && new Set(d3).size === d3.length && !d3.includes("grief"), "deeper decks keep the direct links first, then add the next 6 best relatives per step, 2 then 3 links out (" + d1.length + " → " + d2.length + " → " + d3.length + ")");
+    const td = T.xoTree(E, {...T.xoTurnP(st0, 1, 1), d1: 2}), tn = T.xoTree(E, T.xoTurnP(st0, 1, 1));
+    ok7(JSON.stringify(td.ring1) === JSON.stringify(tn.ring1) && td.cands1.length > tn.cands1.length, "deepening keeps the planets where they are (only the decks grow)");
+    const vd = T.xoValue(E, {...st0, d1: 2, d2: {[tr.ring1[0]]: 3}}, 0.6); ok7(vd.tree.d1 === 2 && vd.tree.d2[tr.ring1[0]] === 3 && T.xoSt(E, vd).d1 === 2 && T.xoCentre("joy").d1 === undefined, "the depth lives in the value; a new sun starts at depth 1"); }  const v = T.xoValue(E, T.xoTurnP(st0, 2, 1), 0.7);
+  ok7(v.orbit && v.tree.center === "grief" && JSON.stringify(v.tree.k1) === "[0,0,1]" && v.intensity === 0.7 && v.genre === E.by.grief.name && typeof v.valence === "number", "the value keeps the deck offsets, strength and the usual fields");
+  ok7(JSON.stringify(T.xvNorm(v, E)) === JSON.stringify(v), "an orbit value survives xvNorm unchanged (saved / sent / reloaded)");
+  ok7(T.xoSt(E, {blend: [{id: "saudade", w: 0.6}, {id: "joy", w: 0.4}]}).center === "saudade" && T.xoSt(T.XAF, T.xfNeutral()).center === "everyday" && JSON.stringify(T.xoSt(E, {orbit: true, tree: {center: "grief", k1: 2}}).k1) === "[0,0,0]", "older values: centre on the top neuron; formality starts on Everyday; an old single k1 resets the decks");
+  const pos = T.xoPos(tr, [0, 1, 2], [[0, 1], [2, 3], [4, 5]]), dd = (a, b) => Math.hypot(a.x - b.x, a.y - b.y), rad = tr.ring1.map(id => dd(pos.get(id), {x: 0, y: 0}));
+  ok7(pos.get("grief").x === 0 && rad[0] < rad[1] && rad[1] < rad[2] && dd(pos.get(tr.ring1[0]), T.xoOrbit(0, 0)) < 1e-9, "the planets sit on their own ellipses, the strongest closest to the sun");
+  ok7(tr.ring1.every((p2, i) => tr.kids[p2].every((k, m) => Math.abs(dd(pos.get(k + "@" + p2), pos.get(p2)) - O.MOON[m].r) < 1e-9)), "moons circle their own planet");
+  ok7(O.ORB.every((e, i) => i === 0 || (e.a > O.ORB[i - 1].a && e.w < O.ORB[i - 1].w && e.tilt !== O.ORB[i - 1].tilt)), "orbits: farther = slower, each tilted differently (not quite right, like a real system)");
+  { const calls = {}, gr = {addColorStop() {}}, ctx = new Proxy({}, {get: (t, k) => k === "createRadialGradient" || k === "createLinearGradient" ? () => gr : k === "measureText" ? () => ({width: 44}) : (...a) => { calls[k] = (calls[k] || 0) + 1; }, set: () => true});
+    const e0 = T.XC.emotion, f0 = T.XC.formality; let err = "";
+    for (const [ev, fv] of [[T.xaValueAt(E.by.awe.x, E.by.awe.y, E), T.xaValueAt(T.XAF.by.streetwear.x, T.XAF.by.streetwear.y, T.XAF)], [v, T.xfNeutral()], [T.xeNeutral(), T.xoValue(T.XAF, T.xoCentre("rave"), 0.5)]]) {
+      T.XC.emotion = ev; T.XC.formality = fv; try { T.xmDraw(ctx, 320, 320, 5000, E, 0.016); T.xmDraw(ctx, 320, 320, 5100, T.XAF, 0.016); } catch (x) { err += x.message + " "; } }
+    T.XC.emotion = v; const ob = T.xoState(E); for (const hd of [{kind: "sun", key: "grief"}, {kind: "planet", i: 0, key: tr.ring1[0]}]) { ob.hold = hd; ob.acc = [1, 2, 0.5]; ob.macc = [[1, 4], [0, 0], [0, 0]]; try { T.xmDraw(ctx, 320, 320, 6000, E, 0.016); if (!ob.next) err += "no next during " + hd.kind + " "; } catch (x) { err += "hold " + hd.kind + ": " + x.message + " "; } } ob.hold = null;
+    T.XC.emotion = e0; T.XC.formality = f0; ok7(!err && calls.ellipse >= 3, "a frame draws (orbits as ellipses) for an old probe value, an orbit value and neutral, on both atlases " + err); }
+  { const k0 = T.XC.cores, add = T.xcoresAdd([], v, "Grief arc"), c = add.added, again = T.xcoresClean(add.cores)[0];
+    ok7(c && c.blend.length === 3 && c.blend[0].id === "grief" && c.warped && again.blend[0].id === "grief" && JSON.stringify(again.blend) === JSON.stringify(c.blend), "＋ Add as core from an orbit value: the sun + its heaviest planets (moons folded in), kept as given through clean-ups: " + c.blend.map(b => b.id + " " + b.w).join(", "));
+    T.XC.cores = k0; }
+  const mh = T.xMapHtml(E);
+  ok7(mh.includes('data-xoturn="emotion"') && mh.includes("xastr-emotion") && mh.includes("hold the sun") && T.xMapBtnsHtml(E).includes("data-xaclear") && !mh.includes("hold to pull") && !T.xMapBtnsHtml(E).includes("keep shape"), "markup: ◀ ▶, the hold hint, the strength slider, ○ clear; push / pull and keep-shape are gone");
 }
 {  // 🔍 loupe window while dragging a marker edge
   const [a, b] = T.mvLoupeSpan(100, 200, 1000);  // 5 px/s timeline, 8x zoom, 240 px loupe = 6 s
@@ -1013,45 +1177,7 @@ T.JRN = [FJ]; T.jById = {[FJ.id]: FJ};
     T.XC.cores = [{id: "mine", name: "Mine", ...at("joy"), status: "active", weight: 0.4}]; T.SAGAS = [{id: "901-new", title: "N", chapters: [], cast: [], cores: []}];
     ok5(T.xcSyncSaga() === true && T.XC.cores[0].id === "mine" && T.XC.coresSaga === "901-new", "per saga: a new saga without cores starts with the deck's");
     T.SAGAS = keepS; [T.XC.cores, T.XC.maturity, T.XC.coresSaga] = k0; }
-  // 🌀 gravity + repulsor: a view-only warp of the map (long hold = pull, right-click hold = push), springing back on release
-  { const mk = (x, y) => ({hx: x, hy: y, x, y, vx: 0, vy: 0}), d = (n, w) => Math.hypot(n.x - w.x, n.y - w.y), run = (ns, well, secs, opt) => { for (let t = 0; t < secs; t += 0.016) T.atlasForceStep(ns, well, 0.016, opt); };
-    let ns = [mk(0.3, 0), mk(0.35, 0.2), mk(-0.4, 0.2), mk(1.4, 1.4)], well = {x: 0, y: 0, mode: 1, k: 1}, d0 = ns.map(n => d(n, well));
-    run(ns, well, 1, {}); ok5(ns.slice(0, 3).every((n, i) => d(n, well) < d0[i] * 0.5), "gravity: nearby nodes slide toward the well (halved their distance in 1 s): " + ns.slice(0, 3).map((n, i) => d0[i].toFixed(2) + "->" + d(n, well).toFixed(2)).join(" "));
-    ok5(Math.hypot(ns[3].x - ns[3].hx, ns[3].y - ns[3].hy) < 0.01, "gravity: a far node (beyond the disc) is not affected");
-    ns = [mk(0.3, 0), mk(0.5, 0.3), mk(-0.4, 0.2)]; well = {x: 0, y: 0, mode: -1, k: 1}; d0 = ns.map(n => d(n, well)); run(ns, well, 1, {});
-    ok5(ns.every((n, i) => d(n, well) > d0[i] + 0.05), "repulsor: nodes are pushed away from the pointer");
-    ns = [mk(0.3, 0)]; well = {x: 0, y: 0, mode: 1, k: 0}; run(ns, well, 1, {}); ok5(Math.abs(ns[0].x - 0.3) < 1e-9, "no force until the hold has ramped up (k = 0)");
-    ok5(T.xfFall(0) === 1 && T.xfFall(T.XF_R) > 0.3 && T.xfFall(T.XF_R) < 0.6 && T.xfFall(0.9) < 0.1 && T.xfFall(1) === 0 && T.xfFall(0.2) > T.xfFall(0.5), "falloff: strongest at the pointer, about half at R, gone at the rim");
-    ok5(T.xfRamp(0) === 0 && T.xfRamp(5) === 1 && T.xfRamp(0.3) < 0.2 && T.xfRamp(0.6) < T.xfRamp(0.9) && T.xfRamp(0.9) < 1, "force ramps up with the hold time (ease-in, capped at 1)");
-    const ws = pull => { const a = [mk(0.2, 0.1), mk(-0.5, -0.3), mk(0.6, 0.5)]; run(a, {x: 0, y: 0, mode: pull ? 1 : -1, k: 1}, 1, {}); return a; };
-    ns = ws(true); const warped = ns.map(n => ({...n})); run(ns, null, 1.2, {});
-    ok5(ns.every((n, i) => Math.hypot(n.x - n.hx, n.y - n.hy) < Math.hypot(warped[i].x - warped[i].hx, warped[i].y - warped[i].hy) * 0.2 + 0.03), "spring-back: after about 1.2 s the nodes are (nearly) home");
-    run(ns, null, 2.5, {}); ok5(ns.every(n => Math.hypot(n.x - n.hx, n.y - n.hy) < 0.004 && Math.hypot(n.vx, n.vy) < 0.004), "spring-back converges to rest at the home positions");
-    ns = ws(true); ns.forEach(n => { n.vx = 0; n.vy = 0; }); const kept = ns.map(n => [n.x, n.y]); run(ns, null, 3, {keep: true}); ok5(ns.every((n, i) => Math.abs(n.x - kept[i][0]) < 0.02 && Math.abs(n.y - kept[i][1]) < 0.02), "keep shape: with the spring off the warped arrangement stays");
-    ns = [mk(0.3, 0), mk(0.31, 0.01)]; run(ns, {x: 0.3, y: 0, mode: 1, k: 1}, 1.5, {}); ok5(Math.hypot(ns[0].x - ns[1].x, ns[0].y - ns[1].y) > 0.03, "pulled-in nodes keep a little room (no single dot)");
-    // the blend is read from the DISPLACED positions, and a value taken from a warped map keeps its blend
-    const F = T.XAF, far = F.by["rave"];
-    const before = T.xaValueAt(far.x, far.y, F); F.off = {}; F.off["black-tie"] = [far.x - F.by["black-tie"].x, far.y - F.by["black-tie"].y]; F.off["sleepover"] = [far.x - F.by["sleepover"].x + 0.02, far.y - F.by["sleepover"].y];
-    const wv = T.xaValueAt(far.x, far.y, F), ids2 = wv.blend.map(b => b.id);
-    ok5(ids2.includes("black-tie") && ids2.includes("sleepover") && ids2.includes("rave") && !before.blend.map(b => b.id).includes("black-tie") && wv.warped === true && T.xaWarped(F), "pulling Black tie and Sleepover onto Rave makes the three share the blend (read from the displaced positions): " + T.xfWord(wv));
-    ok5(JSON.stringify(T.xvNorm(wv, F)) === JSON.stringify(wv), "a value taken from a warped map keeps its blend when it is normalised");
-    F.off = {}; ok5(JSON.stringify(T.xvNorm(wv, F)) === JSON.stringify(wv) && !T.xaWarped(F) && T.xaValueAt(far.x, far.y, F).warped === undefined, "... also after the nodes spring home (the kept value is the one that is sent); the plain map reports no warp");
-    // the real loop: a physics tick under a held well moves the node and the probe takes the warped blend; after release everything springs home and stops
-    { const A = T.XAE, id = "joy", n = A.by[id]; A.off = {}; A.vel = {}; A.well = {x: n.x - 0.2, y: n.y, mode: 1, k: 0, t0: performance.now() - 1500, pid: 1};
-      let moving = true; for (let i = 0; i < 40 && moving; i++) moving = T.xaPhysics(A, 0.016);
-      const o = A.off[id]; ok5(o && o[0] < -0.02 && T.xaWarped(A) && T.XC.emotion.warped === true, "xaPhysics: a held well on the map moves the node and the probe takes the warped blend");
-      A.well = null; for (let i = 0; i < 600 && moving; i++) moving = T.xaPhysics(A, 0.016);
-      ok5(!moving && !T.xaWarped(A) && Object.keys(A.off).length === 0, "xaPhysics: after release everything springs home and the loop stops (nothing keeps moving)");
-      A.keep = true; A.off[id] = [0.3, 0.1]; T.xaWarpSave(A); T.xaWarpClear(A); ok5(!A.keep && !T.xaWarped(A), "reset clears the warp and keep"); T.XC.emotion = T.xeNeutral(); }
-    // persistence per viewer per atlas, tolerant of a broken store
-    { const A = T.XAF; A.keep = true; A.off = {"rave": [0.25, -0.1], "ghost": [1, 1]}; T.xaWarpSave(A); const raw = JSON.parse(localStorage.getItem("xwarp:formality"));
-      ok5(raw.keep === true && raw.off.rave[0] === 0.25, "keep shape: the offsets are saved per viewer in localStorage (xwarp:formality)");
-      A.off = {}; A.keep = false; A.warpLoaded = false; T.xaWarpLoad(A); ok5(A.keep === true && A.off.rave && A.off.rave[1] === -0.1 && !A.off.ghost, "... and restored on the next visit (unknown nodes ignored)");
-      localStorage.setItem("xwarp:formality", "{{broken"); A.off = {}; A.keep = false; A.warpLoaded = false; T.xaWarpLoad(A); ok5(A.keep === false && !T.xaWarped(A), "a broken store is ignored");
-      T.xaWarpClear(A); ok5(localStorage.getItem("xwarp:formality") === null, "clearing the warp removes the saved offsets"); A.warpLoaded = true; }
-    // markup: hint, keep toggle, reset, factory reset with the two-click confirm
-    const mh = T.xMapHtml(T.XAE), mf = T.xMapHtml(T.XAF);
-    ok5([mh, mf].every(h => h.includes("hold to pull · right-click to push") && h.includes("data-xakeep") && h.includes("data-xawarp") && h.includes("data-xareset") && h.includes("📌 keep shape") && h.includes("↺ reset") && h.includes("⟲ Factory reset") && !h.includes("data-xaremove")), "map markup (both atlases): the hold / right-click hint, 📌 keep shape, ↺ reset, ⟲ Factory reset");
+  { const mh = T.xMapHtml(T.XAE), mf = T.xMapHtml(T.XAF); ok5([mh, mf].every(h => h.includes("data-xareset") && h.includes("⟲ Factory reset") && h.includes("data-xaclear") && !h.includes("data-xaremove") && !h.includes("data-xakeep")), "map markup (both atlases): ○ clear, ⟲ Factory reset (no keep-shape / warp buttons)");
     const m = {confirm: null}, t0 = 1000000;
     ok5(T.xaResetStep(m, t0) === "armed" && m.confirm.until === t0 + 4000 && m.confirm.remove === false, "factory reset: the first click only arms it (4 s), 'also remove neurons added later' is OFF");
     ok5(T.xaResetStep(m, t0 + 3999) === "do", "factory reset: a second click inside 4 s does it");
@@ -1104,18 +1230,11 @@ T.JRN = [FJ]; T.jById = {[FJ.id]: FJ};
     T.xaSet({nodes: [mk("a"), mk("b"), mk("c")], edges: [{a: "a", b: "b", w: 1}, {a: "b", b: "c", w: 1}, {a: "a", b: "c", w: 0.1}]});
     ok5(JSON.stringify(T.xaPath("a", "c")) === '["a","b","c"]', "glide path: strong synapses are short (a-b-c at w 1 beats the direct a-c at w 0.1)");
     T.xaSet({nodes: [mk("a"), mk("b")], edges: []}); ok5(T.xaPath("a", "b").length === 0, "glide path: disconnected = no route"); T.xaSet(keep); }
-  { const f0 = T.XC.formality; T.XC.formality = T.xfNeutral(); const pl = T.xmPlan("rave"), ek = new Set(A.edges.map(e => e.a < e.b ? e.a + "|" + e.b : e.b + "|" + e.a));
-    ok5(pl && pl.ids[pl.ids.length - 1] === "rave" && pl.pts.length === pl.ids.length + 1 && pl.pts[0].x === 0 && pl.pts[0].y === 0 && pl.edges.every(k => ek.has(k)) && T.xmPlan("nope") === null, "glide plan: probe -> nearest neuron -> along the edges -> target, lighting each edge");
-    T.XC.formality = f0; }
-  { const c = A.nodes.find(n => Math.hypot(n.x, n.y) < 0.01), r = A.nodes.reduce((b, n) => Math.hypot(n.x, n.y) > Math.hypot(b.x, b.y) ? n : b), eg = A.edges.reduce((b, e) => e.w > b.w ? e : b);
-    ok5(T.xaNodeAlpha(c, 0) === 0 && T.xaNodeAlpha(c, 0.4) === 1 && T.xaNodeAlpha(r, 0.3) === 0 && T.xaNodeAlpha(r, 0.9) === 1 && T.xaNodeAlpha(r, 99) === 1, "reveal: neurons fade in from the centre outward (the rim last), all there by 0.9 s");
-    ok5(A.edges.every(e => T.xaEdgeGrow(e, 0) === 0 && T.xaEdgeGrow(e, 1.6) === 1) && A.edges.every(e => T.xaEdgeGrow(e, 0.9) <= T.xaEdgeGrow(e, 1.1)) && A.edges.some(e => T.xaEdgeGrow(e, 0.6) > 0) && A.edges.some(e => T.xaEdgeGrow(e, 0.6) === 0), "reveal: synapses grow outward after the neurons, every one complete by ~1.6 s");
-    ok5(T.xaNodeAlpha(r, 99, 0) === 0 && T.xaNodeAlpha(r, 99, 0.35) === 0.5 && T.xaNodeAlpha(r, 99, 5) === 1 && T.xaEdgeGrow(eg, 99, 0.2) === 0 && T.xaEdgeGrow(eg, 99, 5) === 1, "reveal: a neuron added later draws itself in from its birth, its synapses after it"); }
   { const L = T.xaPlaceLabels([{id: "a", w: 60, h: 13, x: 100, y: 100, pri: 3}, {id: "b", w: 60, h: 13, x: 104, y: 102, pri: 2}, {id: "c", w: 60, h: 13, x: 108, y: 98, pri: 1}, {id: "d", w: 60, h: 13, x: 4, y: 4, pri: 0.5}], 320, 320);
     const hit = (p, q) => p.x < q.x + 60 && q.x < p.x + 60 && p.y < q.y + 13 && q.y < p.y + 13;
     ok5(L.length >= 3 && L[0].id === "a" && L.every((p, i) => L.every((q, j) => i === j || !hit(p, q))) && L.every(p => p.x >= 2 && p.y >= 2 && p.x + 60 <= 318 && p.y + 13 <= 318), "labels: no overlaps, inside the canvas, highest priority first (no label soup)"); }
   { const calls = {}, gr = {addColorStop() {}}, ctx = new Proxy({}, {get: (t, k) => k === "createRadialGradient" || k === "createLinearGradient" ? () => gr : k === "measureText" ? () => ({width: 44}) : (...a) => { calls[k] = (calls[k] || 0) + 1; }, set: () => true});
-    A.m.t0 = performance.now() - 5000;  /* the reveal animation is long over */ T.xmDraw(ctx, 320, 320, 1234); ok5(calls.arc >= A.nodes.length && calls.stroke >= A.edges.length && calls.fillText >= 8 && calls.save === calls.restore, "canvas draw: a full frame (neurons, synapses, labels, probe) runs without error"); }
+    T.xmDraw(ctx, 320, 320, 1234); ok5(calls.arc >= 10 && calls.stroke >= 9 && calls.fillText >= 8 && calls.save === calls.restore, "canvas draw: a full orbit frame (centre, links, sub-links, labels) runs without error"); }
   { const f0 = T.XC.formality; T.XC.formality = T.xaValueAt(A.by["black-tie"].x + 0.02, A.by["black-tie"].y); const d = T.xMapHtml();
     ok5(d.includes('<canvas id="xmap"') && d.includes('role="application"') && d.includes('id="xasearch"') && d.includes("Find a feeling of formality…") && d.includes('id="xago"') && d.includes("Black tie") && /level \+\d+/.test(d) && d.includes('id="xatlas-hint"') && !d.includes("xstick") && !/camera|zoom|Ken Burns/i.test(d), "map markup: canvas, search box, readout of the blend with the level, hint line");
     ok5(/^Black tie \d+% · .+ \d+% · .+ \d+%$/.test(T.xfWord(T.XC.formality)) && T.xfHint(T.XC.formality).includes(A.by["black-tie"].picture) && / captions$/.test(T.xfHint(T.XC.formality)), "readout: 'Black tie 48% · … · …' and the top neuron's picture + caption voice");
@@ -1239,10 +1358,10 @@ T.JRN = [FJ]; T.jById = {[FJ.id]: FJ};
       {id: "ch03", num: 3, title: "Low Tide", summary: "", status: "draft", presence: 50, emotion: null, formality: null, shots: [shot("e1", "ch03", {src: null, narration: "x"})]}]});
   const sg = mkSaga(); T.SAGAS = [sg]; T.EXST.state = {active: false, reason: "idle", left: 0, until: 0, presence: null, emotion: null};
   // ---- pure reading-time + typing helpers
-  ok6(T.vnTypeMs("x".repeat(100)) === 2800 && T.vnTypeMs("") === 250 && T.vnTypeMs("ab") === 250, "typing takes 28 ms per character (min 250 ms)");
-  ok6(T.vnReadMs("one two three") === 1800 && T.vnReadMs(Array(50).fill("w").join(" ")) === 700 + 50 * 280 && T.vnReadMs("") === 1800, "reading time: 700 ms + 280 ms per word, at least 1.8 s");
+  ok6(T.vnTypeMs("x".repeat(100)) === 3400 && T.vnTypeMs("") === 250 && T.vnTypeMs("ab") === 250, "typing takes 34 ms per character (min 250 ms)");
+  ok6(T.vnReadMs("one two three") === 2200 && T.vnReadMs(Array(50).fill("w").join(" ")) === 900 + 50 * 330 && T.vnReadMs("") === 2200, "reading time: 900 ms + 330 ms per word, at least 2.2 s");
   ok6(T.vnBeatMs("hello there") === T.vnTypeMs("hello there") + T.vnReadMs("hello there"), "auto-advance delay = typing + reading");
-  ok6(T.vnTyped("hello", 0) === "" && T.vnTyped("hello", 56) === "he" && T.vnTyped("hello", 140) === "hello" && T.vnTyped("hello", 1e6) === "hello" && T.vnTyped("a😀b", 28) === "a" && T.vnTyped("a😀b", 56) === "a😀", "text types on a character at a time (emoji-safe), never past the end");
+  ok6(T.vnTyped("hello", 0) === "" && T.vnTyped("hello", 68) === "he" && T.vnTyped("hello", 170) === "hello" && T.vnTyped("hello", 1e6) === "hello" && T.vnTyped("a😀b", 34) === "a" && T.vnTyped("a😀b", 68) === "a😀", "text types on a character at a time (emoji-safe), never past the end");
   ok6(T.vnColor("Mira", sg.cast) === T.vnColor("Mira", sg.cast) && T.vnColor("Mira", sg.cast) !== T.vnColor("Tobias", [{name: "Tobias"}]) && T.vnColor("Tobias", sg.cast) === "#ffcc00" && /^hsl\(/.test(T.vnColor("Mira", sg.cast)), "speaker colours: stable per name, a cast colour wins");
   const b1 = T.vnBeats(sg.chapters[0].shots[0], sg.cast);
   ok6(b1.length === 3 && b1[0].kind === "narr" && b1[1].kind === "say" && b1[1].who === "Mira" && !b1[1].off && b1[2].off === true, "beats: narration first, then each dialogue line (off-screen flagged)");
@@ -1300,7 +1419,7 @@ T.JRN = [FJ]; T.jById = {[FJ.id]: FJ};
   T.xpNext(); ok6(T.XP.i === 1 && T.XP.segs[1].type === "chapter" && lastTimer().ms === 4000, "click on a card = next; the chapter card shows 4 s: Chapter 1");
   T.xpNext();
   ok6(T.XP.i === 2 && T.XP.beat === 0 && T.XP.typed === false && nar().textContent === "", "picture e1: narration starts typing");
-  clock += 28 * 10; tick(); ok6(nar().textContent === "The harbou" && T.XP.typed === false, "typing progresses with the clock: 10 characters in 280 ms");
+  clock += 34 * 10; tick(); ok6(nar().textContent === "The harbou" && T.XP.typed === false, "typing progresses with the clock: 10 characters in 340 ms");
   T.xpNext(); ok6(nar().textContent === "The harbour was glass at dawn." && T.XP.typed === true && T.XP.beat === 0, "click while typing = finish the line at once");
   ok6(lastTimer().ms === T.vnReadMs("The harbour was glass at dawn."), "then Auto waits the reading time (" + lastTimer().ms + " ms) before the next line");
   T.xpNext(); ok6(T.XP.beat === 1 && T.XP.i === 2 && nameTag() === "Mira" && txt().textContent === "", "next click = dialogue line 1 in the dialogue box, speaker tag Mira");
@@ -1334,6 +1453,28 @@ T.JRN = [FJ]; T.jById = {[FJ.id]: FJ};
   ok6(lay6.includes('class="vnnar"') && lay6.includes('class="vnbox"') && lay6.includes('class="vnname"') && lay6.includes('class="vnmore"') && lay6.includes("<img src=") && !/animation|transform|zoom|kenburns/i.test(lay6), "shot layer: full picture + narration box + dialogue box, no motion");
   ok6(/\.vnnar \{[^}]*left: 3%[^}]*top: 4%/.test(htmlS) && /\.vnbox \{[^}]*bottom: 4%/.test(htmlS) && /\.vnname \{[^}]*border: 2px solid currentColor/.test(htmlS) && /\.vnnar \{[^}]*Georgia/.test(htmlS) && /\.vnnar \{[^}]*rgba\(10,10,14,\.62\)/.test(htmlS), "CSS: narration top-left, serif, translucent; dialogue box at the bottom with a coloured name tag");
   ok6(htmlS.includes('data-xp="auto"') && htmlS.includes("vnauto") && htmlS.includes("Auto ✓") && htmlS.includes("Click / Space / → read on"), "player: Auto toggle (default on, remembered), VN key hints");
+  ok6(htmlS.includes('data-xp="copy"') && htmlS.includes('a === "copy") xpCopy()') && htmlS.includes("C copy picture") && /key === "c" \|\| e\.key === "C"/.test(htmlS)
+      && htmlS.includes("navigator.clipboard.write") && htmlS.includes('execCommand("copy")') && typeof T.xpCopy === "function", "player: ⧉ copy the picture on screen (button, C / Ctrl+C; clipboard API with an execCommand fallback for plain-http LAN)");
+  { const d = T.xpDragData("../explore/sagas/001-my-saga/ch01/e2.png?v=123", "http://127.0.0.1:8765/gallery/index.html#/nev");
+    ok6(d["text/uri-list"] === "http://127.0.0.1:8765/explore/sagas/001-my-saga/ch01/e2.png" && d["text/plain"] === d["text/uri-list"]
+        && d.DownloadURL === "image/png:001-my-saga_ch01_e2.png:http://127.0.0.1:8765/explore/sagas/001-my-saga/ch01/e2.png", "player drag: absolute URL as link + text (cache-buster dropped), DownloadURL with a readable file name");
+    const lh = T.xpLayerHtml({type: "shot", src: "../explore/x/e1.png", ar: 1.78, beats: [{t: "n"}]});
+    ok6(htmlS.includes("e.dataTransfer.items.add(f)") && htmlS.includes("if (seg.src) xpPrefetchFile(seg.src)") && typeof T.xpPrefetchFile === "function", "player drag: carries the PNG file itself (prefetched), not only a 127.0.0.1 link other sites can't reach");
+    ok6(/draggable="true" data-xpimg="..\/explore\/x\/e1.png"/.test(lh) && /#xplayer \.vnnar, #xplayer \.vnbox, #xplayer \.xcap \{ pointer-events: none; \}/.test(htmlS) && htmlS.includes('addEventListener("dragstart"'), "player drag: the picture is draggable, text boxes let the drag through, playback pauses while dragging"); }
   ok6(!/@keyframes xk/.test(htmlS), "still no camera-motion keyframes");
   T.EXPL = hbE; T.SAGAS = hbS; T.EXST.state = hs6; location.hash = "";
+}
+
+// music-video comment threads: box on top, newest first; other images keep the old order
+{
+  const mv = T.clipPanel("../musicvideos/001-x/sb01/s1__ltxia2v-a_seed1.mp4", "c"), jr = T.clipPanel("../journeys/001-x/ch01/s1__fasth3_seed1.mp4", "c");
+  ok(!mv || /class="thread newest"/.test(mv), "mv thread: compose box on top, newest first");
+  ok(!jr || !/class="thread newest"/.test(jr), "journey clip thread keeps oldest-first with the box at the bottom");
+}
+
+// ✓ Hide approved on the storyboard
+{
+  const b = T.hideDoneBtn(3);
+  ok(/data-hidedone/.test(b) && /Hide approved/.test(b) && /\(3\)/.test(b), "storyboard: Hide approved toggle shows the approved count");
+  ok(T.mvDoneCount({storyboards: []}) === 0, "mvDoneCount: empty storyboard = 0");
 }

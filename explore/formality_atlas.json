@@ -12,9 +12,9 @@
  ],
  "layout": {
   "mean": [
-   0.534603,
+   0.533016,
    0.446825,
-   0.403175,
+   0.405556,
    0.449206,
    0.475397,
    0.538095,
@@ -23,37 +23,37 @@
   ],
   "basis": [
    [
-    -0.250351,
-    -0.159622,
-    0.198911,
-    0.750832,
-    0.069072,
-    0.281351,
-    -0.015827,
-    0.473658
+    -0.248109,
+    -0.155988,
+    0.184119,
+    0.750722,
+    0.060845,
+    0.294449,
+    -0.032262,
+    0.474534
    ],
    [
-    0.471207,
-    0.43101,
-    0.409033,
-    0.205946,
-    0.418198,
-    0.217491,
-    -0.261842,
-    -0.302852
+    0.470757,
+    0.430618,
+    0.411471,
+    0.205176,
+    0.41793,
+    0.216733,
+    -0.261643,
+    -0.302415
    ]
   ],
   "origin": [
-   -0.206644,
-   -0.451717
+   -0.208148,
+   -0.452043
   ],
   "sx": [
-   1.042247,
-   2.96696
+   1.035453,
+   3.060595
   ],
   "sy": [
-   0.59013,
-   1.258457
+   0.590082,
+   1.259364
   ],
   "gap": 0.12
  },
@@ -74,8 +74,8 @@
     "intimacy": 0.1,
     "chaos": 0.0
    },
-   "x": 0.3769,
-   "y": 0.7295,
+   "x": 0.358,
+   "y": 0.7091,
    "added_by": "seed"
   },
   {
@@ -94,8 +94,8 @@
     "intimacy": 0.2,
     "chaos": 0.05
    },
-   "x": 0.2401,
-   "y": 0.5806,
+   "x": 0.251,
+   "y": 0.5852,
    "added_by": "seed"
   },
   {
@@ -105,7 +105,7 @@
    "picture": "short evening dresses and sharp suits, small groups mingling with glasses, warm party lighting",
    "voice": "light, witty, quick",
    "features": {
-    "rigidity": 0.6,
+    "rigidity": 0.5,
     "hierarchy": 0.4,
     "ritual": 0.3,
     "ornament": 0.6,
@@ -114,9 +114,21 @@
     "intimacy": 0.3,
     "chaos": 0.15
    },
-   "x": 0.2648,
-   "y": 0.2741,
-   "added_by": "seed"
+   "x": 0.2937,
+   "y": 0.2456,
+   "added_by": "seed",
+   "feature_notes": [
+    {
+     "feature": "rigidity",
+     "from": 0.6,
+     "to": 0.5,
+     "why": "Debrett's: cocktail is a semi-formal code with a 'lesser emphasis on formality' than black tie / lounge suit; Post lists it as the dressy-but-flexible tier",
+     "src": [
+      "debretts",
+      "post"
+     ]
+    }
+   ]
   },
   {
    "id": "business-formal",
@@ -134,8 +146,8 @@
     "intimacy": 0.1,
     "chaos": 0.0
    },
-   "x": -0.3623,
-   "y": 0.5065,
+   "x": -0.3514,
+   "y": 0.5075,
    "added_by": "seed"
   },
   {
@@ -154,8 +166,8 @@
     "intimacy": 0.25,
     "chaos": 0.1
    },
-   "x": -0.3938,
-   "y": 0.172,
+   "x": -0.3814,
+   "y": 0.1722,
    "added_by": "seed"
   },
   {
@@ -174,8 +186,8 @@
     "intimacy": 0.4,
     "chaos": 0.15
    },
-   "x": -0.1395,
-   "y": 0.0232,
+   "x": -0.13,
+   "y": 0.0231,
    "added_by": "seed"
   },
   {
@@ -194,8 +206,8 @@
     "intimacy": 0.3,
     "chaos": 0.4
    },
-   "x": 0.4243,
-   "y": -0.219,
+   "x": 0.451,
+   "y": -0.2161,
    "added_by": "seed"
   },
   {
@@ -214,8 +226,8 @@
     "intimacy": 0.45,
     "chaos": 0.25
    },
-   "x": -0.0865,
-   "y": -0.4079,
+   "x": -0.065,
+   "y": -0.403,
    "added_by": "seed"
   },
   {
@@ -234,8 +246,8 @@
     "intimacy": 0.9,
     "chaos": 0.3
    },
-   "x": -0.282,
-   "y": -0.8201,
+   "x": -0.3079,
+   "y": -0.815,
    "added_by": "seed"
   },
   {
@@ -254,8 +266,8 @@
     "intimacy": 0.4,
     "chaos": 0.7
    },
-   "x": 0.9912,
-   "y": -0.1324,
+   "x": 0.9911,
+   "y": -0.1328,
    "added_by": "seed"
   },
   {
@@ -274,8 +286,8 @@
     "intimacy": 0.05,
     "chaos": 0.0
    },
-   "x": 0.4223,
-   "y": 0.9065,
+   "x": 0.4155,
+   "y": 0.9096,
    "added_by": "seed"
   },
   {
@@ -294,8 +306,8 @@
     "intimacy": 0.1,
     "chaos": 0.0
    },
-   "x": 0.1436,
-   "y": 0.9797,
+   "x": 0.112,
+   "y": 0.9937,
    "added_by": "seed"
   },
   {
@@ -314,8 +326,8 @@
     "intimacy": 0.55,
     "chaos": 0.2
    },
-   "x": 0.5428,
-   "y": 0.4672,
+   "x": 0.541,
+   "y": 0.4444,
    "added_by": "seed"
   },
   {
@@ -334,8 +346,8 @@
     "intimacy": 0.2,
     "chaos": 0.1
    },
-   "x": 0.1277,
-   "y": 0.5376,
+   "x": 0.1352,
+   "y": 0.5537,
    "added_by": "seed"
   },
   {
@@ -354,8 +366,8 @@
     "intimacy": 0.7,
     "chaos": 0.0
    },
-   "x": -0.1529,
-   "y": 0.5097,
+   "x": -0.2048,
+   "y": 0.5363,
    "added_by": "seed"
   },
   {
@@ -374,8 +386,8 @@
     "intimacy": 0.15,
     "chaos": 0.0
    },
-   "x": 0.4751,
-   "y": 0.7987,
+   "x": 0.5636,
+   "y": 0.7838,
    "added_by": "seed"
   },
   {
@@ -394,8 +406,8 @@
     "intimacy": 0.2,
     "chaos": 0.25
    },
-   "x": 0.6256,
-   "y": 0.5818,
+   "x": 0.6182,
+   "y": 0.5843,
    "added_by": "seed"
   },
   {
@@ -414,8 +426,8 @@
     "intimacy": 0.05,
     "chaos": 0.0
    },
-   "x": 0.0348,
-   "y": 0.8263,
+   "x": 0.0432,
+   "y": 0.8356,
    "added_by": "seed"
   },
   {
@@ -434,8 +446,8 @@
     "intimacy": 0.05,
     "chaos": 0.0
    },
-   "x": 0.144,
-   "y": 0.7762,
+   "x": 0.1549,
+   "y": 0.7915,
    "added_by": "seed"
   },
   {
@@ -454,8 +466,8 @@
     "intimacy": 0.1,
     "chaos": 0.0
    },
-   "x": 0.301,
-   "y": 0.9536,
+   "x": 0.3034,
+   "y": 0.9529,
    "added_by": "seed"
   },
   {
@@ -474,8 +486,8 @@
     "intimacy": 0.1,
     "chaos": 0.05
    },
-   "x": -0.0859,
-   "y": 0.6094,
+   "x": -0.0899,
+   "y": 0.5712,
    "added_by": "seed"
   },
   {
@@ -494,8 +506,8 @@
     "intimacy": 0.2,
     "chaos": 0.05
    },
-   "x": -0.8121,
-   "y": 0.3081,
+   "x": -0.8194,
+   "y": 0.3069,
    "added_by": "seed"
   },
   {
@@ -514,8 +526,8 @@
     "intimacy": 0.3,
     "chaos": 0.1
    },
-   "x": -0.2146,
-   "y": 0.4066,
+   "x": -0.2118,
+   "y": 0.4164,
    "added_by": "seed"
   },
   {
@@ -534,8 +546,8 @@
     "intimacy": 0.85,
     "chaos": 0.2
    },
-   "x": 0.0597,
-   "y": 0.1255,
+   "x": 0.0434,
+   "y": 0.1259,
    "added_by": "seed"
   },
   {
@@ -554,8 +566,8 @@
     "intimacy": 1.0,
     "chaos": 0.5
    },
-   "x": -0.0012,
-   "y": -1.0,
+   "x": -0.0234,
+   "y": -0.9997,
    "added_by": "seed"
   },
   {
@@ -574,8 +586,8 @@
     "intimacy": 0.6,
     "chaos": 0.5
    },
-   "x": 0.1746,
-   "y": -0.6116,
+   "x": 0.1736,
+   "y": -0.613,
    "added_by": "seed"
   },
   {
@@ -594,8 +606,8 @@
     "intimacy": 0.3,
     "chaos": 1.0
    },
-   "x": 0.8721,
-   "y": -0.4158,
+   "x": 0.8755,
+   "y": -0.4147,
    "added_by": "seed"
   },
   {
@@ -614,8 +626,8 @@
     "intimacy": 0.9,
     "chaos": 0.3
    },
-   "x": -0.0586,
-   "y": -0.5323,
+   "x": -0.1183,
+   "y": -0.5127,
    "added_by": "seed"
   },
   {
@@ -634,8 +646,8 @@
     "intimacy": 0.0,
     "chaos": 0.0
    },
-   "x": 0.1468,
-   "y": 0.6562,
+   "x": 0.1214,
+   "y": 0.6761,
    "added_by": "seed"
   },
   {
@@ -654,8 +666,8 @@
     "intimacy": 0.1,
     "chaos": 0.0
    },
-   "x": -0.9774,
-   "y": 0.2112,
+   "x": -0.9775,
+   "y": 0.2111,
    "added_by": "seed"
   },
   {
@@ -674,8 +686,8 @@
     "intimacy": 0.05,
     "chaos": 0.0
    },
-   "x": 0.2553,
-   "y": 0.7095,
+   "x": 0.238,
+   "y": 0.7046,
    "added_by": "seed"
   },
   {
@@ -694,8 +706,8 @@
     "intimacy": 0.3,
     "chaos": 0.6
    },
-   "x": 0.3642,
-   "y": -0.4885,
+   "x": 0.368,
+   "y": -0.4886,
    "added_by": "seed"
   },
   {
@@ -714,8 +726,8 @@
     "intimacy": 0.9,
     "chaos": 0.7
    },
-   "x": 0.396,
-   "y": -0.6879,
+   "x": 0.3834,
+   "y": -0.6876,
    "added_by": "seed"
   },
   {
@@ -734,8 +746,8 @@
     "intimacy": 0.4,
     "chaos": 0.8
    },
-   "x": 0.1645,
-   "y": -0.8783,
+   "x": 0.1642,
+   "y": -0.8781,
    "added_by": "seed"
   },
   {
@@ -754,8 +766,8 @@
     "intimacy": 0.2,
     "chaos": 0.05
    },
-   "x": 0.3561,
-   "y": 0.6111,
+   "x": 0.371,
+   "y": 0.5897,
    "added_by": "seed"
   },
   {
@@ -774,8 +786,8 @@
     "intimacy": 0.5,
     "chaos": 0.1
    },
-   "x": 0.3425,
-   "y": 0.4918,
+   "x": 0.3298,
+   "y": 0.4769,
    "added_by": "seed"
   },
   {
@@ -794,8 +806,8 @@
     "intimacy": 0.2,
     "chaos": 0.05
    },
-   "x": 0.4633,
-   "y": 0.5572,
+   "x": 0.4843,
+   "y": 0.5502,
    "added_by": "seed"
   },
   {
@@ -814,8 +826,8 @@
     "intimacy": 0.2,
     "chaos": 0.05
    },
-   "x": -0.4823,
-   "y": 0.327,
+   "x": -0.4673,
+   "y": 0.3198,
    "added_by": "seed"
   },
   {
@@ -834,8 +846,8 @@
     "intimacy": 0.0,
     "chaos": 0.0
    },
-   "x": -0.7106,
-   "y": 0.3988,
+   "x": -0.6907,
+   "y": 0.403,
    "added_by": "seed"
   },
   {
@@ -854,8 +866,8 @@
     "intimacy": 0.2,
     "chaos": 0.0
    },
-   "x": -0.6968,
-   "y": 0.1048,
+   "x": -0.6884,
+   "y": 0.1308,
    "added_by": "seed"
   },
   {
@@ -874,8 +886,8 @@
     "intimacy": 0.3,
     "chaos": 0.9
    },
-   "x": 0.6313,
-   "y": -0.5446,
+   "x": 0.6355,
+   "y": -0.5438,
    "added_by": "seed"
   },
   {
@@ -894,8 +906,8 @@
     "intimacy": 0.6,
     "chaos": 0.7
    },
-   "x": 0.3336,
-   "y": -0.7905,
+   "x": 0.3299,
+   "y": -0.7953,
    "added_by": "seed"
   },
   {
@@ -914,8 +926,8 @@
     "intimacy": 0.3,
     "chaos": 0.5
    },
-   "x": 0.5439,
-   "y": -0.3065,
+   "x": 0.5514,
+   "y": -0.306,
    "added_by": "seed"
   },
   {
@@ -934,8 +946,8 @@
     "intimacy": 0.1,
     "chaos": 0.0
    },
-   "x": 0.2076,
-   "y": 0.8781,
+   "x": 0.1931,
+   "y": 0.9052,
    "added_by": "seed"
   },
   {
@@ -947,16 +959,27 @@
    "features": {
     "rigidity": 0.95,
     "hierarchy": 0.8,
-    "ritual": 0.5,
+    "ritual": 0.65,
     "ornament": 0.4,
     "tradition": 0.8,
     "publicness": 0.5,
     "intimacy": 0.0,
     "chaos": 0.0
    },
-   "x": -0.1948,
-   "y": 0.6599,
-   "added_by": "seed"
+   "x": -0.1228,
+   "y": 0.6876,
+   "added_by": "seed",
+   "feature_notes": [
+    {
+     "feature": "ritual",
+     "from": 0.5,
+     "to": 0.65,
+     "why": "Joos places formulaic legal and ceremonial texts at the frozen end; legal speech is boilerplate recited in a fixed form",
+     "src": [
+      "joos"
+     ]
+    }
+   ]
   },
   {
    "id": "newsreader",
@@ -974,8 +997,8 @@
     "intimacy": 0.0,
     "chaos": 0.0
    },
-   "x": -0.5931,
-   "y": 0.3734,
+   "x": -0.5739,
+   "y": 0.3753,
    "added_by": "seed"
   },
   {
@@ -994,8 +1017,8 @@
     "intimacy": 0.8,
     "chaos": 0.4
    },
-   "x": 0.0764,
-   "y": -0.6809,
+   "x": 0.074,
+   "y": -0.6803,
    "added_by": "seed"
   },
   {
@@ -1014,8 +1037,8 @@
     "intimacy": 0.7,
     "chaos": 0.6
    },
-   "x": 0.2307,
-   "y": -0.7283,
+   "x": 0.2348,
+   "y": -0.7218,
    "added_by": "seed"
   },
   {
@@ -1034,8 +1057,8 @@
     "intimacy": 0.6,
     "chaos": 0.0
    },
-   "x": -0.7303,
-   "y": 0.2202,
+   "x": -0.7931,
+   "y": 0.1897,
    "added_by": "seed"
   },
   {
@@ -1075,8 +1098,8 @@
     "intimacy": 0.3,
     "chaos": 1.0
    },
-   "x": 0.2826,
-   "y": -0.8994,
+   "x": 0.2813,
+   "y": -0.905,
    "added_by": "seed",
    "legacy": true
   },
@@ -1096,8 +1119,8 @@
     "intimacy": 0.8,
     "chaos": 0.5
    },
-   "x": -0.0401,
-   "y": -0.8864,
+   "x": -0.052,
+   "y": -0.8831,
    "added_by": "seed",
    "legacy": true
   },
@@ -1117,8 +1140,8 @@
     "intimacy": 0.3,
     "chaos": 0.55
    },
-   "x": 0.4271,
-   "y": -0.3391,
+   "x": 0.4347,
+   "y": -0.3352,
    "added_by": "seed",
    "legacy": true
   },
@@ -1138,8 +1161,8 @@
     "intimacy": 0.95,
     "chaos": 0.35
    },
-   "x": 0.03,
-   "y": -0.4511,
+   "x": 0.0316,
+   "y": -0.4746,
    "added_by": "seed",
    "legacy": true
   },
@@ -1159,8 +1182,8 @@
     "intimacy": 0.4,
     "chaos": 0.6
    },
-   "x": 0.9725,
-   "y": 0.0995,
+   "x": 0.9673,
+   "y": 0.1001,
    "added_by": "seed",
    "legacy": true
   },
@@ -1180,8 +1203,8 @@
     "intimacy": 0.15,
     "chaos": 0.05
    },
-   "x": -0.6155,
-   "y": 0.2553,
+   "x": -0.6198,
+   "y": 0.2616,
    "added_by": "seed",
    "legacy": true
   },
@@ -1201,8 +1224,8 @@
     "intimacy": 0.35,
     "chaos": 0.1
    },
-   "x": 0.0242,
-   "y": 0.3974,
+   "x": 0.0199,
+   "y": 0.3975,
    "added_by": "seed",
    "legacy": true
   },
@@ -1222,8 +1245,8 @@
     "intimacy": 0.1,
     "chaos": 0.03
    },
-   "x": 0.0341,
-   "y": 0.6144,
+   "x": 0.0258,
+   "y": 0.6032,
    "added_by": "seed",
    "legacy": true
   },
@@ -1243,8 +1266,8 @@
     "intimacy": 0.05,
     "chaos": 0.0
    },
-   "x": -0.0262,
-   "y": 0.7228,
+   "x": -0.0096,
+   "y": 0.7277,
    "added_by": "seed",
    "legacy": true
   },
@@ -1264,8 +1287,8 @@
     "intimacy": 0.25,
     "chaos": 0.05
    },
-   "x": 0.4841,
-   "y": 0.6755,
+   "x": 0.4439,
+   "y": 0.793,
    "added_by": "seed",
    "legacy": true
   },
@@ -1285,8 +1308,8 @@
     "intimacy": 0.1,
     "chaos": 0.0
    },
-   "x": 0.3197,
-   "y": 0.835,
+   "x": 0.2899,
+   "y": 0.8205,
    "added_by": "seed",
    "legacy": true
   },
@@ -1306,8 +1329,8 @@
     "intimacy": 0.8,
     "chaos": 0.35
    },
-   "x": 0.4298,
-   "y": -0.099,
+   "x": 0.4012,
+   "y": -0.1069,
    "added_by": "seed"
   },
   {
@@ -1326,8 +1349,8 @@
     "intimacy": 0.45,
     "chaos": 0.7
    },
-   "x": 0.7193,
-   "y": 0.2407,
+   "x": 0.7189,
+   "y": 0.2406,
    "added_by": "seed",
    "aka": [
     "scandelous",
@@ -1341,800 +1364,1915 @@
   {
    "a": "academic",
    "b": "cocktail",
-   "w": 0.42,
-   "uses": 0
+   "w": 0.45,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Faculty receptions follow the formal ceremony."
   },
   {
    "a": "academic",
    "b": "faculty-senate",
-   "w": 0.93,
-   "uses": 0
+   "w": 0.9,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Same register as the setting."
+  },
+  {
+   "a": "academic",
+   "b": "graduation",
+   "w": 0.85,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Gowns and lecterns."
   },
   {
    "a": "academic",
    "b": "mid-century-office",
-   "w": 0.54,
-   "uses": 0
+   "w": 0.27,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "academic",
+   "b": "professional",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Consultative."
   },
   {
    "a": "academic",
    "b": "silence",
-   "w": 0.32,
-   "uses": 0
+   "w": 0.16,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "academic",
+   "b": "smart-casual",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Campus dress."
   },
   {
    "a": "academic",
    "b": "tea-ceremony",
-   "w": 0.23,
-   "uses": 0
+   "w": 0.12,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "academic",
+   "b": "victorian-parlour",
+   "w": 0.45,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Studies and libraries."
   },
   {
    "a": "art-deco-gala",
    "b": "black-tie",
-   "w": 0.78,
-   "uses": 0
+   "w": 0.8,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Tuxedos and long gowns are the jazz-age gala look."
   },
   {
    "a": "art-deco-gala",
    "b": "perfect-symmetry",
-   "w": 0.59,
-   "uses": 0
+   "w": 0.65,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Symmetric geometry."
   },
   {
    "a": "art-deco-gala",
    "b": "regency-ballroom",
-   "w": 0.66,
-   "uses": 0
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Era succession.",
+   "dir": "a->b"
   },
   {
    "a": "art-deco-gala",
    "b": "scandalous",
-   "w": 0.18,
-   "uses": 0
+   "w": 0.65,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Jazz-age scandal."
   },
   {
    "a": "athleisure",
-   "b": "chatty",
-   "w": 0.55,
-   "uses": 0
+   "b": "business-casual",
+   "w": 0.45,
+   "uses": 0,
+   "kind": "transition",
+   "why": "The working-from-home slide.",
+   "dir": "a->b"
   },
   {
    "a": "athleisure",
    "b": "dive-bar",
-   "w": 0.7,
-   "uses": 0
+   "w": 0.35,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "athleisure",
    "b": "everyday",
-   "w": 0.53,
-   "uses": 0
+   "w": 0.55,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Casual."
+  },
+  {
+   "a": "athleisure",
+   "b": "loungewear",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Gym to couch.",
+   "dir": "a->b"
   },
   {
    "a": "athleisure",
    "b": "smart-casual",
-   "w": 0.61,
-   "uses": 0
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Casual-to-neat."
+  },
+  {
+   "a": "athleisure",
+   "b": "streetwear",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Casual drift.",
+   "dir": "a->b"
+  },
+  {
+   "a": "bauhaus",
+   "b": "brutalist-civic",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Modernism's civic descendant.",
+   "dir": "a->b"
   },
   {
    "a": "bauhaus",
    "b": "business-casual",
-   "w": 0.8,
-   "uses": 0
+   "w": 0.4,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "bauhaus",
    "b": "grid-order",
-   "w": 0.75,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Rational modular design."
+  },
+  {
+   "a": "bauhaus",
+   "b": "mid-century-office",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Modernist furnishings of the period."
   },
   {
    "a": "bauhaus",
    "b": "smart-casual",
-   "w": 0.64,
-   "uses": 0
+   "w": 0.35,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Clean, easy, minimal rooms and clothes."
+  },
+  {
+   "a": "black-tie",
+   "b": "cocktail",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "transition",
+   "why": "The gala dinner thins out into the cocktail-dress reception.",
+   "dir": "a->b"
+  },
+  {
+   "a": "black-tie",
+   "b": "flirty",
+   "w": 0.55,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Dressing up licenses courtship glances at galas."
   },
   {
    "a": "black-tie",
    "b": "perfect-symmetry",
-   "w": 0.77,
-   "uses": 0
+   "w": 0.39,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "black-tie",
    "b": "regency-ballroom",
-   "w": 0.93,
-   "uses": 0
+   "w": 0.47,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "black-tie",
-   "b": "victorian-parlour",
+   "b": "scandalous",
+   "w": 0.75,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Black tie with scandalous whispers is a stock formal-event beat."
+  },
+  {
+   "a": "black-tie",
+   "b": "wedding",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Emily Post: black tie is a common formal code for weddings."
+  },
+  {
+   "a": "black-tie",
+   "b": "white-tie",
    "w": 0.5,
-   "uses": 0
+   "uses": 0,
+   "kind": "transition",
+   "why": "Adjacent rungs of the dress-code ladder; one social season uses both."
   },
   {
    "a": "boardroom",
    "b": "business-formal",
-   "w": 0.65,
-   "uses": 0
+   "w": 0.9,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Debrett's lounge-suit business attire is the boardroom uniform."
+  },
+  {
+   "a": "boardroom",
+   "b": "family-sunday-dinner",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Front stage to back stage: the executive goes home to the family table.",
+   "dir": "a->b"
+  },
+  {
+   "a": "boardroom",
+   "b": "legalese",
+   "w": 0.55,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Contracts and clauses are tabled in the room."
   },
   {
    "a": "boardroom",
    "b": "mid-century-office",
-   "w": 0.89,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Period office dramas put the boardroom above the typing pool."
   },
   {
    "a": "boardroom",
    "b": "professional",
-   "w": 0.81,
-   "uses": 0
+   "w": 0.8,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Joos's consultative register of professional settings."
   },
   {
    "a": "brutalist-civic",
    "b": "business-formal",
-   "w": 0.72,
-   "uses": 0
+   "w": 0.55,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The bureaucrat in the concrete hall."
+  },
+  {
+   "a": "brutalist-civic",
+   "b": "grid-order",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Modular monumental repetition."
+  },
+  {
+   "a": "brutalist-civic",
+   "b": "legalese",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Impersonal state buildings and procedural speech."
+  },
+  {
+   "a": "brutalist-civic",
+   "b": "military-parade",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Plazas built for staged state spectacle."
   },
   {
    "a": "brutalist-civic",
    "b": "newsreader",
-   "w": 0.8,
-   "uses": 0
+   "w": 0.45,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Official announcements delivered against power's facade."
+  },
+  {
+   "a": "brutalist-civic",
+   "b": "perfect-symmetry",
+   "w": 0.55,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Monument."
   },
   {
    "a": "brutalist-civic",
    "b": "professional",
-   "w": 0.74,
-   "uses": 0
+   "w": 0.37,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "business-casual",
+   "b": "business-formal",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Friday relaxation or a visit to the sister office.",
+   "dir": "a->b"
+  },
+  {
+   "a": "business-casual",
+   "b": "chatty",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Office banter lives in the consultative-to-casual band."
   },
   {
    "a": "business-casual",
    "b": "cocktail",
-   "w": 0.51,
-   "uses": 0
+   "w": 0.26,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "business-casual",
    "b": "everyday",
-   "w": 0.56,
-   "uses": 0
+   "w": 0.28,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "business-casual",
+   "b": "grid-order",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Open-plan desks in rows."
   },
   {
    "a": "business-casual",
    "b": "professional",
-   "w": 0.78,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The open-collar office day."
   },
   {
    "a": "business-casual",
    "b": "smart-casual",
-   "w": 0.75,
-   "uses": 0
+   "w": 0.55,
+   "uses": 0,
+   "kind": "transition",
+   "why": "The weekend extension of the office wardrobe.",
+   "dir": "a->b"
   },
   {
    "a": "business-formal",
    "b": "diplomatic",
-   "w": 0.83,
-   "uses": 0
+   "w": 0.41,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "business-formal",
    "b": "diplomatic-summit",
-   "w": 0.92,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The same dark suits fill a negotiating room."
   },
   {
    "a": "business-formal",
    "b": "legalese",
-   "w": 0.65,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Depositions and closings are held in suits."
   },
   {
    "a": "business-formal",
-   "b": "mid-century-office",
-   "w": 0.74,
-   "uses": 0
-  },
-  {
-   "a": "business-formal",
-   "b": "newsreader",
-   "w": 0.56,
-   "uses": 0
+   "b": "professional",
+   "w": 0.8,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Consultative register in a suit."
   },
   {
    "a": "campfire",
    "b": "chatty",
-   "w": 0.57,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Story talk."
   },
   {
    "a": "campfire",
    "b": "domestic",
-   "w": 0.91,
-   "uses": 0
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The hearth."
   },
   {
    "a": "campfire",
-   "b": "family-sunday-dinner",
-   "w": 0.33,
-   "uses": 0
+   "b": "feral",
+   "w": 0.45,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The wild at the edge of the light."
   },
   {
    "a": "campfire",
-   "b": "loungewear",
-   "w": 0.57,
-   "uses": 0
+   "b": "festival-wear",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Late night.",
+   "dir": "a->b"
+  },
+  {
+   "a": "campfire",
+   "b": "silence",
+   "w": 0.55,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Night quiet."
+  },
+  {
+   "a": "campfire",
+   "b": "sleepover",
+   "w": 0.55,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Late storytelling."
+  },
+  {
+   "a": "campfire",
+   "b": "wilderness",
+   "w": 0.85,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Camp in the wild."
+  },
+  {
+   "a": "changing-of-the-guard",
+   "b": "martial",
+   "w": 0.65,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Sentries speak and move in martial register."
   },
   {
    "a": "changing-of-the-guard",
    "b": "military-parade",
-   "w": 0.91,
-   "uses": 0
+   "w": 0.75,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Sibling spectacles of military ritual."
+  },
+  {
+   "a": "changing-of-the-guard",
+   "b": "perfect-symmetry",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Mirrored sentry boxes and exact choreography."
   },
   {
    "a": "changing-of-the-guard",
    "b": "procession-axis",
-   "w": 0.9,
-   "uses": 0
+   "w": 0.45,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "changing-of-the-guard",
+   "b": "ritual",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Daily secular ritual."
   },
   {
    "a": "changing-of-the-guard",
    "b": "state-funeral",
-   "w": 0.92,
-   "uses": 0
-  },
-  {
-   "a": "chatty",
-   "b": "cluttered-nest",
-   "w": 0.43,
-   "uses": 0
+   "w": 0.46,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "chatty",
    "b": "dive-bar",
-   "w": 0.83,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Casual talk."
   },
   {
    "a": "chatty",
    "b": "domestic",
-   "w": 0.55,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Kitchen talk."
+  },
+  {
+   "a": "chatty",
+   "b": "everyday",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Casual."
+  },
+  {
+   "a": "chatty",
+   "b": "family-sunday-dinner",
+   "w": 0.75,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Casual-to-intimate talk."
   },
   {
    "a": "chatty",
    "b": "flirty",
-   "w": 0.43,
-   "uses": 0
-  },
-  {
-   "a": "chatty",
-   "b": "loungewear",
-   "w": 0.77,
-   "uses": 0
+   "w": 0.21,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "chatty",
    "b": "slacker",
-   "w": 0.78,
-   "uses": 0
+   "w": 0.39,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "chatty",
    "b": "slang",
-   "w": 0.78,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Casual."
   },
   {
    "a": "chatty",
    "b": "sleepover",
-   "w": 0.62,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Joos's intimate register."
   },
   {
    "a": "cluttered-nest",
    "b": "domestic",
-   "w": 0.46,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Home interior."
+  },
+  {
+   "a": "cluttered-nest",
+   "b": "family-sunday-dinner",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The family home."
+  },
+  {
+   "a": "cluttered-nest",
+   "b": "grunge",
+   "w": 0.55,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The basement den."
+  },
+  {
+   "a": "cluttered-nest",
+   "b": "organic-sprawl",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Lived-in."
+  },
+  {
+   "a": "cluttered-nest",
+   "b": "perfect-symmetry",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "contrast",
+   "why": "Order versus clutter."
+  },
+  {
+   "a": "cluttered-nest",
+   "b": "slacker",
+   "w": 0.55,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The lair."
   },
   {
    "a": "cluttered-nest",
    "b": "sleepover",
-   "w": 0.48,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Pillow forts."
+  },
+  {
+   "a": "cocktail",
+   "b": "diplomatic-summit",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Receptions are the semi-back region of a summit.",
+   "dir": "a->b"
+  },
+  {
+   "a": "cocktail",
+   "b": "flirty",
+   "w": 0.75,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Mingling with glasses is the classic flirting frame."
   },
   {
    "a": "cocktail",
    "b": "mid-century-office",
-   "w": 0.48,
-   "uses": 0
+   "w": 0.45,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The period office party scene."
   },
   {
    "a": "cocktail",
    "b": "scandalous",
-   "w": 0.27,
-   "uses": 0
+   "w": 0.14,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "cocktail",
    "b": "smart-casual",
-   "w": 0.43,
-   "uses": 0
+   "w": 0.4,
+   "uses": 0,
+   "kind": "transition",
+   "why": "The dress code relaxes from cocktail to smart-casual as the night loosens.",
+   "dir": "a->b"
   },
   {
    "a": "coronation",
    "b": "courtly",
-   "w": 0.74,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Regalia and absolute hierarchy."
   },
   {
    "a": "coronation",
    "b": "high-mass",
-   "w": 0.74,
-   "uses": 0
+   "w": 0.9,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "A coronation is a religious service with clergy."
+  },
+  {
+   "a": "coronation",
+   "b": "liturgical",
+   "w": 0.75,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Frozen, repeated liturgical text (Joos's frozen style)."
+  },
+  {
+   "a": "coronation",
+   "b": "perfect-symmetry",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Centred composition on the throne."
+  },
+  {
+   "a": "coronation",
+   "b": "procession-axis",
+   "w": 0.8,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The processional route to the altar."
+  },
+  {
+   "a": "coronation",
+   "b": "royal-court",
+   "w": 0.9,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Crowned, then the court receives the monarch.",
+   "dir": "a->b"
+  },
+  {
+   "a": "coronation",
+   "b": "state-funeral",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "The same ceremonial machinery bookends a reign (succession arc).",
+   "dir": "a->b"
   },
   {
    "a": "coronation",
    "b": "white-tie",
-   "w": 0.73,
-   "uses": 0
+   "w": 0.85,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "White tie is the evening dress of royal ceremonial."
   },
   {
    "a": "courtly",
-   "b": "high-mass",
-   "w": 0.82,
-   "uses": 0
+   "b": "diplomatic",
+   "w": 0.55,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Protocol."
+  },
+  {
+   "a": "courtly",
+   "b": "martial",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Palace guard."
+  },
+  {
+   "a": "courtly",
+   "b": "regency-ballroom",
+   "w": 0.65,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Court to ball.",
+   "dir": "a->b"
+  },
+  {
+   "a": "courtly",
+   "b": "ritual",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Court."
   },
   {
    "a": "courtly",
    "b": "royal-court",
-   "w": 0.98,
-   "uses": 0
+   "w": 0.95,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Matched formal register."
   },
   {
    "a": "courtly",
    "b": "white-tie",
-   "w": 0.87,
-   "uses": 0
+   "w": 0.43,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "diplomatic",
    "b": "diplomatic-summit",
-   "w": 0.97,
-   "uses": 0
+   "w": 0.9,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Same register as the setting."
   },
   {
    "a": "diplomatic",
    "b": "graduation",
-   "w": 0.75,
-   "uses": 0
+   "w": 0.38,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "diplomatic",
    "b": "martial",
-   "w": 0.81,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "War council."
+  },
+  {
+   "a": "diplomatic",
+   "b": "newsreader",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Reported."
+  },
+  {
+   "a": "diplomatic",
+   "b": "professional",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Consultative."
+  },
+  {
+   "a": "diplomatic",
+   "b": "royal-court",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Envoys and protocol."
+  },
+  {
+   "a": "diplomatic",
+   "b": "tea-ceremony",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Tea as quiet diplomacy."
+  },
+  {
+   "a": "diplomatic",
+   "b": "white-tie",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "State banquets with protocol and interpreters are white-tie occasions."
   },
   {
    "a": "diplomatic-summit",
-   "b": "graduation",
-   "w": 0.67,
-   "uses": 0
+   "b": "legalese",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Treaties are legal texts."
   },
   {
    "a": "diplomatic-summit",
    "b": "martial",
-   "w": 0.76,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "War and peace talks."
+  },
+  {
+   "a": "diplomatic-summit",
+   "b": "newsreader",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Reported by neutral anchors."
+  },
+  {
+   "a": "diplomatic-summit",
+   "b": "royal-court",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Rank-sensitive negotiation."
+  },
+  {
+   "a": "diplomatic-summit",
+   "b": "silence",
+   "w": 0.55,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Weighted pauses in negotiation."
+  },
+  {
+   "a": "dive-bar",
+   "b": "flirty",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Last-call flirts."
   },
   {
    "a": "dive-bar",
    "b": "grunge",
-   "w": 0.83,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Basement bars."
   },
   {
    "a": "dive-bar",
-   "b": "organic-sprawl",
-   "w": 0.67,
-   "uses": 0
+   "b": "punk",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Gigs."
+  },
+  {
+   "a": "dive-bar",
+   "b": "slacker",
+   "w": 0.55,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The regulars."
   },
   {
    "a": "dive-bar",
    "b": "slang",
-   "w": 0.88,
-   "uses": 0
+   "w": 0.8,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Casual talk."
+  },
+  {
+   "a": "dive-bar",
+   "b": "street",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Spilling out to the street.",
+   "dir": "a->b"
+  },
+  {
+   "a": "dive-bar",
+   "b": "wedding",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Wedding to afterparty dive bar: structure then anti-structure.",
+   "dir": "a->b"
+  },
+  {
+   "a": "domestic",
+   "b": "everyday",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Casual register."
   },
   {
    "a": "domestic",
    "b": "family-sunday-dinner",
-   "w": 0.38,
-   "uses": 0
-  },
-  {
-   "a": "domestic",
-   "b": "flirty",
-   "w": 0.4,
-   "uses": 0
+   "w": 0.85,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The back stage of the household."
   },
   {
    "a": "domestic",
    "b": "loungewear",
-   "w": 0.52,
-   "uses": 0
+   "w": 0.65,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "At-home clothes."
+  },
+  {
+   "a": "domestic",
+   "b": "slacker",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The home afternoon."
+  },
+  {
+   "a": "domestic",
+   "b": "tea-ceremony",
+   "w": 0.45,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Hospitality at home."
+  },
+  {
+   "a": "everyday",
+   "b": "family-sunday-dinner",
+   "w": 0.55,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Casual register."
+  },
+  {
+   "a": "everyday",
+   "b": "festive",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Holiday.",
+   "dir": "a->b"
   },
   {
    "a": "everyday",
    "b": "flirty",
-   "w": 0.43,
-   "uses": 0
+   "w": 0.21,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "everyday",
    "b": "smart-casual",
-   "w": 0.88,
-   "uses": 0
+   "w": 0.8,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Close neighbours."
+  },
+  {
+   "a": "everyday",
+   "b": "street",
+   "w": 0.45,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Casual."
+  },
+  {
+   "a": "faculty-senate",
+   "b": "graduation",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The faculty in robes."
   },
   {
    "a": "faculty-senate",
    "b": "legalese",
-   "w": 0.51,
-   "uses": 0
+   "w": 0.55,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Motions and procedure."
   },
   {
    "a": "faculty-senate",
    "b": "mid-century-office",
-   "w": 0.59,
-   "uses": 0
+   "w": 0.45,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Bureaucratic academia."
   },
   {
-   "a": "faculty-senate",
-   "b": "silence",
-   "w": 0.3,
-   "uses": 0
+   "a": "family-sunday-dinner",
+   "b": "graduation",
+   "w": 0.55,
+   "uses": 0,
+   "kind": "transition",
+   "why": "The proud-family dinner after.",
+   "dir": "a->b"
   },
   {
    "a": "family-sunday-dinner",
    "b": "silence",
-   "w": 0.45,
-   "uses": 0
+   "w": 0.23,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "family-sunday-dinner",
+   "b": "smart-casual",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Dressed for visiting."
+  },
+  {
+   "a": "family-sunday-dinner",
+   "b": "wedding",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Ritual to family: the in-laws at the table.",
+   "dir": "a->b"
   },
   {
    "a": "feral",
    "b": "grunge",
-   "w": 0.46,
-   "uses": 0
+   "w": 0.23,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "feral",
-   "b": "organic-sprawl",
-   "w": 0.42,
-   "uses": 0
+   "b": "victorian-parlour",
+   "w": 0.45,
+   "uses": 0,
+   "kind": "contrast",
+   "why": "The wild child in the parlour."
   },
   {
    "a": "feral",
    "b": "wilderness",
    "w": 0.85,
-   "uses": 0
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Wild."
   },
   {
    "a": "festival-wear",
    "b": "festive",
-   "w": 0.53,
-   "uses": 0
+   "w": 0.75,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Festivity."
   },
   {
    "a": "festival-wear",
    "b": "rave",
-   "w": 0.57,
-   "uses": 0
+   "w": 0.8,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Glitter and paint."
   },
   {
    "a": "festival-wear",
-   "b": "y2k",
-   "w": 0.5,
-   "uses": 0
+   "b": "temple-procession",
+   "w": 0.55,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Garlands and colour."
+  },
+  {
+   "a": "festival-wear",
+   "b": "wilderness",
+   "w": 0.55,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Fields."
+  },
+  {
+   "a": "festive",
+   "b": "graduation",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Ceremony, then the party.",
+   "dir": "a->b"
+  },
+  {
+   "a": "festive",
+   "b": "rave",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Collective effervescence."
   },
   {
    "a": "festive",
    "b": "scandalous",
-   "w": 0.32,
-   "uses": 0
+   "w": 0.16,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "festive",
-   "b": "streetwear",
-   "w": 0.2,
-   "uses": 0
+   "b": "temple-procession",
+   "w": 0.75,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Devotion and carnival fused."
+  },
+  {
+   "a": "festive",
+   "b": "wedding",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Ceremony to reception: structure to communitas.",
+   "dir": "a->b"
+  },
+  {
+   "a": "flirty",
+   "b": "rave",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The dancefloor."
+  },
+  {
+   "a": "flirty",
+   "b": "regency-ballroom",
+   "w": 0.65,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The courtship dance."
+  },
+  {
+   "a": "flirty",
+   "b": "scandalous",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "A flirt tips into scandal.",
+   "dir": "a->b"
+  },
+  {
+   "a": "flirty",
+   "b": "slang",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Banter."
+  },
+  {
+   "a": "flirty",
+   "b": "smart-casual",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The date."
   },
   {
    "a": "graduation",
    "b": "martial",
-   "w": 0.68,
-   "uses": 0
+   "w": 0.34,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "graduation",
+   "b": "procession-axis",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The academic procession."
   },
   {
    "a": "grid-order",
    "b": "mid-century-office",
-   "w": 0.65,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Identical desks in modular rows."
+  },
+  {
+   "a": "grid-order",
+   "b": "organic-sprawl",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "contrast",
+   "why": "Order versus sprawl."
   },
   {
    "a": "grid-order",
    "b": "professional",
-   "w": 0.72,
-   "uses": 0
+   "w": 0.55,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Desk rows and name tags."
   },
   {
    "a": "grunge",
    "b": "organic-sprawl",
-   "w": 0.7,
-   "uses": 0
+   "w": 0.35,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "grunge",
+   "b": "punk",
+   "w": 0.65,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Lineage.",
+   "dir": "a->b"
+  },
+  {
+   "a": "grunge",
+   "b": "slacker",
+   "w": 0.8,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Shared mood."
   },
   {
    "a": "grunge",
    "b": "slang",
-   "w": 0.95,
-   "uses": 0
+   "w": 0.47,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "grunge",
    "b": "wilderness",
-   "w": 0.54,
-   "uses": 0
+   "w": 0.27,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "high-mass",
    "b": "liturgical",
-   "w": 0.91,
-   "uses": 0
-  },
-  {
-   "a": "high-mass",
-   "b": "regency-ballroom",
-   "w": 0.78,
-   "uses": 0
+   "w": 0.95,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Liturgy is Joos's frozen register."
   },
   {
    "a": "high-mass",
    "b": "ritual",
-   "w": 0.92,
-   "uses": 0
+   "w": 0.85,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Direct match."
   },
   {
    "a": "high-mass",
-   "b": "royal-court",
-   "w": 0.83,
-   "uses": 0
+   "b": "silence",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Prayerful pauses."
+  },
+  {
+   "a": "high-mass",
+   "b": "state-funeral",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The requiem service."
+  },
+  {
+   "a": "high-mass",
+   "b": "wedding",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The church wedding."
   },
   {
    "a": "high-mass",
    "b": "white-tie",
-   "w": 0.91,
-   "uses": 0
+   "w": 0.46,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "legalese",
+   "b": "liturgical",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Both formulaic or frozen."
   },
   {
    "a": "legalese",
    "b": "martial",
-   "w": 0.75,
-   "uses": 0
+   "w": 0.41,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "legalese",
    "b": "perfect-symmetry",
-   "w": 0.64,
-   "uses": 0
+   "w": 0.33,
+   "uses": 0,
+   "kind": "similar"
   },
   {
-   "a": "liturgical",
-   "b": "procession-axis",
-   "w": 0.8,
-   "uses": 0
+   "a": "legalese",
+   "b": "silence",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Verdict silence."
   },
   {
    "a": "liturgical",
    "b": "ritual",
-   "w": 0.86,
-   "uses": 0
+   "w": 0.85,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Same."
+  },
+  {
+   "a": "liturgical",
+   "b": "state-funeral",
+   "w": 0.8,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Liturgical speech at a state funeral."
+  },
+  {
+   "a": "liturgical",
+   "b": "temple-procession",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Chanted devotion."
+  },
+  {
+   "a": "liturgical",
+   "b": "wedding",
+   "w": 0.55,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Vows are near-frozen formulae."
   },
   {
    "a": "loungewear",
    "b": "slacker",
-   "w": 0.87,
-   "uses": 0
+   "w": 0.75,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Mood."
   },
   {
    "a": "loungewear",
    "b": "sleepover",
-   "w": 0.83,
-   "uses": 0
+   "w": 0.85,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Pyjamas."
   },
   {
    "a": "martial",
    "b": "military-parade",
-   "w": 0.77,
-   "uses": 0
+   "w": 0.9,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Martial speech is the parade's register."
+  },
+  {
+   "a": "martial",
+   "b": "ritual",
+   "w": 0.55,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Rite."
+  },
+  {
+   "a": "martial",
+   "b": "silence",
+   "w": 0.65,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Orders, then the minute of silence at the cenotaph.",
+   "dir": "a->b"
+  },
+  {
+   "a": "martial",
+   "b": "state-funeral",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Military honours."
   },
   {
    "a": "mid-century-office",
    "b": "professional",
-   "w": 0.93,
-   "uses": 0
+   "w": 0.8,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The period version of the same register."
+  },
+  {
+   "a": "military-parade",
+   "b": "newsreader",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Parades are broadcast by a presenter."
+  },
+  {
+   "a": "military-parade",
+   "b": "perfect-symmetry",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Ranked, mirrored columns."
   },
   {
    "a": "military-parade",
    "b": "procession-axis",
-   "w": 0.81,
-   "uses": 0
+   "w": 0.8,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Columns along an axis to a reviewing stand."
   },
   {
    "a": "military-parade",
    "b": "state-funeral",
-   "w": 0.86,
-   "uses": 0
+   "w": 0.8,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Gun carriage, honour guard and march."
   },
   {
    "a": "newsreader",
    "b": "professional",
-   "w": 0.68,
-   "uses": 0
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Both are consultative/formal public speech."
+  },
+  {
+   "a": "newsreader",
+   "b": "state-funeral",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Broadcast through formal commentary."
   },
   {
    "a": "organic-sprawl",
    "b": "punk",
-   "w": 0.64,
-   "uses": 0
+   "w": 0.32,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "organic-sprawl",
    "b": "street",
-   "w": 0.62,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Old streets."
   },
   {
    "a": "organic-sprawl",
-   "b": "streetwear",
-   "w": 0.63,
-   "uses": 0
+   "b": "temple-procession",
+   "w": 0.45,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Winding old streets."
   },
   {
    "a": "organic-sprawl",
    "b": "wilderness",
-   "w": 0.47,
-   "uses": 0
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Edge of town.",
+   "dir": "a->b"
   },
   {
    "a": "organic-sprawl",
    "b": "y2k",
-   "w": 0.73,
-   "uses": 0
+   "w": 0.36,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "perfect-symmetry",
+   "b": "procession-axis",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Axis."
   },
   {
    "a": "perfect-symmetry",
    "b": "regency-ballroom",
-   "w": 0.65,
-   "uses": 0
+   "w": 0.33,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "perfect-symmetry",
+   "b": "royal-court",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The throne-hall axis."
   },
   {
    "a": "procession-axis",
    "b": "state-funeral",
-   "w": 0.78,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The cortege along a central route."
   },
   {
    "a": "procession-axis",
    "b": "white-tie",
-   "w": 0.83,
-   "uses": 0
+   "w": 0.41,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "punk",
    "b": "rave",
-   "w": 0.84,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Anti-structure scenes."
   },
   {
    "a": "punk",
-   "b": "y2k",
-   "w": 0.59,
-   "uses": 0
+   "b": "regency-ballroom",
+   "w": 0.55,
+   "uses": 0,
+   "kind": "contrast",
+   "why": "Contrast of coded decorum and anti-structure."
+  },
+  {
+   "a": "punk",
+   "b": "scandalous",
+   "w": 0.75,
+   "uses": 0,
+   "kind": "contrast",
+   "why": "Punk at a regency ballroom: a deliberate juxtaposition."
+  },
+  {
+   "a": "punk",
+   "b": "slang",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The speech."
+  },
+  {
+   "a": "punk",
+   "b": "street",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Streets."
+  },
+  {
+   "a": "punk",
+   "b": "streetwear",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The look."
+  },
+  {
+   "a": "rave",
+   "b": "sleepover",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Wild night to cosy crash.",
+   "dir": "a->b"
+  },
+  {
+   "a": "rave",
+   "b": "street",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "The streets after.",
+   "dir": "a->b"
+  },
+  {
+   "a": "rave",
+   "b": "streetwear",
+   "w": 0.55,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The crew look."
   },
   {
    "a": "rave",
    "b": "y2k",
-   "w": 0.44,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Era match."
+  },
+  {
+   "a": "regency-ballroom",
+   "b": "royal-court",
+   "w": 0.65,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Court audience to the ball.",
+   "dir": "a->b"
+  },
+  {
+   "a": "regency-ballroom",
+   "b": "scandalous",
+   "w": 0.85,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Scandal at a ball."
   },
   {
    "a": "regency-ballroom",
    "b": "temple-procession",
-   "w": 0.55,
-   "uses": 0
+   "w": 0.28,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "regency-ballroom",
    "b": "victorian-parlour",
-   "w": 0.51,
-   "uses": 0
-  },
-  {
-   "a": "regency-ballroom",
-   "b": "wedding",
-   "w": 0.49,
-   "uses": 0
+   "w": 0.55,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Era succession.",
+   "dir": "a->b"
   },
   {
    "a": "regency-ballroom",
    "b": "white-tie",
-   "w": 0.85,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Tailcoats and floor-length gowns are the ballroom uniform."
+  },
+  {
+   "a": "ritual",
+   "b": "tea-ceremony",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Rite."
   },
   {
    "a": "ritual",
    "b": "temple-procession",
-   "w": 0.54,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Sacred ceremony."
   },
   {
    "a": "ritual",
-   "b": "white-tie",
-   "w": 0.76,
-   "uses": 0
+   "b": "wedding",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Rite."
+  },
+  {
+   "a": "royal-court",
+   "b": "scandalous",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Court intrigue."
   },
   {
    "a": "royal-court",
    "b": "white-tie",
    "w": 0.9,
-   "uses": 0
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Debrett's: white tie is the dress for royal ceremonies and balls, i.e. the court setting."
+  },
+  {
+   "a": "scandalous",
+   "b": "victorian-parlour",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Hushed rumours."
+  },
+  {
+   "a": "scandalous",
+   "b": "wedding",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The disrupted wedding or the crasher."
+  },
+  {
+   "a": "silence",
+   "b": "state-funeral",
+   "w": 0.8,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Hushed gaps where words would threaten face."
   },
   {
    "a": "silence",
    "b": "tea-ceremony",
-   "w": 0.27,
-   "uses": 0
+   "w": 0.8,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Meaning is carried by gesture, not speech."
+  },
+  {
+   "a": "silence",
+   "b": "wilderness",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Hush."
   },
   {
    "a": "slacker",
    "b": "sleepover",
-   "w": 0.86,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Lazy mood."
+  },
+  {
+   "a": "slang",
+   "b": "sleepover",
+   "w": 0.65,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Peer talk."
+  },
+  {
+   "a": "slang",
+   "b": "street",
+   "w": 0.75,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Street talk."
+  },
+  {
+   "a": "slang",
+   "b": "streetwear",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Speech."
+  },
+  {
+   "a": "slang",
+   "b": "y2k",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Era talk."
+  },
+  {
+   "a": "sleepover",
+   "b": "y2k",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Teen nostalgia."
   },
   {
    "a": "street",
    "b": "streetwear",
    "w": 0.85,
-   "uses": 0
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Same register."
+  },
+  {
+   "a": "street",
+   "b": "temple-procession",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Processions fill streets."
   },
   {
    "a": "street",
    "b": "y2k",
-   "w": 0.77,
-   "uses": 0
+   "w": 0.39,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "streetwear",
    "b": "y2k",
-   "w": 0.88,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Era look."
   },
   {
    "a": "tea-ceremony",
-   "b": "wedding",
-   "w": 0.22,
-   "uses": 0
+   "b": "victorian-parlour",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Tea as hosted ritual."
   },
   {
    "a": "temple-procession",
    "b": "wedding",
-   "w": 0.55,
-   "uses": 0
+   "w": 0.28,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "victorian-parlour",
    "b": "wedding",
-   "w": 0.53,
-   "uses": 0
+   "w": 0.27,
+   "uses": 0,
+   "kind": "similar"
   }
  ],
  "kind": "formality",
@@ -2178,5 +3316,2372 @@
     38
    ]
   }
+ },
+ "story": {
+  "ts": "2026-10-03 10:52:59",
+  "sources": [
+   {
+    "key": "joos",
+    "cite": "Martin Joos, The Five Clocks (1962): frozen / formal / consultative / casual / intimate styles",
+    "url": "https://en.wikipedia.org/wiki/Martin_Joos",
+    "used_for": "Speech-register links (liturgical/legalese = frozen, boardroom/professional = consultative, chatty/sleepover = casual/intimate); legalese ritual fix"
+   },
+   {
+    "key": "debretts",
+    "cite": "Debrett's, Deconstructing Dress Codes / Events and Dress Codes (white tie = royal ceremonies and balls; black tie; lounge suit = business; cocktail = US semi-formal)",
+    "url": "https://debretts.com/deconstructing-dress-codes/",
+    "used_for": "Dress code ladder and which occasions each code belongs to; cocktail rigidity fix"
+   },
+   {
+    "key": "post",
+    "cite": "Emily Post Institute, Black Tie Dress Code guide and Wedding Guest Attire (black tie common for weddings; cocktail and business casual definitions)",
+    "url": "https://emilypost.com/advice/black-tie-dress-code",
+    "used_for": "Dress code to wedding / reception / office links"
+   },
+   {
+    "key": "goffman",
+    "cite": "Erving Goffman, The Presentation of Self in Everyday Life (1959): front, back and off-stage regions",
+    "url": "https://web.pdx.edu/~tothm/theory/Presentation%20of%20Self.htm",
+    "used_for": "Front-stage to back-stage arcs (boardroom -> family dinner, state funeral -> wake, cocktail receptions)"
+   },
+   {
+    "key": "turner",
+    "cite": "Victor Turner, The Ritual Process: Structure and Anti-Structure (1969); liminality, communitas; Bakhtin carnival inversion",
+    "url": "https://www.cse.iitk.ac.in/users/amit/books/turner-1969-ritual-process-structure.html",
+    "used_for": "Ritual -> festive/party inversion arcs (wedding -> reception -> dive bar, rave -> sleepover) and anti-structure contrasts (punk at the ballroom)"
+   },
+   {
+    "key": "brownlev",
+    "cite": "Brown & Levinson, Politeness: Some Universals in Language Usage (1987): social distance, power, imposition",
+    "url": "https://thestrategiclinguist.substack.com/p/the-politeness-machine-what-brown",
+    "used_for": "Power-distance links (court, boardroom, summit, silence as face-saving)"
+   },
+   {
+    "key": "biber",
+    "cite": "Biber & Conrad, Register, Genre, and Style (2009/2019): registers = situation of use + linguistic features",
+    "url": "https://www.cambridge.org/core/books/abs/register-genre-and-style/describing-the-situational-characteristics-of-registers-and-genres/1E2EC0EBA5AC86A1407FCC3539052F51",
+    "used_for": "Principle: link a speech register to the situation that hosts it (settings bring their register)"
+   },
+   {
+    "key": "tropes",
+    "cite": "TV Tropes / No Film School: Fish Out of Water and formal-event juxtaposition conventions; general narrative convention (period settings, era aesthetics)",
+    "url": "https://tvtropes.org/pmwiki/pmwiki.php/Main/FishOutOfWater",
+    "used_for": "Deliberate contrasts (punk at the ball, couture at the gala) and setting/era co-occurrence; many 0.3-0.6 links are editorial judgement, not directly sourced"
+   }
+  ],
+  "notes": "Links are mostly undirected co-occurrence; dir 'a->b' marks one-way story flow (transition/arc_pair). Suggested use: when walking the probe, follow synapses by w and, for arcs, in dir. Graph is symmetric by kind: treat 'contrast' links as high-interest jumps (story juxtaposition) rather than similarity. Joos mapping: frozen = liturgical/high-mass/coronation text; formal = royal-court, diplomatic, boardroom; consultative = professional/business; casual = chatty/slang/dive-bar; intimate = sleepover/domestic/loungewear. Stick registers (courtly, ritual, martial, diplomatic...) duplicate seed nodes; they are linked like their twins but consider merging. Degree cap of 8 was enforced by dropping the lowest-w links; only ~208 links survive (< target 200-280 upper range) because of the cap with 66 nodes. Many whys for low-weight links are editorial; only dress-code ladder, Joos styles, Goffman regions, Turner ritual/anti-structure and politeness power-distance have direct sources.",
+  "links": [
+   {
+    "a": "high-mass",
+    "b": "liturgical",
+    "w": 0.95,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Liturgy is Joos's frozen register.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "royal-court",
+    "b": "courtly",
+    "w": 0.95,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Matched formal register.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "white-tie",
+    "b": "royal-court",
+    "w": 0.9,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Debrett's: white tie is the dress for royal ceremonies and balls, i.e. the court setting.",
+    "src": [
+     "debretts"
+    ]
+   },
+   {
+    "a": "boardroom",
+    "b": "business-formal",
+    "w": 0.9,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Debrett's lounge-suit business attire is the boardroom uniform.",
+    "src": [
+     "debretts"
+    ]
+   },
+   {
+    "a": "coronation",
+    "b": "royal-court",
+    "w": 0.9,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Crowned, then the court receives the monarch.",
+    "src": [
+     "debretts"
+    ]
+   },
+   {
+    "a": "coronation",
+    "b": "high-mass",
+    "w": 0.9,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "A coronation is a religious service with clergy.",
+    "src": [
+     "debretts"
+    ]
+   },
+   {
+    "a": "military-parade",
+    "b": "martial",
+    "w": 0.9,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Martial speech is the parade's register.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "diplomatic-summit",
+    "b": "diplomatic",
+    "w": 0.9,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Same register as the setting.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "faculty-senate",
+    "b": "academic",
+    "w": 0.9,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Same register as the setting.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "white-tie",
+    "b": "coronation",
+    "w": 0.85,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "White tie is the evening dress of royal ceremonial.",
+    "src": [
+     "debretts"
+    ]
+   },
+   {
+    "a": "graduation",
+    "b": "academic",
+    "w": 0.85,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Gowns and lecterns.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "high-mass",
+    "b": "ritual",
+    "w": 0.85,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Direct match.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "family-sunday-dinner",
+    "b": "domestic",
+    "w": 0.85,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The back stage of the household.",
+    "src": [
+     "goffman"
+    ]
+   },
+   {
+    "a": "sleepover",
+    "b": "loungewear",
+    "w": 0.85,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Pyjamas.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "campfire",
+    "b": "wilderness",
+    "w": 0.85,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Camp in the wild.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "scandalous",
+    "b": "regency-ballroom",
+    "w": 0.85,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Scandal at a ball.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "streetwear",
+    "b": "street",
+    "w": 0.85,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Same register.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "wilderness",
+    "b": "feral",
+    "w": 0.85,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Wild.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "liturgical",
+    "b": "ritual",
+    "w": 0.85,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Same.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "black-tie",
+    "b": "art-deco-gala",
+    "w": 0.8,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Tuxedos and long gowns are the jazz-age gala look.",
+    "src": [
+     "debretts",
+     "post"
+    ]
+   },
+   {
+    "a": "boardroom",
+    "b": "professional",
+    "w": 0.8,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Joos's consultative register of professional settings.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "business-formal",
+    "b": "professional",
+    "w": 0.8,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Consultative register in a suit.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "professional",
+    "b": "mid-century-office",
+    "w": 0.8,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The period version of the same register.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "coronation",
+    "b": "procession-axis",
+    "w": 0.8,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The processional route to the altar.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "state-funeral",
+    "b": "silence",
+    "w": 0.8,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Hushed gaps where words would threaten face.",
+    "src": [
+     "brownlev"
+    ]
+   },
+   {
+    "a": "state-funeral",
+    "b": "liturgical",
+    "w": 0.8,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Liturgical speech at a state funeral.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "state-funeral",
+    "b": "military-parade",
+    "w": 0.8,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Gun carriage, honour guard and march.",
+    "src": [
+     "debretts"
+    ]
+   },
+   {
+    "a": "military-parade",
+    "b": "procession-axis",
+    "w": 0.8,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Columns along an axis to a reviewing stand.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "tea-ceremony",
+    "b": "silence",
+    "w": 0.8,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Meaning is carried by gesture, not speech.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "dive-bar",
+    "b": "slang",
+    "w": 0.8,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Casual talk.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "rave",
+    "b": "festival-wear",
+    "w": 0.8,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Glitter and paint.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "grunge",
+    "b": "slacker",
+    "w": 0.8,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Shared mood.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "smart-casual",
+    "b": "everyday",
+    "w": 0.8,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Close neighbours.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "black-tie",
+    "b": "scandalous",
+    "w": 0.75,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Black tie with scandalous whispers is a stock formal-event beat.",
+    "src": [
+     "goffman",
+     "tropes"
+    ]
+   },
+   {
+    "a": "cocktail",
+    "b": "flirty",
+    "w": 0.75,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Mingling with glasses is the classic flirting frame.",
+    "src": [
+     "goffman"
+    ]
+   },
+   {
+    "a": "coronation",
+    "b": "liturgical",
+    "w": 0.75,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Frozen, repeated liturgical text (Joos's frozen style).",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "military-parade",
+    "b": "changing-of-the-guard",
+    "w": 0.75,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Sibling spectacles of military ritual.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "temple-procession",
+    "b": "festive",
+    "w": 0.75,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Devotion and carnival fused.",
+    "src": [
+     "turner"
+    ]
+   },
+   {
+    "a": "family-sunday-dinner",
+    "b": "chatty",
+    "w": 0.75,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Casual-to-intimate talk.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "scandalous",
+    "b": "punk",
+    "w": 0.75,
+    "kind": "contrast",
+    "dir": "both",
+    "why": "Punk at a regency ballroom: a deliberate juxtaposition.",
+    "src": [
+     "turner",
+     "tropes"
+    ]
+   },
+   {
+    "a": "loungewear",
+    "b": "slacker",
+    "w": 0.75,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Mood.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "festival-wear",
+    "b": "festive",
+    "w": 0.75,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Festivity.",
+    "src": [
+     "turner"
+    ]
+   },
+   {
+    "a": "slang",
+    "b": "street",
+    "w": 0.75,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Street talk.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "black-tie",
+    "b": "cocktail",
+    "w": 0.7,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "The gala dinner thins out into the cocktail-dress reception.",
+    "src": [
+     "debretts",
+     "post"
+    ]
+   },
+   {
+    "a": "boardroom",
+    "b": "family-sunday-dinner",
+    "w": 0.7,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Front stage to back stage: the executive goes home to the family table.",
+    "src": [
+     "goffman"
+    ]
+   },
+   {
+    "a": "business-casual",
+    "b": "professional",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The open-collar office day.",
+    "src": [
+     "post"
+    ]
+   },
+   {
+    "a": "coronation",
+    "b": "state-funeral",
+    "w": 0.7,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "The same ceremonial machinery bookends a reign (succession arc).",
+    "src": [
+     "debretts"
+    ]
+   },
+   {
+    "a": "coronation",
+    "b": "courtly",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Regalia and absolute hierarchy.",
+    "src": [
+     "debretts"
+    ]
+   },
+   {
+    "a": "state-funeral",
+    "b": "high-mass",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The requiem service.",
+    "src": [
+     "debretts"
+    ]
+   },
+   {
+    "a": "state-funeral",
+    "b": "procession-axis",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The cortege along a central route.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "wedding",
+    "b": "festive",
+    "w": 0.7,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Ceremony to reception: structure to communitas.",
+    "src": [
+     "turner"
+    ]
+   },
+   {
+    "a": "wedding",
+    "b": "dive-bar",
+    "w": 0.7,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Wedding to afterparty dive bar: structure then anti-structure.",
+    "src": [
+     "turner",
+     "tropes"
+    ]
+   },
+   {
+    "a": "temple-procession",
+    "b": "ritual",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Sacred ceremony.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "diplomatic-summit",
+    "b": "newsreader",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Reported by neutral anchors.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "domestic",
+    "b": "cluttered-nest",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Home interior.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "sleepover",
+    "b": "chatty",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Joos's intimate register.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "dive-bar",
+    "b": "grunge",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Basement bars.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "dive-bar",
+    "b": "punk",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Gigs.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "punk",
+    "b": "slang",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The speech.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "y2k",
+    "b": "streetwear",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Era look.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "perfect-symmetry",
+    "b": "procession-axis",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Axis.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "chatty",
+    "b": "slang",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Casual.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "diplomatic",
+    "b": "martial",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "War council.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "martial",
+    "b": "silence",
+    "w": 0.65,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Orders, then the minute of silence at the cenotaph.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "royal-court",
+    "b": "regency-ballroom",
+    "w": 0.65,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Court audience to the ball.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "domestic",
+    "b": "loungewear",
+    "w": 0.65,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "At-home clothes.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "sleepover",
+    "b": "slang",
+    "w": 0.65,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Peer talk.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "flirty",
+    "b": "regency-ballroom",
+    "w": 0.65,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The courtship dance.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "scandalous",
+    "b": "art-deco-gala",
+    "w": 0.65,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Jazz-age scandal.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "art-deco-gala",
+    "b": "perfect-symmetry",
+    "w": 0.65,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Symmetric geometry.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "punk",
+    "b": "grunge",
+    "w": 0.65,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Lineage.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "courtly",
+    "b": "regency-ballroom",
+    "w": 0.65,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Court to ball.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "changing-of-the-guard",
+    "b": "martial",
+    "w": 0.65,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Sentries speak and move in martial register.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "white-tie",
+    "b": "diplomatic",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "State banquets with protocol and interpreters are white-tie occasions.",
+    "src": [
+     "debretts"
+    ]
+   },
+   {
+    "a": "white-tie",
+    "b": "regency-ballroom",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Tailcoats and floor-length gowns are the ballroom uniform.",
+    "src": [
+     "debretts"
+    ]
+   },
+   {
+    "a": "black-tie",
+    "b": "wedding",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Emily Post: black tie is a common formal code for weddings.",
+    "src": [
+     "post"
+    ]
+   },
+   {
+    "a": "boardroom",
+    "b": "mid-century-office",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Period office dramas put the boardroom above the typing pool.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "business-formal",
+    "b": "diplomatic-summit",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The same dark suits fill a negotiating room.",
+    "src": [
+     "debretts"
+    ]
+   },
+   {
+    "a": "business-formal",
+    "b": "business-casual",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Friday relaxation or a visit to the sister office.",
+    "src": [
+     "debretts",
+     "post"
+    ]
+   },
+   {
+    "a": "business-formal",
+    "b": "legalese",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Depositions and closings are held in suits.",
+    "src": [
+     "brownlev"
+    ]
+   },
+   {
+    "a": "mid-century-office",
+    "b": "grid-order",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Identical desks in modular rows.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "brutalist-civic",
+    "b": "legalese",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Impersonal state buildings and procedural speech.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "brutalist-civic",
+    "b": "grid-order",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Modular monumental repetition.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "bauhaus",
+    "b": "grid-order",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Rational modular design.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "state-funeral",
+    "b": "martial",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Military honours.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "state-funeral",
+    "b": "newsreader",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Broadcast through formal commentary.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "military-parade",
+    "b": "perfect-symmetry",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Ranked, mirrored columns.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "wedding",
+    "b": "family-sunday-dinner",
+    "w": 0.6,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Ritual to family: the in-laws at the table.",
+    "src": [
+     "goffman",
+     "turner"
+    ]
+   },
+   {
+    "a": "wedding",
+    "b": "high-mass",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The church wedding.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "wedding",
+    "b": "scandalous",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The disrupted wedding or the crasher.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "graduation",
+    "b": "faculty-senate",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The faculty in robes.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "graduation",
+    "b": "festive",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Ceremony, then the party.",
+    "src": [
+     "turner"
+    ]
+   },
+   {
+    "a": "high-mass",
+    "b": "silence",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Prayerful pauses.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "temple-procession",
+    "b": "liturgical",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Chanted devotion.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "royal-court",
+    "b": "diplomatic-summit",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Rank-sensitive negotiation.",
+    "src": [
+     "brownlev"
+    ]
+   },
+   {
+    "a": "royal-court",
+    "b": "diplomatic",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Envoys and protocol.",
+    "src": [
+     "brownlev"
+    ]
+   },
+   {
+    "a": "royal-court",
+    "b": "scandalous",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Court intrigue.",
+    "src": [
+     "goffman",
+     "tropes"
+    ]
+   },
+   {
+    "a": "royal-court",
+    "b": "perfect-symmetry",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The throne-hall axis.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "diplomatic-summit",
+    "b": "martial",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "War and peace talks.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "diplomatic-summit",
+    "b": "legalese",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Treaties are legal texts.",
+    "src": [
+     "brownlev"
+    ]
+   },
+   {
+    "a": "domestic",
+    "b": "chatty",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Kitchen talk.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "domestic",
+    "b": "everyday",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Casual register.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "sleepover",
+    "b": "slacker",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Lazy mood.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "sleepover",
+    "b": "cluttered-nest",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Pillow forts.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "sleepover",
+    "b": "rave",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Wild night to cosy crash.",
+    "src": [
+     "turner"
+    ]
+   },
+   {
+    "a": "dive-bar",
+    "b": "chatty",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Casual talk.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "dive-bar",
+    "b": "flirty",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Last-call flirts.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "dive-bar",
+    "b": "street",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Spilling out to the street.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "rave",
+    "b": "punk",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Anti-structure scenes.",
+    "src": [
+     "turner"
+    ]
+   },
+   {
+    "a": "rave",
+    "b": "y2k",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Era match.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "rave",
+    "b": "street",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "The streets after.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "rave",
+    "b": "festive",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Collective effervescence.",
+    "src": [
+     "turner"
+    ]
+   },
+   {
+    "a": "rave",
+    "b": "flirty",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The dancefloor.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "campfire",
+    "b": "chatty",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Story talk.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "flirty",
+    "b": "scandalous",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "A flirt tips into scandal.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "scandalous",
+    "b": "victorian-parlour",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Hushed rumours.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "punk",
+    "b": "street",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Streets.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "punk",
+    "b": "streetwear",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The look.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "y2k",
+    "b": "slang",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Era talk.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "streetwear",
+    "b": "slang",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Speech.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "streetwear",
+    "b": "athleisure",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Casual drift.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "athleisure",
+    "b": "loungewear",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Gym to couch.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "organic-sprawl",
+    "b": "street",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Old streets.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "chatty",
+    "b": "everyday",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Casual.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "martial",
+    "b": "courtly",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Palace guard.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "ritual",
+    "b": "courtly",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Court.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "ritual",
+    "b": "wedding",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Rite.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "changing-of-the-guard",
+    "b": "perfect-symmetry",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Mirrored sentry boxes and exact choreography.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "black-tie",
+    "b": "flirty",
+    "w": 0.55,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Dressing up licenses courtship glances at galas.",
+    "src": [
+     "goffman"
+    ]
+   },
+   {
+    "a": "boardroom",
+    "b": "legalese",
+    "w": 0.55,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Contracts and clauses are tabled in the room.",
+    "src": [
+     "brownlev"
+    ]
+   },
+   {
+    "a": "business-formal",
+    "b": "brutalist-civic",
+    "w": 0.55,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The bureaucrat in the concrete hall.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "business-casual",
+    "b": "smart-casual",
+    "w": 0.55,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "The weekend extension of the office wardrobe.",
+    "src": [
+     "post"
+    ]
+   },
+   {
+    "a": "professional",
+    "b": "grid-order",
+    "w": 0.55,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Desk rows and name tags.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "wedding",
+    "b": "liturgical",
+    "w": 0.55,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Vows are near-frozen formulae.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "graduation",
+    "b": "family-sunday-dinner",
+    "w": 0.55,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "The proud-family dinner after.",
+    "src": [
+     "goffman"
+    ]
+   },
+   {
+    "a": "temple-procession",
+    "b": "festival-wear",
+    "w": 0.55,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Garlands and colour.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "diplomatic-summit",
+    "b": "silence",
+    "w": 0.55,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Weighted pauses in negotiation.",
+    "src": [
+     "brownlev"
+    ]
+   },
+   {
+    "a": "faculty-senate",
+    "b": "legalese",
+    "w": 0.55,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Motions and procedure.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "family-sunday-dinner",
+    "b": "everyday",
+    "w": 0.55,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Casual register.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "sleepover",
+    "b": "campfire",
+    "w": 0.55,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Late storytelling.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "dive-bar",
+    "b": "slacker",
+    "w": 0.55,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The regulars.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "rave",
+    "b": "streetwear",
+    "w": 0.55,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The crew look.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "campfire",
+    "b": "silence",
+    "w": 0.55,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Night quiet.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "regency-ballroom",
+    "b": "punk",
+    "w": 0.55,
+    "kind": "contrast",
+    "dir": "both",
+    "why": "Contrast of coded decorum and anti-structure.",
+    "src": [
+     "turner",
+     "tropes"
+    ]
+   },
+   {
+    "a": "regency-ballroom",
+    "b": "victorian-parlour",
+    "w": 0.55,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Era succession.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "grunge",
+    "b": "cluttered-nest",
+    "w": 0.55,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The basement den.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "athleisure",
+    "b": "everyday",
+    "w": 0.55,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Casual.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "festival-wear",
+    "b": "wilderness",
+    "w": 0.55,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Fields.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "perfect-symmetry",
+    "b": "brutalist-civic",
+    "w": 0.55,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Monument.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "cluttered-nest",
+    "b": "slacker",
+    "w": 0.55,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The lair.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "diplomatic",
+    "b": "courtly",
+    "w": 0.55,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Protocol.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "martial",
+    "b": "ritual",
+    "w": 0.55,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Rite.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "white-tie",
+    "b": "black-tie",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "both",
+    "why": "Adjacent rungs of the dress-code ladder; one social season uses both.",
+    "src": [
+     "debretts",
+     "post"
+    ]
+   },
+   {
+    "a": "cocktail",
+    "b": "diplomatic-summit",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Receptions are the semi-back region of a summit.",
+    "src": [
+     "goffman"
+    ]
+   },
+   {
+    "a": "business-casual",
+    "b": "chatty",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Office banter lives in the consultative-to-casual band.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "business-casual",
+    "b": "grid-order",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Open-plan desks in rows.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "professional",
+    "b": "newsreader",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Both are consultative/formal public speech.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "brutalist-civic",
+    "b": "military-parade",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Plazas built for staged state spectacle.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "bauhaus",
+    "b": "brutalist-civic",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Modernism's civic descendant.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "coronation",
+    "b": "perfect-symmetry",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Centred composition on the throne.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "military-parade",
+    "b": "newsreader",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Parades are broadcast by a presenter.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "graduation",
+    "b": "procession-axis",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The academic procession.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "tea-ceremony",
+    "b": "victorian-parlour",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Tea as hosted ritual.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "temple-procession",
+    "b": "street",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Processions fill streets.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "academic",
+    "b": "smart-casual",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Campus dress.",
+    "src": [
+     "post"
+    ]
+   },
+   {
+    "a": "family-sunday-dinner",
+    "b": "smart-casual",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Dressed for visiting.",
+    "src": [
+     "post"
+    ]
+   },
+   {
+    "a": "family-sunday-dinner",
+    "b": "cluttered-nest",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The family home.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "domestic",
+    "b": "campfire",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The hearth.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "domestic",
+    "b": "slacker",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The home afternoon.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "sleepover",
+    "b": "y2k",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Teen nostalgia.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "flirty",
+    "b": "slang",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Banter.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "flirty",
+    "b": "smart-casual",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The date.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "regency-ballroom",
+    "b": "art-deco-gala",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Era succession.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "athleisure",
+    "b": "smart-casual",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Casual-to-neat.",
+    "src": [
+     "post"
+    ]
+   },
+   {
+    "a": "festival-wear",
+    "b": "campfire",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Late night.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "grid-order",
+    "b": "organic-sprawl",
+    "w": 0.5,
+    "kind": "contrast",
+    "dir": "both",
+    "why": "Order versus sprawl.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "organic-sprawl",
+    "b": "wilderness",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Edge of town.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "organic-sprawl",
+    "b": "cluttered-nest",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Lived-in.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "wilderness",
+    "b": "silence",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Hush.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "liturgical",
+    "b": "legalese",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Both formulaic or frozen.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "legalese",
+    "b": "silence",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Verdict silence.",
+    "src": [
+     "brownlev"
+    ]
+   },
+   {
+    "a": "professional",
+    "b": "academic",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Consultative.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "professional",
+    "b": "diplomatic",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Consultative.",
+    "src": [
+     "joos"
+    ]
+   },
+   {
+    "a": "diplomatic",
+    "b": "newsreader",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Reported.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "ritual",
+    "b": "tea-ceremony",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Rite.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "changing-of-the-guard",
+    "b": "ritual",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Daily secular ritual.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "cocktail",
+    "b": "mid-century-office",
+    "w": 0.45,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The period office party scene.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "cocktail",
+    "b": "academic",
+    "w": 0.45,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Faculty receptions follow the formal ceremony.",
+    "src": [
+     "goffman"
+    ]
+   },
+   {
+    "a": "business-casual",
+    "b": "athleisure",
+    "w": 0.45,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "The working-from-home slide.",
+    "src": [
+     "post"
+    ]
+   },
+   {
+    "a": "brutalist-civic",
+    "b": "newsreader",
+    "w": 0.45,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Official announcements delivered against power's facade.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "tea-ceremony",
+    "b": "domestic",
+    "w": 0.45,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Hospitality at home.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "temple-procession",
+    "b": "organic-sprawl",
+    "w": 0.45,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Winding old streets.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "faculty-senate",
+    "b": "mid-century-office",
+    "w": 0.45,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Bureaucratic academia.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "academic",
+    "b": "victorian-parlour",
+    "w": 0.45,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Studies and libraries.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "campfire",
+    "b": "feral",
+    "w": 0.45,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The wild at the edge of the light.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "feral",
+    "b": "victorian-parlour",
+    "w": 0.45,
+    "kind": "contrast",
+    "dir": "both",
+    "why": "The wild child in the parlour.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "everyday",
+    "b": "street",
+    "w": 0.45,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Casual.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "cocktail",
+    "b": "smart-casual",
+    "w": 0.4,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "The dress code relaxes from cocktail to smart-casual as the night loosens.",
+    "src": [
+     "debretts"
+    ]
+   },
+   {
+    "a": "mid-century-office",
+    "b": "bauhaus",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Modernist furnishings of the period.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "tea-ceremony",
+    "b": "diplomatic",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Tea as quiet diplomacy.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "perfect-symmetry",
+    "b": "cluttered-nest",
+    "w": 0.4,
+    "kind": "contrast",
+    "dir": "both",
+    "why": "Order versus clutter.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "everyday",
+    "b": "festive",
+    "w": 0.4,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Holiday.",
+    "src": [
+     "tropes"
+    ]
+   },
+   {
+    "a": "bauhaus",
+    "b": "smart-casual",
+    "w": 0.35,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Clean, easy, minimal rooms and clothes.",
+    "src": [
+     "tropes"
+    ]
+   }
+  ]
+ },
+ "factory": {
+  "ts": "2026-10-03 10:53:00",
+  "seed_nodes": [
+   "white-tie",
+   "black-tie",
+   "cocktail",
+   "business-formal",
+   "business-casual",
+   "smart-casual",
+   "streetwear",
+   "athleisure",
+   "loungewear",
+   "festival-wear",
+   "coronation",
+   "state-funeral",
+   "wedding",
+   "graduation",
+   "tea-ceremony",
+   "high-mass",
+   "temple-procession",
+   "military-parade",
+   "changing-of-the-guard",
+   "royal-court",
+   "diplomatic-summit",
+   "boardroom",
+   "faculty-senate",
+   "family-sunday-dinner",
+   "sleepover",
+   "dive-bar",
+   "rave",
+   "campfire",
+   "perfect-symmetry",
+   "grid-order",
+   "procession-axis",
+   "organic-sprawl",
+   "cluttered-nest",
+   "wilderness",
+   "regency-ballroom",
+   "victorian-parlour",
+   "art-deco-gala",
+   "mid-century-office",
+   "brutalist-civic",
+   "bauhaus",
+   "punk",
+   "grunge",
+   "y2k",
+   "liturgical",
+   "legalese",
+   "newsreader",
+   "chatty",
+   "slang",
+   "silence",
+   "everyday",
+   "feral",
+   "slacker",
+   "street",
+   "domestic",
+   "festive",
+   "professional",
+   "academic",
+   "diplomatic",
+   "martial",
+   "ritual",
+   "courtly",
+   "flirty",
+   "scandalous"
+  ]
  }
 }

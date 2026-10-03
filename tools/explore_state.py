@@ -199,6 +199,18 @@ def clean_cores(raw, atlas=None):
     return out
 
 
+def _ints(v, n):
+    """a list of n small ints from anything (non-numbers -> 0); a lone number -> [0] * n (an older single carousel offset)"""
+    v = v if isinstance(v, list) else []
+    out = []
+    for i in range(n):
+        try:
+            out.append(max(-999, min(999, int(v[i]))))
+        except (IndexError, TypeError, ValueError):
+            out.append(0)
+    return out
+
+
 def clean_atlas_value(fo, atlas=None, kind="formality"):
     """validate an Atlas value (formality or emotion): probe clamped into the unit disc, blend ids must exist (unknown ones dropped, weights renormalised to 1);
     with no usable blend the value is recomputed from the probe. None when there is neither a probe nor a blend"""
@@ -214,7 +226,8 @@ def clean_atlas_value(fo, atlas=None, kind="formality"):
     if x is not None and not (math.isfinite(x) and math.isfinite(y)):
         x = y = None
     bl = []
-    for b in (fo.get("blend") or [])[:3]:
+    orbit = fo.get("orbit") is True and isinstance(fo.get("tree"), dict)   # the deck's orbit view: centre + 3 links + 2 sub-links each (up to 10 neurons)
+    for b in (fo.get("blend") or [])[:10 if orbit else 3]:
         try:
             if isinstance(b, dict) and b.get("id") in nd:
                 bl.append((b["id"], max(0.0, float(b.get("w", 0)))))
@@ -240,6 +253,18 @@ def clean_atlas_value(fo, atlas=None, kind="formality"):
         out["warped"] = True   # taken from a pulled / pushed map: the blend is the user's, keep it as given
     if fo.get("legacy") is True:
         out["legacy"] = True   # a migrated wheel value keeps its own blend too
+    if orbit:
+        t = fo["tree"]
+        if t.get("center") in nd:   # the carousel state, ids checked (the page rebuilds the rest from it)
+            ring1 = [r for r in (t.get("ring1") or [])[:3] if r in nd]
+            out["orbit"] = True
+            out["tree"] = {"center": t["center"], "ring1": ring1, "kids": {r: [k for k in ((t.get("kids") or {}).get(r) or [])[:2] if k in nd] for r in ring1},
+                           "k1": _ints(t.get("k1"), 3),   # each planet's deck offset (the solar-system view)
+                           "k2": {r: _ints(v, 2) for r, v in (t.get("k2") or {}).items() if r in nd},   # each planet's two moons' deck offsets
+                           "lp": [bool(x) for x in (t.get("lp") if isinstance(t.get("lp"), list) else [])[:3]],   # 🔒 locked planets / moons (shift-click)
+                           "lm": {r: [bool(x) for x in (v if isinstance(v, list) else [])[:2]] for r, v in (t.get("lm") or {}).items() if r in nd},
+                           "d1": _ints([t.get("d1")], 1)[0] or 1,   # ♾ how far a long hold has deepened the decks (1 = direct links only)
+                           "d2": {r: _ints([d], 1)[0] or 1 for r, d in (t.get("d2") or {}).items() if r in nd}}
     if kind == "emotion":
         out.update(fa._extras(atlas, kind, x, y, blend))
     else:

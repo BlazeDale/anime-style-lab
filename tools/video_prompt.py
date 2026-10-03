@@ -29,6 +29,16 @@ def image_context(image):
     """-> (subject_key, subject_text, style_title, style_prompt) for an evolutions/<lin>/<vNN>/<name>.png"""
     p = Path(image).resolve()
     vdir, ldir = p.parent, p.parent.parent
+    if (vdir / "episode.json").exists():  # 📖 a Nev Novel shot (explore/NNN/eN.png or a saga chapter explore/sagas/NNN/chNN/eN.png; 🎬 from the user)
+        ep = json.loads((vdir / "episode.json").read_text(encoding="utf-8"))
+        sh = next(s for s in ep["shots"] if s["id"] == p.stem)
+        subject = f"the scene, {sh['prompt']}"
+        if (ldir / "saga.json").exists() and sh.get("with"):  # saga: the cast in frame, by look
+            cast = json.loads((ldir / "saga.json").read_text(encoding="utf-8")).get("cast", {})
+            looks = "; ".join(f"{n} is {(cast.get(n) or {}).get('look', '')}" for n in sh["with"] if n in cast)
+            subject += f". In the scene: {looks}" if looks else ""
+        style = ep.get("style") or "{subject}"
+        return f"explore:{vdir.name}", subject, ep.get("title", vdir.name), style if "{subject}" in style else style + " {subject}"
     if (ldir / "journey.json").exists() or (ldir / "mv.json").exists():  # a 🧭 journey scene / 🎵 storyboard frame (sbNN/sN.png)
         if (ldir / "journey.json").exists():
             j = json.loads((ldir / "journey.json").read_text(encoding="utf-8"))

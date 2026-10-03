@@ -55,7 +55,7 @@ def mv_as_journey(m):
     return {"title": m.get("title", ""), "name": m.get("name") or "the singer", "source": refs[0] if refs else "", "refs": refs,
             "style": m.get("style", ""), "character": m.get("character", ""), "world": m.get("world", ""), "cast": m.get("cast") or {},
             "ref_crop": m.get("ref_crop") or {}, "ref_notes": m.get("ref_notes") or {}, "ref_for": m.get("ref_for") or {},
-            "ref_resolution": m.get("ref_resolution", 768)}
+            "ref_resolution": m.get("ref_resolution", 512)}
 
 
 def load(chdir: Path):
@@ -188,7 +188,7 @@ def build_graph(j, params, prompt, seed, prefix, refs=None):
             src = [f"crop{i}", 0]
         graph[te]["inputs"][f"images.image_{i}"] = src
     graph[te]["inputs"]["vae"] = [vae, 0]
-    graph[te]["inputs"]["resolution"] = j.get("ref_resolution", 768)  # smaller refs = fewer tokens = faster scenes
+    graph[te]["inputs"]["resolution"] = j.get("ref_resolution", 512)  # smaller refs = fewer tokens = faster scenes (512: a bake-off showed -59% on a 4-ref shot, same likeness)
     if params.get("negative"):
         graph[te]["inputs"]["negative_prompt"] = params["negative"]
     return graph

@@ -10,7 +10,8 @@
          nodes: [...], edges: [...]}
   node  {id, name, family, picture (how pictures look / are staged), voice (caption / dialogue register), beats? (emotion: how stories produce it),
          features {...0-1}, x, y (unit disc), added_by, ts, legacy?, aka?}
-  edge  {a, b, w (0.1-1: how strongly two concepts are connected), uses (times it was reinforced)}
+  edge  {a, b, w (0.1-1: how strongly two concepts are connected), uses (times it was reinforced), kind? (transition|cooccur|arc_pair|contrast|similar), why?, dir?}
+  story {ts, sources [{key, cite, url, used_for}], notes, links [{a, b, w, kind, dir, why, src}]}   researched base wiring (import-story); reset rebuilds from it
 
 LAYOUT (documented defaults, both PCA = classical MDS of the node's OWN feature vectors, deterministic):
   formality: PC1 (the formality axis) is y with formal up, PC2 is x; Everyday sits at the origin (the neutral value).
@@ -25,6 +26,8 @@ LAYOUT (documented defaults, both PCA = classical MDS of the node's OWN feature 
   python tools/atlas.py <kind> reinforce <idA> <idB> [+0.05|-0.1]
   python tools/atlas.py <kind> reset [--remove-added]      FACTORY RESET (a backup is written first): every synapse back to its initial weight + the original kNN wiring;
                                                           nodes added later (added_by != seed) are kept unless --remove-added
+  python tools/atlas.py <kind> import-story research.json [--no-features]   researched STORY links (co-occur / transition / arc pair / contrast, with sources)
+                                                          become the factory wiring (+ 2 nearest neighbours at half weight); feature fixes applied + re-layout; backup first
   python tools/atlas.py <kind> backups | restore [<file>]  list explore/<kind>_atlas.backup-YYYYMMDD-HHMMSS.json (newest 5 kept) / put one back (default newest; the current state is backed up first)
   python tools/atlas.py <kind> describe '<value json>' | near "<text>" | path <a> <b> | list | requests | resolve <id> [node]
   (--file <path> works with every command; tools/formality_atlas.py is a thin alias of `atlas.py formality`.)
@@ -312,11 +315,71 @@ def connect(atlas):
         atlas["edges"].append({"a": key[0], "b": key[1], "w": sim_w(best[0]), "uses": 0})
 
 
+SIMILAR_K = 2       # with research story links, each node also keeps its 2 nearest feature neighbours ...
+SIMILAR_SCALE = 0.5  # ... at half weight, so "next door" feelings stay reachable but story links lead
+
+
+def story_edges(atlas):
+    """the researched STORY links (atlas["story"]["links"]): emotions / registers
+    that co-occur, transition or pay each other off in one story -> edges {a, b, w, uses 0, kind, why}; unknown ids skipped, duplicates keep the strongest"""
+    ids = set(by_id(atlas))
+    best = {}
+    for l in (atlas.get("story") or {}).get("links") or []:
+        a, b = l.get("a"), l.get("b")
+        if a not in ids or b not in ids or a == b:
+            continue
+        k = ekey(a, b)
+        w = round(max(W_MIN, min(W_MAX, float(l.get("w", 0.5)))), 2)
+        if k not in best or w > best[k]["w"]:
+            best[k] = {"a": k[0], "b": k[1], "w": w, "uses": 0, "kind": l.get("kind") or "story", "why": str(l.get("why") or "")[:200]}
+            if l.get("dir") and l["dir"] != "both":
+                best[k]["dir"] = l["dir"]
+    return list(best.values())
+
+
 def rebuild_edges(atlas):
-    atlas["edges"] = []
-    atlas["edges"] = knn_edges(atlas)
+    """factory wiring: the researched story links when the atlas has them (+ each node's SIMILAR_K nearest neighbours at SIMILAR_SCALE weight),
+    else each node's 3 nearest feature neighbours; islands are then joined so the map can always be navigated"""
+    story = story_edges(atlas)
+    atlas["edges"] = story
+    if story:
+        for e in knn_edges(atlas, k=SIMILAR_K):
+            e["w"] = round(max(W_MIN, e["w"] * SIMILAR_SCALE), 2)
+            e["kind"] = "similar"
+            atlas["edges"].append(e)
+    else:
+        atlas["edges"] = knn_edges(atlas)
     connect(atlas)
     atlas["edges"].sort(key=lambda e: (e["a"], e["b"]))
+
+
+def import_story(atlas, data, apply_features=True):
+    """take a research file {sources, links, feature_fixes, notes}: store it as atlas["story"], apply the feature fixes (re-layout when any changed),
+    rebuild the factory wiring from it. Learned weights are replaced (back the file up first). -> report dict"""
+    ids = by_id(atlas)
+    bad = [l for l in data.get("links") or [] if l.get("a") not in ids or l.get("b") not in ids]
+    links = [l for l in data.get("links") or [] if l not in bad]
+    fixed = []
+    if apply_features:
+        fs = feats_of(atlas)
+        for fx in data.get("feature_fixes") or []:
+            n, k = ids.get(fx.get("id")), fx.get("feature")
+            if n is None or k not in fs:
+                continue
+            old = n["features"].get(k)
+            n["features"][k] = round(max(0.0, min(1.0, float(fx["to"]))), 2)
+            n.setdefault("feature_notes", []).append({"feature": k, "from": old, "to": n["features"][k], "why": fx.get("why", ""), "src": fx.get("src", [])})
+            fixed.append((n["id"], k, old, n["features"][k]))
+    atlas["story"] = {"ts": now(), "sources": data.get("sources") or [], "notes": data.get("notes") or "", "links": links}
+    if fixed:
+        layout(atlas)
+    rebuild_edges(atlas)
+    deg = {}
+    for e in atlas["edges"]:
+        deg[e["a"]] = deg.get(e["a"], 0) + 1
+        deg[e["b"]] = deg.get(e["b"], 0) + 1
+    return {"links": len(links), "skipped": len(bad), "fixed": fixed, "edges": len(atlas["edges"]),
+            "story_edges": sum(1 for e in atlas["edges"] if e.get("kind") not in ("similar", None)), "min_degree": min(deg.values()) if deg else 0}
 
 
 def reinforce(atlas, a, b, delta):
@@ -334,9 +397,42 @@ def reinforce(atlas, a, b, delta):
     return e
 
 
+def tree_pairs(v):
+    """an ORBIT value (the deck's orbit view: centre -> 3 links -> 2 sub-links each) -> the (parent, child) pairs of its tree; [] for other values"""
+    t = (v or {}).get("tree") if isinstance(v, dict) else None
+    if not isinstance(t, dict) or not t.get("center"):
+        return []
+    out = [(t["center"], r) for r in t.get("ring1") or []]
+    for r, ks in (t.get("kids") or {}).items():
+        out += [(r, k) for k in ks or []]
+    return out
+
+
+def story_items(v):
+    """[(id, w)] heaviest first: an orbit value folds each sub-link's weight into its parent (its emphasis applies only to the neuron it hangs on),
+    so the centre and its three links lead; any other value = its blend"""
+    bl = [(b.get("id"), float(b.get("w") or 0)) for b in ((v or {}).get("blend") or []) if b.get("id")]
+    t = (v or {}).get("tree")
+    if isinstance(t, dict) and t.get("center"):
+        w = dict(bl)
+        items = [(t["center"], w.get(t["center"], 0.0))] + [(r, w.get(r, 0.0) + sum(w.get(k, 0.0) for k in (t.get("kids") or {}).get(r) or [])) for r in t.get("ring1") or []]
+        return sorted(items, key=lambda x: -x[1])
+    return sorted(bl, key=lambda x: -x[1])
+
+
+def reinforce_value(atlas, v, delta):
+    """learning from a mark: an orbit value thickens its tree's own links (centre-link, link-sub-link); any other value its top-3 blend pairs"""
+    nd = by_id(atlas)
+    pairs = [(a, b) for a, b in tree_pairs(v) if a in nd and b in nd and a != b]
+    if pairs:
+        return [reinforce(atlas, a, b, delta) for a, b in pairs]
+    return reinforce_blend(atlas, (v or {}).get("blend") or [], delta)
+
+
 def reinforce_blend(atlas, blend, delta):
-    """every pair among the blend's nodes (top 3) -> list of touched edges"""
-    ids = [b["id"] for b in (blend or []) if b.get("id") in by_id(atlas)]
+    """every pair among the blend's top 3 nodes (heaviest) -> list of touched edges"""
+    blend = sorted([b for b in (blend or []) if isinstance(b, dict)], key=lambda b: -float(b.get("w") or 0))[:3]
+    ids = [b["id"] for b in blend if b.get("id") in by_id(atlas)]
     out = []
     for i in range(len(ids)):
         for j in range(i + 1, len(ids)):
@@ -453,10 +549,24 @@ def top_lines(v, atlas=None, kind="formality"):
     return (n.get("picture", ""), n.get("voice", "")) if n else ("", "")
 
 
+def tree_words(v, atlas):
+    """'Grief → Bittersweet (Nostalgia, Tension) · → Catharsis (...) · → Heartbreak (...)' for an orbit value, '' otherwise"""
+    t = (v or {}).get("tree")
+    if not isinstance(t, dict) or not t.get("center"):
+        return ""
+    nd = by_id(atlas)
+    nm = lambda i: nd[i]["name"] if i in nd else i  # noqa: E731
+    parts = ["%s (%s)" % (nm(r), ", ".join(nm(k) for k in (t.get("kids") or {}).get(r) or [])) for r in t.get("ring1") or []]
+    return "%s → %s" % (nm(t["center"]), " · ".join(parts)) if parts else nm(t["center"])
+
+
 def describe_value(v, atlas=None, kind="formality"):
     atlas = atlas or load(kind=kind)
     k = kind_of(atlas)
     n = top_node(v, atlas)
+    tw = tree_words(v, atlas)
+    if tw:  # an orbit value: say the tree (centre → its three links with their two sub-links each); the flat blend follows
+        return "orbit: %s; %s" % (tw, describe_value({kk: vv for kk, vv in v.items() if kk != "tree"}, atlas))
     if k == "emotion":
         s = blend_words(v, atlas)
         if not (v or {}).get("blend"):
@@ -581,21 +691,21 @@ def learn_from_mark(root, key, delta, atlas_path=None, kind="formality"):
         return 0
     ep = _jload(f, {})
     kind = kind_of(kind)
-    blends = []
+    vals = []
     v = ep.get(kind)
     if is_atlas_value(v) and v.get("blend"):
-        blends.append(v["blend"])
+        vals.append(v)
     if kind == "emotion":
         for c in ep.get("cores") or []:
             if isinstance(c, dict) and c.get("status", "active") == "active" and c.get("blend"):
-                blends.append(c["blend"])
-    if not blends:
+                vals.append(c)
+    if not vals:
         return 0
     p = atlas_path or atlas_path_default(root, kind)
     atlas = load(p, kind)
     touched = []
-    for b in blends:
-        touched += reinforce_blend(atlas, b, delta)
+    for x in vals:
+        touched += reinforce_value(atlas, x, delta)
     if touched:
         save(atlas, p)
     return len(touched)
@@ -777,6 +887,16 @@ def main(argv, kind=None):
         r = reset_atlas(atlas, rm)
         save(atlas, f)
         print("reset %s atlas to factory wiring: %d synapses, removed %s, kept added %s; backup %s" % (kind, len(atlas["edges"]), r["removed_nodes"] or "none", r["kept_added"] or "none", bk.name))
+    elif cmd == "import-story":
+        src = Path(args.pop(0))
+        nofeat = _flag(args, "--no-features")
+        bk = backup_atlas(kind, None, f) if f else backup_atlas(kind)
+        r = import_story(atlas, json.loads(src.read_text(encoding="utf-8")), not nofeat)
+        save(atlas, f)
+        print("%s atlas: %d story links (%d skipped: unknown ids), %d feature fixes%s; %d synapses (%d story), every node has >= %d; backup %s"
+              % (kind, r["links"], r["skipped"], len(r["fixed"]), " (re-laid out)" if r["fixed"] else "", r["edges"], r["story_edges"], r["min_degree"], bk.name))
+        for nid, k, a, b in r["fixed"]:
+            print("  %s.%s %s -> %s" % (nid, k, a, b))
     elif cmd == "backups":
         for b in (list_backups(kind) if not f else sorted(Path(f).parent.glob(Path(f).stem + ".backup-*.json"))):
             print(b.name)

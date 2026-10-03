@@ -75,7 +75,9 @@ ok(all(math.dist(fa.project(a1, n["features"]), (n["x"], n["y"])) < 0.3 for n in
 # ---- edges: 3 nearest neighbours (feature space), connected, weights 0.1-1 from similarity
 ok(all(0.1 <= e["w"] <= 1.0 and e["uses"] >= 0 for e in nodes and real["edges"]), "edge weights 0.1-1")
 have = {fa.ekey(e["a"], e["b"]) for e in real["edges"]}
-ok(all(fa.ekey(n["id"], m) in have for n in nodes for m in [x[1] for x in sorted((fa.fdist(n, o), o["id"]) for o in nodes if o["id"] != n["id"])[:3]]), "every neuron is wired to its 3 nearest neighbours")
+kn = 2 if real.get("story") else 3  # with researched story links the factory keeps only the 2 nearest look-alikes, at half weight
+ok(all(fa.ekey(n["id"], m) in have for n in nodes for m in [x[1] for x in sorted((fa.fdist(n, o), o["id"]) for o in nodes if o["id"] != n["id"])[:kn]]), "every neuron is wired to its %d nearest neighbours" % kn)
+ok(not real.get("story") or all(sum(1 for e in real["edges"] if n["id"] in (e["a"], e["b"])) >= 3 for n in nodes), "with story links every neuron has 3+ synapses")
 ok(len(fa.components(real)) == 1, "the network is one connected piece (always navigable)")
 ok(fa.sim_w(0.0) == 1.0 and fa.sim_w(0.3) > fa.sim_w(0.6) > fa.sim_w(1.2) and fa.sim_w(5) == 0.1, "similarity -> weight falls with distance, floors at 0.1")
 # `layout` keeps learned weights unless --edges

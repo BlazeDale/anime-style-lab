@@ -474,8 +474,9 @@ def final_pass(run, mvdir, tl, edit, units_files, stems, lyr, audio_path, intro,
         ag.append("[i][s]amix=inputs=2:duration=longest:normalize=0[a]")
     else:
         ag.append("[s]anull[a]")
-    run.ff(args + ["@graph", "-map", "[v]", "-map", "[a]", "-t", f"{total_s:.3f}", "-r", str(fps), "-c:v", "libx264", "-crf", "23" if draft else "18", *([] if draft else ["-maxrate", str(out.get("maxrate", "16M")), "-bufsize", str(out.get("bufsize", "32M"))]),
-                   "-preset", "veryfast" if draft else "slow", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "256k", "-movflags", "+faststart", "-f", "mp4", str(out_path)],
+    # full = the ▶ YouTube master: quality first, no size cap beyond a sane peak; Suno + hooks are derived from it
+    run.ff(args + ["@graph", "-map", "[v]", "-map", "[a]", "-t", f"{total_s:.3f}", "-r", str(fps), "-c:v", "libx264", "-crf", "23" if draft else str(out.get("crf", 17)), *([] if draft else ["-maxrate", str(out.get("maxrate", "20M")), "-bufsize", str(out.get("bufsize", "40M"))]),
+                   "-preset", "veryfast" if draft else "slow", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "256k" if draft else "320k", "-movflags", "+faststart", "-f", "mp4", str(out_path)],
            ";\n".join(g + ag), name="final")
 
 
@@ -596,7 +597,7 @@ def set_status(cutdir, **kw):
     (cutdir / "_status.json").write_text(json.dumps(st), encoding="utf-8")
 
 
-def assemble(mvdir, sb="sb01", edit_path=None, draft=False, out=None, keep=False, plan_only=False, replan=False):
+def assemble(mvdir, sb="sb01", edit_path=None, draft=False, out=None, keep=False, plan_only=False, replan=False, status_target=None, final=True):
     mvdir = Path(mvdir)
     mv = read_json(mvdir / "mv.json", {})
     chapter = read_json(mvdir / sb / "chapter.json")
@@ -622,7 +623,7 @@ def assemble(mvdir, sb="sb01", edit_path=None, draft=False, out=None, keep=False
     audio = ROOT / mv["audio"]
     song_dur = audio_len(audio)
     t_start = time.time()
-    set_status(cutdir, state="running", draft=draft, stage="planning the timeline", started=int(t_start), out=rel(out_path))
+    set_status(cutdir, state="running", draft=draft, target=status_target or ("draft" if draft else "youtube"), stage="planning the timeline", started=int(t_start), out=rel(out_path))
     tmp = mvdir / "_assembly"
     shutil.rmtree(tmp, ignore_errors=True)
     tmp.mkdir()
@@ -661,7 +662,7 @@ def assemble(mvdir, sb="sb01", edit_path=None, draft=False, out=None, keep=False
         set_status(cutdir, stage="contact sheet")
         strip = out_path.with_name(out_path.stem + "_strip.jpg")
         strip_sheet(out_path, tl, pcs, strip, run)
-        res = {"mv": mvdir.name, "video": rel(out_path), "strip": rel(strip), "draft": draft, "w": tl["w"], "h": tl["h"], "fps": fps, "preroll": P,
+        res = {"mv": mvdir.name, "video": rel(out_path), "strip": rel(strip), "draft": draft, "target": "draft" if draft else "youtube", "w": tl["w"], "h": tl["h"], "fps": fps, "preroll": P,
                "duration": total_s, "song": rel(audio), "intro_audio": rel(intro) if intro else None, "built": int(time.time()), "build_seconds": round(time.time() - t_start, 1),
                "counts": count_types(pcs), "cuts": [
                    {"n": i + 1, "frame": p["frame"], "clip": p["clip"], "engine": p["engine"], "kind": p["kind"], "fit": p["fit"], "speed": p["speed"],
@@ -669,18 +670,119 @@ def assemble(mvdir, sb="sb01", edit_path=None, draft=False, out=None, keep=False
                     "in": p["in"]["type"], "in_dur": round(p["in"]["d_f"] / fps, 3), "look": p["look"], "fx": p["fx"], "why": p["why"],
                     **({"sync_t": round(p["sync_t"], 4)} if p["kind"] == "sing" else {})} for i, p in enumerate(pcs)]}
         out_path.with_suffix(".json").write_text(json.dumps(res, indent=1, ensure_ascii=False), encoding="utf-8")
-        set_status(cutdir, state="done", stage="done", video=rel(out_path), finished=int(time.time()), error="")
-        # the page asks for the cut as ?v=<mtime from data.json>: without a rebuild it keeps asking for (and, via cut/_old,
-        # getting) the previous build
-        bg = Path(__file__).resolve().parent / "build_gallery.py"
-        if bg.is_file() and mvdir.resolve().is_relative_to(Path(__file__).resolve().parents[1]):  # (a test tree elsewhere never rebuilds the repo's gallery)
-            subprocess.run([sys.executable, str(bg)], cwd=ROOT, capture_output=True)
+        if final:  # a Suno / Hooks build continues after this master and reports done itself
+            set_status(cutdir, state="done", stage="done", video=rel(out_path), finished=int(time.time()), error="")
+            # the page asks for the cut as ?v=<mtime from data.json>: without a rebuild it keeps asking for (and, via cut/_old,
+            # getting) the previous build
+            bg = Path(__file__).resolve().parent / "build_gallery.py"
+            if bg.is_file() and mvdir.resolve().is_relative_to(Path(__file__).resolve().parents[1]):  # (a test tree elsewhere never rebuilds the repo's gallery)
+                subprocess.run([sys.executable, str(bg)], cwd=ROOT, capture_output=True)
     except Exception as e:  # keep _assembly for a look at what broke
         set_status(cutdir, state="error", stage="failed", error=str(e)[-600:])
         raise
     if not keep:
         shutil.rmtree(tmp, ignore_errors=True)
     return res
+
+
+# ---- build targets
+#   youtube = the full master (cut/<slug>.mp4, quality first)
+#   suno    = the whole song re-encoded from that master to fit Suno's upload (cut/<slug>-suno.mp4, <= output.suno_mb, default 200 MB =
+#             Suno's limit per the; suno_rates keeps a 7% margin, so files land at ~186 MB at most)
+#   hooks   = the whole song as 10-30 s pieces cut from the master (mv_hooks.auto_hooks -> export/hooks/auto/)
+# Suno and Hooks reuse the master when it is still current (same clips, nothing newer), else they build it first.
+SUNO_MB = 200
+TARGETS = ("draft", "youtube", "suno", "hooks")
+
+
+def master_path(mvdir):
+    return Path(mvdir) / "cut" / f"{re.sub(r'^\d+-', '', Path(mvdir).name)}.mp4"
+
+
+def master_current(mvdir, sb="sb01", edit_path=None):
+    """(True, "") when cut/<slug>.mp4 still matches what a new build would make: nothing it depends on (edit.json, the chapter, the song,
+    the storyboard stills, any clip) is newer than it, and the clips the ❤ rule picks today are the ones it used; else (False, why)."""
+    mvdir = Path(mvdir)
+    m = master_path(mvdir)
+    j = read_json(m.with_suffix(".json"), None) if m.exists() else None
+    if not j:
+        return False, "no full build yet"
+    built = m.stat().st_mtime
+    mv = read_json(mvdir / "mv.json", {})
+    ep = Path(edit_path) if edit_path else mvdir / "edit.json"
+    deps = [ep, mvdir / sb / "chapter.json", ROOT / mv.get("audio", "")] + list((mvdir / sb).glob("s*.png")) + list((mvdir / sb).glob("s*.mp4"))
+    newer = [p for p in deps if p.is_file() and p.stat().st_mtime > built + 1]
+    if newer:
+        return False, f"{newer[0].name} changed after the last full build"
+    try:
+        tl = resolve(read_json(ep), read_json(mvdir / sb / "chapter.json"), mvdir, load_marks(), song_dur=audio_len(ROOT / mv["audio"]), sb=sb)
+    except Exception as e:  # can't tell: rebuild
+        return False, f"could not check the timeline ({e})"
+    if [p["clip"] for p in tl["pieces"]] != [c.get("clip") for c in j.get("cuts", [])]:
+        return False, "a different clip is picked now (❤ / 👎 / new clip)"
+    return True, ""
+
+
+def suno_rates(duration, cap_mb=SUNO_MB, audio_k=256, max_video_k=12000):
+    """video kbps that lands the whole song under cap_mb (7% margin for the container + rate-control overshoot)"""
+    total_k = cap_mb * 8000 * 0.93 / max(1.0, float(duration))
+    return int(max(800, min(max_video_k, total_k - audio_k))), audio_k
+
+
+def ensure_master(mvdir, sb, edit_path, target):
+    ok_, why = master_current(mvdir, sb, edit_path)
+    if ok_:
+        print("reusing the current full build", rel(master_path(mvdir)))
+        return master_path(mvdir)
+    print("building the full master first:", why)
+    assemble(mvdir, sb, edit_path, status_target=target, final=False)
+    return master_path(mvdir)
+
+
+def build_target(mvdir, target, sb="sb01", edit_path=None):
+    """▶ youtube | 🎵 suno | 🪝 hooks (draft goes through assemble(draft=True))"""
+    mvdir = Path(mvdir)
+    cutdir = mvdir / "cut"
+    if target == "youtube":
+        return assemble(mvdir, sb, edit_path, status_target="youtube")
+    t_start = time.time()
+    set_status(cutdir, state="running", draft=False, target=target, stage="checking the full build", started=int(t_start), error="")
+    try:
+        master = ensure_master(mvdir, sb, edit_path, target)
+        mj = read_json(master.with_suffix(".json"), {})
+        if target == "suno":
+            out = master.with_name(master.stem + "-suno.mp4")
+            cap = float((read_json(mvdir / "edit.json", {}) or {}).get("output", {}).get("suno_mb") or SUNO_MB)
+            set_status(cutdir, stage=f"encoding for Suno (<= {cap:g} MB)")
+            part = out.with_name(out.name + ".part")
+            if master.stat().st_size <= cap * 1e6 * 0.97:
+                shutil.copy2(master, part)
+            else:
+                vk, ak = suno_rates(mj["duration"], cap)
+                r = subprocess.run([FFMPEG, "-v", "error", "-y", "-i", str(master), "-c:v", "libx264", "-preset", "slow", "-b:v", f"{vk}k",
+                                    "-maxrate", f"{int(vk * 1.5)}k", "-bufsize", f"{vk * 2}k", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", f"{ak}k",
+                                    "-movflags", "+faststart", "-f", "mp4", str(part)], capture_output=True, text=True)
+                if r.returncode:
+                    raise RuntimeError("suno encode failed: " + r.stderr[-400:])
+            publish_cut(part, out)
+            strip = master.with_name(master.stem + "_strip.jpg")
+            if strip.exists():
+                shutil.copy2(strip, out.with_name(out.stem + "_strip.jpg"))
+            res = {**mj, "video": rel(out), "strip": rel(out.with_name(out.stem + "_strip.jpg")), "target": "suno", "from": master.name,
+                   "mb": round(out.stat().st_size / 1e6, 1), "cap_mb": cap, "build_seconds": round(time.time() - t_start, 1), "built": int(time.time())}
+            out.with_suffix(".json").write_text(json.dumps(res, indent=1, ensure_ascii=False), encoding="utf-8")
+        elif target == "hooks":
+            import mv_hooks
+            hooks = mv_hooks.auto_hooks(mvdir, master, status=lambda s: set_status(cutdir, stage=s))
+            res = {"video": rel(master), "target": "hooks", "hooks": hooks, "build_seconds": round(time.time() - t_start, 1)}
+        else:
+            raise ValueError(f"unknown target {target}")
+        set_status(cutdir, state="done", stage="done", video=res["video"], finished=int(time.time()), error="")
+        subprocess.run([sys.executable, str(ROOT / "tools" / "build_gallery.py")], cwd=ROOT, capture_output=True)
+        return res
+    except Exception as e:
+        set_status(cutdir, state="error", stage="failed", error=str(e)[-600:])
+        raise
 
 
 def count_types(pcs):
@@ -696,6 +798,7 @@ def main():
     ap.add_argument("--sb", default="sb01")
     ap.add_argument("--edit")
     ap.add_argument("--draft", action="store_true")
+    ap.add_argument("--target", choices=["youtube", "suno", "hooks"], help="▶ youtube master | 🎵 suno (size-capped full song) | 🪝 hooks (10-30 s pieces)")
     ap.add_argument("--out")
     ap.add_argument("--plan", action="store_true", help="write the default edit list and stop")
     ap.add_argument("--replan", action="store_true", help="overwrite an existing edit.json with a fresh plan")
@@ -703,6 +806,10 @@ def main():
     a = ap.parse_args()
     d = Path(a.mv)
     d = d if d.is_absolute() else (ROOT / d if (ROOT / d).exists() else ROOT / "musicvideos" / d)
+    if a.target in ("suno", "hooks"):
+        r = build_target(d, a.target, a.sb, a.edit)
+        print(r["video"], f"{len(r['hooks'])} hooks" if a.target == "hooks" else f"{r['mb']} MB (cap {r['cap_mb']:g})", f"in {r['build_seconds']}s")
+        return
     r = assemble(d, a.sb, a.edit, a.draft, a.out, a.keep, a.plan, a.replan)
     if r:
         print(f"{r['video']}  {r['duration']:.1f}s  {r['w']}x{r['h']}  pieces={len(r['cuts'])}  {r['counts']}  built in {r['build_seconds']}s")

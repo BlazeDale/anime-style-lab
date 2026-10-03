@@ -134,9 +134,10 @@ ok(xs.state(f, now=99999)["maturity"]["stop"] == 1 and xs.state(tmp / "none.json
 N_ = N
 moodv = at("bittersweet")
 cue_e = er.emotion_cue(moodv)
-ok(cue_e.lower().startswith(("faintly", "clearly", "overwhelmingly")) and "bittersweet" in cue_e.lower() and N["bittersweet"]["picture"].split(",")[0] in cue_e, "emotion_cue: scaled word + top node + its picture clause: %s" % cue_e)
+ok(cue_e.lower().startswith(("a faint mood of", "a clear mood of", "an overwhelming mood of", "a overwhelming mood of")) and "bittersweet" in cue_e.lower() and "smile" not in cue_e and "embrace" not in cue_e and "golden light" in cue_e, "emotion_cue: a mood of the top node + only its LIGHT / TONE clause, never the staging (drive the story, don't dictate every scene): %s" % cue_e)
 ok(er.emotion_cue({**moodv, "intensity": 0.1}) == "" and er.emotion_cue(A.neutral("emotion")) == "" and er.emotion_cue(None) == "" and er.emotion_cue({"blend": []}) == "", "emotion_cue: skipped below 0.15 / neutral / empty")
-ok(er.emotion_cue({**moodv, "intensity": 0.2}).startswith("faintly") and er.emotion_cue({**moodv, "intensity": 0.5}).startswith("clearly") and er.emotion_cue({**moodv, "intensity": 0.9}).startswith("overwhelmingly"), "emotion_cue: faintly / clearly / overwhelmingly by intensity")
+ok(er.emotion_cue({**moodv, "intensity": 0.2}).startswith("a faint mood") and er.emotion_cue({**moodv, "intensity": 0.5}).startswith("a clear mood") and "overwhelming mood" in er.emotion_cue({**moodv, "intensity": 0.9}), "emotion_cue: faint / clear / overwhelming mood by intensity")
+ok(er._mood_clause("two adults in a desperate embrace, rain streaming over them, fully clothed and drenched, deep red and amber light, eyes closed, faces close", 9) == "deep red and amber light" and er._mood_clause("a figure at a window, empty space ahead", 9) == "", "_mood_clause keeps light / colour / tone, drops who does what where")
 two = {**moodv, "intensity": 0.8, "blend": [{"id": "bittersweet", "name": "Bittersweet", "w": 0.6}, {"id": "nostalgia", "name": "Nostalgia", "w": 0.4}]}
 ok("tinged with nostalgia" in er.emotion_cue(two) and "tinged" not in er.emotion_cue({**two, "blend": [{"id": "bittersweet", "name": "Bittersweet", "w": 0.9}, {"id": "nostalgia", "name": "Nostalgia", "w": 0.1}]}), "emotion_cue: the 2nd node tints (a 10% one is left out)")
 ok(len(er.emotion_cue(two, None, (3, 0))) <= len(er.emotion_cue(two, None, (9, 5))) and er.emotion_cue(two, None, (0, 0)).count(":") == 0, "emotion_cue: the budget shrinks the clause")
@@ -145,7 +146,7 @@ ok(er.emotion_cue({"primary": "dread", "intensity": 0.5}).startswith("a clear fe
 mk = lambda i, w, st="active", name=None: {"id": "c" + i, "name": name or N[i]["name"], "blend": at(i)["blend"], "probe": at(i)["probe"], "weight": w, "status": st}  # noqa: E731
 ok(er.core_cue([mk("grief", 0.3)]) == "a hint of grief" and er.core_cue([mk("grief", 0.49)]).startswith("a hint of"), "core_cue: a weight under 0.5 is only 'a hint of x'")
 cc = er.core_cue([mk("grief", 0.5)])
-ok(cc.startswith("an undertone of grief: ") and N["grief"]["picture"].split(",")[0] in cc, "core_cue: 0.5 and up = 'an undertone of x: <picture clause>': %s" % cc)
+ok(cc.startswith("an undertone of grief") and "figure" not in cc and "hands" not in cc, "core_cue: 0.5 and up = 'an undertone of x' + only its mood (light / tone), no staging: %s" % cc)
 ok(er.core_cue([mk("grief", 0.2)]) == "" and er.core_cue([mk("grief", 0.8, "resolved")]) == "" and er.core_cue([]) == "" and er.core_cue(None) == "", "core_cue: under 0.25, resolved, none = nothing")
 ok(er.core_cue([mk("grief", 0.4), mk("pride", 0.9), mk("shame", 0.6)]).startswith("an undertone of pride"), "core_cue: the heaviest ACTIVE core wins")
 ok(er.core_cue([mk("grief", 0.9, "resolved"), mk("pride", 0.3)]) == "a hint of pride", "core_cue: a heavier resolved core is ignored")

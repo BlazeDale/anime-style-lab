@@ -405,6 +405,14 @@ w0 = json.dumps(fa.load(atp)["edges"])
 post_fb("love"); post_fb("love")
 ok(json.dumps(fa.load(atp)["edges"]) == w0, "an episode without an atlas blend (old number) teaches the atlas nothing")
 srv.shutdown()
+# --redo: retire() moves a shot's picture + graph + sidecar to _rerolled/ with one stamp (so 🕘 lists it) and skips shots without a picture
+rd = tmp / "redo"
+rd.mkdir()
+for n in ("e1.png", "e1.workflow.json", "e1.json", "e2.png"):
+    (rd / n).write_text("x", encoding="utf-8")
+got = er.retire(rd, ["e1", "e3"], stamp="20261002-000000")
+ok(got == ["e1"] and not (rd / "e1.png").exists() and (rd / "_rerolled" / "e1__20261002-000000.png").is_file()
+   and (rd / "_rerolled" / "e1.workflow__20261002-000000.json").is_file() and (rd / "e2.png").is_file(), "redo: retire moves the picture + graph to _rerolled/, leaves the rest")
 shutil.rmtree(tmp, ignore_errors=True)
 print("PASS %d FAIL %d" % (PASS, FAIL))
 sys.exit(1 if FAIL else 0)

@@ -114,18 +114,29 @@ def mv_cut(d):
     ed = read_json(d / "edit.json", None)
     if not (mp4s or st or ed):
         return None
+    def target(q, j):  # draft | youtube | suno (older builds have no "target": draft flag / file name decide)
+        if j.get("target"):
+            return j["target"]
+        return "draft" if j.get("draft", "draft" in q.stem) else "suno" if q.stem.endswith("-suno") else "youtube"
     cut = None
     if mp4s:
         p = mp4s[-1]
         j = read_json(p.with_suffix(".json"), {}) or {}
         strip = p.with_name(p.stem + "_strip.jpg")
-        cut = {"src": f"../musicvideos/{d.name}/cut/{p.name}", "mtime": int(p.stat().st_mtime), "draft": bool(j.get("draft", "draft" in p.stem)),
+        cut = {"src": f"../musicvideos/{d.name}/cut/{p.name}", "mtime": int(p.stat().st_mtime), "draft": bool(j.get("draft", "draft" in p.stem)), "target": target(p, j),
                "duration": j.get("duration"), "w": j.get("w"), "h": j.get("h"), "counts": j.get("counts", {}), "build_seconds": j.get("build_seconds"),
-               "strip": f"../musicvideos/{d.name}/cut/{strip.name}" if strip.exists() else None, "cuts": j.get("cuts", []),
-               "all": [{"src": f"../musicvideos/{d.name}/cut/{q.name}", "mtime": int(q.stat().st_mtime), "mb": round(q.stat().st_size / 1e6),
-                        "draft": bool((read_json(q.with_suffix(".json"), {}) or {}).get("draft", "draft" in q.stem)),
-                        "w": (read_json(q.with_suffix(".json"), {}) or {}).get("w"), "h": (read_json(q.with_suffix(".json"), {}) or {}).get("h")} for q in reversed(mp4s)]}
-    return {"latest": cut, "status": st, "edit": [{k: c.get(k) for k in ("frame", "t0", "t1", "clip", "look", "in", "fx", "why")} for c in (ed or {}).get("cuts", [])]}
+               "strip": f"../musicvideos/{d.name}/cut/{strip.name}" if strip.exists() else None, "cuts": j.get("cuts", []), "all": []}
+        for q in reversed(mp4s):
+            qj = read_json(q.with_suffix(".json"), {}) or {}
+            cut["all"].append({"src": f"../musicvideos/{d.name}/cut/{q.name}", "mtime": int(q.stat().st_mtime), "mb": round(q.stat().st_size / 1e6),
+                               "draft": bool(qj.get("draft", "draft" in q.stem)), "target": target(q, qj), "w": qj.get("w"), "h": qj.get("h")})
+    hj = read_json(d / "export" / "hooks" / "auto" / "hooks.json", None)  # 🪝 Build for Hooks (tools/mv_hooks.auto_hooks)
+    hooks = [{**h, "src": f"../musicvideos/{d.name}/export/hooks/auto/{h['file']}"} for h in (hj or {}).get("hooks", [])
+             if (d / "export" / "hooks" / "auto" / h["file"]).exists()]
+    if not (mp4s or st or ed or hooks):
+        return None
+    return {"latest": cut, "status": st, "hooks": hooks, "hooks_from": (hj or {}).get("from"),
+            "edit": [{k: c.get(k) for k in ("frame", "t0", "t1", "clip", "look", "in", "fx", "why")} for c in (ed or {}).get("cuts", [])]}
 
 
 def collect_atlas(root=None, kind="formality"):
@@ -290,6 +301,26 @@ def collect_videos(lineages):
             "engine": meta.get("engine", mp4.stem.split("__")[-1].split("_seed")[0]), "tag": meta.get("tag", ""), "prompt": meta.get("prompt", ""),
             "note": meta.get("note", ""), "seconds": meta.get("seconds"), "render_seconds": meta.get("render_seconds"),
             **{k: meta[k] for k in ("song_audio", "lead_in_trimmed", "reversed", "frame") if meta.get(k)},  # 📝 clip prompt panel
+            "created": int(mp4.stat().st_mtime),
+        })
+    # 📖 Nev Novel shots the user 🎬-marked: explore/<ep>/eN__*.mp4 and saga chapters explore/sagas/<saga>/chNN/eN__*.mp4
+    xd = ROOT / "explore"
+    for mp4 in (sorted(xd.glob("*/e*__*.mp4")) + sorted(xd.glob("sagas/*/ch*/e*__*.mp4"))) if xd.exists() else []:
+        epdir = mp4.parent
+        img_stem = mp4.stem.split("__")[0]
+        meta = read_json(mp4.with_suffix(".json"), {})
+        ep = read_json(epdir / "episode.json", {}) or {}
+        rel_dir = epdir.relative_to(ROOT).as_posix()
+        saga = epdir.parent.name if epdir.parent.parent.name == "sagas" else None
+        title = ep.get("title", epdir.name)
+        if saga:
+            title = f"{(read_json(epdir.parent / 'saga.json', {}) or {}).get('title', saga)} · {epdir.name}: {title}"
+        vids.append({
+            "src": f"../{rel_dir}/{mp4.name}", "poster": f"../{rel_dir}/{img_stem}.png", "image": f"{rel_dir}/{img_stem}.png",
+            "lineage": f"nev:{saga or epdir.name}", "version": epdir.name if saga else "", "title": "📖 " + title,
+            "journey": False, "mv": False, "depth": 0, "subject": img_stem, "subject_label": img_stem,
+            "engine": meta.get("engine", mp4.stem.split("__")[-1].split("_seed")[0]), "tag": meta.get("tag", ""), "prompt": meta.get("prompt", ""),
+            "note": meta.get("note", ""), "seconds": meta.get("seconds"), "render_seconds": meta.get("render_seconds"),
             "created": int(mp4.stat().st_mtime),
         })
     return vids

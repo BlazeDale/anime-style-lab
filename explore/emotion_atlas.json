@@ -2066,986 +2066,2470 @@
   {
    "a": "absurdity",
    "b": "awkwardness",
-   "w": 0.27,
-   "uses": 0
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Comedy of discomfort."
+  },
+  {
+   "a": "absurdity",
+   "b": "cosmic-horror",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Absurdist reading of an uncaring cosmos."
+  },
+  {
+   "a": "absurdity",
+   "b": "existential-dread",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Absurd cosmos."
   },
   {
    "a": "absurdity",
    "b": "gallows-humor",
-   "w": 0.47,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Dark absurd."
   },
   {
    "a": "absurdity",
    "b": "whimsy",
-   "w": 0.24,
-   "uses": 0
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Gentle vs full absurd."
   },
   {
    "a": "adoration-from-afar",
-   "b": "first-love",
-   "w": 0.68,
-   "uses": 0
+   "b": "infatuation",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Infatuation held at a distance becomes quiet adoration."
+  },
+  {
+   "a": "adoration-from-afar",
+   "b": "longing",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Distance feeds wanting."
   },
   {
    "a": "adoration-from-afar",
    "b": "secret-love",
-   "w": 0.77,
-   "uses": 0
+   "w": 0.39,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "adoration-from-afar",
+   "b": "the-confession",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "The brave step from afar to speaking.",
+   "dir": "a->b"
   },
   {
    "a": "adoration-from-afar",
    "b": "trust",
-   "w": 0.69,
-   "uses": 0
+   "w": 0.34,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "adoration-from-afar",
+   "b": "unrequited-love",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Watching from afar tends to become unrequited.",
+   "dir": "a->b"
   },
   {
    "a": "anticipation",
-   "b": "rapture",
-   "w": 0.56,
-   "uses": 0
+   "b": "hope-against-the-odds",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Forward-looking hope."
+  },
+  {
+   "a": "anticipation",
+   "b": "joy",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Optimism (anticipation + joy).",
+   "dir": "a->b"
+  },
+  {
+   "a": "anticipation",
+   "b": "love-at-first-sight",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The hope of seeing them again."
+  },
+  {
+   "a": "anticipation",
+   "b": "slow-burn-tension",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Will-they-won't-they runs on anticipation."
+  },
+  {
+   "a": "anticipation",
+   "b": "tension",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Wound-up waiting."
+  },
+  {
+   "a": "anticipation",
+   "b": "the-confession",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Dread-tinged waiting before speaking."
   },
   {
    "a": "anticipation",
    "b": "wanderlust",
-   "w": 0.85,
-   "uses": 0
+   "w": 0.42,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "anticipation",
    "b": "wonder",
-   "w": 0.69,
-   "uses": 0
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Discovery is forward-leaning."
   },
   {
    "a": "anticipation",
    "b": "yearning-for-adventure",
-   "w": 0.74,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Journey ahead."
+  },
+  {
+   "a": "awe",
+   "b": "cosmic-horror",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Scale beyond comprehension."
+  },
+  {
+   "a": "awe",
+   "b": "mono-no-aware",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Wonder at transient beauty."
   },
   {
    "a": "awe",
    "b": "rapture",
-   "w": 0.51,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Transcendent wonder."
   },
   {
    "a": "awe",
    "b": "reverence",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Awe settles into reverence.",
+   "dir": "a->b"
+  },
+  {
+   "a": "awe",
+   "b": "serenity",
    "w": 0.4,
-   "uses": 0
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Calm vastness."
   },
   {
    "a": "awe",
    "b": "sublime-terror",
-   "w": 0.36,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Gradient between awe and fear."
+  },
+  {
+   "a": "awe",
+   "b": "vertigo",
+   "w": 0.3,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Heights and grandeur."
   },
   {
    "a": "awe",
    "b": "wonder",
-   "w": 0.47,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Gradient between curiosity and awe."
   },
   {
    "a": "awkwardness",
-   "b": "love-hate",
-   "w": 0.47,
-   "uses": 0
+   "b": "first-love",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "First love is clumsy."
+  },
+  {
+   "a": "awkwardness",
+   "b": "flirtatious-spark",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Flirting and the fumbling beats around it share scenes."
+  },
+  {
+   "a": "awkwardness",
+   "b": "humiliation",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Mortification shades into cringe."
+  },
+  {
+   "a": "awkwardness",
+   "b": "love-at-first-sight",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Dumbstruck first meeting."
+  },
+  {
+   "a": "awkwardness",
+   "b": "shame",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Social embarrassment."
+  },
+  {
+   "a": "awkwardness",
+   "b": "tension",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Social tension."
   },
   {
    "a": "awkwardness",
    "b": "uncanny-calm",
-   "w": 0.48,
-   "uses": 0
+   "w": 0.3,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Wrongness in the social/off register."
   },
   {
    "a": "awkwardness",
    "b": "vertigo",
-   "w": 0.49,
-   "uses": 0
+   "w": 0.24,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "betrayal",
+   "b": "camaraderie",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "contrast",
+   "why": "Group trust broken.",
+   "dir": "a->b"
+  },
+  {
+   "a": "betrayal",
+   "b": "disillusionment",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Betrayal strips illusions.",
+   "dir": "a->b"
+  },
+  {
+   "a": "betrayal",
+   "b": "heartbreak",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Betrayal is a common cause of heartbreak."
+  },
+  {
+   "a": "betrayal",
+   "b": "jealousy",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Suspicion either follows or seeds a breach.",
+   "dir": "a->b"
   },
   {
    "a": "betrayal",
    "b": "resentment",
-   "w": 0.68,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Slow burn of a breach.",
+   "dir": "a->b"
+  },
+  {
+   "a": "betrayal",
+   "b": "revenge",
+   "w": 0.9,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Textbook: betrayal -> revenge.",
+   "dir": "a->b"
+  },
+  {
+   "a": "betrayal",
+   "b": "righteous-fury",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "A wrong done to the innocent.",
+   "dir": "a->b"
   },
   {
    "a": "betrayal",
    "b": "shame",
-   "w": 0.74,
-   "uses": 0
+   "w": 0.37,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "betrayal",
-   "b": "survivor-s-guilt",
-   "w": 0.64,
-   "uses": 0
+   "b": "trust",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "contrast",
+   "why": "Trust is what betrayal destroys.",
+   "dir": "a->b"
   },
   {
    "a": "bittersweet",
-   "b": "homesickness",
+   "b": "first-love",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Remembered fondly with an ache.",
+   "dir": "a->b"
+  },
+  {
+   "a": "bittersweet",
+   "b": "grief",
    "w": 0.75,
-   "uses": 0
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "grief -> bittersweet -> hope: mourning softens into mixed feeling.",
+   "dir": "a->b"
+  },
+  {
+   "a": "bittersweet",
+   "b": "hope-against-the-odds",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Mixed feeling opens toward hope.",
+   "dir": "a->b"
+  },
+  {
+   "a": "bittersweet",
+   "b": "love-s-sacrifice",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Love's sacrifice is the textbook bittersweet beat."
   },
   {
    "a": "bittersweet",
    "b": "melancholy",
-   "w": 0.76,
-   "uses": 0
+   "w": 0.38,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "bittersweet",
+   "b": "mono-no-aware",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Joy and loss in one image."
   },
   {
    "a": "bittersweet",
    "b": "nostalgia",
-   "w": 0.71,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Textbook mixed emotion."
+  },
+  {
+   "a": "bittersweet",
+   "b": "parting",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Farewells carry joy and loss."
   },
   {
    "a": "bittersweet",
    "b": "saudade",
-   "w": 0.79,
-   "uses": 0
+   "w": 0.4,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "bliss",
    "b": "cozy-comfort",
-   "w": 0.86,
-   "uses": 0
+   "w": 0.43,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "bliss",
-   "b": "relief",
-   "w": 0.79,
-   "uses": 0
+   "b": "joy",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Calm joy."
+  },
+  {
+   "a": "bliss",
+   "b": "rapture",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Gentle vs ecstatic."
   },
   {
    "a": "bliss",
    "b": "serenity",
-   "w": 0.81,
-   "uses": 0
-  },
-  {
-   "a": "bliss",
-   "b": "whimsy",
-   "w": 0.33,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Quiet happiness."
   },
   {
    "a": "burning-passion",
-   "b": "enemies-to-lovers",
-   "w": 0.58,
-   "uses": 0
+   "b": "devotion",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Intensity matures into lasting commitment.",
+   "dir": "a->b"
+  },
+  {
+   "a": "burning-passion",
+   "b": "euphoria",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Peak romantic highs are euphoric."
   },
   {
    "a": "burning-passion",
    "b": "infatuation",
-   "w": 0.59,
-   "uses": 0
+   "w": 0.29,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "burning-passion",
+   "b": "jealousy",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Intense attachment breeds possessive fear."
   },
   {
    "a": "burning-passion",
    "b": "love-at-first-sight",
-   "w": 0.68,
-   "uses": 0
+   "w": 0.34,
+   "uses": 0,
+   "kind": "similar"
   },
   {
-   "a": "camaraderie",
-   "b": "euphoria",
-   "w": 0.56,
-   "uses": 0
+   "a": "burning-passion",
+   "b": "love-hate",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Heat of conflict feeds heat of love (emotional intensity only).",
+   "dir": "a->b"
   },
   {
-   "a": "camaraderie",
-   "b": "flirtatious-spark",
-   "w": 0.62,
-   "uses": 0
+   "a": "burning-passion",
+   "b": "obsessive-love",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Intensity without balance turns obsessive.",
+   "dir": "a->b"
+  },
+  {
+   "a": "burning-passion",
+   "b": "the-confession",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Declared love releases intensity.",
+   "dir": "a->b"
   },
   {
    "a": "camaraderie",
    "b": "found-family-warmth",
-   "w": 0.74,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Chosen family and team."
+  },
+  {
+   "a": "camaraderie",
+   "b": "gallows-humor",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Banter under pressure."
   },
   {
    "a": "camaraderie",
    "b": "joy",
-   "w": 0.9,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Joy shared with friends."
   },
   {
    "a": "camaraderie",
    "b": "mischief",
-   "w": 0.46,
-   "uses": 0
-  },
-  {
-   "a": "camaraderie",
-   "b": "pride",
-   "w": 0.7,
-   "uses": 0
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Shared pranks."
   },
   {
    "a": "camaraderie",
    "b": "reunion",
-   "w": 0.67,
-   "uses": 0
+   "w": 0.34,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "camaraderie",
+   "b": "triumph",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Victory with the team."
+  },
+  {
+   "a": "camaraderie",
+   "b": "trust",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Teammates."
+  },
+  {
+   "a": "camaraderie",
+   "b": "wonder",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Discovered together."
+  },
+  {
+   "a": "catharsis",
+   "b": "dread",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Release of built-up fear.",
+   "dir": "a->b"
   },
   {
    "a": "catharsis",
    "b": "enemies-to-lovers",
-   "w": 0.67,
-   "uses": 0
+   "w": 0.34,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "catharsis",
+   "b": "euphoria",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Overflow release."
   },
   {
    "a": "catharsis",
    "b": "forbidden-love",
-   "w": 0.66,
-   "uses": 0
+   "w": 0.33,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "catharsis",
-   "b": "secret-love",
-   "w": 0.57,
-   "uses": 0
+   "b": "grief",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Mourning releases in tears (dread/grief -> catharsis).",
+   "dir": "a->b"
+  },
+  {
+   "a": "catharsis",
+   "b": "liberation",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Release becomes freedom.",
+   "dir": "a->b"
+  },
+  {
+   "a": "catharsis",
+   "b": "relief",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Release."
+  },
+  {
+   "a": "catharsis",
+   "b": "revenge",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Payback releases tension.",
+   "dir": "a->b"
+  },
+  {
+   "a": "catharsis",
+   "b": "serenity",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Calm after the storm.",
+   "dir": "a->b"
+  },
+  {
+   "a": "catharsis",
+   "b": "tension",
+   "w": 0.8,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Tension -> release is the basic dramatic arc.",
+   "dir": "a->b"
   },
   {
    "a": "cosmic-horror",
    "b": "existential-dread",
-   "w": 0.49,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Both about scale and meaninglessness."
   },
   {
    "a": "cosmic-horror",
    "b": "sublime-terror",
-   "w": 0.78,
-   "uses": 0
-  },
-  {
-   "a": "cosmic-horror",
-   "b": "tension",
-   "w": 0.2,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Awe and terror at the vast."
   },
   {
    "a": "cozy-comfort",
-   "b": "relief",
-   "w": 0.63,
-   "uses": 0
+   "b": "ennui",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Comfort tips into lethargy."
+  },
+  {
+   "a": "cozy-comfort",
+   "b": "found-family-warmth",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Warm gathering."
+  },
+  {
+   "a": "cozy-comfort",
+   "b": "homesickness",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Home's comfort is the longed-for payoff.",
+   "dir": "a->b"
+  },
+  {
+   "a": "cozy-comfort",
+   "b": "mature-love",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Domestic ease."
   },
   {
    "a": "cozy-comfort",
    "b": "serenity",
-   "w": 0.82,
-   "uses": 0
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Calm and safety."
+  },
+  {
+   "a": "cozy-comfort",
+   "b": "tenderness",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Softness and safety."
+  },
+  {
+   "a": "cozy-comfort",
+   "b": "whimsy",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Storybook ease."
+  },
+  {
+   "a": "defiance",
+   "b": "disillusionment",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Cynical hero turns to resistance.",
+   "dir": "a->b"
+  },
+  {
+   "a": "defiance",
+   "b": "forbidden-love",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Choosing love over the rule."
+  },
+  {
+   "a": "defiance",
+   "b": "hope-against-the-odds",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Heroic resolve."
+  },
+  {
+   "a": "defiance",
+   "b": "humiliation",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Rise after being put down.",
+   "dir": "a->b"
   },
   {
    "a": "defiance",
    "b": "liberation",
-   "w": 0.58,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Resistance wins freedom.",
+   "dir": "a->b"
   },
   {
    "a": "defiance",
    "b": "love-s-sacrifice",
-   "w": 0.73,
-   "uses": 0
+   "w": 0.36,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "defiance",
-   "b": "protectiveness",
-   "w": 0.59,
-   "uses": 0
+   "b": "pride",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Dignity under pressure."
   },
   {
    "a": "defiance",
    "b": "redemption",
-   "w": 0.62,
-   "uses": 0
+   "w": 0.31,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "defiance",
    "b": "righteous-fury",
-   "w": 0.57,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Anger plus agency."
   },
   {
    "a": "defiance",
    "b": "triumph",
-   "w": 0.52,
-   "uses": 0
+   "w": 0.26,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "devotion",
+   "b": "love-s-sacrifice",
+   "w": 0.8,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Devotion is tested by giving everything.",
+   "dir": "a->b"
   },
   {
    "a": "devotion",
    "b": "mature-love",
-   "w": 0.73,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Devotion across years becomes settled love.",
+   "dir": "a->b"
+  },
+  {
+   "a": "devotion",
+   "b": "protectiveness",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Devoted people guard the beloved."
   },
   {
    "a": "devotion",
    "b": "quiet-resolve",
-   "w": 0.74,
-   "uses": 0
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Steady commitment shows as quiet resolve."
   },
   {
    "a": "devotion",
-   "b": "redemption",
-   "w": 0.62,
-   "uses": 0
+   "b": "trust",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Devotion presumes and builds trust."
+  },
+  {
+   "a": "disillusionment",
+   "b": "ennui",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Lost ideals leave flatness.",
+   "dir": "a->b"
   },
   {
    "a": "disillusionment",
    "b": "existential-dread",
-   "w": 0.34,
-   "uses": 0
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Collapsed worldview."
+  },
+  {
+   "a": "disillusionment",
+   "b": "nostalgia",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "contrast",
+   "why": "The past was brighter than the present."
   },
   {
    "a": "disillusionment",
    "b": "parting",
-   "w": 0.65,
-   "uses": 0
+   "w": 0.33,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "disillusionment",
+   "b": "redemption",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Fall then rise (man in a hole).",
+   "dir": "a->b"
   },
   {
    "a": "disillusionment",
    "b": "resentment",
-   "w": 0.6,
-   "uses": 0
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Bitter edge."
   },
   {
    "a": "disillusionment",
    "b": "reverence",
-   "w": 0.34,
-   "uses": 0
-  },
-  {
-   "a": "disillusionment",
-   "b": "uncanny-calm",
-   "w": 0.59,
-   "uses": 0
+   "w": 0.17,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "dread",
-   "b": "jealousy",
-   "w": 0.54,
-   "uses": 0
+   "b": "existential-dread",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Personal fear widens to cosmic."
+  },
+  {
+   "a": "dread",
+   "b": "gallows-humor",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "contrast",
+   "why": "Jokes against danger."
+  },
+  {
+   "a": "dread",
+   "b": "hope-against-the-odds",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Hope shown against looming danger.",
+   "dir": "a->b"
+  },
+  {
+   "a": "dread",
+   "b": "protectiveness",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Fear for others sparks guarding."
+  },
+  {
+   "a": "dread",
+   "b": "relief",
+   "w": 0.8,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Fear resolved to relief.",
+   "dir": "a->b"
   },
   {
    "a": "dread",
    "b": "slow-burn-tension",
-   "w": 0.77,
-   "uses": 0
+   "w": 0.39,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "dread",
    "b": "tension",
-   "w": 0.68,
-   "uses": 0
+   "w": 0.8,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Dread builds into taut tension."
+  },
+  {
+   "a": "dread",
+   "b": "uncanny-calm",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The quiet before; horror lives in stillness."
+  },
+  {
+   "a": "enemies-to-lovers",
+   "b": "flirtatious-spark",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Sparring banter is the common doorway to the trope."
   },
   {
    "a": "enemies-to-lovers",
    "b": "love-hate",
-   "w": 0.77,
-   "uses": 0
+   "w": 0.8,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Rivals pass through love-hate before admitting the turn.",
+   "dir": "a->b"
   },
   {
    "a": "enemies-to-lovers",
-   "b": "tension",
-   "w": 0.56,
-   "uses": 0
+   "b": "slow-burn-tension",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Hostility converts to charged tension in the deepening phase."
   },
   {
    "a": "enemies-to-lovers",
    "b": "the-confession",
-   "w": 0.69,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "The turn resolves in an admission.",
+   "dir": "a->b"
   },
   {
    "a": "ennui",
-   "b": "homesickness",
-   "w": 0.59,
-   "uses": 0
+   "b": "existential-dread",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Meaninglessness without fear."
   },
   {
    "a": "ennui",
    "b": "loneliness",
-   "w": 0.74,
-   "uses": 0
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Flat isolation."
   },
   {
    "a": "ennui",
    "b": "melancholy",
-   "w": 0.74,
-   "uses": 0
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Flat sadness drifts into boredom.",
+   "dir": "a->b"
+  },
+  {
+   "a": "ennui",
+   "b": "whimsy",
+   "w": 0.3,
+   "uses": 0,
+   "kind": "contrast",
+   "why": "Dullness vs play."
   },
   {
    "a": "euphoria",
    "b": "joy",
-   "w": 0.66,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Gradient of delight."
+  },
+  {
+   "a": "euphoria",
+   "b": "liberation",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Freedom's rush."
   },
   {
    "a": "euphoria",
    "b": "rapture",
-   "w": 0.67,
-   "uses": 0
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Peak states."
   },
   {
    "a": "existential-dread",
-   "b": "slow-burn-tension",
-   "w": 0.34,
-   "uses": 0
+   "b": "quiet-resolve",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Facing the void by choosing meaning.",
+   "dir": "a->b"
   },
   {
-   "a": "existential-dread",
-   "b": "sublime-terror",
-   "w": 0.31,
-   "uses": 0
+   "a": "first-love",
+   "b": "heartbreak",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "First loves often end.",
+   "dir": "a->b"
   },
   {
    "a": "first-love",
    "b": "infatuation",
-   "w": 0.81,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Infatuation matures into the tender, awkward first love.",
+   "dir": "a->b"
   },
   {
    "a": "first-love",
    "b": "love-at-first-sight",
-   "w": 0.7,
-   "uses": 0
+   "w": 0.35,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "first-love",
+   "b": "nostalgia",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "First love is the prime thing remembered.",
+   "dir": "a->b"
+  },
+  {
+   "a": "first-love",
+   "b": "the-confession",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "First love's defining moment."
+  },
+  {
+   "a": "flirtatious-spark",
+   "b": "infatuation",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Early attraction shows up as playful teasing."
   },
   {
    "a": "flirtatious-spark",
    "b": "mischief",
-   "w": 0.67,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Teasing and mischief play together."
+  },
+  {
+   "a": "flirtatious-spark",
+   "b": "slow-burn-tension",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Banter that deepens into charged restraint.",
+   "dir": "a->b"
   },
   {
    "a": "flirtatious-spark",
    "b": "whimsy",
-   "w": 0.63,
-   "uses": 0
+   "w": 0.32,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "forbidden-love",
+   "b": "love-s-sacrifice",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Choice between love and duty.",
+   "dir": "a->b"
   },
   {
    "a": "forbidden-love",
    "b": "protectiveness",
-   "w": 0.72,
-   "uses": 0
+   "w": 0.36,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "forbidden-love",
    "b": "secret-love",
-   "w": 0.75,
-   "uses": 0
+   "w": 0.8,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Forbidden love must hide."
+  },
+  {
+   "a": "forbidden-love",
+   "b": "shame",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Social judgement internalised."
   },
   {
    "a": "found-family-warmth",
-   "b": "joy",
-   "w": 0.68,
-   "uses": 0
+   "b": "homesickness",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Found family answers homesickness.",
+   "dir": "a->b"
+  },
+  {
+   "a": "found-family-warmth",
+   "b": "loneliness",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Isolated lead finds family (Cinderella arc).",
+   "dir": "a->b"
   },
   {
    "a": "found-family-warmth",
    "b": "pride",
-   "w": 0.7,
-   "uses": 0
+   "w": 0.35,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "found-family-warmth",
+   "b": "protectiveness",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Family fights for its own."
   },
   {
    "a": "found-family-warmth",
    "b": "rekindled-love",
-   "w": 0.82,
-   "uses": 0
+   "w": 0.41,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "found-family-warmth",
    "b": "relief",
-   "w": 0.8,
-   "uses": 0
+   "w": 0.4,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "found-family-warmth",
+   "b": "survivor-s-guilt",
+   "w": 0.3,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Group after loss."
   },
   {
    "a": "found-family-warmth",
    "b": "tenderness",
-   "w": 0.81,
-   "uses": 0
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Care between non-lovers."
   },
   {
    "a": "found-family-warmth",
    "b": "trust",
-   "w": 0.69,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Belonging grows as trust."
+  },
+  {
+   "a": "gallows-humor",
+   "b": "grief",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "contrast",
+   "why": "Dark jokes deliberately set against loss."
   },
   {
    "a": "gallows-humor",
    "b": "schadenfreude",
-   "w": 0.27,
-   "uses": 0
+   "w": 0.14,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "gallows-humor",
-   "b": "uncanny-calm",
-   "w": 0.27,
-   "uses": 0
+   "b": "tension",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Joking to cope."
   },
   {
    "a": "grief",
    "b": "heartbreak",
-   "w": 0.77,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Love lost is mourned.",
+   "dir": "a->b"
   },
   {
    "a": "grief",
    "b": "humiliation",
-   "w": 0.77,
-   "uses": 0
+   "w": 0.39,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "grief",
-   "b": "resentment",
-   "w": 0.75,
-   "uses": 0
+   "b": "loneliness",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "The empty place at the table."
+  },
+  {
+   "a": "grief",
+   "b": "melancholy",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Acute grief fades into a low, lingering sorrow.",
+   "dir": "a->b"
+  },
+  {
+   "a": "grief",
+   "b": "revenge",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Heroic/revenge plots begin with a loss.",
+   "dir": "a->b"
+  },
+  {
+   "a": "grief",
+   "b": "survivor-s-guilt",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Mourning those who died while you lived."
   },
   {
    "a": "heartbreak",
    "b": "humiliation",
-   "w": 0.93,
-   "uses": 0
+   "w": 0.47,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "heartbreak",
    "b": "jealousy",
-   "w": 0.73,
-   "uses": 0
+   "w": 0.36,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "heartbreak",
+   "b": "loneliness",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "The empty house after.",
+   "dir": "a->b"
+  },
+  {
+   "a": "heartbreak",
+   "b": "melancholy",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "The aftermath settles into a low, quiet sorrow.",
+   "dir": "a->b"
+  },
+  {
+   "a": "heartbreak",
+   "b": "parting",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "The breakup moment.",
+   "dir": "a->b"
   },
   {
    "a": "heartbreak",
    "b": "resentment",
-   "w": 0.85,
-   "uses": 0
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Hurt hardens into resentment.",
+   "dir": "a->b"
+  },
+  {
+   "a": "heartbreak",
+   "b": "unrequited-love",
+   "w": 0.75,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Rejection lands as heartbreak.",
+   "dir": "a->b"
   },
   {
    "a": "hiraeth",
    "b": "homesickness",
-   "w": 0.66,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Longing for home."
+  },
+  {
+   "a": "hiraeth",
+   "b": "longing",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Longing for a lost home is the place-bound version."
   },
   {
    "a": "hiraeth",
    "b": "melancholy",
-   "w": 0.68,
-   "uses": 0
+   "w": 0.34,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "hiraeth",
    "b": "mono-no-aware",
-   "w": 0.63,
-   "uses": 0
+   "w": 0.32,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "hiraeth",
    "b": "saudade",
-   "w": 0.84,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Two cultural words for absent-place longing."
+  },
+  {
+   "a": "hiraeth",
+   "b": "wanderlust",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "contrast",
+   "why": "Pull toward home vs pull to leave."
   },
   {
    "a": "homesickness",
    "b": "loneliness",
-   "w": 0.69,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Away from belonging."
   },
   {
    "a": "homesickness",
    "b": "melancholy",
-   "w": 0.82,
-   "uses": 0
+   "w": 0.41,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "homesickness",
    "b": "nostalgia",
-   "w": 0.65,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Remembered places."
+  },
+  {
+   "a": "homesickness",
+   "b": "reunion",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Return resolves homesickness.",
+   "dir": "a->b"
   },
   {
    "a": "homesickness",
    "b": "saudade",
-   "w": 0.92,
-   "uses": 0
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Absent home."
+  },
+  {
+   "a": "homesickness",
+   "b": "yearning-for-adventure",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Heroic journey away and back.",
+   "dir": "a->b"
   },
   {
    "a": "hope-against-the-odds",
    "b": "liberation",
-   "w": 0.41,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Hope pays off as freedom.",
+   "dir": "a->b"
+  },
+  {
+   "a": "hope-against-the-odds",
+   "b": "quiet-resolve",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Steadiness inside hope."
   },
   {
    "a": "hope-against-the-odds",
    "b": "rapture",
-   "w": 0.43,
-   "uses": 0
+   "w": 0.21,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "hope-against-the-odds",
-   "b": "wonder",
-   "w": 0.37,
-   "uses": 0
+   "b": "triumph",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Odds-defying hope pays off as triumph.",
+   "dir": "a->b"
+  },
+  {
+   "a": "hope-against-the-odds",
+   "b": "yearning-for-adventure",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Setting out with long odds."
   },
   {
    "a": "humiliation",
    "b": "resentment",
-   "w": 0.84,
-   "uses": 0
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Injury to dignity feeds grudges."
+  },
+  {
+   "a": "humiliation",
+   "b": "revenge",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Slights provoke payback.",
+   "dir": "a->b"
+  },
+  {
+   "a": "humiliation",
+   "b": "shame",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Public shame."
+  },
+  {
+   "a": "humiliation",
+   "b": "unrequited-love",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "A failed confession stings in public."
+  },
+  {
+   "a": "infatuation",
+   "b": "jealousy",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "New attachment brings fear of losing it (jealousy)."
   },
   {
    "a": "infatuation",
    "b": "love-at-first-sight",
-   "w": 0.86,
-   "uses": 0
+   "w": 0.8,
+   "uses": 0,
+   "kind": "transition",
+   "why": "The instant spark settles into obsessive-pleasant infatuation (Hayes: meet cute -> falling in love).",
+   "dir": "a->b"
+  },
+  {
+   "a": "infatuation",
+   "b": "obsessive-love",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Unchecked infatuation tips into obsession.",
+   "dir": "a->b"
   },
   {
    "a": "jealousy",
    "b": "love-hate",
-   "w": 0.64,
-   "uses": 0
+   "w": 0.32,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "jealousy",
+   "b": "obsessive-love",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Possessiveness escalates.",
+   "dir": "a->b"
   },
   {
    "a": "jealousy",
    "b": "parting",
-   "w": 0.77,
-   "uses": 0
+   "w": 0.39,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "jealousy",
    "b": "resentment",
-   "w": 0.71,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Jealousy curdles.",
+   "dir": "a->b"
+  },
+  {
+   "a": "jealousy",
+   "b": "secret-love",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Unable to claim the beloved."
+  },
+  {
+   "a": "jealousy",
+   "b": "shame",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Ashamed of being jealous."
+  },
+  {
+   "a": "jealousy",
+   "b": "unrequited-love",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Seeing the beloved with another."
+  },
+  {
+   "a": "joy",
+   "b": "liberation",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Free at last.",
+   "dir": "a->b"
+  },
+  {
+   "a": "joy",
+   "b": "relief",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Release becomes happiness."
   },
   {
    "a": "joy",
    "b": "reunion",
-   "w": 0.75,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Pleasure of being together again.",
+   "dir": "a->b"
+  },
+  {
+   "a": "joy",
+   "b": "triumph",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Winning delights."
   },
   {
    "a": "liberation",
-   "b": "redemption",
-   "w": 0.42,
-   "uses": 0
+   "b": "relief",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Freedom releases.",
+   "dir": "a->b"
+  },
+  {
+   "a": "liberation",
+   "b": "righteous-fury",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Fury overthrows the oppressor.",
+   "dir": "a->b"
   },
   {
    "a": "liberation",
    "b": "triumph",
-   "w": 0.9,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Freedom won."
   },
   {
    "a": "loneliness",
    "b": "melancholy",
-   "w": 0.87,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Quiet sadness often alone."
+  },
+  {
+   "a": "loneliness",
+   "b": "trust",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Learning to trust ends solitude.",
+   "dir": "a->b"
+  },
+  {
+   "a": "loneliness",
+   "b": "wanderlust",
+   "w": 0.3,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Solo travel."
+  },
+  {
+   "a": "longing",
+   "b": "parting",
+   "w": 0.8,
+   "uses": 0,
+   "kind": "transition",
+   "why": "After the goodbye, the ache of absence.",
+   "dir": "a->b"
+  },
+  {
+   "a": "longing",
+   "b": "reunion",
+   "w": 0.85,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Classic setup -> payoff: yearning resolved by being together.",
+   "dir": "a->b"
+  },
+  {
+   "a": "longing",
+   "b": "saudade",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Saudade is longing for what is absent."
+  },
+  {
+   "a": "longing",
+   "b": "secret-love",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Stolen moments, long absences."
   },
   {
    "a": "longing",
    "b": "slow-burn-tension",
-   "w": 0.81,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Restraint and wanting are the same ache."
   },
   {
    "a": "longing",
    "b": "uncanny-calm",
-   "w": 0.63,
-   "uses": 0
+   "w": 0.32,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "longing",
    "b": "unrequited-love",
-   "w": 0.72,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Unanswered love keeps longing alive."
+  },
+  {
+   "a": "love-hate",
+   "b": "resentment",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Old grievances keep the push-pull alive."
   },
   {
    "a": "love-hate",
    "b": "vertigo",
-   "w": 0.56,
-   "uses": 0
+   "w": 0.28,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "love-s-sacrifice",
    "b": "obsessive-love",
-   "w": 0.48,
-   "uses": 0
+   "w": 0.3,
+   "uses": 0,
+   "kind": "contrast",
+   "why": "Opposite faces of total devotion."
+  },
+  {
+   "a": "love-s-sacrifice",
+   "b": "parting",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Sacrifice often is the parting."
   },
   {
    "a": "love-s-sacrifice",
    "b": "protectiveness",
-   "w": 0.74,
-   "uses": 0
-  },
-  {
-   "a": "love-s-sacrifice",
-   "b": "quiet-resolve",
    "w": 0.5,
-   "uses": 0
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Protective impulse made absolute."
   },
   {
    "a": "love-s-sacrifice",
    "b": "redemption",
-   "w": 0.7,
-   "uses": 0
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Sacrifice buys redemption."
   },
   {
    "a": "love-s-sacrifice",
    "b": "revenge",
-   "w": 0.71,
-   "uses": 0
+   "w": 0.35,
+   "uses": 0,
+   "kind": "similar"
   },
   {
-   "a": "love-s-sacrifice",
-   "b": "righteous-fury",
-   "w": 0.44,
-   "uses": 0
+   "a": "mature-love",
+   "b": "rekindled-love",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Second chances age into mature love.",
+   "dir": "a->b"
+  },
+  {
+   "a": "mature-love",
+   "b": "serenity",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Settled love feels calm."
   },
   {
    "a": "mature-love",
    "b": "tenderness",
-   "w": 0.81,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Gentleness in long partnership."
   },
   {
    "a": "mature-love",
    "b": "trust",
-   "w": 0.72,
-   "uses": 0
+   "w": 0.36,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "melancholy",
    "b": "mono-no-aware",
    "w": 0.5,
-   "uses": 0
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Beauty tinged with passing."
+  },
+  {
+   "a": "melancholy",
+   "b": "nostalgia",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Wistful looking back."
   },
   {
    "a": "melancholy",
    "b": "saudade",
-   "w": 0.84,
-   "uses": 0
+   "w": 0.42,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "melancholy",
+   "b": "unrequited-love",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Prolonged unrequited love settles as melancholy.",
+   "dir": "a->b"
+  },
+  {
+   "a": "mischief",
+   "b": "schadenfreude",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Petty glee."
   },
   {
    "a": "mischief",
    "b": "whimsy",
-   "w": 0.48,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Light play."
   },
   {
    "a": "mono-no-aware",
-   "b": "reverence",
-   "w": 0.32,
-   "uses": 0
+   "b": "parting",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Impermanence of meetings and farewells."
   },
   {
    "a": "mono-no-aware",
    "b": "saudade",
-   "w": 0.52,
-   "uses": 0
+   "w": 0.26,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "mono-no-aware",
+   "b": "serenity",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Accepting impermanence."
+  },
+  {
+   "a": "nostalgia",
+   "b": "rekindled-love",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Remembering what they had."
   },
   {
    "a": "nostalgia",
    "b": "saudade",
-   "w": 0.75,
-   "uses": 0
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Remembered warmth with absence."
   },
   {
    "a": "obsessive-love",
    "b": "protectiveness",
-   "w": 0.53,
-   "uses": 0
+   "w": 0.27,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "obsessive-love",
    "b": "revenge",
-   "w": 0.9,
-   "uses": 0
+   "w": 0.45,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "parting",
-   "b": "resentment",
-   "w": 0.71,
-   "uses": 0
-  },
-  {
-   "a": "parting",
-   "b": "secret-love",
-   "w": 0.69,
-   "uses": 0
+   "b": "reunion",
+   "w": 0.8,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Separation sets up the romantic reunion.",
+   "dir": "a->b"
   },
   {
    "a": "parting",
    "b": "unrequited-love",
-   "w": 0.75,
-   "uses": 0
+   "w": 0.38,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "pride",
+   "b": "quiet-resolve",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Held head high."
+  },
+  {
+   "a": "pride",
+   "b": "redemption",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Self-respect restored.",
+   "dir": "a->b"
   },
   {
    "a": "pride",
    "b": "rekindled-love",
-   "w": 0.73,
-   "uses": 0
+   "w": 0.36,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "pride",
+   "b": "shame",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "contrast",
+   "why": "Opposed self-evaluations that stories turn between."
   },
   {
    "a": "pride",
    "b": "triumph",
-   "w": 0.48,
-   "uses": 0
+   "w": 0.8,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Winning produces pride.",
+   "dir": "a->b"
   },
   {
    "a": "protectiveness",
    "b": "quiet-resolve",
-   "w": 0.52,
-   "uses": 0
+   "w": 0.26,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "protectiveness",
    "b": "redemption",
-   "w": 0.75,
-   "uses": 0
+   "w": 0.38,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "protectiveness",
-   "b": "revenge",
-   "w": 0.63,
-   "uses": 0
+   "b": "righteous-fury",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Anger on behalf of others."
   },
   {
    "a": "protectiveness",
-   "b": "schadenfreude",
-   "w": 0.53,
-   "uses": 0
+   "b": "survivor-s-guilt",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Failure to protect."
+  },
+  {
+   "a": "protectiveness",
+   "b": "tenderness",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Gentle care flips into guarding."
   },
   {
    "a": "protectiveness",
    "b": "the-confession",
-   "w": 0.62,
-   "uses": 0
+   "w": 0.31,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "quiet-resolve",
+   "b": "redemption",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Slow work of amends."
+  },
+  {
+   "a": "quiet-resolve",
+   "b": "reverence",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Devout steadiness."
+  },
+  {
+   "a": "quiet-resolve",
+   "b": "survivor-s-guilt",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Carrying on for the dead.",
+   "dir": "a->b"
+  },
+  {
+   "a": "rapture",
+   "b": "reverence",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Spiritual ecstasy."
   },
   {
    "a": "rapture",
    "b": "wonder",
-   "w": 0.72,
-   "uses": 0
+   "w": 0.36,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "redemption",
+   "b": "rekindled-love",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Earning back what was lost."
+  },
+  {
+   "a": "redemption",
+   "b": "revenge",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "contrast",
+   "why": "Revenge or redemption: the fork of heroic plots."
+  },
+  {
+   "a": "redemption",
+   "b": "shame",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Shame -> atonement -> redemption.",
+   "dir": "a->b"
+  },
+  {
+   "a": "redemption",
+   "b": "survivor-s-guilt",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Atoning by living well or saving others.",
+   "dir": "a->b"
   },
   {
    "a": "rekindled-love",
    "b": "relief",
-   "w": 0.79,
-   "uses": 0
+   "w": 0.4,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "rekindled-love",
    "b": "reunion",
-   "w": 0.66,
-   "uses": 0
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Reunion of lovers often relights the bond."
   },
   {
    "a": "rekindled-love",
    "b": "schadenfreude",
-   "w": 0.53,
-   "uses": 0
+   "w": 0.27,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "rekindled-love",
+   "b": "trust",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Trust must be rebuilt."
+  },
+  {
+   "a": "relief",
+   "b": "reunion",
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Reunion arrives with relief."
   },
   {
    "a": "relief",
    "b": "serenity",
-   "w": 0.61,
-   "uses": 0
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "After the storm, stillness.",
+   "dir": "a->b"
   },
   {
    "a": "relief",
    "b": "tenderness",
-   "w": 0.81,
-   "uses": 0
+   "w": 0.41,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "relief",
+   "b": "the-confession",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Saying it releases the held breath.",
+   "dir": "a->b"
+  },
+  {
+   "a": "relief",
+   "b": "triumph",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Ending of struggle.",
+   "dir": "a->b"
+  },
+  {
+   "a": "resentment",
+   "b": "revenge",
+   "w": 0.6,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Grudge to payback.",
+   "dir": "a->b"
+  },
+  {
+   "a": "resentment",
+   "b": "schadenfreude",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Pleasure in the rival's fall."
   },
   {
    "a": "resentment",
    "b": "shame",
-   "w": 0.89,
-   "uses": 0
+   "w": 0.45,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "resentment",
    "b": "survivor-s-guilt",
-   "w": 0.77,
-   "uses": 0
+   "w": 0.39,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "reunion",
+   "b": "tenderness",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Soft after the shock.",
+   "dir": "a->b"
   },
   {
    "a": "revenge",
    "b": "righteous-fury",
+   "w": 0.25,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "revenge",
+   "b": "schadenfreude",
    "w": 0.5,
-   "uses": 0
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Enjoying the foe's fall."
+  },
+  {
+   "a": "revenge",
+   "b": "triumph",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Heroic plot completion.",
+   "dir": "a->b"
+  },
+  {
+   "a": "reverence",
+   "b": "sublime-terror",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Terror before the divine becomes reverence.",
+   "dir": "a->b"
+  },
+  {
+   "a": "reverence",
+   "b": "trust",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Faith."
   },
   {
    "a": "schadenfreude",
    "b": "secret-love",
-   "w": 0.61,
-   "uses": 0
+   "w": 0.3,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "secret-love",
-   "b": "the-confession",
-   "w": 0.57,
-   "uses": 0
+   "b": "slow-burn-tension",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Hidden feelings sustain the slow burn."
+  },
+  {
+   "a": "secret-love",
+   "b": "tension",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Constant risk of exposure."
+  },
+  {
+   "a": "serenity",
+   "b": "uncanny-calm",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "contrast",
+   "why": "Calm that is wrong against calm that is true."
   },
   {
    "a": "shame",
    "b": "survivor-s-guilt",
-   "w": 0.86,
-   "uses": 0
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Guilt family."
   },
   {
    "a": "slow-burn-tension",
    "b": "tension",
-   "w": 0.79,
-   "uses": 0
+   "w": 0.4,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "slow-burn-tension",
-   "b": "unrequited-love",
-   "w": 0.64,
-   "uses": 0
+   "b": "the-confession",
+   "w": 0.85,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Held restraint pays off in the declaration.",
+   "dir": "a->b"
+  },
+  {
+   "a": "slow-burn-tension",
+   "b": "trust",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Deepening desire is built on growing trust.",
+   "dir": "a->b"
+  },
+  {
+   "a": "sublime-terror",
+   "b": "vertigo",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Peering over the edge."
+  },
+  {
+   "a": "sublime-terror",
+   "b": "wonder",
+   "w": 0.4,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Danger and discovery."
   },
   {
    "a": "tenderness",
    "b": "trust",
-   "w": 0.85,
-   "uses": 0
+   "w": 0.42,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "tension",
+   "b": "uncanny-calm",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "transition",
+   "why": "The calm breaks.",
+   "dir": "a->b"
   },
   {
    "a": "tension",
    "b": "vertigo",
-   "w": 0.52,
-   "uses": 0
+   "w": 0.26,
+   "uses": 0,
+   "kind": "similar"
+  },
+  {
+   "a": "triumph",
+   "b": "vertigo",
+   "w": 0.3,
+   "uses": 0,
+   "kind": "arc_pair",
+   "why": "Conquering the climb.",
+   "dir": "a->b"
   },
   {
    "a": "uncanny-calm",
    "b": "unrequited-love",
-   "w": 0.63,
-   "uses": 0
-  },
-  {
-   "a": "unrequited-love",
-   "b": "vertigo",
-   "w": 0.52,
-   "uses": 0
+   "w": 0.32,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "wanderlust",
    "b": "wonder",
-   "w": 0.74,
-   "uses": 0
+   "w": 0.37,
+   "uses": 0,
+   "kind": "similar"
   },
   {
    "a": "wanderlust",
    "b": "yearning-for-adventure",
-   "w": 0.77,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Wanting to go."
+  },
+  {
+   "a": "whimsy",
+   "b": "wonder",
+   "w": 0.5,
+   "uses": 0,
+   "kind": "cooccur",
+   "why": "Playful marvel."
   },
   {
    "a": "wonder",
    "b": "yearning-for-adventure",
-   "w": 0.65,
-   "uses": 0
+   "w": 0.7,
+   "uses": 0,
+   "kind": "transition",
+   "why": "Wonder pulls the hero out the door.",
+   "dir": "a->b"
   }
  ],
  "meta": {
@@ -3112,5 +4596,2831 @@
     45
    ]
   }
+ },
+ "story": {
+  "ts": "2026-10-03 10:52:59",
+  "sources": [
+   {
+    "key": "thornton2017",
+    "cite": "Thornton & Tamir (2017). Mental models accurately predict emotion transitions. PNAS 114(23):5982-5987.",
+    "url": "https://www.pnas.org/doi/abs/10.1073/pnas.1616056114",
+    "used_for": "Transitions and co-occurrence between emotions; people predict next emotions from similarity, valence, social impact and co-occurrence."
+   },
+   {
+    "key": "cowen2017",
+    "cite": "Cowen & Keltner (2017). Self-report captures 27 distinct categories of emotion bridged by continuous gradients. PNAS 114(38):E7900-E7909.",
+    "url": "https://doi.org/10.1073/pnas.1702247114",
+    "used_for": "Gradient neighbours (awe-peacefulness, horror-sadness, amusement-adoration): cooccur links within and across families."
+   },
+   {
+    "key": "plutchik",
+    "cite": "Plutchik wheel of emotions, primary/secondary dyads (joy+trust=love, anticipation+joy=optimism, sadness+disgust=remorse, joy+fear=guilt, fear+sadness=despair).",
+    "url": "https://en.wikipedia.org/wiki/Plutchik's_Wheel_of_Emotions",
+    "used_for": "Compound-emotion pairings (fear/relief, love/trust, shame/guilt, anticipation/joy)."
+   },
+   {
+    "key": "reagan2016",
+    "cite": "Reagan, Mitchell, Kiley, Danforth & Dodds (2016). The emotional arcs of stories are dominated by six basic shapes. EPJ Data Science 5:31.",
+    "url": "https://link.springer.com/article/10.1140/epjds/s13688-016-0093-1",
+    "used_for": "Arc shapes (man in a hole, Cinderella, Icarus, Oedipus, tragedy, rags to riches) justifying fall->rise pairs: tension->catharsis, grief->bittersweet->hope, loneliness->found family."
+   },
+   {
+    "key": "hogan2011",
+    "cite": "Hogan, P. C. (2011). Affective Narratology: The Emotional Structure of Stories. University of Nebraska Press.",
+    "url": "https://www.nebraskapress.unl.edu/nebraska/9780803230026/affective-narratology/",
+    "used_for": "Prototype plots: heroic (pride/anger), sacrificial (fear, atonement), romantic (attachment, separation, reunion); parent-child separation, revenge, criminality."
+   },
+   {
+    "key": "hayes",
+    "cite": "Hayes, G. Romancing the Beat: Story Structure for Romance Novels (4 phases, 20 beats: setup, falling in love, retreat from love / black moment, fighting for love / grand gesture).",
+    "url": "https://plottr.com/romancing-the-beat-template/",
+    "used_for": "Romance beat order: meet cute -> adhesion -> deepening desire -> dark moment -> grand gesture -> HEA."
+   }
+  ],
+  "notes": "Research basis: web-searched/verified abstracts of Thornton&Tamir 2017, Cowen&Keltner 2017, Reagan 2016, Hogan 2011 (summary level), Plutchik dyads, Hayes beat sheet. Full transition-probability matrices and the Warriner/NRC-VAD norms were NOT downloaded, so weights are expert judgement anchored to those sources, not computed from their numbers; no feature fixes proposed for that reason. Structure: (1) hubs -- tension, grief, relief, catharsis, trust, longing, defiance, bittersweet, dread should carry the most cross-family bridges; they are the connective tissue between romance, war, horror and comedy. (2) Use dir a->b as a directed transition (act-order), 'both' as undirected; kind arc_pair = setup->payoff (give these the strongest synapse weight and prefer them for blend neighbours). (3) 'contrast' links (gallows-humor/dread, gallows-humor/grief, shame/pride, revenge/redemption, love's-sacrifice/obsessive-love, hiraeth/wanderlust) are deliberate juxtapositions: render as dashed or lower-weight synapses. (4) Keep the existing feature-kNN edges as a faint background layer (they capture visual/aesthetic similarity) and layer these narrative links on top. (5) Love and passion family stays emotional-intensity only; the links reference only gaze/confession/union beats, nothing sexual.",
+  "links": [
+   {
+    "a": "love-at-first-sight",
+    "b": "infatuation",
+    "w": 0.8,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "The instant spark settles into obsessive-pleasant infatuation (Hayes: meet cute -> falling in love).",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "infatuation",
+    "b": "first-love",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Infatuation matures into the tender, awkward first love.",
+    "src": [
+     "hayes",
+     "plutchik"
+    ]
+   },
+   {
+    "a": "infatuation",
+    "b": "flirtatious-spark",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Early attraction shows up as playful teasing.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "infatuation",
+    "b": "adoration-from-afar",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Infatuation held at a distance becomes quiet adoration.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "infatuation",
+    "b": "jealousy",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "New attachment brings fear of losing it (jealousy).",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "infatuation",
+    "b": "obsessive-love",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Unchecked infatuation tips into obsession.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "flirtatious-spark",
+    "b": "awkwardness",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Flirting and the fumbling beats around it share scenes.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "flirtatious-spark",
+    "b": "mischief",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Teasing and mischief play together.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "flirtatious-spark",
+    "b": "slow-burn-tension",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Banter that deepens into charged restraint.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "flirtatious-spark",
+    "b": "enemies-to-lovers",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Sparring banter is the common doorway to the trope.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "enemies-to-lovers",
+    "b": "love-hate",
+    "w": 0.8,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Rivals pass through love-hate before admitting the turn.",
+    "src": [
+     "hayes",
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "enemies-to-lovers",
+    "b": "slow-burn-tension",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Hostility converts to charged tension in the deepening phase.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "enemies-to-lovers",
+    "b": "the-confession",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "The turn resolves in an admission.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "love-hate",
+    "b": "burning-passion",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Heat of conflict feeds heat of love (emotional intensity only).",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "love-hate",
+    "b": "resentment",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Old grievances keep the push-pull alive.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "slow-burn-tension",
+    "b": "the-confession",
+    "w": 0.85,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Held restraint pays off in the declaration.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "slow-burn-tension",
+    "b": "longing",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Restraint and wanting are the same ache.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "slow-burn-tension",
+    "b": "anticipation",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Will-they-won't-they runs on anticipation.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "slow-burn-tension",
+    "b": "secret-love",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Hidden feelings sustain the slow burn.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "slow-burn-tension",
+    "b": "trust",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Deepening desire is built on growing trust.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "adoration-from-afar",
+    "b": "unrequited-love",
+    "w": 0.7,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Watching from afar tends to become unrequited.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "adoration-from-afar",
+    "b": "longing",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Distance feeds wanting.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "adoration-from-afar",
+    "b": "the-confession",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "The brave step from afar to speaking.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "unrequited-love",
+    "b": "heartbreak",
+    "w": 0.75,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Rejection lands as heartbreak.",
+    "src": [
+     "hogan2011",
+     "plutchik"
+    ]
+   },
+   {
+    "a": "unrequited-love",
+    "b": "longing",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Unanswered love keeps longing alive.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "unrequited-love",
+    "b": "melancholy",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Prolonged unrequited love settles as melancholy.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "unrequited-love",
+    "b": "jealousy",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Seeing the beloved with another.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "unrequited-love",
+    "b": "humiliation",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "A failed confession stings in public.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "the-confession",
+    "b": "burning-passion",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Declared love releases intensity.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "the-confession",
+    "b": "first-love",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "First love's defining moment.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "the-confession",
+    "b": "anticipation",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "both",
+    "why": "Dread-tinged waiting before speaking.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "the-confession",
+    "b": "relief",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Saying it releases the held breath.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "burning-passion",
+    "b": "devotion",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Intensity matures into lasting commitment.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "burning-passion",
+    "b": "jealousy",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Intense attachment breeds possessive fear.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "burning-passion",
+    "b": "euphoria",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Peak romantic highs are euphoric.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "burning-passion",
+    "b": "obsessive-love",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Intensity without balance turns obsessive.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "devotion",
+    "b": "love-s-sacrifice",
+    "w": 0.8,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Devotion is tested by giving everything.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "devotion",
+    "b": "mature-love",
+    "w": 0.7,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Devotion across years becomes settled love.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "devotion",
+    "b": "protectiveness",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Devoted people guard the beloved.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "devotion",
+    "b": "trust",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Devotion presumes and builds trust.",
+    "src": [
+     "plutchik"
+    ]
+   },
+   {
+    "a": "devotion",
+    "b": "quiet-resolve",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Steady commitment shows as quiet resolve.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "love-s-sacrifice",
+    "b": "parting",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Sacrifice often is the parting.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "love-s-sacrifice",
+    "b": "bittersweet",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Love's sacrifice is the textbook bittersweet beat.",
+    "src": [
+     "hogan2011",
+     "reagan2016"
+    ]
+   },
+   {
+    "a": "love-s-sacrifice",
+    "b": "redemption",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Sacrifice buys redemption.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "love-s-sacrifice",
+    "b": "protectiveness",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Protective impulse made absolute.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "parting",
+    "b": "longing",
+    "w": 0.8,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "After the goodbye, the ache of absence.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "parting",
+    "b": "reunion",
+    "w": 0.8,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Separation sets up the romantic reunion.",
+    "src": [
+     "hogan2011",
+     "hayes"
+    ]
+   },
+   {
+    "a": "parting",
+    "b": "bittersweet",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Farewells carry joy and loss.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "parting",
+    "b": "heartbreak",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "The breakup moment.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "parting",
+    "b": "mono-no-aware",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Impermanence of meetings and farewells.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "heartbreak",
+    "b": "grief",
+    "w": 0.7,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Love lost is mourned.",
+    "src": [
+     "plutchik"
+    ]
+   },
+   {
+    "a": "heartbreak",
+    "b": "melancholy",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "The aftermath settles into a low, quiet sorrow.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "heartbreak",
+    "b": "resentment",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Hurt hardens into resentment.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "heartbreak",
+    "b": "betrayal",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Betrayal is a common cause of heartbreak.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "heartbreak",
+    "b": "loneliness",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "The empty house after.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "longing",
+    "b": "reunion",
+    "w": 0.85,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Classic setup -> payoff: yearning resolved by being together.",
+    "src": [
+     "hogan2011",
+     "hayes"
+    ]
+   },
+   {
+    "a": "longing",
+    "b": "hiraeth",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Longing for a lost home is the place-bound version.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "longing",
+    "b": "saudade",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Saudade is longing for what is absent.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "reunion",
+    "b": "relief",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Reunion arrives with relief.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "reunion",
+    "b": "joy",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Pleasure of being together again.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "reunion",
+    "b": "tenderness",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Soft after the shock.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "reunion",
+    "b": "rekindled-love",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Reunion of lovers often relights the bond.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "reunion",
+    "b": "homesickness",
+    "w": 0.5,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Return resolves homesickness.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "rekindled-love",
+    "b": "nostalgia",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Remembering what they had.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "rekindled-love",
+    "b": "trust",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Trust must be rebuilt.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "rekindled-love",
+    "b": "mature-love",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Second chances age into mature love.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "rekindled-love",
+    "b": "redemption",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Earning back what was lost.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "mature-love",
+    "b": "serenity",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Settled love feels calm.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "mature-love",
+    "b": "cozy-comfort",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Domestic ease.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "mature-love",
+    "b": "tenderness",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Gentleness in long partnership.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "tenderness",
+    "b": "protectiveness",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Gentle care flips into guarding.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "tenderness",
+    "b": "cozy-comfort",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Softness and safety.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "tenderness",
+    "b": "found-family-warmth",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Care between non-lovers.",
+    "src": [
+     "plutchik"
+    ]
+   },
+   {
+    "a": "first-love",
+    "b": "nostalgia",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "First love is the prime thing remembered.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "first-love",
+    "b": "awkwardness",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "First love is clumsy.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "first-love",
+    "b": "heartbreak",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "First loves often end.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "first-love",
+    "b": "bittersweet",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Remembered fondly with an ache.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "forbidden-love",
+    "b": "secret-love",
+    "w": 0.8,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Forbidden love must hide.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "forbidden-love",
+    "b": "love-s-sacrifice",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Choice between love and duty.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "forbidden-love",
+    "b": "defiance",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Choosing love over the rule.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "forbidden-love",
+    "b": "shame",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Social judgement internalised.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "secret-love",
+    "b": "jealousy",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Unable to claim the beloved.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "secret-love",
+    "b": "tension",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Constant risk of exposure.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "secret-love",
+    "b": "longing",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Stolen moments, long absences.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "jealousy",
+    "b": "betrayal",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Suspicion either follows or seeds a breach.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "jealousy",
+    "b": "resentment",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Jealousy curdles.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "jealousy",
+    "b": "obsessive-love",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Possessiveness escalates.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "jealousy",
+    "b": "shame",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Ashamed of being jealous.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "obsessive-love",
+    "b": "love-s-sacrifice",
+    "w": 0.3,
+    "kind": "contrast",
+    "dir": "both",
+    "why": "Opposite faces of total devotion.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "grief",
+    "b": "bittersweet",
+    "w": 0.75,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "grief -> bittersweet -> hope: mourning softens into mixed feeling.",
+    "src": [
+     "reagan2016",
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "bittersweet",
+    "b": "hope-against-the-odds",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Mixed feeling opens toward hope.",
+    "src": [
+     "reagan2016"
+    ]
+   },
+   {
+    "a": "grief",
+    "b": "melancholy",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Acute grief fades into a low, lingering sorrow.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "grief",
+    "b": "loneliness",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The empty place at the table.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "grief",
+    "b": "survivor-s-guilt",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Mourning those who died while you lived.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "grief",
+    "b": "revenge",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Heroic/revenge plots begin with a loss.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "grief",
+    "b": "catharsis",
+    "w": 0.7,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Mourning releases in tears (dread/grief -> catharsis).",
+    "src": [
+     "reagan2016"
+    ]
+   },
+   {
+    "a": "grief",
+    "b": "gallows-humor",
+    "w": 0.5,
+    "kind": "contrast",
+    "dir": "both",
+    "why": "Dark jokes deliberately set against loss.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "melancholy",
+    "b": "nostalgia",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Wistful looking back.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "melancholy",
+    "b": "loneliness",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Quiet sadness often alone.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "melancholy",
+    "b": "ennui",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Flat sadness drifts into boredom.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "melancholy",
+    "b": "mono-no-aware",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Beauty tinged with passing.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "nostalgia",
+    "b": "saudade",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Remembered warmth with absence.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "nostalgia",
+    "b": "homesickness",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Remembered places.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "nostalgia",
+    "b": "bittersweet",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Textbook mixed emotion.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "nostalgia",
+    "b": "disillusionment",
+    "w": 0.4,
+    "kind": "contrast",
+    "dir": "both",
+    "why": "The past was brighter than the present.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "saudade",
+    "b": "hiraeth",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Two cultural words for absent-place longing.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "saudade",
+    "b": "homesickness",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Absent home.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "hiraeth",
+    "b": "homesickness",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Longing for home.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "hiraeth",
+    "b": "wanderlust",
+    "w": 0.4,
+    "kind": "contrast",
+    "dir": "both",
+    "why": "Pull toward home vs pull to leave.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "homesickness",
+    "b": "loneliness",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Away from belonging.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "homesickness",
+    "b": "found-family-warmth",
+    "w": 0.5,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Found family answers homesickness.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "homesickness",
+    "b": "cozy-comfort",
+    "w": 0.5,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Home's comfort is the longed-for payoff.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "mono-no-aware",
+    "b": "awe",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Wonder at transient beauty.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "mono-no-aware",
+    "b": "serenity",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Accepting impermanence.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "mono-no-aware",
+    "b": "bittersweet",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Joy and loss in one image.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "disillusionment",
+    "b": "betrayal",
+    "w": 0.7,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Betrayal strips illusions.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "disillusionment",
+    "b": "ennui",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Lost ideals leave flatness.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "disillusionment",
+    "b": "defiance",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Cynical hero turns to resistance.",
+    "src": [
+     "reagan2016"
+    ]
+   },
+   {
+    "a": "disillusionment",
+    "b": "redemption",
+    "w": 0.4,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Fall then rise (man in a hole).",
+    "src": [
+     "reagan2016"
+    ]
+   },
+   {
+    "a": "disillusionment",
+    "b": "resentment",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Bitter edge.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "dread",
+    "b": "tension",
+    "w": 0.8,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Dread builds into taut tension.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "dread",
+    "b": "catharsis",
+    "w": 0.7,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Release of built-up fear.",
+    "src": [
+     "reagan2016"
+    ]
+   },
+   {
+    "a": "dread",
+    "b": "relief",
+    "w": 0.8,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Fear resolved to relief.",
+    "src": [
+     "thornton2017",
+     "plutchik"
+    ]
+   },
+   {
+    "a": "dread",
+    "b": "uncanny-calm",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The quiet before; horror lives in stillness.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "dread",
+    "b": "existential-dread",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Personal fear widens to cosmic.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "dread",
+    "b": "protectiveness",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Fear for others sparks guarding.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "existential-dread",
+    "b": "cosmic-horror",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Both about scale and meaninglessness.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "existential-dread",
+    "b": "ennui",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Meaninglessness without fear.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "existential-dread",
+    "b": "quiet-resolve",
+    "w": 0.5,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Facing the void by choosing meaning.",
+    "src": [
+     "reagan2016"
+    ]
+   },
+   {
+    "a": "existential-dread",
+    "b": "disillusionment",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Collapsed worldview.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "cosmic-horror",
+    "b": "sublime-terror",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Awe and terror at the vast.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "cosmic-horror",
+    "b": "awe",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Scale beyond comprehension.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "cosmic-horror",
+    "b": "absurdity",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Absurdist reading of an uncaring cosmos.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "sublime-terror",
+    "b": "awe",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Gradient between awe and fear.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "sublime-terror",
+    "b": "wonder",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Danger and discovery.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "sublime-terror",
+    "b": "reverence",
+    "w": 0.4,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Terror before the divine becomes reverence.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "sublime-terror",
+    "b": "vertigo",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Peering over the edge.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "uncanny-calm",
+    "b": "tension",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "The calm breaks.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "uncanny-calm",
+    "b": "awkwardness",
+    "w": 0.3,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Wrongness in the social/off register.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "uncanny-calm",
+    "b": "serenity",
+    "w": 0.4,
+    "kind": "contrast",
+    "dir": "both",
+    "why": "Calm that is wrong against calm that is true.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "vertigo",
+    "b": "awe",
+    "w": 0.3,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Heights and grandeur.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "vertigo",
+    "b": "triumph",
+    "w": 0.3,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Conquering the climb.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "betrayal",
+    "b": "revenge",
+    "w": 0.9,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Textbook: betrayal -> revenge.",
+    "src": [
+     "hogan2011",
+     "plutchik"
+    ]
+   },
+   {
+    "a": "betrayal",
+    "b": "righteous-fury",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "A wrong done to the innocent.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "betrayal",
+    "b": "resentment",
+    "w": 0.7,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Slow burn of a breach.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "betrayal",
+    "b": "trust",
+    "w": 0.6,
+    "kind": "contrast",
+    "dir": "a->b",
+    "why": "Trust is what betrayal destroys.",
+    "src": [
+     "plutchik"
+    ]
+   },
+   {
+    "a": "revenge",
+    "b": "catharsis",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Payback releases tension.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "revenge",
+    "b": "redemption",
+    "w": 0.5,
+    "kind": "contrast",
+    "dir": "both",
+    "why": "Revenge or redemption: the fork of heroic plots.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "revenge",
+    "b": "triumph",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Heroic plot completion.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "revenge",
+    "b": "schadenfreude",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Enjoying the foe's fall.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "righteous-fury",
+    "b": "defiance",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Anger plus agency.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "righteous-fury",
+    "b": "liberation",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Fury overthrows the oppressor.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "righteous-fury",
+    "b": "protectiveness",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Anger on behalf of others.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "resentment",
+    "b": "humiliation",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Injury to dignity feeds grudges.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "resentment",
+    "b": "revenge",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Grudge to payback.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "resentment",
+    "b": "schadenfreude",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Pleasure in the rival's fall.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "schadenfreude",
+    "b": "mischief",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Petty glee.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "humiliation",
+    "b": "shame",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Public shame.",
+    "src": [
+     "plutchik"
+    ]
+   },
+   {
+    "a": "humiliation",
+    "b": "revenge",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Slights provoke payback.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "humiliation",
+    "b": "awkwardness",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Mortification shades into cringe.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "humiliation",
+    "b": "defiance",
+    "w": 0.4,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Rise after being put down.",
+    "src": [
+     "reagan2016"
+    ]
+   },
+   {
+    "a": "joy",
+    "b": "euphoria",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Gradient of delight.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "joy",
+    "b": "bliss",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Calm joy.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "joy",
+    "b": "camaraderie",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Joy shared with friends.",
+    "src": [
+     "plutchik"
+    ]
+   },
+   {
+    "a": "joy",
+    "b": "relief",
+    "w": 0.6,
+    "kind": "transition",
+    "dir": "both",
+    "why": "Release becomes happiness.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "joy",
+    "b": "triumph",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Winning delights.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "euphoria",
+    "b": "catharsis",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Overflow release.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "euphoria",
+    "b": "liberation",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Freedom's rush.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "bliss",
+    "b": "serenity",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Quiet happiness.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "bliss",
+    "b": "rapture",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Gentle vs ecstatic.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "rapture",
+    "b": "reverence",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Spiritual ecstasy.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "rapture",
+    "b": "awe",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Transcendent wonder.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "rapture",
+    "b": "euphoria",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Peak states.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "triumph",
+    "b": "pride",
+    "w": 0.8,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Winning produces pride.",
+    "src": [
+     "hogan2011",
+     "plutchik"
+    ]
+   },
+   {
+    "a": "triumph",
+    "b": "hope-against-the-odds",
+    "w": 0.6,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Odds-defying hope pays off as triumph.",
+    "src": [
+     "reagan2016",
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "triumph",
+    "b": "camaraderie",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Victory with the team.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "triumph",
+    "b": "liberation",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Freedom won.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "triumph",
+    "b": "relief",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Ending of struggle.",
+    "src": [
+     "reagan2016"
+    ]
+   },
+   {
+    "a": "wonder",
+    "b": "awe",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Gradient between curiosity and awe.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "wonder",
+    "b": "yearning-for-adventure",
+    "w": 0.7,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Wonder pulls the hero out the door.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "wonder",
+    "b": "anticipation",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Discovery is forward-leaning.",
+    "src": [
+     "plutchik"
+    ]
+   },
+   {
+    "a": "wonder",
+    "b": "whimsy",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Playful marvel.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "wonder",
+    "b": "camaraderie",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Discovered together.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "awe",
+    "b": "reverence",
+    "w": 0.7,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Awe settles into reverence.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "awe",
+    "b": "serenity",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Calm vastness.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "yearning-for-adventure",
+    "b": "wanderlust",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Wanting to go.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "yearning-for-adventure",
+    "b": "anticipation",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Journey ahead.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "yearning-for-adventure",
+    "b": "homesickness",
+    "w": 0.4,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Heroic journey away and back.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "yearning-for-adventure",
+    "b": "hope-against-the-odds",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Setting out with long odds.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "wanderlust",
+    "b": "loneliness",
+    "w": 0.3,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Solo travel.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "reverence",
+    "b": "trust",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Faith.",
+    "src": [
+     "plutchik"
+    ]
+   },
+   {
+    "a": "reverence",
+    "b": "quiet-resolve",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Devout steadiness.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "serenity",
+    "b": "cozy-comfort",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Calm and safety.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "serenity",
+    "b": "relief",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "After the storm, stillness.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "cozy-comfort",
+    "b": "found-family-warmth",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Warm gathering.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "cozy-comfort",
+    "b": "ennui",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Comfort tips into lethargy.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "relief",
+    "b": "catharsis",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Release.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "ennui",
+    "b": "loneliness",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Flat isolation.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "ennui",
+    "b": "whimsy",
+    "w": 0.3,
+    "kind": "contrast",
+    "dir": "both",
+    "why": "Dullness vs play.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "tension",
+    "b": "anticipation",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Wound-up waiting.",
+    "src": [
+     "plutchik"
+    ]
+   },
+   {
+    "a": "tension",
+    "b": "catharsis",
+    "w": 0.8,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Tension -> release is the basic dramatic arc.",
+    "src": [
+     "reagan2016"
+    ]
+   },
+   {
+    "a": "tension",
+    "b": "awkwardness",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Social tension.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "tension",
+    "b": "gallows-humor",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Joking to cope.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "anticipation",
+    "b": "joy",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Optimism (anticipation + joy).",
+    "src": [
+     "plutchik"
+    ]
+   },
+   {
+    "a": "anticipation",
+    "b": "hope-against-the-odds",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Forward-looking hope.",
+    "src": [
+     "plutchik"
+    ]
+   },
+   {
+    "a": "catharsis",
+    "b": "liberation",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Release becomes freedom.",
+    "src": [
+     "reagan2016"
+    ]
+   },
+   {
+    "a": "catharsis",
+    "b": "serenity",
+    "w": 0.4,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Calm after the storm.",
+    "src": [
+     "reagan2016"
+    ]
+   },
+   {
+    "a": "found-family-warmth",
+    "b": "camaraderie",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Chosen family and team.",
+    "src": [
+     "plutchik"
+    ]
+   },
+   {
+    "a": "found-family-warmth",
+    "b": "trust",
+    "w": 0.7,
+    "kind": "transition",
+    "dir": "both",
+    "why": "Belonging grows as trust.",
+    "src": [
+     "plutchik"
+    ]
+   },
+   {
+    "a": "found-family-warmth",
+    "b": "loneliness",
+    "w": 0.7,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Isolated lead finds family (Cinderella arc).",
+    "src": [
+     "reagan2016",
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "found-family-warmth",
+    "b": "protectiveness",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Family fights for its own.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "found-family-warmth",
+    "b": "survivor-s-guilt",
+    "w": 0.3,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Group after loss.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "camaraderie",
+    "b": "gallows-humor",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Banter under pressure.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "camaraderie",
+    "b": "mischief",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Shared pranks.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "camaraderie",
+    "b": "trust",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Teammates.",
+    "src": [
+     "plutchik"
+    ]
+   },
+   {
+    "a": "camaraderie",
+    "b": "betrayal",
+    "w": 0.4,
+    "kind": "contrast",
+    "dir": "a->b",
+    "why": "Group trust broken.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "protectiveness",
+    "b": "survivor-s-guilt",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Failure to protect.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "loneliness",
+    "b": "trust",
+    "w": 0.5,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Learning to trust ends solitude.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "shame",
+    "b": "pride",
+    "w": 0.5,
+    "kind": "contrast",
+    "dir": "both",
+    "why": "Opposed self-evaluations that stories turn between.",
+    "src": [
+     "plutchik"
+    ]
+   },
+   {
+    "a": "shame",
+    "b": "redemption",
+    "w": 0.7,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Shame -> atonement -> redemption.",
+    "src": [
+     "hogan2011",
+     "reagan2016"
+    ]
+   },
+   {
+    "a": "shame",
+    "b": "survivor-s-guilt",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Guilt family.",
+    "src": [
+     "plutchik"
+    ]
+   },
+   {
+    "a": "shame",
+    "b": "awkwardness",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Social embarrassment.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "pride",
+    "b": "defiance",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Dignity under pressure.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "pride",
+    "b": "quiet-resolve",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Held head high.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "survivor-s-guilt",
+    "b": "redemption",
+    "w": 0.6,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Atoning by living well or saving others.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "survivor-s-guilt",
+    "b": "quiet-resolve",
+    "w": 0.4,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Carrying on for the dead.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "whimsy",
+    "b": "mischief",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Light play.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "whimsy",
+    "b": "absurdity",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Gentle vs full absurd.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "whimsy",
+    "b": "cozy-comfort",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Storybook ease.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "absurdity",
+    "b": "gallows-humor",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Dark absurd.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "absurdity",
+    "b": "awkwardness",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Comedy of discomfort.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "absurdity",
+    "b": "existential-dread",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Absurd cosmos.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "gallows-humor",
+    "b": "dread",
+    "w": 0.5,
+    "kind": "contrast",
+    "dir": "both",
+    "why": "Jokes against danger.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "hope-against-the-odds",
+    "b": "defiance",
+    "w": 0.7,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Heroic resolve.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "hope-against-the-odds",
+    "b": "liberation",
+    "w": 0.6,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Hope pays off as freedom.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "hope-against-the-odds",
+    "b": "quiet-resolve",
+    "w": 0.6,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Steadiness inside hope.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "hope-against-the-odds",
+    "b": "dread",
+    "w": 0.5,
+    "kind": "arc_pair",
+    "dir": "a->b",
+    "why": "Hope shown against looming danger.",
+    "src": [
+     "reagan2016"
+    ]
+   },
+   {
+    "a": "defiance",
+    "b": "liberation",
+    "w": 0.7,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Resistance wins freedom.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "liberation",
+    "b": "relief",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Freedom releases.",
+    "src": [
+     "thornton2017"
+    ]
+   },
+   {
+    "a": "liberation",
+    "b": "joy",
+    "w": 0.5,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Free at last.",
+    "src": [
+     "cowen2017"
+    ]
+   },
+   {
+    "a": "redemption",
+    "b": "quiet-resolve",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Slow work of amends.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "redemption",
+    "b": "pride",
+    "w": 0.4,
+    "kind": "transition",
+    "dir": "a->b",
+    "why": "Self-respect restored.",
+    "src": [
+     "hogan2011"
+    ]
+   },
+   {
+    "a": "love-at-first-sight",
+    "b": "anticipation",
+    "w": 0.5,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "The hope of seeing them again.",
+    "src": [
+     "hayes"
+    ]
+   },
+   {
+    "a": "love-at-first-sight",
+    "b": "awkwardness",
+    "w": 0.4,
+    "kind": "cooccur",
+    "dir": "both",
+    "why": "Dumbstruck first meeting.",
+    "src": [
+     "hayes"
+    ]
+   }
+  ]
+ },
+ "factory": {
+  "ts": "2026-10-03 10:52:59",
+  "seed_nodes": [
+   "longing",
+   "unrequited-love",
+   "forbidden-love",
+   "tenderness",
+   "saudade",
+   "hiraeth",
+   "homesickness",
+   "grief",
+   "heartbreak",
+   "melancholy",
+   "bittersweet",
+   "mono-no-aware",
+   "nostalgia",
+   "disillusionment",
+   "dread",
+   "existential-dread",
+   "cosmic-horror",
+   "sublime-terror",
+   "uncanny-calm",
+   "vertigo",
+   "righteous-fury",
+   "revenge",
+   "betrayal",
+   "resentment",
+   "schadenfreude",
+   "joy",
+   "euphoria",
+   "bliss",
+   "rapture",
+   "triumph",
+   "wonder",
+   "awe",
+   "yearning-for-adventure",
+   "wanderlust",
+   "reverence",
+   "serenity",
+   "cozy-comfort",
+   "relief",
+   "ennui",
+   "tension",
+   "slow-burn-tension",
+   "anticipation",
+   "catharsis",
+   "found-family-warmth",
+   "camaraderie",
+   "protectiveness",
+   "loneliness",
+   "trust",
+   "shame",
+   "pride",
+   "survivor-s-guilt",
+   "jealousy",
+   "humiliation",
+   "whimsy",
+   "absurdity",
+   "gallows-humor",
+   "mischief",
+   "awkwardness",
+   "hope-against-the-odds",
+   "defiance",
+   "liberation",
+   "redemption",
+   "quiet-resolve",
+   "infatuation",
+   "first-love",
+   "love-at-first-sight",
+   "flirtatious-spark",
+   "enemies-to-lovers",
+   "burning-passion",
+   "devotion",
+   "adoration-from-afar",
+   "the-confession",
+   "reunion",
+   "love-s-sacrifice",
+   "rekindled-love",
+   "obsessive-love",
+   "love-hate",
+   "secret-love",
+   "mature-love",
+   "parting"
+  ]
  }
 }

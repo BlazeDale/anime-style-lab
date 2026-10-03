@@ -17,7 +17,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 CONSISTENCY = ("Draw each named character exactly as described here and in their reference image: the same face, hair, outfit and colors, but ONLY their appearance. "
-               "The pose, expression, action, hands, props and place come from this description, not from the reference images.")
+               "The pose, expression, action, hands, props and place come from this description, not from the reference images; "
+               "never copy a reference image's facial expression or smile: each face shows what this moment makes them feel.")
 
 
 def root_of(edir):
@@ -38,7 +39,8 @@ def journey_view(bible, ep=None):
     cast = {n: ({"look": _look(v), **({"ref": v["ref"]} if isinstance(v, dict) and v.get("ref") else {})}) for n, v in (bible.get("cast") or {}).items()}
     crops = {v["ref"]: v["ref_crop"] for v in (bible.get("cast") or {}).values() if isinstance(v, dict) and v.get("ref") and v.get("ref_crop")}
     return {"name": "", "character": "", "source": "", "refs": [], "style": (ep or {}).get("style") or bible.get("style", ""),
-            "world": (bible.get("world") or {}).get("setting", ""), "cast": cast, "ref_crop": crops, "ref_resolution": bible.get("ref_resolution", 768)}
+            "world": (bible.get("world") or {}).get("setting", ""), "cast": cast, "ref_crop": crops,
+            "ref_resolution": (bible.get("render") or {}).get("ref_resolution") or bible.get("ref_resolution", 512)}
 
 
 def place_text(bible, shot):
@@ -57,8 +59,17 @@ def refs_of(bible, shot, root):
     if shot.get("noref"):
         return []
     j = journey_view(bible)
-    got = rj.scene_refs(j, {"noref": True, "with": shot.get("with") or []})
-    return [(r, w) for r, w in got if (Path(root) / r).is_file()]
+    got = [(r, w) for r, w in rj.scene_refs(j, {"noref": True, "with": shot.get("with") or []}) if (Path(root) / r).is_file()]
+    mr = (bible.get("render") or {}).get("max_refs")   # only the first N characters of `with` (the ones the shot is about) get a portrait; the rest stay text-only
+    return got[:int(mr)] if mr else got
+
+
+def faces_text(shot):
+    """shot `faces` {cast name: "eyes wide, jaw tight, fighting tears"} -> "Faces: Mara: eyes wide, ...; Rook: ..." (only names in frame; "" when none)"""
+    fc = shot.get("faces") if isinstance(shot.get("faces"), dict) else {}
+    with_ = shot.get("with") or []
+    items = [f"{n}: {str(v).strip().rstrip('.')}" for n, v in fc.items() if n in with_ and str(v).strip()]
+    return ("Faces (expressions for this exact moment): " + "; ".join(items) + ".") if items else ""
 
 
 def scene_text(bible, ep, shot, root):
@@ -75,6 +86,9 @@ def scene_text(bible, ep, shot, root):
     body = style.replace("{subject}", subject) if "{subject}" in style else f"{subject}. {style}"
     cam = sc["camera"].strip().rstrip(".")
     parts = [f"Camera: {cam}. {body}" if cam else body]
+    fc = faces_text(shot)   # 🎭 the emotion ON the faces, from what is happening in this moment
+    if fc:
+        parts.append(fc)
     people = [f"{n} ({rj.look(j['cast'][n]).rstrip('. ')})" for n in sc["with"] if n in j["cast"]]
     if people:
         parts.append("In the scene: " + "; ".join(people) + ".")
@@ -88,25 +102,56 @@ def scene_text(bible, ep, shot, root):
     return " ".join(parts)
 
 
-def prompt_of(ep, shot, edir, steer=True, atlas=None):
-    import explore_render as er
+def render_bible(edir, over=None):
+    """saga.json with its `render` knobs {steps, ref_resolution, max_refs, megapixels, upscaler, up_scale} (+ overrides, e.g. from a bake-off)"""
     bible = load_bible(edir)
+    return {**bible, "render": {**(bible.get("render") or {}), **(over or {})}} if over else bible
+
+
+def prompt_of(ep, shot, edir, steer=True, atlas=None, over=None):
+    import explore_render as er
+    bible = render_bible(edir, over)
     base = scene_text(bible, ep, shot, root_of(edir))
     cue = er.steer_cue(ep, shot, atlas) if steer else ""
     return f"{base} {cue}" if cue else base
 
 
-def build(ep, shot, i, edir, steer=True):
+def build(ep, shot, i, edir, steer=True, over=None):
     import run_journey
     import explore_render as er
     edir = Path(edir)
-    bible = load_bible(edir)
+    bible = render_bible(edir, over)
     root = root_of(edir)
     refs = refs_of(bible, shot, root)
     j = journey_view(bible, ep)
     params = {**er.params_of(edir), "aspect_ratio": er.aspect_name(shot.get("aspect")), "megapixels": er.MEGAPIXELS}
-    return run_journey.build_graph(j, params, prompt_of(ep, shot, edir, steer), er.seed_of(shot, i),
-                                   f"anime-style-lab/saga_{edir.parent.name}_{edir.name}_{shot['id']}", refs=[r for r, _ in refs])
+    rk = bible.get("render") or {}
+    if rk.get("steps"):
+        params["steps"] = int(rk["steps"])
+    if rk.get("megapixels"):
+        params["megapixels"] = float(rk["megapixels"])
+    g = run_journey.build_graph(j, params, prompt_of(ep, shot, edir, steer, over=over), er.seed_of(shot, i),
+                                f"anime-style-lab/saga_{edir.parent.name}_{edir.name}_{shot['id']}", refs=[r for r, _ in refs])
+    return add_upscale(g, rk.get("upscaler"), float(rk.get("up_scale") or 0.5))
+
+
+def add_upscale(g, model, scale=0.5):
+    """an optional upscale step before saving (per saga: `render.upscaler` = a file in ComfyUI/models/upscale_models, e.g. 4x-AnimeSharp.pth for clean
+    anime line art; textured styles may want none or a general model). The 4x model output is scaled by `scale` (0.5 -> 2x the render). Unchanged without a model."""
+    if not model:
+        return g
+    save = next(k for k, v in g.items() if v.get("class_type", "").startswith("SaveImage"))
+    src = g[save]["inputs"]["images"]
+    if model == "plain":   # no model: a plain lanczos resize to the same 2x size (the baseline an upscaler has to beat)
+        g["up_fit"] = {"class_type": "ImageScaleBy", "inputs": {"image": src, "upscale_method": "lanczos", "scale_by": scale * 4}}
+        g[save]["inputs"]["images"] = ["up_fit", 0]
+        return g
+    g["up_load"] = {"class_type": "UpscaleModelLoader", "inputs": {"model_name": model}}
+    g["up_rgb"] = {"class_type": "SplitImageWithAlpha", "inputs": {"image": src}}   # the Qwen 2.1 VAE decodes 4 channels; ESRGAN models take RGB
+    g["up_run"] = {"class_type": "ImageUpscaleWithModel", "inputs": {"upscale_model": ["up_load", 0], "image": ["up_rgb", 0]}}
+    g["up_fit"] = {"class_type": "ImageScaleBy", "inputs": {"image": ["up_run", 0], "upscale_method": "lanczos", "scale_by": scale}}
+    g[save]["inputs"]["images"] = ["up_fit", 0]
+    return g
 
 
 def extra_json(ep, shot, edir):

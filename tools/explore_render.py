@@ -1,5 +1,8 @@
 """🌌 Render an Explore episode's shots (images only).
-  python tools/explore_render.py explore/NNN-slug [--only e3 e4] [--force-timer] [--dry-run [--graph]]
+  python tools/explore_render.py explore/NNN-slug [--only e3 e4 [--redo]] [--force-timer] [--dry-run [--graph]]
+  --redo (with --only): the shots re-render from their CURRENT text with a fresh seed; each old picture stays until its replacement
+  is ready, then moves to _rerolled/
+  (after fixing a bible look or a shot prompt; a plain 🎲 reroll re-runs the saved graph instead)
 Every shot of episode.json that has no eN.png yet is rendered with Qwen Image 2.1 text-to-image (the episode `style` with {subject}
 filled by the shot prompt, or "<shot prompt>. <style>" when the style has no slot; the shot's `aspect` (default 16:9) at ~1.2 MP; seed =
 shot.seed or 1000+index). Writes eN.png + eN.workflow.json (so 🎲 reroll works: ref_reroll.py), puts `src` on the shot, sets the episode
@@ -15,6 +18,7 @@ STEER CUE (hard-wired): after the style's {subject} is filled, ONE short sentenc
 shot's own `steer` override) is appended to the image prompt: composition from presence, mood + palette from the emotion, staging from the formality blend's
 picture lines. Never camera movement. The exact sentence is saved as "steer_cue" in eN.json. --no-steer turns it off. Claude still writes captions / story by hand."""
 import json
+import re
 import sys
 import time
 import urllib.parse
@@ -78,7 +82,8 @@ def presence_cue(p):
 
 def _atlas_items(v, nd, floor=0.2, n=3):
     """the blend's (node, w) pairs that exist in the atlas, heavy first, light ones (< floor) dropped (the top one always stays)"""
-    items = sorted(((nd[b["id"]], float(b.get("w") or 0)) for b in (v.get("blend") or []) if b.get("id") in nd), key=lambda t: -t[1])
+    import atlas as fa
+    items = [(nd[i], w) for i, w in fa.story_items(v) if i in nd]   # an orbit value folds each sub-link into its parent link
     return ([t for t in items if t[1] >= floor] or items[:1])[:n]
 
 
@@ -94,13 +99,13 @@ def emotion_cue(e, atlas=None, budget=(9, 5)):
         if not items:
             return ""
         k = float(e.get("intensity") or 0)
-        scale = "faintly" if k < 0.34 else "clearly" if k < 0.67 else "overwhelmingly"
-        head = f"{scale} {items[0][0]['name'].lower()}"
+        scale = "a faint" if k < 0.34 else "a clear" if k < 0.67 else "an overwhelming"
+        head = f"{scale} mood of {items[0][0]['name'].lower()}"   # a MOOD (atmosphere), not a scene to stage
         if len(items) > 1:
             head += f", tinged with {items[1][0]['name'].lower()}"
-        clause = _clause(items[0][0]["picture"], budget[0]) if budget[0] else ""
+        clause = _mood_clause(items[0][0]["picture"], budget[0]) if budget[0] else ""   # mood only (light / colour / tone), never the staging
         if len(items) > 1 and budget[1] and items[1][1] >= 0.3:
-            clause += "; " + _clause(items[1][0]["picture"], budget[1])
+            clause = "; ".join(x for x in (clause, _mood_clause(items[1][0]["picture"], budget[1])) if x)
         return head + (": " + clause if clause else "")
     if not isinstance(e, dict) or e.get("primary") not in EMO_CUE:
         return ""
@@ -127,6 +132,24 @@ def _clause(picture, n):
     return ", ".join(out)
 
 
+MOOD_WORDS = ("light", "lamplight", "glow", "palette", "tone", "haze", "shadow", "blue", "grey", "gray", "gold", "amber", "red", "warm", "cool", "cold", "pale",
+              "desaturat", "muted", "hue", "colour", "color", "dim", "bright", "contrast", "saturat", "neon", "silver", "violet", "crimson", "chiaroscuro", "dusk", "glare")
+STAGE_WORDS = ("figure", "person", "someone", "adult", "people", "couple", "traveler", "traveller", "man", "woman", "embrace", "kiss", "eye", "face", "hand", "arm",
+               "shoulder", "smile", "tear", "head", "expression", "posture", "sitting", "standing", "watching", "holding", "gazing", "touching", "reaching", "running",
+               "keepsake", "sea", "water", "window", "room", "hill", "mountain", "petal", "leaves", "scarf", "rain", "street", "crowd", "drenched", "clothed", "body")
+
+
+def _mood_clause(picture, n):
+    """only the MOOD of a picture line (light, colour, tone, atmosphere), never its staging (who does what, where): emotion drives the
+    story, it does not dictate every scene ('two adults in a desperate embrace, ..., deep red and amber light' -> 'deep red and amber light')"""
+    keep = []
+    for ch in [c.strip() for c in str(picture).split(",") if c.strip()]:
+        low = ch.lower()
+        if any(w in low for w in MOOD_WORDS) and not any(re.search(r"\b" + w, low) for w in STAGE_WORDS):
+            keep.append(ch)
+    return _clause(", ".join(keep), n) if keep else ""
+
+
 def _slug(s):
     import re
     return re.sub(r"[^a-z0-9]+", "-", str(s).lower()).strip("-")
@@ -150,8 +173,8 @@ def formality_cue(fo, atlas=None, budget=(10, 6, 4)):
     if not blend:  # an old stick object: its register (and the partner it blended with) are neurons too
         g, sec, mix = fo.get("genre"), fo.get("secondary"), float(fo.get("mix") or 0)
         blend = [{"id": _slug(g), "w": 1 - mix}] + ([{"id": _slug(sec), "w": mix}] if sec else [])
-    items = [(b.get("id"), float(b.get("w") or 0)) for b in blend if b.get("id") in nd]
-    items = sorted(items, key=lambda t: -t[1])
+    import atlas as A
+    items = [(i, w) for i, w in A.story_items({**fo, "blend": blend}) if i in nd]   # orbit values: sub-links fold into their parent link
     items = [t for t in items if t[1] >= 0.2] or items[:1]
     if not items or (items[0][0] == "everyday" and items[0][1] >= 0.9):
         return ""
@@ -175,7 +198,8 @@ def core_cue(cores, atlas=None, skip=None, words=6):
     wt = float(c.get("weight", 0.6))
     if wt < 0.5 or not words:
         return f"a hint of {name}"
-    return f"an undertone of {name}: " + _clause(top["picture"], words)
+    mood = _mood_clause(top["picture"], words)   # the core's mood (light / tone), not its staging: the story serves the core, the pictures only lean toward it
+    return f"an undertone of {name}: {mood}" if mood else f"an undertone of {name}"
 
 
 def maturity_cue(m, pic_words=8):
@@ -255,6 +279,25 @@ def plan(ep, edir, only=None):
 
 def load(edir):
     return json.loads((edir / "episode.json").read_text(encoding="utf-8"))
+
+
+def retire(edir, ids, stamp=None):
+    """--redo: move each shot's png (+ workflow / sidecar json) to _rerolled/<id>__<stamp>.* so the shot re-renders from its CURRENT text
+    (bible looks, prompt, steer) and 🕘 past revisions keeps the old picture. -> ids that had a picture"""
+    stamp = stamp or time.strftime("%Y%m%d-%H%M%S")
+    rr = edir / "_rerolled"
+    moved = []
+    for sid in ids:
+        png = edir / f"{sid}.png"
+        if not png.is_file():
+            continue
+        rr.mkdir(exist_ok=True)
+        png.replace(rr / f"{sid}__{stamp}.png")
+        for src, dst in ((edir / f"{sid}.workflow.json", rr / f"{sid}.workflow__{stamp}.json"), (edir / f"{sid}.json", rr / f"{sid}.json__{stamp}")):
+            if src.is_file():
+                src.replace(dst)
+        moved.append(sid)
+    return moved
 
 
 def patch(edir, shot_id=None, **fields):
@@ -343,8 +386,17 @@ def main(argv=None):
     if not (edir / "episode.json").is_file():
         sys.exit(f"no episode.json in {pos[0]}")
     ep = load(edir)
-    todo = plan(ep, edir, only)
     dry = "--dry-run" in argv
+    redo = set()
+    if "--redo" in argv:  # the old picture stays on the page until its replacement is ready
+        if not only:
+            sys.exit("--redo needs --only <ids> (it re-renders shots that already have a picture)")
+        redo = set(only)
+        seeds = {s["id"]: int(time.time()) % 100000 + k for k, s in enumerate(ep.get("shots") or []) if s.get("id") in only}
+        for sid, sd in seeds.items() if not dry else ():  # a fresh seed, so a redo with unchanged text still gives a new picture
+            patch(edir, sid, seed=sd)
+        ep = load(edir)
+    todo = [(i, s) for i, s in enumerate(ep.get("shots") or [], 1) if s.get("id") in redo] if redo else plan(ep, edir, only)
     steer = "--no-steer" not in argv
     for i, s in todo:
         print(f"{'would render' if dry else 'queued'} {s['id']} ({aspect_name(s.get('aspect'))}, seed {seed_of(s, i)}): {prompt_of(ep, s, steer, edir=edir)[:400]}", flush=True)
@@ -385,7 +437,11 @@ def main(argv=None):
             stopped = True
             print("explore state is not active (timer ran out or stopped): pausing", flush=True)
             break
-        ep, i, s = next_shot(edir, only)  # re-read EVERY time: Claude may have rewritten the unrendered rest of the story
+        if redo:
+            ep = load(edir)
+            i, s = next(((k, x) for k, x in enumerate(ep.get("shots") or [], 1) if x.get("id") in redo), (None, None))
+        else:
+            ep, i, s = next_shot(edir, only)  # re-read EVERY time: Claude may have rewritten the unrendered rest of the story
         if s is None:
             break
         out = edir / f"{s['id']}.png"
@@ -399,7 +455,8 @@ def main(argv=None):
         try:
             cue = steer_cue(ep, s) if steer else ""
             g = build(ep, s, i, edir, steer)
-            (edir / f"{s['id']}.workflow.json").write_text(json.dumps(g, indent=1, ensure_ascii=False), encoding="utf-8")
+            wf = edir / (f"{s['id']}.workflow.redo.json" if redo else f"{s['id']}.workflow.json")
+            wf.write_text(json.dumps(g, indent=1, ensure_ascii=False), encoding="utf-8")
             t0 = time.time()
             hist = rv.submit_and_wait(g, timeout=3600)
             ims = [im for o in hist["outputs"].values() for im in o.get("images", [])]
@@ -407,7 +464,12 @@ def main(argv=None):
                 raise RuntimeError(f"no image output for {rel}")
             q = urllib.parse.urlencode({k: ims[0][k] for k in ("filename", "subfolder", "type")})
             with urllib.request.urlopen(f"{rv.SERVER}/view?{q}") as r:
-                out.write_bytes(r.read())
+                data = r.read()
+            if redo:  # swap: the old picture goes to _rerolled/ only now that the new one exists
+                retire(edir, [s["id"]])
+                wf.replace(edir / f"{s['id']}.workflow.json")
+                redo.discard(s["id"])
+            out.write_bytes(data)
             out.with_suffix(".json").write_text(json.dumps({"seed": seed_of(s, i), "aspect": aspect_name(s.get("aspect")), "prompt": prompt_of(ep, s, steer, edir=edir), "steer_cue": cue,
                                                             **(__import__("saga_render").extra_json(ep, s, edir) if ep.get("saga") else {})},
                                                            indent=2, ensure_ascii=False), encoding="utf-8")

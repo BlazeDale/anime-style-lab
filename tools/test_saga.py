@@ -224,7 +224,7 @@ ok("short silver hair, red scarf" in er.prompt_of(epr, shots[1], True, None, cd)
 ok(sr.refs_of(saga.load(sd), shots[1], tmp) == [], "a ref whose file is gone is skipped, not an error")
 (tmp / "explore" / "sagas" / "001-the-glass-harbour" / "ch01" / "e2.png").write_bytes(PNG)
 j = sr.journey_view(saga.load(sd), epr)
-ok(j["ref_crop"] == {"explore/sagas/001-the-glass-harbour/ch01/e2.png": [0.2, 0.0, 0.8, 0.6]} and j["cast"]["Mira"]["ref"].endswith("e2.png") and j["ref_resolution"] == 768, "journey view: ref_crop passed on for build_graph")
+ok(j["ref_crop"] == {"explore/sagas/001-the-glass-harbour/ch01/e2.png": [0.2, 0.0, 0.8, 0.6]} and j["cast"]["Mira"]["ref"].endswith("e2.png") and j["ref_resolution"] == 512, "journey view: ref_crop passed on for build_graph")
 buf = io.StringIO()
 with contextlib.redirect_stdout(buf):
     er.main([str(cd), "--dry-run"])
@@ -258,6 +258,54 @@ src = (TOOLS / "serve_gallery.py").read_text(encoding="utf-8")
 pat = re.search(r'ref_reroll\.py"\), key\] if re\.fullmatch\(r"([^"]+)", key\)', src)
 ok(pat and re.fullmatch(pat.group(1), "explore/sagas/001-x/ch02/e5.png") and re.fullmatch(pat.group(1), "explore/004-x/e1.png") and not re.fullmatch(pat.group(1), "explore/sagas/001-x/e5.png"), "server: the reroll worker routes saga shots to ref_reroll.py")
 ok(any(e["id"] == "001-the-glass-harbour/ch05" for e in xs.episodes(tmp)), "explore_state.episodes lists saga chapters (so a continue request counts as handled)")
+
+# ---------------------------------------------------------------------------------------------------------------- pacing (reading time vs render time)
+ok(saga.beat_secs("") == 0 and abs(saga.beat_secs("Hi.") - (0.25 + 2.2)) < 1e-9, "pacing: a short line = min typing + min dwell, like the template's vnBeatMs")
+line = "one two three four five six seven eight nine ten"
+ok(abs(saga.beat_secs(line) - (len(line) * 0.034 + 0.9 + 10 * 0.33)) < 1e-9, "pacing: typing 34 ms/char + 900 ms + 330 ms/word")
+ok(saga.reading_secs({"caption": "x", "hold": 7}) == 7, "pacing: a shot with no text counts its hold")
+ok(saga.render_median([30, 50, 40, 115]) == 45 and saga.render_median([]) == saga.PACE_FALLBACK_S, "pacing: median render time (an outlier doesn't skew it), fallback when no times")
+thin = [{"narration": "Short."}] * 4
+rich = [{"narration": line + " " + line, "dialogue": [{"who": "A", "text": line}] * 4}] * 4
+pt, pr = saga.pacing(thin, 40), saga.pacing(rich, 40)
+ok(pt["target_s"] == 24 and not pt["ok"] and len(pt["short"]) == 4, "pacing: thin shots fall short of 60% of a 40 s render")
+ok(pr["ok"] and not pr["short"], "pacing: narration + 4 lines of ~10 words cover it")
+
+# ---------------------------------------------------------------------------------------------------------------- story lint (entertainment, not just mechanics)
+tell = [{"narration": "She had always known the station was strange, the way you know a song. Years of quiet.", "place": f"p{i}"} for i in range(8)]
+w_ = saga.story_lint({}, tell, None, None)
+ok(any("telling, not showing" in x for x in w_) and any("summary / backstory" in x for x in w_) and any("narration only" in x for x in w_), "story lint: narration-heavy, backstory phrasing, narration-only shots are flagged")
+ok(any("montage" in x for x in w_) and any("no `scenes`" in x for x in w_) and any("no `choices`" in x for x in w_) and any("no `hook`" in x for x in w_), "story lint: montage, missing scenes / choices / hook are flagged")
+good_shots = [{"place": "bar", "narration": "Rain.", "dialogue": [{"who": "Mira", "text": "Give me the key."}, {"who": "Tobias", "text": "You know what it costs, and you know who pays it, so think hard before you ask me again tonight."}, {"who": "Kiri", "text": "Squawk."}]} for _ in range(8)]
+good = {"scenes": [{"title": "The ask", "shots": [1, 4], "goal": "get the key", "obstacle": "Tobias refuses", "turn": "he names a price", "stakes": "the harbour floods"},
+                   {"title": "The price", "shots": [5, 8], "goal": "pay without losing Kiri", "obstacle": "the tide", "turn": "Kiri flies off", "stakes": "Kiri"}],
+        "choices": [{"who": "Mira", "choice": "trades her compass", "cost": "her way home"}], "hook": "Where did Kiri go?"}
+ok(saga.story_lint(good, good_shots, saga.load(sd), 9) == [], "story lint: a chapter with real scenes, a costly choice by the lead, a hook and distinct voices is clean")
+ok(any("scene 1" in x and "obstacle" in x for x in saga.story_lint({**good, "scenes": [{**good["scenes"][0], "obstacle": ""}, good["scenes"][1]]}, good_shots, saga.load(sd), 9)), "story lint: a scene without an obstacle is flagged")
+ok(any("no costly choice by the lead" in x for x in saga.story_lint({**good, "choices": [{"who": "Tobias", "choice": "x", "cost": "y"}]}, good_shots, saga.load(sd), 9)), "story lint: only side characters choosing is flagged")
+same = [{"place": "bar", "dialogue": [{"who": w, "text": "five words in this line"} for w in ("Mira", "Tobias", "Kiri")]} for _ in range(4)]
+ok(any("same rhythm" in x for x in saga.story_lint(good, same, saga.load(sd), 9)), "story lint: every speaker in the same rhythm is flagged")
+
+# 🎭 faces: the expression for this exact moment goes into the prompt; the reference never sets the expression; missing face cues are linted
+ft = sr.faces_text({"with": ["Mira", "Tobias"], "faces": {"Mira": "eyes wide, jaw tight.", "Tobias": "", "Ghost": "smiling"}})
+ok(ft == "Faces (expressions for this exact moment): Mira: eyes wide, jaw tight." and sr.faces_text({"with": ["Mira"]}) == "", "faces_text: only names in frame with a cue, physical terms passed through")
+ok("never copy a reference image's facial expression" in sr.CONSISTENCY, "the consistency clause forbids copying a reference's expression")
+wsh = [{**s, "with": ["Mira", "Tobias"]} for s in good_shots]
+ok(any("no `faces` cue" in x for x in saga.story_lint(good, wsh, saga.load(sd), 9)) and not any("no `faces`" in x for x in saga.story_lint(good, [{**s, "faces": {"Mira": "x"}} for s in wsh], saga.load(sd), 9)), "story lint: character shots without a face cue are flagged; with cues, clean")
+ok(not any("no `faces`" in x for x in saga.story_lint(good, [{**s, "camera": "extreme wide shot"} for s in wsh], saga.load(sd), 9)), "story lint: wide shots don't need face cues")
+e_, w_ = saga.validate_shot(saga.load(sd), {"prompt": "p", "with": ["Mira"], "faces": {"Tobias": "x"}, "caption": "c"})
+ok(any("not in frame" in x for x in w_) and saga.validate_shot(saga.load(sd), {"prompt": "p", "faces": "bad", "caption": "c"})[0], "faces: a name not in frame warns; a non-dict errors")
+
+# ⚙ render knobs (bake-off): saga.json "render" {steps, ref_resolution, max_refs} + per-call overrides
+import saga_bench as sbn  # noqa: E402
+ok(sbn.parse_variant("B:ref_resolution=512,steps=20") == ("B", {"ref_resolution": 512, "steps": 20}) and sbn.parse_variant("A:") == ("A", {}), "bench: variant parsing")
+try:
+    sbn.parse_variant("X:cfg=3"); ok(False, "bench: unknown knob refused")
+except ValueError:
+    ok(True, "bench: unknown knob refused")
+ok(sbn.gpu_seconds({"status": {"messages": [["execution_start", {"timestamp": 1000}], ["execution_success", {"timestamp": 43500}]]}}) == 42.5 and sbn.gpu_seconds({}) is None, "bench: GPU seconds from ComfyUI's own stamps")
+bk = {"cast": {"A": {"look": "a", "ref": "a.png"}, "B": {"look": "b", "ref": "b.png"}}, "render": {"max_refs": 1, "ref_resolution": 512}}
+ok(sr.journey_view(bk)["ref_resolution"] == 512 and sr.journey_view({"cast": {}})["ref_resolution"] == 512, "render knobs: ref_resolution from saga.json render (default 512)")
 
 shutil.rmtree(tmp, ignore_errors=True)
 print(f"\n{PASS} passed, {FAIL} failed")

@@ -18,3 +18,5 @@ gallery/_shot.html
 journeys/_tmp_workflow.json
 .claude/settings.local.json
 *.part
+bench/
+gallery/bench.html
