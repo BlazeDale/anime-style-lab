@@ -21,7 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from config import FFMPEG, FFPROBE, find_font  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
-SING_ENGINES = {"ltxia2v", "ltx25ia2v", "s2v"}  # lip-synced to the song: placed at song_audio.t0, never stretched
+SING_ENGINES = {"ltxia2v", "s2v"}  # lip-synced to the song: placed at song_audio.t0, never stretched
 XFADE = {"dissolve": "fade", "fade": "fade", "fadeblack": "fadeblack", "fadewhite": "fadewhite", "zoomin": "zoomin", "smoothleft": "smoothleft",
          "smoothright": "smoothright", "smoothup": "smoothup", "smoothdown": "smoothdown", "wipeleft": "wipeleft", "wiperight": "wiperight",
          "slideleft": "slideleft", "slideright": "slideright", "circleopen": "circleopen", "circleclose": "circleclose", "radial": "radial",
