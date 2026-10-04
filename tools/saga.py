@@ -24,7 +24,7 @@ Claude is the AUTHOR; this tool is the saga BIBLE + the checks. Data (explore/sa
   python tools/saga.py cores <saga> set [--file cores.json] [--maturity "Teen"]   save the cores (default: the deck's, from feedback/explore.json) into saga.json (history kept by id)
   python tools/saga.py cores <saga> log <core> --chapter chNN --beat "..." [--how "..."]   record a beat that served a core (id or name)
   python tools/saga.py cores <saga> resolve <core> | reopen <core> | weight <core> 0.8     retire / revive a core, or change its weight
-A saga's `cores` [{id, name, probe, blend, weight 0-1, status active|resolved, history [{chapter, beat, how}]}] (max 5 active) and `maturity` {stop 0-6, label} are SAVED PER SAGA in saga.json;
+A saga's `cores` [{id, name, probe, blend, weight 0-1, status active|resolved, history [{chapter, beat, how}]}] (ONE active; older ones resolved) and `maturity` {stop 0-6, label} are SAVED PER SAGA in saga.json;
 a new saga starts with the deck's. <saga> = the id (001-the-glass-harbour), its number, a unique part of the slug, or `current`. Duplicates are refused (--update edits an existing entry)."""
 import argparse
 import json
@@ -568,7 +568,7 @@ def write_chapter(sdir, spec, replace=False, steer=None, now=None, root=None):
         try:
             import explore_state
             st = explore_state.state(Path(root or ROOT) / "feedback" / "explore.json")
-            steer = {k: st.get(k) for k in ("presence", "emotion", "formality", "cores", "maturity") if st.get(k) is not None}
+            steer = {k: st.get(k) for k in explore_state.STEER_KEYS if st.get(k) is not None}
         except Exception:
             steer = {}
         if b.get("cores") is not None:   # the saga's own cores (with their history) are the source of truth for its chapters
@@ -641,8 +641,11 @@ def cores_status(sdir, core, status):
     b = load(sdir)
     cs = b.get("cores") or []
     c = _find_core(cs, core)
-    if status == "active" and c.get("status") != "active" and sum(1 for x in cs if x.get("status", "active") == "active") >= 5:
-        raise SagaError("already 5 active cores: resolve one first")
+    if status == "active" and c.get("status") != "active":  # one active core: reopening one retires the current one
+        import explore_state
+        act = [x for x in cs if x.get("status", "active") == "active"]
+        for x in act[:max(0, len(act) - explore_state.MAX_ACTIVE_CORES + 1)]:
+            x["status"] = "resolved"
     c["status"] = status
     save(sdir, b)
     return c

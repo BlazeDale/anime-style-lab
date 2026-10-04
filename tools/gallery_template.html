@@ -169,9 +169,117 @@ table.sgrid td.rowlabel { font: 12px ui-monospace, Consolas, monospace; color: v
 #tray { position: fixed; left: 0; right: 0; bottom: 0; background: var(--panel); border-top: 1px solid var(--line); padding: 8px 24px;
   display: none; align-items: center; gap: 10px; z-index: 6; box-shadow: 0 -4px 16px rgba(0,0,0,.12); }
 #tray.show { display: flex; }
+/* 🎞 slideshow v2 */
+.showroot { position: fixed; inset: 0; z-index: 400; background: #000; color: #eee; overflow: hidden; }
+.showroot.shidle, .showroot.shidle * { cursor: none !important; }
+body.trayup .showroot { bottom: 76px; }  /* the 📌 tray stays visible below the show */
+.shstage { position: absolute; inset: 0; perspective: 1800px; }
+.shui { transition: opacity .6s ease; } .showroot.shidle .shui { opacity: 0; pointer-events: none; }
+.shctl { position: absolute; bottom: 14px; right: 16px;  /* at the bottom: near the top edge the browser drops its own full-screen bar */ display: flex; gap: 6px; z-index: 5; }
+.shctl button, .shctl a { font: 14px system-ui, sans-serif; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; border: 1px solid rgba(255,255,255,.14);
+  background: rgba(20,20,26,.55); color: #ddd; cursor: pointer; text-decoration: none; backdrop-filter: blur(6px); }
+.shctl button:hover, .shctl a:hover, .shctl button.on { border-color: #e8c27a; color: #f3d9a4; }
+.shpanel { position: absolute; bottom: 58px; right: 16px; z-index: 5; display: none; flex-direction: column; gap: 8px; padding: 12px 14px; border-radius: 14px;
+  background: rgba(14,14,20,.82); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(10px); max-width: calc(100vw - 32px); }
+.shpanel.open { display: flex; }
+.shgrp { display: flex; flex-wrap: wrap; gap: 4px; } .shchip { font: 12px system-ui, sans-serif; padding: 3px 10px; border-radius: 999px; border: 1px solid #3a3a44; background: transparent; color: #bbb; cursor: pointer; }
+.shchip.on { background: #e8c27a; color: #111; border-color: #e8c27a; }
+.shtitle { position: absolute; left: 20px; bottom: 20px; z-index: 5; font: 500 13px system-ui, sans-serif; color: rgba(255,255,255,.55); max-width: calc(100vw - 340px); }
+.shtitle .meta { color: rgba(255,255,255,.3); margin-left: 6px; } .shopen { color: #e8c27a; text-decoration: none; margin-left: 6px; }
+.shprog { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; z-index: 5; } .shprog span { display: block; height: 100%; width: 0; background: rgba(232,194,122,.45); }
+.shempty { position: absolute; inset: 0; display: grid; place-items: center; color: #777; font: 15px system-ui, sans-serif; }
+/* a card: the picture face + a card back, flipped in flight */
+.shcard { position: absolute; left: 0; top: 0; transform-style: preserve-3d; touch-action: none; user-select: none; -webkit-user-select: none; cursor: grab; will-change: transform; }
+.shcard.dragging { opacity: .3; }
+.shface, .shback { position: absolute; inset: 0; border-radius: 10px; backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden;
+  box-shadow: 0 18px 50px rgba(0,0,0,.85); }
+.shface img { width: 100%; height: 100%; object-fit: cover; display: block; }  /* pointer events on: right-click → Copy image works */
+.shback { transform: rotateY(180deg); border: 1px solid #b8914a;
+  background: radial-gradient(circle at 50% 50%, rgba(232,194,122,.35) 0 9%, transparent 10%),
+    repeating-linear-gradient(45deg, rgba(232,194,122,.16) 0 2px, transparent 2px 14px), repeating-linear-gradient(-45deg, rgba(232,194,122,.16) 0 2px, transparent 2px 14px), #1a1030;
+  box-shadow: inset 0 0 0 7px #1a1030, inset 0 0 0 8px rgba(232,194,122,.6); }
+.shcard .pinb { position: absolute; right: 8px; top: 8px; opacity: 0; transition: opacity .2s; } .shcard:hover .pinb, .shcard .pinb.on { opacity: .9; }
+.shwallhint { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 6; padding: 10px 18px; border-radius: 999px; color: #e8c27a;
+  border: 1px solid rgba(232,194,122,.4); background: rgba(14,14,20,.7); font: 14px system-ui, sans-serif; pointer-events: none; animation: shhint 2.4s ease-in-out infinite alternate; }
+@keyframes shhint { from { opacity: .45; } to { opacity: 1; } }
+.shwallhint small { display: block; margin-top: 4px; font-size: 12px; color: rgba(232,194,122,.7); text-align: center; } .shwallhint { border-radius: 16px; text-align: center; }
+.shctl button[hidden] { display: none; }
+.shctl .shwallbtn { width: auto; padding: 0 10px; border-radius: 17px; gap: 1px; grid-auto-flow: column; } .shwallbtn sup { font-size: 9px; color: #e8c27a; }
+.shsetfb { position: absolute; z-index: 4; transform: translate(calc(-100% + 6px), calc(-100% - 8px));  /* sits just above the corner, clear of the 📌 */ display: flex; align-items: center; gap: 4px; padding: 4px 6px 4px 11px; border-radius: 999px;
+  background: rgba(12,12,18,.72); backdrop-filter: blur(8px); box-shadow: 0 0 22px rgba(232,194,122,.28), 0 6px 20px rgba(0,0,0,.6); opacity: 0; animation: shsetin .6s ease-out both; }
+.shsetfb span { font: 600 10.5px system-ui, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: rgba(243,223,164,.85); margin-right: 3px; }
+.shsetfb .sbtn { width: 30px; height: 30px; border-radius: 50%; border: 0; background: rgba(255,255,255,.08); font: 14px/1 system-ui, sans-serif; cursor: pointer; }
+.shsetfb .sbtn:hover { background: rgba(232,194,122,.25); } .shsetfb .sbtn.on[data-sact="love"] { background: #e0557a; } .shsetfb .sbtn.on[data-sact="nope"] { background: #555; }
+@keyframes shsetin { from { opacity: 0; transform: translate(calc(-100% + 6px), calc(-100% + 4px)); } to { opacity: 1; transform: translate(calc(-100% + 6px), calc(-100% - 8px)); } }
+.shfb button[data-shcast].on { background: rgba(120,160,255,.55); }
+.shdial { position: fixed; z-index: 2100; width: 0; height: 0; pointer-events: none; }
+.shdial::before { content: ""; position: absolute; left: -165px; top: -165px; width: 330px; height: 330px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(10,10,16,.55) 0 20%, rgba(10,10,16,.9) 21% 62%, rgba(10,10,16,0) 72%); backdrop-filter: blur(3px); box-shadow: 0 0 60px rgba(232,194,122,.18); animation: shdialin .18s ease-out both; }
+.shdialc, .shdialo { position: absolute; transform: translate(-50%, -50%); text-align: center; font: 600 12px/1.15 system-ui, sans-serif; color: #e9e2cf; border-radius: 999px;
+  transition: background .12s, color .12s, transform .12s; animation: shdialin .2s ease-out both; }
+.shdialc { left: 0; top: 0; width: 58px; height: 58px; display: grid; place-items: center; font-size: 10.5px; background: rgba(232,194,122,.16); }
+.shdialo { padding: 6px 10px; background: rgba(255,255,255,.07); white-space: nowrap; }
+.shdialo.hot, .shdialc.hot { background: #e8c27a; color: #111; transform: translate(-50%, -50%) scale(1.12); box-shadow: 0 0 22px rgba(232,194,122,.6); }
+.shdial.off .shdialo, .shdial.off .shdialc { opacity: .4; }
+@keyframes shdialin { from { opacity: 0; scale: .7; } to { opacity: 1; scale: 1; } }
+.showroot.wall .shtitle, .showroot.wall .shsetfb, .showroot.wall #shwall, .showroot.wall #shgear { display: none; }  /* the wall is the far end of the main table */
+.shq { position: absolute; left: 18px; top: 16px; z-index: 6; display: flex; align-items: center; gap: 7px; padding: 4px 11px 4px 9px; border-radius: 999px;
+  font: 600 12px/1 ui-monospace, Consolas, monospace; color: rgba(243,223,164,.62); background: rgba(14,14,20,.45); border: 1px solid rgba(232,194,122,.16); pointer-events: auto; cursor: default; }
+.shq:hover { color: #f3dfa4; background: rgba(14,14,20,.75); }
+.shq i { width: 7px; height: 7px; border-radius: 50%; background: rgba(232,194,122,.45); }
+.shq.run i { background: #e8c27a; animation: shqbreath 2.4s ease-in-out infinite; }
+@keyframes shqbreath { 0%, 100% { opacity: .35; box-shadow: 0 0 0 rgba(232,194,122,0); } 50% { opacity: 1; box-shadow: 0 0 9px rgba(232,194,122,.8); } }
+.shqplus { position: absolute; left: 50%; top: -2px; font: 700 12px/1 ui-monospace, Consolas, monospace; color: #e8c27a; pointer-events: none; text-shadow: 0 0 8px rgba(232,194,122,.7); }
+.shtoast { position: absolute; bottom: 58px; right: 16px; z-index: 6; max-width: min(420px, calc(100vw - 32px)); padding: 9px 14px; border-radius: 12px; font: 13px/1.4 system-ui, sans-serif;
+  color: #f3dfa4; background: rgba(14,14,20,.88); border: 1px solid rgba(232,194,122,.35); opacity: 0; transform: translateY(-6px); transition: opacity .3s, transform .3s; pointer-events: none; }
+.shtoast.on { opacity: 1; transform: none; }
+.shfb { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); display: flex; gap: 8px; opacity: 0; transition: opacity .2s; }
+.shcard:hover .shfb { opacity: 1; }
+.shfb button { width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255,255,255,.18); background: rgba(12,12,18,.6); backdrop-filter: blur(6px); font: 16px/1 system-ui, sans-serif; cursor: pointer; }
+.shfb button:hover { border-color: #e8c27a; } .shfb button.on[data-fb="love"] { background: #e0557a; border-color: #e0557a; } .shfb button.on[data-fb="nope"] { background: #555; }
+.shcard.loved .shface { box-shadow: 0 0 50px 12px rgba(224,85,122,.5), 0 18px 50px rgba(0,0,0,.85);  /* glows, never a border */ }
+.shcard.loved .shfb, .shcard.noped .shfb { opacity: .85; }
+/* the character carried over from the set's first parent image:
+   a slow-breathing aqua aura, so you can follow the same character from style to style */
+.shcard.carried .shface { animation: shcarry 4.5s ease-in-out infinite alternate; }
+@keyframes shcarry { from { box-shadow: 0 0 40px 8px rgba(70,215,195,.36), 0 18px 50px rgba(0,0,0,.85); }
+  to { box-shadow: 0 0 74px 18px rgba(70,215,195,.55), 0 18px 50px rgba(0,0,0,.85); } }
+.shcard.carried.loved .shface { animation: none; box-shadow: 0 0 34px 8px rgba(224,85,122,.45), 0 0 70px 16px rgba(70,215,195,.45), 0 18px 50px rgba(0,0,0,.85); }
+@media (prefers-reduced-motion: reduce) { .shcard.carried .shface { animation: none; box-shadow: 0 0 56px 12px rgba(70,215,195,.45), 0 18px 50px rgba(0,0,0,.85); } }
+.shcard.noped .shface img { filter: grayscale(.75) brightness(.45); transition: filter .4s; }
+#shtitle .sbtns { margin-left: 10px; } #shtitle .sbtn { background: transparent; border: 1px solid rgba(255,255,255,.18); border-radius: 999px; color: #ddd; cursor: pointer; padding: 1px 8px; margin-right: 4px; }
+#shtitle .sbtn.on { background: rgba(224,85,122,.8); border-color: transparent; }
+.shmingle { position: absolute; left: 0; top: 0; z-index: 3; pointer-events: none; border-radius: 9px; overflow: hidden; opacity: 0; will-change: transform;
+  box-shadow: 0 0 36px 8px rgba(232,194,122,.45), 0 14px 40px rgba(0,0,0,.8); }
+.shmingle img { height: 100%; width: auto; display: block; }
+.shmingle i { position: absolute; right: 5px; top: 4px; font: normal 12px/1 system-ui, sans-serif; filter: drop-shadow(0 1px 2px rgba(0,0,0,.8)); }
+.shpoof { position: absolute; left: 0; top: 0; pointer-events: none; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,214,140,.55) 0, rgba(255,190,90,.18) 35%, transparent 70%); }
+.shghost { position: fixed; z-index: 2000; width: 150px; transform: translate(-50%, -50%) rotate(-4deg); pointer-events: none; border-radius: 8px; box-shadow: 0 0 30px rgba(232,194,122,.45), 0 10px 40px rgba(0,0,0,.8); }
+.shdrop { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); width: min(560px, calc(100vw - 32px)); height: 96px; display: none; align-items: center; justify-content: center;
+  border: 1px dashed rgba(232,194,122,.6); border-radius: 18px; color: #e8c27a; font: 500 15px system-ui, sans-serif; background: rgba(232,194,122,.05); z-index: 1500; transition: background .2s, box-shadow .2s; }
+/* ✦ a just-finished evolve / cross set: a holo-foil sweep
+   crosses each card once as it lands, then a soft sheen every few seconds; a small foil seal in the corner; the title gets "✦ new cross" */
+.shcard.fresh .shface::after { content: ""; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; border-radius: inherit;
+  background: linear-gradient(115deg, transparent 32%, rgba(255,130,220,.32) 42%, rgba(130,230,255,.36) 50%, rgba(255,240,160,.3) 58%, transparent 68%);
+  background-size: 260% 100%; background-position: 130% 0; opacity: 0; animation: shholo 2.4s ease-in-out var(--hd, 0ms) 1 both, shsheen 9s ease-in-out calc(var(--hd, 0ms) + 2.4s) infinite; }
+@keyframes shholo { 0% { opacity: 0; background-position: 130% 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; background-position: -30% 0; } }
+@keyframes shsheen { 0%, 70% { opacity: 0; background-position: 130% 0; } 78% { opacity: .45; } 92% { opacity: .45; } 100% { opacity: 0; background-position: -30% 0; } }
+.shseal { position: absolute; left: 8px; top: 8px; width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%; font: normal 13px/1 system-ui, sans-serif; color: #3b2a08;
+  background: conic-gradient(from 30deg, #f6e3a1, #c9a24e, #fff2c4, #b88a35, #f6e3a1); box-shadow: 0 0 0 1px rgba(0,0,0,.25), 0 2px 8px rgba(0,0,0,.5), 0 0 14px rgba(246,227,161,.35);
+  backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: translateZ(1px); pointer-events: none; opacity: .92; }
+.shnewtag { margin-left: 10px; padding: 1px 9px; border-radius: 999px; font-size: 11.5px; letter-spacing: .04em; color: #f3dfa4; border: 1px solid rgba(243,223,164,.35);
+  background: linear-gradient(90deg, rgba(255,130,220,.12), rgba(130,230,255,.12), rgba(255,240,160,.12)); }
+@media (prefers-reduced-motion: reduce) { .shcard.fresh .shface::after { animation: none; } }
+body.trayup .shdrop { bottom: 88px; } .shdrop.on { display: flex; } .shdrop.hot { background: rgba(232,194,122,.16); box-shadow: 0 0 40px rgba(232,194,122,.3); }
 #tray .pins { display: flex; gap: 6px; overflow-x: auto; flex: 1; }
 #tray .pins img { height: 56px; border-radius: 4px; cursor: pointer; }
 #tray .pins img:hover { opacity: .5; }
+#tray .pinw { position: relative; flex: none; touch-action: none; user-select: none; -webkit-user-select: none; cursor: grab; transition: transform .12s; }
+#tray .pinw b { position: absolute; left: 3px; top: 3px; min-width: 16px; padding: 0 4px; border-radius: 999px; background: rgba(0,0,0,.7); color: #fff; font: 700 11px/16px system-ui, sans-serif; text-align: center; pointer-events: none; }
+#tray .pinw:first-child b { background: var(--accent); }
+#tray .pinw.dragging { z-index: 2; cursor: grabbing; transition: none; opacity: .85; box-shadow: 0 4px 14px rgba(0,0,0,.5); }
+#tray .pinw.dropbefore { box-shadow: -4px 0 0 var(--accent); }
 #tray #pindir { flex: 1.2; min-width: 180px; max-width: 520px; font: inherit; font-size: 13px; resize: vertical; background: var(--bg); color: var(--fg);
   border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; }
 #tray #pinsubmit { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
@@ -591,12 +699,15 @@ body.trayup #totop { bottom: 96px; }
 .xshots { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; margin-top: 14px; }
 .xshot { margin: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
 .xshot .cell > img { width: 100%; display: block; cursor: zoom-in; }
+.sgtileplay { position: absolute; left: 8px; top: 8px; z-index: 3; width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(255,255,255,.55); background: rgba(0,0,0,.55);
+  color: #fff; font-size: 14px; line-height: 1; cursor: pointer; opacity: .8; transition: opacity .15s, transform .15s; }
+.sgtileplay:hover, .sgtileplay:focus-visible { opacity: 1; transform: scale(1.12); background: var(--accent); }
 .xshot .xwait { aspect-ratio: 16/9; display: grid; place-items: center; color: var(--muted); background: var(--line); }
 .xshot figcaption { padding: 8px 12px 10px; font-size: 14px; } .xshot figcaption b { color: var(--accent); margin-right: 6px; }
 .xshot details { font-size: 12px; color: var(--muted); margin-top: 4px; } .xshot details pre { white-space: pre-wrap; margin: 4px 0 0; }
 .xplay { font: inherit; font-weight: 700; font-size: 16px; cursor: pointer; border-radius: 999px; border: 0; background: var(--accent); color: #fff; padding: 9px 22px; margin: 8px 0; }
 .xplay:disabled { opacity: .45; cursor: default; }
-/* 📖 Nev Novel sagas: bible page + the visual-novel layer of the player */
+/* 📖 NevNovella sagas: bible page + the visual-novel layer of the player */
 .xsec { margin: 22px 0 8px; font-size: 15px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .sgh { margin: 26px 0 8px; } .sgworld p { margin: 4px 0; } .sgworld b { text-transform: capitalize; color: var(--accent); margin-right: 6px; }
 .sgcards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
@@ -615,10 +726,12 @@ body.trayup #totop { bottom: 96px; }
 #xplayer .xctl .xauto { display: none; min-width: 74px; font-size: 14px; } #xplayer.vnmode .xctl .xauto { display: inline-block; } #xplayer .xctl .xauto.on { background: var(--accent); border-color: var(--accent); }
 #xplayer .xchap .xs { font-style: normal; letter-spacing: .3em; text-transform: uppercase; margin: 0 0 14px; }
 #xplayer .vnnar { position: absolute; left: 3%; top: 4%; max-width: min(62%, 640px); padding: .9em 1.2em; background: rgba(10,10,14,.62); border-left: 3px solid rgba(255,255,255,.4); border-radius: 4px 10px 10px 4px;
-  color: #f4efe6; font: italic clamp(15px, calc(var(--fw, 100vw) * .017), 24px)/1.5 Georgia, "Times New Roman", serif; opacity: 0; transition: opacity .5s; pointer-events: none; text-shadow: 0 1px 2px rgba(0,0,0,.6); }
+  color: #f4efe6; font: italic calc(clamp(9px, min(calc(var(--fw, 100vw) * .017), calc(var(--fh, 100vh) * .03)), 24px) * var(--vnk, 1))/1.5 Georgia, "Times New Roman", serif; opacity: 0; transition: opacity .5s; pointer-events: none; text-shadow: 0 1px 2px rgba(0,0,0,.6);
+  max-height: 42%; overflow: hidden; box-sizing: border-box; }
 #xplayer .vnnar.on { opacity: 1; } #xplayer .vnnar:empty { display: none; }
 #xplayer .vnbox { position: absolute; left: 50%; bottom: 4%; transform: translateX(-50%); width: min(94%, 1120px); min-height: 5.2em; padding: 1.5em 2.2em 1.1em; background: rgba(8,8,14,.74);
-  border: 1px solid rgba(255,255,255,.22); border-radius: 14px; color: #fff; font: clamp(17px, calc(var(--fw, 100vw) * .02), 28px)/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; opacity: 0; transition: opacity .35s; pointer-events: none; box-shadow: 0 6px 30px rgba(0,0,0,.5); }
+  border: 1px solid rgba(255,255,255,.22); border-radius: 14px; color: #fff; font: calc(clamp(10px, min(calc(var(--fw, 100vw) * .02), calc(var(--fh, 100vh) * .036)), 28px) * var(--vnk, 1))/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; opacity: 0; transition: opacity .35s; pointer-events: none; box-shadow: 0 6px 30px rgba(0,0,0,.5);
+  max-height: 46%; overflow: visible; box-sizing: border-box; }  /* visible: the speaker's name tag sits above the top edge (top: -.95em); vnFit keeps the text inside */
 #xplayer .vnbox.on { opacity: 1; } #xplayer .vnbox.off .vntext { font-style: italic; opacity: .92; }
 #xplayer .vnname { position: absolute; left: 1.4em; top: -.95em; padding: .12em .9em; border-radius: 999px; font-weight: 700; font-size: .8em; background: #0b0b12; border: 2px solid currentColor; letter-spacing: .03em; }
 #xplayer .vnmore { position: absolute; right: 1.2em; bottom: .45em; opacity: 0; font-size: .8em; color: #fff; } #xplayer .vnbox.done .vnmore { opacity: .9; animation: vnbob 1s ease-in-out infinite; }
@@ -631,11 +744,15 @@ body.trayup #totop { bottom: 96px; }
 .xknob:active, .xdial:active { cursor: grabbing; } .xknob:focus-visible svg, .xdial:focus-visible svg { filter: drop-shadow(0 0 6px var(--accent)); }
 .xknob svg { display: block; } .xkt { stroke: rgba(160,168,190,.45); stroke-width: 1.3; stroke-linecap: round; } .xkt.det { stroke: rgba(200,206,225,.8); stroke-width: 2.2; }
 .xkt.on { stroke: #ffb454; stroke-width: 3; filter: drop-shadow(0 0 3px #ffb454); }
-.xkdial { transition: transform .08s ease-out; }
+.xkdial { transition: transform .13s cubic-bezier(.3, 1.7, .5, 1); transform-box: view-box; }  /* the knob's needle: own class (xcPaint finds the dial's by .xddial) */
 .xklabels { display: flex; justify-content: space-between; width: 150px; font-size: 12px; color: var(--muted); } .xklabels span { cursor: pointer; padding: 0 2px; } .xklabels span.on { color: var(--ink); font-weight: 700; }
 .xread { font-size: 16px; font-weight: 700; text-align: center; min-height: 1.3em; } .xread i { font-style: normal; font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 4px; }
 .xhint2 { font-size: 12px; color: var(--muted); text-align: center; min-height: 1.2em; max-width: 220px; }
 .xtc.xtk { min-width: 140px; } .xtc.xtd { min-width: 0; width: 320px; max-width: 100%; }
+.xtc.xtg { flex-basis: 100%; max-width: 760px; } .xgn { margin-left: 4px; font-size: 9px; opacity: .8; } .xghint { flex-basis: 100%; text-align: center; }
+.xtc.xtg { } .xgenres { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.xgchip { font: 600 12px system-ui, sans-serif; padding: 5px 11px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--muted); cursor: pointer; }
+.xgchip:hover { color: var(--ink); border-color: #8a6446; } .xgchip.on { background: #4a3022; border-color: #ffd27a; color: #ffd27a; box-shadow: 0 0 6px rgba(255,210,122,.35); }
 .xmaps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 28px 36px; width: 100%; max-width: 1000px; align-items: start; justify-items: center; }
 .xmaps .xtc { width: 100%; max-width: 440px; min-width: 0; }
 .xdial { cursor: grab; outline: none; } .xdsvg { display: block; width: 100%; max-width: 300px; height: auto; }
@@ -693,22 +810,26 @@ body.trayup #totop { bottom: 96px; }
 #xplayer .xchat textarea { width: 100%; min-height: 64px; background: rgba(255,255,255,.08); color: #fff; border: 1px solid rgba(255,255,255,.25); border-radius: 8px; padding: 8px; font: inherit; }
 #xplayer .xchat .msg { margin: 8px 0; padding: 8px 10px; border-radius: 8px; background: rgba(255,255,255,.06); } #xplayer .xchat .msg.claude { background: rgba(120,170,255,.12); }
 #xplayer .xchat .who { display: block; font-size: 11.5px; opacity: .65; margin-bottom: 2px; }
-#xplayer .xpos { display: none; position: absolute; right: 14px; top: 12px; z-index: 3; padding: 3px 10px; border-radius: 999px; background: rgba(0,0,0,.4); color: rgba(255,255,255,.7); font: 600 12.5px system-ui, sans-serif; letter-spacing: .03em; text-shadow: 0 1px 2px rgba(0,0,0,.8); pointer-events: none; }
-#xplayer .xpos.on { display: block; } #xplayer.showctl .xpos { top: 58px; }  /* steps below the control bar while it shows */
-#xplayer .xqueue { display: none; position: absolute; left: 14px; bottom: 12px; z-index: 3; max-width: 60vw; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+#xplayer .xpos { display: none; position: absolute; right: calc(var(--frx, 0px) + 14px); top: calc(var(--fry, 0px) + 12px); z-index: 3; padding: 3px 10px; border-radius: 999px; background: rgba(0,0,0,.4); color: rgba(255,255,255,.7); font: 600 12.5px system-ui, sans-serif; letter-spacing: .03em; text-shadow: 0 1px 2px rgba(0,0,0,.8); pointer-events: none; }
+#xplayer .xpos.on { display: block; } #xplayer.showctl .xpos { top: max(58px, calc(var(--fry, 0px) + 12px)); }  /* steps below the control bar while it shows; both pills hug the picture */
+#xplayer .xqueue { display: none; position: absolute; right: calc(var(--frx, 0px) + 14px); top: calc(var(--fry, 0px) + 44px); z-index: 3; max-width: calc(var(--frw, 100vw) * .36); overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
   padding: 4px 12px; border-radius: 999px; background: rgba(0,0,0,.45); color: rgba(255,255,255,.72); font: 13.5px system-ui, sans-serif; letter-spacing: .02em;
   text-shadow: 0 1px 2px rgba(0,0,0,.8); transition: color .3s; }  /* quiet but findable on busy frames */
 #xplayer .xqueue .xqrows { margin-top: 3px; padding-top: 3px; border-top: 1px solid rgba(255,255,255,.12); font-size: 12px; line-height: 1.45; color: rgba(255,255,255,.62); }
 #xplayer .xqueue .xqrows div, #xplayer .xqueue .xqhead { overflow: hidden; text-overflow: ellipsis; } #xplayer .xqueue:has(.xqrows) { border-radius: 10px; }
+/* subtle render progress: a hairline along the bottom of the pill, eased between the 3 s queue polls */
+#xplayer .xqueue .xqprog { position: absolute; left: 10px; right: 10px; bottom: 2px; height: 2px; border-radius: 2px; background: rgba(255,255,255,.08); opacity: 0; transition: opacity .4s; }
+#xplayer .xqueue .xqprog.on { opacity: 1; } #xplayer .xqueue .xqprog span { display: block; height: 100%; width: 0; border-radius: 2px; background: rgba(255,210,122,.7); transition: width 3s linear; }
+#xplayer.showctl .xqueue { top: max(90px, calc(var(--fry, 0px) + 44px)); } #xplayer .xqueue { text-align: right; }
 #xplayer .xqueue.on { display: block; } #xplayer .xqueue.idle { color: rgba(255,255,255,.45); background: rgba(0,0,0,.3); } #xplayer .xqueue:hover { color: rgba(255,255,255,.85); }
-#xplayer .xtimer { display: none; position: absolute; top: 14px; left: 50%; transform: translateX(-50%); z-index: 3; align-items: center; gap: 10px; padding: 6px 8px 6px 14px;
+#xplayer .xtimer { display: none; position: absolute; top: calc(var(--fry, 0px) + 14px); left: 50%; transform: translateX(-50%); z-index: 3; align-items: center; gap: 10px; padding: 6px 8px 6px 14px;
   border-radius: 999px; background: rgba(10,10,14,.72); border: 1px solid rgba(255,255,255,.22); color: #f4efe6; font: 14px system-ui, sans-serif; }
 #xplayer .xtimer.on { display: flex; } #xplayer .xtimer.paused { border-color: rgba(255,214,120,.7); }
 #xplayer .xtimer button { font: inherit; font-weight: 600; cursor: pointer; color: #fff; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.35); border-radius: 999px; padding: 4px 12px; }
 #xplayer .xtimer.paused button { background: rgba(255,214,120,.25); border-color: rgba(255,214,120,.8); }
 #xplayer .xframe.xretry::after { content: "⟳ picture didn't load: reconnecting…"; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); padding: .5em 1em; border-radius: 8px;
   background: rgba(0,0,0,.6); color: #ddd; font: 14px system-ui, sans-serif; pointer-events: none; }  /* the picture under the text can still be dragged / clicked */
-#xplayer .xcap { color: #f4efe6; position: absolute; left: 0; right: 0; bottom: 0; padding: 12% 8% 6%; text-align: center; color: #f4efe6; font: italic clamp(18px, calc(var(--fw, 100vw) * .026), 34px)/1.35 Georgia, "Times New Roman", serif;
+#xplayer .xcap { color: #f4efe6; position: absolute; left: 0; right: 0; bottom: 0; padding: 12% 8% 6%; text-align: center; color: #f4efe6; font: italic clamp(11px, min(calc(var(--fw, 100vw) * .026), calc(var(--fh, 100vh) * .046)), 34px)/1.35 Georgia, "Times New Roman", serif;
   text-shadow: 0 2px 14px rgba(0,0,0,.9); background: linear-gradient(transparent, rgba(0,0,0,.62)); opacity: 0; animation: xcapin 1.2s ease .9s forwards; }
 @keyframes xcapin { to { opacity: 1; } }
 #xplayer .xcard { text-align: center; color: #f4efe6; font-family: Georgia, "Times New Roman", serif; padding: 0 8vw; animation: xcapin 1.4s ease .2s both; }
@@ -792,6 +913,7 @@ body.trayup #totop { bottom: 96px; }
 .chapter .chead h3 { margin: 0; font-size: 19px; }
 .chapter .chead .cid { font: 12px ui-monospace, Consolas, monospace; color: var(--muted); }
 .chapter .chead .janim { margin-left: auto; }
+.sgchead .janim { margin-left: 8px; }
 .chapter .janim[disabled] { opacity: .65; cursor: default; }
 .janimwrap { max-width: 900px; margin: 2px 0 8px; }
 .janimbox { border: 1px solid #3d8bfd; border-radius: 10px; padding: 8px 10px; background: var(--panel); margin-top: 4px; }
@@ -983,7 +1105,7 @@ html:has(#lightbox.show), body:has(#lightbox.show), #lightbox, #lightbox .lbthre
 
 <script>
 const RAW = /*__DATA__*/{};
-let XATLAS0 = null, XATLAS1 = null, MAT0 = null, DATA = [], SUBJ = {}, SUBJT = {}, byId = {}, VIDS = [], JRN = [], jById = {}, MVS = [], mvById = {}, EXPL = [], explById = {}, SAGAS = [], sagaById = {}, EXST = {state: null, deadline: 0, sig: ""}, MTIMES = {}, UPS = {}, FITS = {}, REVS = {};
+let XATLAS0 = null, XATLAS1 = null, MAT0 = null, DATA = [], SUBJ = {}, SUBJT = {}, byId = {}, VIDS = [], JRN = [], jById = {}, MVS = [], mvById = {}, EXPL = [], explById = {}, SAGAS = [], sagaById = {}, EXST = {state: null, deadline: 0, sig: "", anim: []}, GAME = {assets: [], voices: []}, MTIMES = {}, UPS = {}, FITS = {}, REVS = {};
 const $ = (s, el = document) => el.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const store = { get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
@@ -1346,14 +1468,15 @@ function layerNav() {
   const vidTab = VIDS.length ? `<a href="#/videos" class="${h.startsWith("videos") ? "on" : ""}" title="${VIDS.length} clips">🎬 Videos</a>` : "";
   const jTab = `<a href="#/j" class="${/^j(\/|$)/.test(h) ? "on" : ""}" title="Characters exploring their own worlds, chapter by chapter; you direct what happens next">🧭 Journeys${JRN.length ? " " + JRN.length : ""}</a>`;
   const mvTab = `<a href="#/mv" class="${/^mv(\/|$)/.test(h) ? "on" : ""}" title="Songs with lyrics, a timeline you mark and reference images, storyboarded by your agent">🎵 Music videos${MVS.length ? " " + MVS.length : ""}</a>`;
-  const xTab = `<a href="#/nev" class="${/^(?:explore|nev)(\/|$)/.test(h) ? "on" : ""}" title="Nev Novel: a never-ending visual novel your author invents as it goes: lore, characters, worlds, drawn chapter by chapter">📖 Nev Novel${EXPL.length + SAGAS.length ? " " + (EXPL.length + SAGAS.length) : ""}${EXST.state && EXST.state.active ? " ●" : ""}</a>`;
+  const xTab = `<a href="#/nev" class="${/^(?:explore|nev)(\/|$)/.test(h) ? "on" : ""}" title="NevNovella: a never-ending visual novel your author invents as it goes: lore, characters, worlds, drawn chapter by chapter">📖 NevNovella${EXPL.length + SAGAS.length ? " " + (EXPL.length + SAGAS.length) : ""}${EXST.state && EXST.state.active ? " ●" : ""}</a>`;
   const newestEvo = DATA.filter(l => l.depth).sort((a, b) => (b.created || 0) - (a.created || 0))[0];
   const treeTab = newestEvo ? `<a href="#/tree/${newestEvo.id}" class="${h.startsWith("tree/") ? "on" : ""}" title="Family tree: where an evolution came from and what it spawned">🌳 Tree</a>` : "";
   // evolution layers in ONE dropdown
   const evoDD = max ? `<details class="evodd${cur ? " on" : ""}"><summary title="Evolution layers">🧬 ${cur ? `Evolution ${cur}` : "Evolutions"} ▾</summary>
     <div class="evomenu">${Array.from({length: max}, (_, i) => i + 1).map(n =>
       `<a href="#/e/${n}" class="${cur === n ? "on" : ""}">Evolution ${n} <b>${count(n)}</b></a>`).join("")}</div></details>` : "";
-  $("#layers").innerHTML = `<a href="#/" class="${cur === 0 && !/^(videos|images|explore|nev|j\/|j$|mv\/|mv$|tree\/)/.test(h) ? "on" : ""}">Survey</a>` + imgTab + vidTab + jTab + mvTab + xTab + treeTab + evoDD;
+  const showTab = `<a href="#/show" class="${h.startsWith("show") ? "on" : ""}" title="Slideshow: random style groups, rarely repeating; drag images down to pin them">🎞 Slideshow</a>`;
+  $("#layers").innerHTML = `<a href="#/" class="${cur === 0 && !/^(videos|images|explore|nev|j\/|j$|mv\/|mv$|tree\/|show)/.test(h) ? "on" : ""}">Survey</a>` + imgTab + vidTab + jTab + mvTab + xTab + treeTab + showTab + evoDD;
 }
 const childrenOf = id => DATA.filter(l => l.parent && l.parent.startsWith(id + "/"));
 
@@ -1720,7 +1843,8 @@ const pinBtn = (src, cap, label = "") => /\.png$/.test(src) ? `<button class="pi
 function paintPins() {
   const n = pins.length;
   $("#tray").classList.toggle("show", n > 0); document.body.classList.toggle("trayup", n > 0);
-  $("#tray .pins").innerHTML = pins.map(p => `<img src="${esc(th(pinSrc(p.src)))}" data-unpin="${esc(p.src)}" title="${esc(p.cap)} (click to unpin)">`).join("");
+  $("#tray .pins").innerHTML = pins.map((p, i) => `<span class="pinw" data-pinidx="${i}"><img src="${esc(th(pinSrc(p.src)))}" data-unpin="${esc(p.src)}" draggable="false"
+    title="${esc(p.cap)} · #${i + 1}${n > 1 && i === 0 ? " (leads the cross: its subject joins the new cast)" : ""} (click to unpin, drag to reorder)"><b>${i + 1}</b></span>`).join("");
   $("#pinlabel").textContent = n > 1 ? `🧬 Cross ${n}` : "🌱 Evolve";
   $("#pinsubmit").textContent = n > 1 ? `Submit cross (${n}) →` : "Submit evolve →";
   $("#pinsubmit").style.display = canFB ? "" : "none"; $("#pindir").style.display = canFB ? "" : "none"; $("#pinmv").style.display = canFB ? "" : "none";
@@ -1743,9 +1867,585 @@ function togglePin(src, cap) {
   if (canFB) return pinPost("/api/pins", {op: "toggle", src, cap});
   pins = isPinned(src) ? pins.filter(p => fbKey(p.src) !== fbKey(src)) : [...pins, {src, cap}]; store.set("pins", pins); paintPins();
 }
+// drag to reorder the tray: pointer events (mouse + touch); a press that moves
+// more than 6 px is a drag (no unpin), the drop slot comes from the thumbnails' centres. Pure helpers pinReorder / pinSlot are unit-tested.
+// ---- 🎞 SLIDESHOW: random style groupings that rarely repeat, pull images down to the evolve / cross pin tray, quick filters that adapt the
+// show live. Route #/show. A slide = one style
+// version (lineage + vNN) with its images. Picks favour the least-recently-shown groups (store "showseen"); filters (store "showf") re-pool live.
+// Drag an image down onto the drop zone / 📌 tray to pin it (1 pinned = evolve, 2+ = cross). Pure helpers showGroups / showPool / showPick are tested.
+const SHOWF0 = {loved: "all", layer: "all", kind: "all", fresh: "all", speed: 8, hideNope: true};
+const SHOW = {cur: null, timer: 0, t0: 0, paused: false, hist: [], drag: null, deal: 0, dealMs: 0, idle: 0};
+const showKind = src => { const n = String(src).split("/").pop(); return /^[fm]-/.test(n) ? "people" : /^c-/.test(n) ? "creatures" : /^l-/.test(n) ? "places" : /^p-/.test(n) ? "props" : /^z-/.test(n) ? "undead" : "other"; };
+const showTime = x => typeof x === "number" ? (x < 1e12 ? x * 1000 : x) : x ? Date.parse(String(x).replace(" ", "T")) || 0 : 0;  // lineage created/rendered: epoch seconds (data.json) or "YYYY-MM-DD HH:MM:SS"
+const showSubj = src => String(src || "").split("/").pop().replace(/_seed\d+(?:__.*)?\.png$/i, "");  // "f-modern@x~3_seed1001.png" -> "f-modern@x~3"
+// game-asset sets never join the show
+const showGame = l => !!l && (l.tags || []).some(t => /game assets/i.test(t));
+function showGroups(lins) {  // pure: every rendered style version -> {key, lid, vid, title, depth, created, rendered (ms), set "evolve"|"cross"|"", complete, setDone, imgs}
+  lins = (lins || []).filter(l => !showGame(l));
+  const vDone = v => { const p = v.params || {}, want = (p.subjects || []).length * Math.max(1, (p.seeds || []).length); return !want || (v.images || []).length >= want; };
+  // an evolve / cross SET = the sibling lineages sharing parent_images; it is done when every sibling's first version has every image
+  const setKey = l => (l.parent_images || []).length ? l.parent_images.join("|") : "", sets = {};
+  lins.forEach(l => { const k = setKey(l); if (k) (sets[k] = sets[k] || []).push(l); });
+  const setDone = l => { const k = setKey(l); return !k || sets[k].every(s => s.versions && s.versions[0] && vDone(s.versions[0])); };
+  // when THIS group's pictures last landed: a set's first versions (all siblings), or the version itself. Never the lineage's newest image: a later 👥 cast
+  // rendering into a sibling bumped it with every image and re-dealt the set as "new" again and again
+  const vTime = v => Math.max(0, ...((v && v.slots) || []).map(s => (s.ts || 0) * 1000));
+  const setRendered = (l, v) => { const k = setKey(l), first = (l.versions || [])[0] === v;
+    return (k && first ? Math.max(...sets[k].map(s => vTime((s.versions || [])[0]))) : vTime(v)) || showTime(l.rendered); };
+  return lins.flatMap(l => (l.versions || []).filter(v => (v.images || []).length).map(v => {
+    const par = (l.parent_images || []).length, carried = par ? showSubj(l.parent_images[0]) : "";  // the first parent's character, carried into every style of the set
+    return {key: `${l.id}/${v.id}`, lid: l.id, vid: v.id, title: l.title || l.id, depth: l.depth || 0, created: showTime(l.created), rendered: showTime(l.rendered),
+      set: par > 1 ? "cross" : par ? "evolve" : "", complete: vDone(v), setDone: setDone(l), setRendered: setRendered(l, v),
+      imgs: v.images.map(im => ({src: im.src, name: im.name || "", ...(carried && showSubj(im.src) === carried ? {carried: true} : {})}))};
+  }));
+}
+const SHOW_NEW_MS = 48 * 3600e3;
+// not yet seen SINCE the set finished (an old page could deal a half-rendered set and mark it seen, so the finished set lost its priority)
+const showUnseen = (g, seen) => { const t = (seen || {})[g.key]; return !t || t < (g.setRendered || g.rendered || 0); };
+const showIsNew = (g, now) => !!(g && g.set && g.complete && g.setDone !== false && g.created && (now || Date.now()) - g.created < SHOW_NEW_MS);  // a just-finished evolve / cross set (48 h)
+function showPool(groups, f, m, now) {  // pure: the filters -> the groups (and their images) to draw from. m = {loved(src), noped(src), styleMark(lid)}
+  f = {...SHOWF0, ...(f || {})}; now = now || Date.now();
+  const days = {"7d": 7, "30d": 30}[f.fresh];
+  return groups.map(g => {
+    if (g.complete === false || g.setDone === false) return null;  // a set still rendering waits until every image of every style is done
+    if (f.layer === "survey" && g.depth) return null;
+    if (f.layer === "evo" && !g.depth) return null;
+    if (days && !(g.created && now - g.created <= days * 864e5)) return null;
+    if (f.hideNope && m.styleMark(g.lid) === "nope") return null;
+    let imgs = g.imgs;
+    if (f.kind !== "all") imgs = imgs.filter(im => showKind(im.src) === f.kind);
+    if (f.hideNope) imgs = imgs.filter(im => !m.noped(im.src));
+    if (f.loved === "loved") imgs = m.styleMark(g.lid) === "love" ? imgs : imgs.filter(im => m.loved(im.src));
+    return imgs.length ? {...g, imgs} : null;
+  }).filter(Boolean);
+}
+// pure: just-finished evolve / cross sets the show hasn't dealt yet jump the queue (first finished first), woven in: never two of them back to back
+// while other styles exist (o.lastFresh); otherwise a random group among the least-recently-shown third, never `avoid` when there's a choice
+function showPick(pool, seen, rnd, avoid, o) {
+  if (!pool.length) return null;
+  rnd = rnd || Math.random; seen = seen || {}; o = o || {};
+  const now = o.now || Date.now(), isFresh = g => showIsNew(g, now) && showUnseen(g, seen) && g.key !== avoid;
+  const fresh = pool.filter(isFresh).sort((a, b) => (a.rendered || a.created) - (b.rendered || b.created));
+  const rest = pool.filter(g => !isFresh(g) && g.key !== avoid);
+  if (fresh.length && (!o.lastFresh || !rest.length)) return fresh[0];
+  const list = (rest.length ? rest : pool).slice().sort((a, b) => (seen[a.key] || 0) - (seen[b.key] || 0));
+  const span = Math.max(1, Math.ceil(list.length / 3));
+  return list[Math.floor(rnd() * span) % span];
+}
+const showF = () => ({...SHOWF0, ...(store.get("showf", {}) || {})});
+const showMarks = () => ({loved: isLoved, noped: src => typeof isNoped === "function" && isNoped(src), styleMark});
+function showPage() {
+  const f = showF(), chip = (k, v, lab) => `<button class="shchip${f[k] === v ? " on" : ""}" data-showf="${k}" data-showv="${v}">${lab}</button>`;
+  return `<div id="showroot" class="showroot">
+    <div class="shstage" id="shstage"></div>
+    <div class="shctl shui"><button data-showgo="-1" title="Previous (←)">◀</button><button data-showgo="pause" id="shpause" title="Pause / play (Space)">⏸</button><button data-showgo="1" title="Next (→)">▶</button>
+      <button data-showgo="panel" id="shgear" title="Filters">⚙</button><button data-showgo="fs" title="Full screen (F)">⛶</button><button data-showgo="wall" id="shwall" class="shwallbtn" title="Expand onto your other monitor (M)" hidden>⇉<sup>2</sup></button><a href="#/" data-showgo="exit" title="Exit (Esc)">✕</a></div>
+    <div class="shwallhint" id="shwallhint" hidden>Click once for full screen<small>Opened on the wrong monitor? Drag this window onto the other one first.</small></div>
+    <div class="shpanel" id="shpanel">
+      <span class="shgrp">${chip("loved", "all", "All")}${chip("loved", "loved", "❤ Loved")}</span>
+      <span class="shgrp">${chip("layer", "all", "Every layer")}${chip("layer", "survey", "Survey")}${chip("layer", "evo", "Evolutions")}</span>
+      <span class="shgrp">${[["all", "Any kind"], ["people", "People"], ["creatures", "Creatures"], ["places", "Places"], ["props", "Props"]].map(([v, l]) => chip("kind", v, l)).join("")}</span>
+      <span class="shgrp">${chip("fresh", "all", "Any age")}${chip("fresh", "7d", "Last 7 days")}${chip("fresh", "30d", "30 days")}</span>
+      <span class="shgrp">${[5, 8, 12, 20].map(s => chip("speed", s, s + " s")).join("")}</span></div>
+    <div class="shq" id="shq" hidden title="Images waiting to render (⚙ Queue)"><i></i><b>0</b></div>
+    <div class="shtitle shui" id="shtitle"></div>
+    <div class="shprog"><span id="shprog"></span></div>
+    <div class="shdrop" id="shdrop">📌 Drop to pin · 1 = evolve · 2+ = cross</div></div>`;
+}
+// pure: where n cards of aspect a (w/h) land on a W x H table: the row count that gives the biggest cards, rows centred, a little scatter + tilt
+// pure: where n cards of aspect a (w/h) land on a W x H table, as big as possible
+// without overlapping too much: neighbours may tuck under each other by up to OVX of a card width (rows by OVY), rows are offset like bricks so the next
+// row fills the gaps, and the row count that gives the BIGGEST cards wins. Room is kept for the counter (top) and the title / controls (bottom).
+const SHOW_OVX = .12, SHOW_OVY = .07;
+function showLayout(n, a, W, H, rnd) {
+  rnd = rnd || Math.random; a = a > 0 ? a : .75;
+  if (!n) return [];
+  const top = Math.min(56, H * .07), bot = Math.min(64, H * .08), AW = W * .97, AH = H - top - bot;
+  let best = null;
+  for (let r = 1; r <= Math.min(4, n); r++) {
+    const cols = Math.ceil(n / r), brick = r > 1 && n % r !== 0 ? 0 : 0;  // (brick shift is applied per short row below)
+    const wByW = AW / (cols - SHOW_OVX * (cols - 1) + brick), hByH = AH / (r - SHOW_OVY * (r - 1));
+    const h = Math.min(hByH, wByW / a) * .97;  // a little air for the tilt
+    if (!best || h > best.h) best = {r, h};
+  }
+  const {r, h} = best, w = h * a, gx = w * (1 - SHOW_OVX), gy = h * (1 - SHOW_OVY), out = [];
+  const cy = top + AH / 2;
+  for (let i = 0, k = 0; i < r; i++) {
+    const cnt = Math.floor(n / r) + (i < n % r ? 1 : 0);
+    for (let j = 0; j < cnt; j++, k++) {
+      const jx = (rnd() - .5) * w * .02, jy = (rnd() - .5) * h * .03;  // a hint of hand-dealt scatter, never past the overlap limit
+      out.push({x: W / 2 + (j - (cnt - 1) / 2) * gx + jx, y: cy + (i - (r - 1) / 2) * gy + jy, w, h, rot: (rnd() - .5) * 7});
+    }
+  }
+  return out;  // a shorter row is centred, so it sits half a card over: the brick offset falls out of the centring
+}
+const showLoad = src => new Promise(res => { const im = new Image(); let done = false; const fin = () => { if (!done) { done = true; res(im.naturalWidth ? im.naturalWidth / im.naturalHeight : 0); } };
+  im.onload = im.onerror = fin; setTimeout(fin, 4000); im.src = src; });
+const showCalm = () => typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
+const showPlace = (c, p) => { c.style.width = p.w + "px"; c.style.height = p.h + "px"; c.style.transform = `translate(${p.x - p.w / 2}px,${p.y - p.h / 2}px) rotate(${p.rot}deg)`; };
+// 📌 pinned cards mingle with the hand before the next deal:
+// pure: k pins rise from the tray, each glides from card to card (starting at different cards, so they never share one), rests a moment beside it
+// (overlapping its lower corner, the pairing you'd cross), then sinks back down. -> {ms, paths: [[{x, y, rot, t}]]} (centres, t in ms)
+function showMinglePlan(cards, k, W, H, o) {
+  o = o || {}; const n = cards.length; k = Math.min(k, n, 4);
+  if (!n || !k) return {ms: 0, paths: []};
+  const IN = 2000, OUT = 900, stop = o.stop || Math.max(1100, Math.min(1700, 11000 / n)), glide = stop * .62, ph = cards[0].h * .55, pw = ph * .75;
+  const at = (c, j) => ({x: Math.min(W - pw / 2, Math.max(pw / 2, c.x + (j % 2 ? -1 : 1) * c.w * .4)), y: Math.min(H - ph / 2, Math.max(ph / 2, c.y + c.h * .26)), rot: (j % 2 ? -1 : 1) * (5 + j * 2)});
+  const paths = Array.from({length: k}, (_, j) => {
+    const sx = W / 2 + (j - (k - 1) / 2) * pw * 1.3, path = [{x: sx, y: H + ph, rot: (j % 2 ? 1 : -1) * 160, ry: 90, s: .6, t: 0}];  // thrown in like the hand: spinning, edge-on, small
+    const first = Math.round(j * n / k);
+    for (let s = 0; s < n; s++) { const p = at(cards[(first + s) % n], j), t0 = IN - glide + s * stop;
+      path.push({...p, t: t0 + glide}, {...p, t: t0 + stop}); }
+    path.push({x: sx, y: H + ph, rot: 0, t: IN - glide + n * stop + OUT});
+    return path;
+  });
+  return {ms: paths[0][paths[0].length - 1].t, ph, paths};
+}
+// ❤ / 👎 while you watch: buttons on each card (hover), L / N on the card under the mouse,
+// and the style's own ❤ 👎 next to its title. Same /api/feedback marks as the tiles; the card updates at once (the show isn't re-rendered).
+const shFb = (src, cap) => `<span class="shfb">${!canFB ? "" : [["love", "❤", "Love (L)"], ["nope", "👎", "Nope (N)"]].map(([a, ic, t]) =>
+  `<button data-fb="${a}" data-src="${esc(src)}" data-cap="${esc(cap)}" title="${t}" class="${hasAct(FB[fbKey(src)], a) ? "on" : ""}">${ic}</button>`).join("")}${showCastBtn(src, cap)}<button data-shcopy="${esc(src)}" title="Copy the full-size image (C)">📋</button></span>`;
+// 📋 copy the picture: the full PNG to the clipboard; where the browser won't
+// allow it (the clipboard needs 127.0.0.1 / localhost, not a LAN address) it opens the picture in a new tab to copy or save from there.
+async function showCopy(src) {
+  const url = src.startsWith("../") || src.startsWith("/") ? src : "../" + src.replace(/^\.\.\//, "");
+  try {
+    if (!navigator.clipboard || !window.ClipboardItem) throw new Error("no clipboard");
+    await navigator.clipboard.write([new ClipboardItem({"image/png": fetch(url).then(r => r.blob()).then(b => b.type === "image/png" ? b : new Blob([b], {type: "image/png"}))})]);
+    showToast("📋 Image copied: paste it anywhere.", 3500);
+  } catch (e) { window.open(url, "_blank"); showToast("This browser blocked copying here, so the picture opened in a new tab: right-click it → Copy image.", 7000); }
+}
+// 🖱 native drag: with a mouse the browser's own drag carries the
+// FULL-SIZE PNG out of the page (Suno, a folder, another tab); dropping it on the glowing zone at the bottom still pins it. Touch keeps the
+// pointer drag above. The card swaps its thumbnail for the full PNG on hover, so the dragged picture is the real one.
+const showAbs = src => new URL(src.startsWith("../") || src.startsWith("/") ? src : "../" + src, location.href).href;
+document.addEventListener("mouseover", e => {
+  const im = e.target.closest && e.target.closest("#shstage .shcard img[data-showsrc]");
+  if (im && !im.dataset.full) { im.dataset.full = "1"; im.src = showAbs(im.dataset.showsrc); }
+});
+document.addEventListener("dragstart", e => {
+  const im = e.target.closest && e.target.closest("#shstage .shcard img[data-showsrc]"); if (!im) return;
+  const url = showAbs(im.dataset.showsrc), name = url.split("/").pop();
+  try {
+    e.dataTransfer.effectAllowed = "copy";
+    e.dataTransfer.setData("text/uri-list", url); e.dataTransfer.setData("text/plain", url);
+    e.dataTransfer.setData("DownloadURL", `image/png:${name}:${url}`);  // Chrome / Edge: drop onto the desktop or a folder = the PNG file
+  } catch (er) {}
+  SHOW.drag = {src: im.dataset.showsrc.replace(/^\.\.\//, ""), cap: im.dataset.showcap, card: im.closest(".shcard"), native: true};
+  SHOW.drag.card.classList.add("dragging"); $("#shdrop").classList.add("on"); $("#showroot").classList.remove("shidle");
+});
+document.addEventListener("dragover", e => { if (!SHOW.drag || !SHOW.drag.native) return; const z = e.target.closest && e.target.closest("#shdrop");
+  $("#shdrop").classList.toggle("hot", !!z); if (z) { e.preventDefault(); e.dataTransfer.dropEffect = "copy"; } });
+document.addEventListener("drop", e => { const d = SHOW.drag; if (!d || !d.native || !(e.target.closest && e.target.closest("#shdrop"))) return;
+  e.preventDefault(); if (!isPinned(d.src)) { togglePin(d.src, d.cap); d.card.classList.add("pinned"); showMingleAdd(d.src); } });
+document.addEventListener("dragend", () => { const d = SHOW.drag; if (!d || !d.native) return; SHOW.drag = null;
+  d.card.classList.remove("dragging"); $("#shdrop").classList.remove("on", "hot"); showIdle(); if (SHOW.pendingNext) { SHOW.pendingNext = false; showNext(1); } });
+// ⏸ + double-click a card = open that style's page (its layer with the set highlighted, or the survey lineage); playing, a double-click does nothing, so a stray double-click never yanks you out of the show
+const showStyleHref = g => g ? `#/${g.depth ? "e/" + g.depth + "?hl=" + encodeURIComponent(g.lid) : "l/" + g.lid}` : "";  // pure
+document.addEventListener("dblclick", e => {
+  if (!location.hash.startsWith("#/show") || !SHOW.paused || !SHOW.cur) return;
+  if (!(e.target.closest && e.target.closest("#shstage .shcard")) || e.target.closest("button")) return;
+  e.preventDefault(); location.hash = showStyleHref(SHOW.cur);
+});
+// 📸 snapshot of the table (the full set as it sits, without any buttons): the hand is redrawn on a black canvas at 2x from the full-size PNGs, each card at its exact place, tilt and glow; no controls,
+// counter, title, pins or cursor. Downloads a PNG and copies it to the clipboard where the browser allows.
+const showLoadImg = src => new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = src; });
+async function showSnap() {
+  const st = $("#shstage"); if (!st || !SHOW.cur) return;
+  const cards = [...st.querySelectorAll(".shcard:not(.gone)")].filter(c => c._p); if (!cards.length) return;
+  showToast("📸 Capturing the hand…", 2500);
+  const s = 2, W = st.clientWidth, H = st.clientHeight, cv = document.createElement("canvas"); cv.width = W * s; cv.height = H * s;
+  const x = cv.getContext("2d"); x.fillStyle = "#000"; x.fillRect(0, 0, cv.width, cv.height);
+  const imgs = await Promise.all(cards.map(c => { const i = c.querySelector("img[data-showsrc]"); return i ? showLoadImg(i.dataset.showsrc) : null; }));
+  cards.forEach((c, k) => {
+    const p = c._p, im = imgs[k]; if (!im) return;
+    const w = p.w * s, h = p.h * s, r = 10 * s;
+    x.save(); x.translate(p.x * s, p.y * s); x.rotate(p.rot * Math.PI / 180);
+    const path = new Path2D(); path.roundRect(-w / 2, -h / 2, w, h, r);
+    const glow = c.classList.contains("carried") ? "rgba(70,215,195,.55)" : c.classList.contains("loved") ? "rgba(224,85,122,.55)" : "rgba(0,0,0,.85)";
+    x.shadowColor = glow; x.shadowBlur = (glow.startsWith("rgba(0") ? 50 : 70) * s; x.shadowOffsetY = glow.startsWith("rgba(0") ? 18 * s : 0;
+    x.fillStyle = "#000"; x.fill(path); x.shadowColor = "transparent";
+    x.clip(path);
+    const ia = im.naturalWidth / im.naturalHeight, ca = w / h;  // object-fit: cover
+    const sw = ia > ca ? im.naturalHeight * ca : im.naturalWidth, sh = ia > ca ? im.naturalHeight : im.naturalWidth / ca;
+    x.drawImage(im, (im.naturalWidth - sw) / 2, (im.naturalHeight - sh) / 2, sw, sh, -w / 2, -h / 2, w, h);
+    x.restore();
+  });
+  const blob = await new Promise(r => cv.toBlob(r, "image/png"));
+  const a = document.createElement("a"), name = `slideshow-${SHOW.cur.lid}-${SHOW.cur.vid}.png`;
+  a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  let copied = false; try { if (navigator.clipboard && window.ClipboardItem) { await navigator.clipboard.write([new ClipboardItem({"image/png": blob})]); copied = true; } } catch (e) {}
+  showToast(`📸 Saved ${name}${copied ? " and copied it to the clipboard" : ""}.`, 5000);
+}
+document.addEventListener("click", e => { const b = e.target.closest && e.target.closest("#showroot [data-shsnap]"); if (!b) return; e.preventDefault(); e.stopPropagation(); showSnap(); }, true);
+document.addEventListener("click", e => { const b = e.target.closest && e.target.closest("#showroot [data-shcopy]"); if (!b) return; e.preventDefault(); e.stopPropagation(); showCopy(b.dataset.shcopy); }, true);
+// 👥 more characters as a RADIAL DIAL:
+// click = "Same kind as this image"; press-and-hold or drag = a ring of types opens around the button, drag toward one and release to pick it,
+// release in the middle = same kind, Esc / release far outside = cancel. Saves the same 👥 mark + "👥 types:" note as the gallery popover.
+const SHOW_DIAL = ["Women", "Men", "Mixed 3+3", "Sci-fi", "Fantasy", "Modern", "Horror", "Creatures", "Villains", "Mythic"];
+const showDialPick = (dx, dy, n, o) => {  // pure: pointer offset from the dial centre -> option index, -1 = centre (same kind), null = outside (cancel)
+  o = o || {}; const d = Math.hypot(dx, dy), dead = o.dead || 38, out = o.out || 190;
+  if (d < dead) return -1; if (d > out) return null;
+  const a = (Math.atan2(dx, -dy) + 2 * Math.PI) % (2 * Math.PI);  // 0 = straight up, clockwise
+  return Math.round(a / (2 * Math.PI / n)) % n;
+};
+const showCastBtn = (src, cap) => !canFB ? "" : `<button data-shcast="${esc(src)}" data-cap="${esc(cap)}" title="More characters: click = same kind · hold or drag for types"
+  class="${hasAct(FB[fbKey(src)], "cast") ? "on" : ""}">👥</button>`;
+function showCastMark(src, cap, type) {
+  const m = FB[fbKey(src)], marked = hasAct(m, "cast"), note = castNoteBuild(m && m.note, [type], "");
+  fbPost("/api/feedback", marked ? {src, cap, action: "note", note} : {src, cap, action: "cast", note});
+  document.querySelectorAll(`#showroot [data-shcast="${CSS.escape(src)}"]`).forEach(b => b.classList.add("on"));
+  showToast(`👥 ${type === CAST_TYPES[0] ? "more of the same kind" : type} marked. Press “Send marks” in the gallery header to send it to your agent.`, 6000);
+}
+function showDialOpen(D) {
+  const r = $("#showroot"); if (!r || D.el) return;
+  const n = SHOW_DIAL.length, R = 118;
+  D.el = document.createElement("div"); D.el.className = "shdial"; D.el.style.left = D.x + "px"; D.el.style.top = D.y + "px";
+  D.el.innerHTML = `<div class="shdialc">same<br>kind</div>` + SHOW_DIAL.map((t, i) => { const a = i * 2 * Math.PI / n;
+    return `<div class="shdialo" data-i="${i}" style="left:${Math.sin(a) * R}px;top:${-Math.cos(a) * R}px">${esc(t)}</div>`; }).join("");
+  r.appendChild(D.el);
+}
+function showDialHover(D, x, y) {
+  if (!D.el) return; const k = showDialPick(x - D.x, y - D.y, SHOW_DIAL.length);
+  D.el.querySelectorAll(".shdialo").forEach(o => o.classList.toggle("hot", +o.dataset.i === k));
+  D.el.querySelector(".shdialc").classList.toggle("hot", k === -1); D.el.classList.toggle("off", k === null);
+}
+document.addEventListener("pointerdown", e => {
+  const b = e.target.closest && e.target.closest("#showroot [data-shcast]"); if (!b) return;
+  e.preventDefault(); e.stopPropagation();
+  const r = b.getBoundingClientRect(), D = SHOW.dial = {src: b.dataset.shcast, cap: b.dataset.cap, x: r.left + r.width / 2, y: r.top + r.height / 2, x0: e.clientX, y0: e.clientY, el: null};
+  D.t = setTimeout(() => showDialOpen(D), 260);
+}, true);
+document.addEventListener("pointermove", e => {
+  const D = SHOW.dial; if (!D) return;
+  if (!D.el && Math.hypot(e.clientX - D.x0, e.clientY - D.y0) > 10) { clearTimeout(D.t); showDialOpen(D); }
+  showDialHover(D, e.clientX, e.clientY);
+}, true);
+document.addEventListener("pointerup", e => {
+  const D = SHOW.dial; if (!D) return; SHOW.dial = null; clearTimeout(D.t);
+  e.preventDefault(); e.stopPropagation();
+  if (!D.el) { showCastMark(D.src, D.cap, CAST_TYPES[0]); return; }  // a plain click
+  const k = showDialPick(e.clientX - D.x, e.clientY - D.y, SHOW_DIAL.length); D.el.remove();
+  if (k === null) return;
+  showCastMark(D.src, D.cap, k === -1 ? CAST_TYPES[0] : SHOW_DIAL[k]);
+}, true);
+// any text field anywhere (the 📌 tray's directions box lives outside #app, which typing() ignores)
+const showTyping = () => { const a = document.activeElement; return !!a && (/^(TEXTAREA|SELECT)$/.test(a.tagName) || (a.tagName === "INPUT" && !/^(range|checkbox|radio|button)$/.test(a.type)) || a.isContentEditable); };
+document.addEventListener("keydown", e => { if (e.key === "Escape" && SHOW.dial) { const D = SHOW.dial; SHOW.dial = null; clearTimeout(D.t); if (D.el) D.el.remove(); e.stopPropagation(); e.preventDefault(); } }, true);
+document.addEventListener("click", e => { if (e.target.closest && e.target.closest("#showroot [data-shcast]")) { e.preventDefault(); e.stopPropagation(); } }, true);
+// ❤ / 👎 the whole set: a small pill on the
+// top-right corner of the top row's right-most card, shown once the hand has landed. Same style mark as the strip headers (state.json style:<lineage>).
+const showCorner = ps => { if (!ps.length) return null; const top = Math.min(...ps.map(p => p.y)), row = ps.filter(p => p.y < top + ps[0].h / 2);
+  return row.reduce((a, p) => p.x > a.x ? p : a); };  // pure: the right-most card of the top row
+function showSetPlace(st) {
+  const el = st && st.querySelector(".shsetfb"), c = showCorner([...st.querySelectorAll(".shcard:not(.gone)")].map(x => x._p).filter(Boolean));
+  if (el && c) { el.style.left = (c.x + c.w / 2) + "px"; el.style.top = (c.y - c.h / 2) + "px"; }
+}
+function showSetFb(st, g, delay) {
+  if (!canFB || !st) return;
+  const el = document.createElement("div"); el.className = "shsetfb"; el.style.animationDelay = delay + "ms";
+  el.innerHTML = `<span>Whole set</span>${[["love", "❤", "Love this whole style"], ["nope", "👎", "Not this style"]].map(([a, ic, t]) =>
+    `<button class="sbtn${styleMark(g.lid) === a ? " on" : ""}" data-smark="${esc(g.lid)}" data-sact="${a}" data-scap="${esc(g.title)}" title="${t}">${ic}</button>`).join("")}`;
+  st.appendChild(el); showSetPlace(st);
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest && e.target.closest(".shcard [data-fb], #shtitle [data-smark], .shsetfb [data-smark]"); if (!b) return;
+  b.classList.toggle("on");
+  const card = b.closest(".shcard");
+  if (card) { card.classList.toggle("loved", !!card.querySelector('[data-fb="love"].on')); card.classList.toggle("noped", !!card.querySelector('[data-fb="nope"].on')); }
+  else { const on = b.classList.contains("on"); document.querySelectorAll(`#showroot [data-smark="${CSS.escape(b.dataset.smark)}"]`).forEach(x => x.classList.toggle("on", on && x.dataset.sact === b.dataset.sact)); }  // title + corner pill stay in step
+}, true);
+document.addEventListener("mouseover", e => { if (location.hash.startsWith("#/show")) SHOW.hover = e.target.closest && e.target.closest(".shcard"); });
+function showMingleEnd(st) {  // the pins sink back to the tray (a re-arm, a pause or the next deal)
+  if (!st) return;
+  st.querySelectorAll(".shmingle").forEach(m => { m.getAnimations && m.getAnimations().forEach(a => a.pause());
+    if (!m.animate) { m.remove(); return; }
+    m.animate([{transform: getComputedStyle(m).transform, opacity: 1}, {transform: `translate(${st.clientWidth / 2}px,${st.clientHeight + 200}px) translate(-50%,-50%)`, opacity: 0}],
+      {duration: 600, easing: "ease-in", fill: "forwards"}).onfinish = () => m.remove(); });
+}
+// 🎞 render-queue counter, unobtrusive but noticeable: a faint pill top-left (outside the idle fade) with a slow-breathing dot while something renders; when the count goes UP it pops and a "+N" floats off.
+const showQueueDelta = (prev, n) => prev == null || n <= prev ? 0 : n - prev;  // pure: how many were just added (none on the first reading)
+function showQueueCount(n, running) {
+  const el = $("#shq"); if (!el) { SHOW.qn = n; return; }
+  const up = showQueueDelta(SHOW.qn, n); SHOW.qn = n;
+  el.hidden = !n; el.querySelector("b").textContent = n; el.classList.toggle("run", !!running);
+  el.title = `${n} image${n === 1 ? "" : "s"} waiting to render${running ? " (one on the GPU now)" : ""}`;
+  if (!up || !el.animate || showCalm()) return;
+  el.animate([{transform: "scale(1)", boxShadow: "0 0 0 rgba(232,194,122,0)"}, {transform: "scale(1.28)", boxShadow: "0 0 26px rgba(232,194,122,.65)", offset: .35},
+    {transform: "scale(1)", boxShadow: "0 0 0 rgba(232,194,122,0)"}], {duration: 900, easing: "cubic-bezier(.3,1.6,.5,1)"});
+  const f = document.createElement("span"); f.className = "shqplus"; f.textContent = "+" + up; el.appendChild(f);
+  f.animate([{opacity: 0, transform: "translate(-50%, 0) scale(.8)"}, {opacity: 1, transform: "translate(-50%, -14px) scale(1)", offset: .25}, {opacity: 0, transform: "translate(-50%, -40px) scale(1)"}],
+    {duration: 1800, easing: "ease-out"}).onfinish = () => f.remove();
+}
+function showMingleAdd(src) {  // a card pinned mid-slide joins the walk for the time that's left (the other pins keep going)
+  const st = $("#shstage"); if (!st || showCalm() || st.querySelectorAll(".shmingle").length >= 4) return;
+  const cards = [...st.querySelectorAll(".shcard:not(.gone)")].map(c => c._p).filter(Boolean), left = (SHOW.endAt || 0) - Date.now();
+  if (!cards.length || left < 3500) return;
+  const n = st.querySelectorAll(".shmingle").length, stop = Math.max(900, Math.min(2600, (left - 2900) / cards.length));
+  const plan = showMinglePlan(cards.map((_, i) => cards[(i + n * 2) % cards.length]), 1, st.clientWidth, st.clientHeight, {stop});  // starts a couple of cards along
+  if (plan.ms) showMingle(st, plan, [src]);
+}
+function showMingle(st, plan, srcs) {
+  srcs = srcs || pins.map(p => p.src);
+  if (!st || !plan.paths.length) return;
+  plan.paths.forEach((path, j) => {
+    const src = srcs[j]; if (!src) return;
+    const m = document.createElement("div"); m.className = "shmingle"; m.style.height = plan.ph + "px";
+    m.innerHTML = `<img src="${esc(th(pinSrc(src)))}" alt="" draggable="false"><i>📌</i>`;
+    st.appendChild(m);
+    const pose = q => `translate(${q.x}px,${q.y}px) translate(-50%,-50%) rotate(${q.rot}deg) rotateY(${q.ry || 0}deg) scale(${q.s || 1})`;
+    m.style.transform = pose(path[path.length - 1]);
+    m.animate(path.map((q, i) => ({transform: pose(q), opacity: i === 0 || i === path.length - 1 ? 0 : 1, offset: q.t / plan.ms, easing: "ease-in-out"})),
+      {duration: plan.ms, fill: "forwards"}).onfinish = () => m.remove();
+  });
+}
+function showVanish(st) {  // the old hand gathers into one deck in the middle and disappears
+  const cards = [...st.querySelectorAll(".shcard")], W = st.clientWidth, H = st.clientHeight;
+  showMingleEnd(st); st.querySelectorAll(".shsetfb").forEach(x => x.remove());
+  cards.forEach((c, i) => { c.classList.add("gone"); c.style.pointerEvents = "none";
+    const p = c._p; if (!p || !c.animate || showCalm()) { c.remove(); return; }
+    c.animate([{transform: c.style.transform, opacity: 1}, {transform: `translate(${W / 2 - p.w / 2}px,${H / 2 - p.h / 2}px) rotate(0deg) rotateY(-180deg) scale(.35)`, opacity: 0}],
+      {duration: 900, delay: i * 45, easing: "cubic-bezier(.55,0,.75,.4)", fill: "forwards"}).onfinish = () => c.remove(); });
+  return cards.length && !showCalm() ? 900 + 45 * (cards.length - 1) + 120 : 0;  // the new hand waits until the old one is gone (else cards fly through the collapsing deck)
+}
+async function showRender(g, o = {}) {  // o = {fresh: a just-finished set (foil marks), first: its first deal (iridescent glow)}
+  const st = $("#shstage"); if (!st) return;
+  const deal = ++SHOW.deal, t = $("#shtitle");
+  if (!g) { showVanish(st); st.insertAdjacentHTML("beforeend", `<p class="shempty">Nothing matches these filters. Loosen one in ⚙.</p>`); if (t) t.textContent = ""; return; }
+  st.querySelectorAll(".shempty").forEach(e => e.remove());
+  let imgs = g.imgs.slice(0, SHOW.wallOn && !showIsWall() ? 20 : 12);
+  if (o.only) imgs = g.imgs.filter(i => o.only.includes(i.src));
+  else if (SHOW.wallOn && !showIsWall() && imgs.length > 1) {  // one hand across two screens: the left screen gets the first half
+    const half = Math.ceil(imgs.length / 2), left = imgs.slice(0, half), right = imgs.slice(half), wallLeft = SHOW.wallSide === "left";
+    showCast({deal: g.key, srcs: (wallLeft ? left : right).map(i => i.src), fresh: o.fresh, first: o.first});
+    imgs = wallLeft ? right : left;
+  }
+  const [aspects, wait] = [Promise.all(imgs.map(im => showLoad(th(im.src)))), showVanish(st)];
+  const as = (await aspects).filter(Boolean), a = as.length ? as.reduce((s, x) => s + x, 0) / as.length : .75;
+  await new Promise(r => setTimeout(r, wait));
+  if (deal !== SHOW.deal || !document.body.contains(st)) return;
+  if (t) t.innerHTML = `${esc(g.title)}<span class="meta">${esc(g.lid)} · ${esc(g.vid)} · ${g.depth ? "Evolution " + g.depth : "Survey"}</span><a href="#/${g.depth ? "e/" + g.depth + "?hl=" + encodeURIComponent(g.lid) : "l/" + g.lid}" class="shopen" title="Open this style">↗</a>${styleBtns(g.lid, g.title)}${o.fresh ? `<span class="shnewtag" title="A new ${g.set} set, finished ${new Date(g.rendered || g.created).toLocaleString()}">✦ new ${g.set}${o.first ? " · first showing" : ""}</span>` : ""}`;
+  const W = st.clientWidth, H = st.clientHeight, lay = showLayout(imgs.length, a, W, H), calm = showCalm(), STEP = 380, FLY = 2300;
+  imgs.forEach((im, i) => {
+    const p = lay[i], src = im.src.replace(/^\.\.\//, ""), cap = g.title + " · " + im.name, c = document.createElement("div");
+    c.className = "shcard" + (isPinned(src) ? " pinned" : "") + (hasAct(FB[fbKey(im.src)], "love") ? " loved" : "") + (hasAct(FB[fbKey(im.src)], "nope") ? " noped" : "") + (im.carried ? " carried" : "") + (o.fresh ? " fresh" : ""); c.style.setProperty("--hd", (calm ? 0 : i * STEP + FLY * .85) + "ms"); c._p = p;
+    c.innerHTML = `<div class="shface"><img src="${esc(th(im.src))}" data-showsrc="${esc(im.src)}" data-showcap="${esc(cap)}" draggable="true" alt="">${pinBtn(src, cap)}${shFb(im.src, cap)}</div>${o.fresh ? `<i class="shseal" aria-label="new set">✦</i>` : ""}<div class="shback"></div>`;
+    showPlace(c, p); st.appendChild(c);
+    if (!c.animate || calm) return;
+    // thrown from the magician's hand below the frame: spins and flips face-up in slow motion, rising in an arc, then settles
+    // launched from just below its own landing spot, leaning outward, so no two flights cross; rows are dealt top first
+    const side = p.x < W / 2 ? -1 : 1, sx = p.x - p.w / 2 + (p.x - W / 2) * .25, sy = H + p.h * .4, spin = side * (140 + Math.random() * 80);  // a gentler spin keeps the turning corners clear of the neighbours
+    const ty = p.y - p.h / 2, mx = sx + (p.x - p.w / 2 - sx) * .6, my = ty + (sy - ty) * .3;  // rises and settles, never overshoots into the row above
+    c.animate([
+      {transform: `translate(${sx}px,${sy}px) rotate(${p.rot - spin}deg) rotateY(180deg) scale(.55)`, opacity: 0, offset: 0},
+      {opacity: 1, offset: .06},
+      {transform: `translate(${mx}px,${my}px) rotate(${p.rot - spin * .25}deg) rotateY(80deg) scale(1)`, offset: .45},
+      {transform: c.style.transform, opacity: 1, offset: 1}],
+      {duration: FLY, delay: i * STEP, easing: "cubic-bezier(.2,.7,.25,1)", fill: "backwards"});
+    const face = c.querySelector(".shface");
+    const glow = o.first ? ["0 0 70px 14px rgba(150,120,255,.55), 0 0 30px 4px rgba(90,230,255,.45)", "0 0 70px 14px rgba(255,120,220,.5), 0 0 30px 4px rgba(120,255,220,.45)"] : ["0 0 60px 10px rgba(255,200,110,.55)", "0 0 60px 10px rgba(255,200,110,.55)"];
+    face.animate([{boxShadow: glow[0]}, {boxShadow: glow[1], offset: .5}, {boxShadow: "0 18px 50px rgba(0,0,0,.85)"}],
+      {duration: FLY + 900, delay: i * STEP, fill: "backwards"});
+    setTimeout(() => {  // a puff of gold dust where it lands
+      if (deal !== SHOW.deal) return; const d = document.createElement("div"), s = Math.max(p.w, p.h) * 1.1;
+      d.className = "shpoof"; d.style.width = d.style.height = s + "px"; d.style.transform = `translate(${p.x - s / 2}px,${p.y - s / 2}px)`; st.insertBefore(d, st.firstChild);
+      d.animate([{opacity: 0, scale: .5}, {opacity: 1, scale: .9, offset: .25}, {opacity: 0, scale: 1.4}], {duration: 1400, easing: "ease-out"}).onfinish = () => d.remove();
+    }, i * STEP + FLY * .8);
+  });
+  SHOW.dealMs = calm ? 0 : (imgs.length - 1) * STEP + FLY;
+  showSetFb(st, g, SHOW.dealMs);
+  showArm();
+}
+function showNext(dir = 1) {
+  const pool = showPool(showGroups(DATA), showF(), showMarks());
+  let g, first = false;
+  if (dir < 0 && SHOW.hist.length > 1) { SHOW.hist.pop(); g = pool.find(x => x.key === SHOW.hist[SHOW.hist.length - 1]) || null; }
+  else { const seen = store.get("showseen", {}) || {}, mine = pool.filter(x => x.key !== SHOW.other);  // ⇉ never the style the other monitor is showing
+    g = showPick(mine.length ? mine : pool, seen, null, SHOW.cur && SHOW.cur.key, {lastFresh: SHOW.lastFresh});
+    first = showIsNew(g) && showUnseen(g, seen); SHOW.lastFresh = first;
+    if (g) { seen[g.key] = Date.now(); const ks = Object.keys(seen); if (ks.length > 3000) ks.sort((a, b) => seen[a] - seen[b]).slice(0, ks.length - 3000).forEach(k => delete seen[k]); store.set("showseen", seen); SHOW.hist.push(g.key); if (SHOW.hist.length > 50) SHOW.hist.shift(); } }
+  SHOW.cur = g; clearTimeout(SHOW.timer); SHOW.dealMs = 0; showRender(g, {fresh: showIsNew(g), first}); showCast({cur: g && g.key});
+  if (g && canFB) fetch("/api/show/seen", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({key: g.key, title: g.title, set: g.set, ui: RAW.ui || ""})}).catch(() => {});  // feedback/show.jsonl: what was dealt
+}
+function showArm() {  // the hold starts once the whole hand has landed; pinned cards are thrown in right after the hand's last card (they come
+  // out at the beginning of each set just like the other cards) and mingle card to card through the hold, then sink away
+  clearTimeout(SHOW.timer); clearTimeout(SHOW.mt); const p = $("#shprog"), st = $("#shstage"); if (!p) return;
+  showMingleEnd(st);
+  p.style.transition = "none"; p.style.width = "0%";
+  if (SHOW.paused || !SHOW.cur) return;
+  const deal = SHOW.dealMs || 0, holdOnly = showF().speed * 1000, hold = holdOnly + deal, t0 = Math.max(0, deal - 1900);  // the slot after the last card
+  const bar = ms => { p.style.transition = "none"; const w = p.style.width; void p.offsetWidth; p.style.width = w; void p.offsetWidth; p.style.transition = `width ${ms}ms linear`; p.style.width = "100%"; };
+  void p.offsetWidth; p.style.transition = `width ${hold}ms linear`; p.style.width = "100%";
+  const go = () => { if (!location.hash.startsWith("#/show") || showIsWall()) return; if (SHOW.drag || SHOW.dial) SHOW.pendingNext = true; else showNext(1); };  // the wall never deals on its own  // mid-drag: the next deal waits for the release
+  SHOW.timer = setTimeout(go, hold); SHOW.endAt = Date.now() + hold; SHOW.pendingNext = false;
+  SHOW.mt = setTimeout(() => {  // pins are read now, so ones you just added join this hand
+    const srcs = pins.map(p => p.src).filter((_, i) => showIsWall() ? i % 2 === 1 : !SHOW.wallOn || i % 2 === 0);  // two screens: pins take turns (main even, wall odd)
+    if (!location.hash.startsWith("#/show") || SHOW.drag || !srcs.length || showCalm() || !st) return;
+    const cards = [...st.querySelectorAll(".shcard:not(.gone)")].map(c => c._p).filter(Boolean); if (!cards.length) return;
+    const left = hold - t0, stop = Math.max(1100, Math.min(2600, (left - 2900) / cards.length));
+    const plan = showMinglePlan(cards, srcs.length, st.clientWidth, st.clientHeight, {stop}); if (!plan.ms) return;
+    showMingle(st, plan, srcs);
+    if (plan.ms > left) { clearTimeout(SHOW.timer); SHOW.timer = setTimeout(go, plan.ms); SHOW.endAt = Date.now() + plan.ms; bar(plan.ms); }  // a long walk stretches the slide
+  }, t0);
+}
+function showIdle() {  // the controls fade away while the mouse rests
+  const r = $("#showroot"); if (!r) return; r.classList.remove("shidle"); clearTimeout(SHOW.idle);
+  SHOW.idle = setTimeout(() => { const q = $("#showroot"); if (q && !$("#shpanel.open") && !SHOW.drag) q.classList.add("shidle"); }, 2500);
+}
+const showFs = on => { try { if (on && !document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {}); else if (!on && document.fullscreenElement) document.exitFullscreen().catch(() => {}); } catch (e) {} };
+// ⇉ second monitor:
+// a popup window on the other screen runs its own table (#/show?wall=1). The two talk over a BroadcastChannel: each deals a different style than the other,
+// pause is shared, and the wall closes when the main show ends. The button only shows when the screen is extended (screen.isExtended, Chromium).
+const showIsWall = () => /[?&]wall=1/.test(location.hash);
+let SHOWBC = null;  // opened lazily (only pages that show the slideshow)
+function showBC() { if (!SHOWBC && typeof BroadcastChannel === "function") { SHOWBC = new BroadcastChannel("anime-style-lab-show"); SHOWBC.onmessage = showOnMsg; } return SHOWBC; }
+const showCast = m => { try { const c = showBC(); if (c) c.postMessage({...m, wall: showIsWall()}); } catch (e) {} };
+function showSetPause(on) { SHOW.paused = on; const b = $("#shpause"); if (b) { b.textContent = on ? "▶︎" : "⏸"; b.classList.toggle("on", on); } SHOW.dealMs = 0; showArm(); }
+function showOnMsg(e) {
+  const m = e.data || {}; if (!location.hash.startsWith("#/show") || m.wall === showIsWall()) return;
+  if (m.paused !== undefined && m.paused !== SHOW.paused) showSetPause(m.paused);
+  if (showIsWall()) {  // the wall = the far end of the SAME table: it renders the cards the main show hands it, never picks a set itself
+    if (m.bye) window.close();
+    if (m.deal) { const g = showGroups(DATA).find(x => x.key === m.deal); if (g) { SHOW.cur = g; SHOW.dealMs = 0; showRender(g, {fresh: m.fresh, first: m.first, only: m.srcs, side: m.side}); } }
+  } else {
+    if (m.hello) { SHOW.wallOn = true; showNext(1); }  // the table stretches onto the second screen: re-deal across both
+    if (m.bye) SHOW.wallOn = false;
+    if (m.cmd) showNext(m.cmd);  // ◀ ▶ pressed on the wall
+  }
+}
+addEventListener("pagehide", () => { if (location.hash.startsWith("#/show")) showCast({bye: true}); });
+function showToast(msg, ms = 7000) {  // a short status line under the controls (not hidden by the idle fade)
+  const r = $("#showroot"); if (!r) return; let t = $("#shtoast");
+  if (!t) { t = document.createElement("div"); t.id = "shtoast"; t.className = "shtoast"; r.appendChild(t); }
+  t.textContent = msg; t.classList.add("on"); clearTimeout(SHOW.toast); SHOW.toast = setTimeout(() => t.classList.remove("on"), ms);
+}
+async function showWall() {
+  // Opening a window from a full-screen
+  // page drops its full screen, and only the "window management" permission lets a page place a window on another screen. With that permission one click
+  // may do both (Chrome's full-screen companion window): open the wall full-size (and full screen where the browser allows it) on the other screen, then put
+  // this one back in full screen. Without it: ask for it first; refused or unsupported = the old open-and-drag fallback.
+  if (SHOW.wall && !SHOW.wall.closed) { SHOW.wall.focus(); showToast("The second screen is already showing; it's been brought forward."); return; }
+  const url = location.pathname + "#/show?wall=1", name = "animelabshowwall", wasFs = !!document.fullscreenElement;
+  let perm = "unsupported";
+  if (window.getScreenDetails) { try { perm = (await navigator.permissions.query({name: "window-management"})).state; } catch (e) { perm = "prompt"; } }
+  if (perm === "prompt") {  // first time: the browser asks; the click's permission to open a window is used up by the question, so it's a second click
+    try { await window.getScreenDetails(); showToast("Thanks! Now press ⇉² once more to spread the show onto your other monitor.", 9000); }
+    catch (e) { showToast("Window management was not allowed. Press ⇉² again to open a window you can drag over yourself, or allow it in the site settings (the icon left of the address).", 12000); SHOW.wallAsked = true; }
+    return;
+  }
+  if (perm === "granted") {
+    const sd = await window.getScreenDetails(), o = sd.screens.find(x => x !== sd.currentScreen);
+    if (!o) { showToast("Only one screen is connected right now."); return; }
+    SHOW.wallSide = o.left < sd.currentScreen.left ? "left" : "right";
+    // full screen FIRST, then the window, in the same click: the companion-window rule lets a page with this permission do both (opening first used up the click)
+    try { await document.documentElement.requestFullscreen({screen: sd.currentScreen}); } catch (e) {}
+    const w = window.open(url, name, `popup,left=${o.left},top=${o.top},width=${o.width},height=${o.height}`);
+    SHOW.wall = w; const b = $("#shwall"); if (b) b.classList.toggle("on", !!w);
+    if (!w) { showToast("Pop-up blocked. Click the blocked-pop-up icon at the right end of the address bar, choose “Always allow”, then press ⇉² again.", 12000); return; }
+    setTimeout(() => { if (!document.fullscreenElement) document.documentElement.requestFullscreen({screen: sd.currentScreen}).catch(() => showToast("Press F to go full screen here again.", 6000)); }, 300);  // belt and braces
+    showToast(`Spread onto ${o.label || "your other monitor"}. If it shows a window frame there, click it once for full screen.`, 8000);
+    return;
+  }
+  // denied / not supported: open a window here and let the viewer drag it over
+  const w = window.open(url, name, `popup=1,left=${(screen.availLeft || 0) + 40},top=${(screen.availTop || 0) + 40},width=${Math.round(screen.availWidth * .6)},height=${Math.round(screen.availHeight * .6)}`);
+  SHOW.wall = w; const b = $("#shwall"); if (b) b.classList.toggle("on", !!w);
+  if (!w) { showToast("Pop-up blocked. Click the blocked-pop-up icon at the right end of the address bar, choose “Always allow”, then press ⇉² again.", 12000); return; }
+  showToast("Drag the new window onto your other monitor and click it for full screen. (Allowing “Window management” in the site settings lets ⇉² do this by itself and keep this screen full screen.)", 12000);
+}
+function showWallSetup() {
+  const r = $("#showroot"), b = $("#shwall"), h = $("#shwallhint");
+  if (b) { b.hidden = showIsWall(); if (screen.isExtended === false) b.title = "Open a second slideshow window (drag it onto your other monitor, then click it for full screen)"; }  // always offered: screen.isExtended is missing in some browsers
+  if (!showIsWall()) return;
+  r.classList.add("wall");
+  const fsDone = () => { if (h) h.hidden = true; };
+  if (document.fullscreenElement) fsDone(); else { if (h) h.hidden = false;  // a companion window may already be allowed to go full screen; otherwise one click
+    try { document.documentElement.requestFullscreen().then(fsDone).catch(() => {}); } catch (e) {} }
+  document.addEventListener("fullscreenchange", () => { if (document.fullscreenElement) fsDone(); });
+  r.addEventListener("click", () => { if (!document.fullscreenElement) showFs(true); }, {once: true});
+  showCast({hello: true});
+}
+function bindShow() { SHOW.paused = false; SHOW.hist = []; SHOW.cur = null; showWallSetup(); if (QV) paintQueue(); if (!showIsWall()) { showFs(true); showIdle(); showNext(1); } else showIdle(); }  // the wall waits for the main show's deal
+addEventListener("hashchange", () => { if (!location.hash.startsWith("#/show")) { clearTimeout(SHOW.timer); SHOW.deal++; showFs(false); showCast({bye: true}); } });
+addEventListener("resize", () => { const st = $("#shstage"); if (!st || !SHOW.cur) return;
+  const cards = [...st.querySelectorAll(".shcard:not(.gone)")], lay = showLayout(cards.length, cards[0] && cards[0]._p ? cards[0]._p.w / cards[0]._p.h : .75, st.clientWidth, st.clientHeight);
+  cards.forEach((c, i) => { c._p = lay[i]; showPlace(c, lay[i]); }); showSetPlace(st); });
+document.addEventListener("mousemove", () => { if (location.hash.startsWith("#/show")) showIdle(); });
+document.addEventListener("click", e => {
+  const c = e.target.closest && e.target.closest("[data-showf],[data-showgo]"); if (!c || !location.hash.startsWith("#/show")) return;
+  e.preventDefault();
+  if (c.dataset.showf) { const f = showF(), k = c.dataset.showf; f[k] = k === "speed" ? +c.dataset.showv : c.dataset.showv; store.set("showf", f);
+    document.querySelectorAll(`[data-showf="${k}"]`).forEach(b => b.classList.toggle("on", b.dataset.showv == f[k]));
+    const pool = showPool(showGroups(DATA), f, showMarks()); if (!SHOW.cur || !pool.some(g => g.key === SHOW.cur.key)) showNext(1); else showArm(); return; }
+  const go = c.dataset.showgo;
+  if (go === "pause") { showSetPause(!SHOW.paused); showCast({paused: SHOW.paused}); }
+  else if (go === "wall") showWall();
+  else if (go === "exit") { if (showIsWall()) window.close(); else location.hash = "#/"; }
+  else if (go === "panel") { const p = $("#shpanel"); p.classList.toggle("open"); c.classList.toggle("on", p.classList.contains("open")); }
+  else if (go === "fs") showFs(!document.fullscreenElement);
+  else if (showIsWall()) showCast({cmd: +go}); else showNext(+go);
+});
+document.addEventListener("keydown", e => {
+  if (!location.hash.startsWith("#/show") || showTyping()) return;
+  showIdle();
+  if (e.key === " ") { e.preventDefault(); const b = $("#shpause"); if (b) b.click(); }
+  else if (e.key === "ArrowRight" || e.key === "ArrowLeft") { const d = e.key === "ArrowRight" ? 1 : -1; if (showIsWall()) showCast({cmd: d}); else showNext(d); }
+  else if (e.key === "f" || e.key === "F") showFs(!document.fullscreenElement);
+  else if (e.key === "m" || e.key === "M") showWall();
+  else if ((e.key === "c" || e.key === "C") && !e.ctrlKey && !e.metaKey && SHOW.hover && document.body.contains(SHOW.hover)) { const im = SHOW.hover.querySelector("img[data-showsrc]"); if (im) showCopy(im.dataset.showsrc); }
+  else if ((e.key === "r" || e.key === "R") && !showIsWall()) location.reload();  // load a waiting gallery update (the show restarts)
+  else if (/^[lLnN]$/.test(e.key) && SHOW.hover && document.body.contains(SHOW.hover)) { const b = SHOW.hover.querySelector(`.shfb [data-fb="${/[lL]/.test(e.key) ? "love" : "nope"}"]`); if (b) b.click(); }
+  else if (e.key === "Escape") { if (showIsWall()) window.close(); else location.hash = "#/"; }
+});
+// pull a card down to pin it: press, drag (a ghost follows), drop in the glowing zone at the bottom
+document.addEventListener("pointerdown", e => {
+  const card = e.target.closest && e.target.closest("#shstage .shcard"); if (!card || e.pointerType === "mouse" || e.button !== 0 || e.target.closest("[data-pin],[data-fb],[data-shcast],[data-shcopy]")) return;  // right-click = the browser menu (Copy image)
+  const im = card.querySelector("img[data-showsrc]"); if (!im) return;
+  SHOW.drag = {src: im.dataset.showsrc.replace(/^\.\.\//, ""), cap: im.dataset.showcap, x0: e.clientX, y0: e.clientY, img: im, card, ghost: null};
+});
+document.addEventListener("pointermove", e => {
+  const d = SHOW.drag; if (!d) return;
+  if (!d.ghost) { if (Math.hypot(e.clientX - d.x0, e.clientY - d.y0) < 8) return;
+    d.ghost = d.img.cloneNode(); d.ghost.className = "shghost"; document.body.appendChild(d.ghost); d.card.classList.add("dragging"); $("#shdrop").classList.add("on"); $("#showroot").classList.remove("shidle"); }
+  e.preventDefault(); d.ghost.style.left = e.clientX + "px"; d.ghost.style.top = e.clientY + "px";
+  $("#shdrop").classList.toggle("hot", e.clientY > window.innerHeight - 170);
+}, {passive: false});
+document.addEventListener("pointerup", e => {
+  const d = SHOW.drag; if (!d) return; SHOW.drag = null;
+  if (!d.ghost) return;
+  const z = $("#shdrop"), hit = e.clientY > window.innerHeight - 170; z.classList.remove("on", "hot"); d.card.classList.remove("dragging");
+  if (hit && !isPinned(d.src)) { togglePin(d.src, d.cap); d.card.classList.add("pinned"); showMingleAdd(d.src); }
+  const g = d.ghost; if (g.animate) g.animate([{opacity: 1}, {opacity: 0, transform: `translate(-50%, ${hit ? "40%" : "-50%"}) scale(${hit ? .25 : .6})`}], {duration: 380, easing: "ease-in", fill: "forwards"}).onfinish = () => g.remove(); else g.remove();
+  showIdle(); if (SHOW.pendingNext) { SHOW.pendingNext = false; showNext(1); }  // never re-arm here: that re-threw the mingling pins
+});
+const pinReorder = (list, from, to) => { const a = [...list]; if (from < 0 || from >= a.length) return a; const [x] = a.splice(from, 1); a.splice(Math.max(0, Math.min(to, a.length)), 0, x); return a; };
+const pinSlot = (x, centers) => { let i = 0; while (i < centers.length && x > centers[i]) i++; return i; };  // insertion index for pointer x
+const PD = {i: -1, x0: 0, y0: 0, moved: false, justDragged: false};
+document.addEventListener("pointerdown", e => {
+  const w = e.target.closest && e.target.closest("#tray .pinw"); if (!w) return;
+  Object.assign(PD, {i: +w.dataset.pinidx, x0: e.clientX, y0: e.clientY, moved: false});
+});
+document.addEventListener("pointermove", e => {
+  if (PD.i < 0) return;
+  if (!PD.moved && Math.hypot(e.clientX - PD.x0, e.clientY - PD.y0) < 6) return;
+  PD.moved = true; e.preventDefault();
+  const ws = [...document.querySelectorAll("#tray .pinw")];
+  ws.forEach((w, k) => { w.classList.toggle("dragging", k === PD.i); w.style.transform = k === PD.i ? `translateX(${e.clientX - PD.x0}px)` : ""; });
+  const slot = pinSlot(e.clientX, ws.filter((_, k) => k !== PD.i).map(w => { const r = w.getBoundingClientRect(); return r.left + r.width / 2; }));
+  ws.filter((_, k) => k !== PD.i).forEach((w, k) => w.classList.toggle("dropbefore", k === slot));
+  PD.slot = slot;
+}, {passive: false});
+document.addEventListener("pointerup", () => {
+  if (PD.i < 0) return;
+  const {i, moved, slot} = PD; PD.i = -1;
+  document.querySelectorAll("#tray .pinw").forEach(w => { w.classList.remove("dragging", "dropbefore"); w.style.transform = ""; });
+  if (!moved || slot == null || slot === i) { PD.justDragged = moved; return; }
+  PD.justDragged = true; pins = pinReorder(pins, i, slot); paintPins();
+  if (canFB) pinPost("/api/pins", {op: "order", srcs: pins.map(p => p.src)}); else store.set("pins", pins);
+});
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-pin],[data-unpin]"); if (!b) return;
   e.stopPropagation(); e.preventDefault();
+  if (b.dataset.unpin && PD.justDragged) { PD.justDragged = false; return; }  // the click that ends a drag doesn't unpin
   togglePin(b.dataset.pin || b.dataset.unpin, b.dataset.cap || "");
 }, true);
 let pinTimer = 0;
@@ -1832,10 +2532,28 @@ atAttach($("#pindir"));
 let QV = null;
 const qShow = () => $("#qpanel").classList.contains("show");
 const fmtSecs = s => s >= 90 ? `${Math.round(s / 60)} min` : `${Math.round(s)}s`;
-function qLink(it) {
-  if (it.status !== "done") return "";
-  return it.kind === "video" ? "#/videos" : it.out.startsWith("journeys/") ? `#/j/${it.out.split("/")[1]}` : it.out.startsWith("musicvideos/") ? `#/mv/${it.out.split("/")[1]}` : `#/l/${it.out.split("/")[1]}`;
+// every queue row links to where its item lives,
+// queued and running rows too. Pure: the item's file path (or a worker key like "fixarea:box|<src>|text", "mvasm:<mv>|youtube") -> {href, tree}.
+function qPathOf(out) {
+  const s = String(out || "");
+  const m = s.match(/^(mvasm|mvlyrics):([^|]+)/); if (m) return `musicvideos/${m[2]}/`;
+  const xm = s.match(/^xasm:([^|]+)/); if (xm) return `explore/sagas/${xm[1]}/`;
+  const parts = s.split("|"), file = parts.find(p => /^(evolutions|journeys|musicvideos|explore)\//.test(p)) || s.replace(/^[a-z]+:/, "");
+  return file;
 }
+function qTarget(out, kind) {
+  const p = qPathOf(out), seg = p.split("/");
+  if (p.startsWith("journeys/")) return {href: `#/j/${seg[1]}`};
+  if (p.startsWith("musicvideos/")) return {href: `#/mv/${seg[1]}`};
+  if (p.startsWith("explore/sagas/")) return {href: `#/nev/saga/${seg[2]}`};
+  if (p.startsWith("explore/")) return {href: `#/nev/${seg[1]}`};
+  if (p.startsWith("evolutions/")) {
+    const id = seg[1], l = typeof byId !== "undefined" && byId[id], depth = l && l.depth;
+    return {href: depth ? `#/e/${depth}?hl=${encodeURIComponent(id)}` : `#/l/${id}`, tree: depth ? `#/tree/${id}` : "", lin: id};
+  }
+  return {href: kind === "video" ? "#/videos" : ""};
+}
+const qLink = it => qTarget(it.out, it.kind).href;
 function paintQueue() {
   if (!QV) return;
   if (typeof xpQueue === "function") xpQueue();  // the faint queue line in the full-screen player
@@ -1845,6 +2563,7 @@ function paintQueue() {
   const avgOf = it => (QV.avgm || {})[it.model] || QV.avg[it.kind] || 60;  // per-model average when known
   const left = [...running, ...queued].reduce((t, it) => t + Math.max(10, avgOf(it) - (it.t0 ? QV.now - it.t0 : 0)), 0);
   const n = running.length + queued.length;
+  if (typeof showQueueCount === "function") showQueueCount(n, running.length);  // 🎞 the slideshow's little counter
   $("#qbtn").innerHTML = `⚙ Queue${n ? `<span class="dot">${n}</span>` : ""}`;
   $("#qbtn").classList.toggle("busy", n > 0);
   document.querySelectorAll("[data-reroll]").forEach(b => b.classList.toggle("on", rerolling(b.dataset.reroll)));
@@ -1852,8 +2571,8 @@ function paintQueue() {
   // media-type icon per row
   // just the extension in [], colour-coded
   const qExt = it => { const m = String(it.out || "").match(/\.(\w{2,4})$/); return (m ? m[1] : it.kind === "3d" ? "3d" : "img").toLowerCase(); };
-  const row = (it, t) => { const href = qLink(it), x = qExt(it);
-    return `<div class="qi ${it.status}"><span class="ql" title="${esc(it.out)}"><span class="qext qx-${esc(x)}">[${esc(x)}]</span>${it.model ? `<span class="qmodel" title="model · avg ${(QV.avgm || {})[it.model] ? fmtSecs(QV.avgm[it.model]) : "not measured yet"} on the GPU">${esc(it.model)}</span>` : ""}${href ? `<a href="${href}">${esc(it.label)}</a>` : esc(it.label)}</span><span class="qt">${t}</span></div>`; };
+  const row = (it, t) => { const tg = qTarget(it.out, it.kind), href = tg.href, x = qExt(it);
+    return `<div class="qi ${it.status}"><span class="ql" title="${esc(it.out)}"><span class="qext qx-${esc(x)}">[${esc(x)}]</span>${it.model ? `<span class="qmodel" title="model · avg ${(QV.avgm || {})[it.model] ? fmtSecs(QV.avgm[it.model]) : "not measured yet"} on the GPU">${esc(it.model)}</span>` : ""}${tg.tree ? `<a class="qtree" href="${tg.tree}" data-qgo title="Family tree of ${esc(tg.lin)}">🌳</a> ` : ""}${href ? `<a href="${href}" data-qgo title="Go to ${esc(tg.lin ? "the " + (tg.tree ? "evolution set" : "lineage") + " " + tg.lin : "its page")}">${esc(it.label)}</a>` : esc(it.label)}</span><span class="qt">${t}</span></div>`; };
   const c = QV.comfy;
   const onGpu = running.filter(it => it.on_gpu), inComfy = running.filter(it => !it.on_gpu);
   $("#qpanel").innerHTML = `<button class="qclose" title="Close">×</button><b>Generation queue</b>
@@ -2038,7 +2757,7 @@ function repaintFits() {
   });
 }
 $("#qbtn").onclick = () => { $("#qpanel").classList.toggle("show"); paintQueue(); qLoad(); };
-$("#qpanel").addEventListener("click", e => { if (e.target.closest(".qclose")) $("#qpanel").classList.remove("show"); });
+$("#qpanel").addEventListener("click", e => { if (e.target.closest(".qclose") || e.target.closest("[data-qgo]")) $("#qpanel").classList.remove("show"); });  // following a row's link closes the panel
 
 // 🌫 blur: per image (server-side, feedback/blur.json, stays until turned off); the header switch disables all blur here
 let BL = {};
@@ -2135,7 +2854,142 @@ document.addEventListener("click", e => {
   showLB();
   setTimeout(() => $(`#lightbox textarea[data-draft="${CSS.escape("journey:" + fbKey(src))}"]`)?.focus(), 30);
 }, true);
+// 🎞 Final cut on a NevNovella saga chapter: the music-video build buttons (Draft / YouTube / Suno / Hooks) for one chapter; tools/saga_assemble.py
+// writes explore/sagas/<id>/chNN/cut/*.mp4 (+ hooks/, _status.json); payload ch.final_cut = {latest, builds, status, hooks}. Hidden until a shot has a clip.
+const XCUT_TGT = {draft: "Draft", youtube: "YouTube", suno: "Suno", hooks: "Hooks"};
+const xcutBusy = ch => !!(ch.final_cut && ch.final_cut.status && ["queued", "running"].includes(ch.final_cut.status.state));
+const xcutShown = ch => (ch.shots || []).some(s => (s.clips || 0) > 0) || !!(ch.final_cut && (ch.final_cut.builds || []).length);
+// 🎵 the chapter's song (uploaded by the user, e.g. made in Suno): the cut plays over it. Server: POST /api/explore/upload?saga=&chapter=&kind=music&name= (raw body),
+// /api/explore {op: music_set | music_clear}. payload ch.music = {src, name, clip_sound off|low|full, offset}. Clip sound is "off" by default (the clips' own audio is edited out).
+const XMUSIC_EXT = /\.(mp3|wav|m4a|flac|ogg|opus|aac)$/i, XCLIP_SOUND = {off: "Clip sound off", low: "Clip sound low (under the song)", full: "Clip sound full"};
+function xmusicBlock(g, ch) {
+  const m = ch.music, k = g.id + "/" + ch.id;
+  const opts = m ? `<span class="xmopts"><select data-xmusicopt="clip_sound" data-xmusicfor="${esc(k)}" title="What the clips' own audio does under the song">${Object.entries(XCLIP_SOUND).map(([v, lab]) => `<option value="${v}" ${m.clip_sound === v ? "selected" : ""}>${lab}</option>`).join("")}</select>
+      <label title="Where in the song the cut starts (seconds)">start at <input type="number" min="0" step="0.5" value="${+m.offset || 0}" data-xmusicopt="offset" data-xmusicfor="${esc(k)}" style="width:70px"> s</label></span>` : "";
+  return `<div class="xmusic" data-xmusicdrop="${esc(k)}"><span class="jstatus">🎵 Music</span>
+    ${m ? `<b class="xmname" title="${esc(m.name)}">${esc(m.name)}</b> <audio controls preload="none" src="${esc(m.src)}?v=${m.mtime}" style="height:30px;vertical-align:middle"></audio> <button data-xmusicclear="${esc(k)}" title="Remove the song from this chapter">✖ remove</button>${opts}`
+      : `<span class="hint">Drop a song here (mp3 / wav / m4a / flac / ogg, up to 200 MB), or</span>`}
+    <label class="xmpick"><input type="file" accept="audio/*,.mp3,.wav,.m4a,.flac,.ogg,.opus,.aac" data-xmusicfile="${esc(k)}" hidden><span class="jbtn" role="button">${m ? "Replace…" : "Choose a song…"}</span></label></div>`;
+}
+async function xmusicPost(k, body) {
+  const i = k.lastIndexOf("/"), sid = k.slice(0, i), chap = k.slice(i + 1);
+  try {
+    const r = await fetch("/api/explore", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({op: "music_set", saga: sid, chapter: chap, ...body})});
+    if (!r.ok) throw 0; return true;
+  } catch { $("#fbwait").textContent = "⚠ can't reach gallery server; music option not saved"; return false; }
+}
+async function xmusicUpload(k, file) {
+  if (!file || !XMUSIC_EXT.test(file.name)) { $("#fbwait").textContent = "Pick an audio file (mp3 / wav / m4a / flac / ogg)"; return; }
+  if (file.size > 200 * 1024 * 1024) { $("#fbwait").textContent = "That file is over 200 MB"; return; }
+  const i = k.lastIndexOf("/"), sid = k.slice(0, i), chap = k.slice(i + 1);
+  $("#fbwait").textContent = "⏳ uploading the song…";
+  try {
+    const r = await fetch(`/api/explore/upload?saga=${encodeURIComponent(sid)}&chapter=${encodeURIComponent(chap)}&kind=music&name=${encodeURIComponent(file.name)}`, {method: "POST", body: file});
+    const j = await r.json(); if (!r.ok) throw 0;
+    const g = sagaById[sid], ch = g && (g.chapters || []).find(c => c.id === chap);
+    if (ch) ch.music = {...(ch.music || {}), src: `../explore/sagas/${sid}/${chap}/cut/${j.music.file}`, mtime: Math.floor(Date.now() / 1000), name: j.music.name, clip_sound: j.music.clip_sound || "off", offset: j.music.offset || 0};
+    $("#fbwait").textContent = "✓ song added: the next build plays over it"; const y = window.scrollY; render(true, true); window.scrollTo(0, y);
+  } catch { $("#fbwait").textContent = "⚠ song not uploaded"; }
+}
+document.addEventListener("change", async e => {
+  const f = e.target.closest && e.target.closest("[data-xmusicfile]");
+  if (f) { await xmusicUpload(f.dataset.xmusicfile, f.files[0]); f.value = ""; return; }
+  const o = e.target.closest && e.target.closest("[data-xmusicopt]"); if (!o) return;
+  const k = o.dataset.xmusicfor, key = o.dataset.xmusicopt, val = key === "offset" ? Math.max(0, +o.value || 0) : o.value;
+  if (await xmusicPost(k, {[key]: val})) { const i = k.lastIndexOf("/"), g = sagaById[k.slice(0, i)], ch = g && (g.chapters || []).find(c => c.id === k.slice(i + 1)); if (ch && ch.music) ch.music[key] = val; }
+});
+document.addEventListener("dragover", e => { const z = e.target.closest && e.target.closest("[data-xmusicdrop]"); if (z) { e.preventDefault(); z.classList.add("over"); } });
+document.addEventListener("dragleave", e => { const z = e.target.closest && e.target.closest("[data-xmusicdrop]"); if (z) z.classList.remove("over"); });
+document.addEventListener("drop", async e => { const z = e.target.closest && e.target.closest("[data-xmusicdrop]"); if (!z) return; e.preventDefault(); z.classList.remove("over"); await xmusicUpload(z.dataset.xmusicdrop, e.dataTransfer.files[0]); });
 document.addEventListener("click", async e => {
+  const b = e.target.closest && e.target.closest("[data-xmusicclear]"); if (!b) return;
+  e.preventDefault(); const k = b.dataset.xmusicclear, i = k.lastIndexOf("/"), sid = k.slice(0, i), chap = k.slice(i + 1);
+  try {
+    const r = await fetch("/api/explore", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({op: "music_clear", saga: sid, chapter: chap})});
+    if (!r.ok) throw 0;
+    const g = sagaById[sid], ch = g && (g.chapters || []).find(c => c.id === chap); if (ch) ch.music = null;
+    $("#fbwait").textContent = "✖ song removed"; const y = window.scrollY; render(true, true); window.scrollTo(0, y);
+  } catch { $("#fbwait").textContent = "⚠ can't reach gallery server; song not removed"; }
+});
+function xcutSection(g, ch) {
+  if (!canFB || !xcutShown(ch)) return "";
+  const fc = ch.final_cut || {}, cut = fc.latest, st = fc.status, busy = xcutBusy(ch), dis = busy ? "disabled" : "", k = g.id + "/" + ch.id;
+  const tg = st && st.target;
+  const stat = busy ? `<span class="jstatus">⏳ ${st.state === "queued" ? "Queued…" : esc(st.stage || "Building…")}${tg ? " (" + XCUT_TGT[tg] + ")" : ""}</span>`
+    : st && st.state === "error" ? `<span class="jstatus err">⚠ Build failed: ${esc(st.msg || "")}</span>`
+    : st && st.state === "stale" ? `<span class="jstatus">⚠ The last build never reported back; build again.</span>`
+    : cut ? `<span class="jstatus done">✓ ${XCUT_TGT[cut.target] || "YouTube"}${cut.w ? " " + cut.w + "×" + cut.h : ""}${cut.duration ? " · " + fmtT(cut.duration) : ""} · built ${new Date(cut.mtime * 1000).toLocaleString()}</span>` : "";
+  const btn = (t, label, tip, cls) => `<button ${cls ? `class="${cls}" ` : ""}data-xasm="${esc(k + "/" + t)}" ${dis} title="${esc(tip)}">${label}</button>`;
+  const files = (fc.builds || []).length ? `<div class="mvcutfiles">${fc.builds.map(b => `<span class="mvcf"><b>${XCUT_TGT[b.target] || b.target}</b> ${b.w ? `${b.w}×${b.h} · ` : ""}${b.mb != null ? b.mb + " MB · " : ""}<code>${esc(b.src.split("/").pop())}</code>
+      ${cut && b.src === cut.src ? `<i class="jstatus">playing</i>` : `<button data-xcutplay="${esc(b.src)}?v=${b.mtime}" data-xcutfor="${esc(k)}" title="Play this build in the player">▶ Play</button>`}
+      ${revealBtn(b.src.replace(/^\.\.\//, ""), " Open folder")}</span>`).join("")}</div>` : "";
+  const hs = fc.hooks || [];
+  const hooks = hs.length ? `<details class="mvhooks"><summary>🪝 ${hs.length} hooks${fc.hooks_from ? " · cut from " + esc(fc.hooks_from) : ""}</summary><div class="mvcutfiles">${hs.map(h =>
+    `<span class="mvcf"><b>#${h.n}</b> ${fmtT(h.t0)}–${fmtT(h.t1)} · ${(h.t1 - h.t0).toFixed(1)} s${h.mb != null ? " · " + h.mb + " MB" : ""}${(h.shots || []).length ? " · " + esc(h.shots.join("–")) : ""}
+      <button data-xcutplay="${esc(h.src)}" data-xcutfor="${esc(k)}" title="Play this hook in the player">▶ Play</button></span>`).join("")}
+    ${revealBtn(hs[0].src.replace(/^\.\.\//, ""), " Open folder")}</div></details>` : "";
+  return `<div class="mvsec mvcut xcut"><h4>🎞 Final cut</h4>${xmusicBlock(g, ch)}
+    <div class="row">${btn("draft", "🎞 Build draft", "960×540, quick: check the pacing, the dissolves and the clips", "jgo")}${btn("youtube", "▶ Build for YouTube", "The master: 1920×1080, full quality. Suno and Hooks are cut from it.")}
+      ${btn("suno", "🎵 Build for Suno", "The chapter re-encoded to fit Suno's 200 MB upload limit. Reuses the YouTube master when it is current, else builds it first.")}
+      ${btn("hooks", "🪝 Build for Hooks", "The chapter as 10–30 s hooks, split at shot changes. Reuses the YouTube master when it is current.")}${stat}</div>
+    ${cut ? `<video class="mvcutv" data-xcutv="${esc(k)}" src="${esc(cut.src)}?v=${cut.mtime}" data-jclipv="${esc(cut.src)}" controls playsinline preload="metadata"></video>${files}${hooks}${clipPanel(cut.src, g.title + " " + ch.id + " · final cut", true)}`
+      : `<p class="jstatus">Build a draft to put every shot's clip (❤ first, else its still with a slow push) together with dissolves, a title card and a fade-out.</p>`}</div>`;
+}
+document.addEventListener("click", async e => {
+  const p = e.target.closest && e.target.closest("[data-xcutplay]");
+  if (p) { const v = document.querySelector(`video[data-xcutv="${CSS.escape(p.dataset.xcutfor)}"]`); if (!v) return; e.preventDefault(); v.src = p.dataset.xcutplay; v.dataset.jclipv = p.dataset.xcutplay.split("?")[0]; v.play().catch(() => {}); return; }
+  const b = e.target.closest && e.target.closest("[data-xasm]"); if (!b) return;
+  e.preventDefault(); e.stopPropagation();
+  const parts = b.dataset.xasm.split("/"), target = parts.pop(), chap = parts.pop(), sid = parts.join("/");
+  try {
+    const r = await fetch("/api/explore", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({op: "assemble", saga: sid, chapter: chap, target})});
+    if (!r.ok) throw 0;
+    const g = sagaById[sid], ch = g && (g.chapters || []).find(c => c.id === chap);
+    if (ch) ch.final_cut = {...(ch.final_cut || {}), status: {state: "queued", target, stage: "waiting in the queue", ts: Date.now() / 1000}};
+    $("#fbwait").textContent = `🎞 ${XCUT_TGT[target]} build queued…`; const y = window.scrollY; render(true, true); window.scrollTo(0, y);
+  } catch { $("#fbwait").textContent = "⚠ can't reach gallery server; build not queued"; }
+}, true);
+// 🎬 Animate chapter on a NevNovella saga chapter: same flow as the journey one, POST /api/explore {op:"animate"}
+let xAnimOpen = new Set();
+const xanimKey = (g, ch) => g.id + "/" + ch.id;
+const xanimReqs = (g, ch) => (EXST.anim || []).filter(r => r.saga === g.id && r.chapter === ch.id);
+function xanimBtn(g, ch) {
+  if (!canFB) return "";
+  const open = xanimReqs(g, ch).some(r => r.status === "open");
+  return open ? `<button class="janim" disabled title="Your author is writing the motion and rendering the reel">🎬 Animation requested</button>`
+    : `<button class="janim" data-xanim="${esc(xanimKey(g, ch))}" title="Ask your author to animate every picture of this chapter as one continuous reel">🎬 Animate chapter</button>`;
+}
+function xanimBox(g, ch) {
+  if (!canFB) return "";
+  const rs = xanimReqs(g, ch), open = rs.filter(r => r.status === "open"), done = [...rs].reverse().find(r => r.status === "done"), k = xanimKey(g, ch);
+  const status = open.length ? `<div class="jstatus">Sent ${esc(open[open.length - 1].ts)}${open[open.length - 1].text ? `: “${esc(open[open.length - 1].text)}”` : ""}. Your author is animating ${esc(ch.id)}…</div>`
+    : done ? `<div class="jstatus done">✓ animated: ${esc(done.reply || "")}</div>` : "";
+  const form = !open.length && xAnimOpen.has(k) ? `<div class="janimbox">
+      <textarea data-draft="xanim:${esc(k)}" placeholder="Optional: how should it move? mood, camera, sounds… (leave empty to let your author decide)"></textarea>
+      <div class="row"><button class="jgo" data-xanimsend="${esc(k)}">Send →</button>
+        <button data-xanimcancel="${esc(k)}">Cancel</button></div></div>` : "";
+  return status || form ? `<div class="janimwrap">${status}${form}</div>` : "";
+}
+document.addEventListener("click", async e => {
+  const xa = e.target.closest("[data-xanim],[data-xanimcancel],[data-xanimsend]");
+  if (xa) {
+    e.preventDefault();
+    const k = xa.dataset.xanim || xa.dataset.xanimcancel || xa.dataset.xanimsend, i = k.lastIndexOf("/"), sid = k.slice(0, i), chap = k.slice(i + 1);
+    if (xa.dataset.xanimsend !== undefined) {
+      const ta = document.querySelector(`textarea[data-draft="${CSS.escape("xanim:" + k)}"]`);
+      try {
+        const r = await fetch("/api/explore", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({op: "animate", saga: sid, chapter: chap, text: ta ? ta.value.trim() : ""})});
+        const j = await r.json(); if (!r.ok) throw 0;
+        EXST.anim = j.animate_requests || EXST.anim; if (ta) ta.value = ""; xAnimOpen.delete(k);
+        $("#fbwait").textContent = "🎬 animation request sent to your author"; const y = window.scrollY; render(true, true); window.scrollTo(0, y);
+      } catch { $("#fbwait").textContent = "⚠ can't reach gallery server; animation request not sent"; }
+    } else {
+      if (xa.dataset.xanim !== undefined) xAnimOpen.add(k); else xAnimOpen.delete(k);
+      const y = window.scrollY; render(true, true); window.scrollTo(0, y);
+      document.querySelector(`textarea[data-draft="${CSS.escape("xanim:" + k)}"]`)?.focus();
+    }
+    return;
+  }
   const an = e.target.closest("[data-janim],[data-janimcancel],[data-janimsend]");
   if (an) {
     e.preventDefault();
@@ -3345,10 +4199,11 @@ function parseSubj(k) {
   const [base, cast] = String(k || "f-modern").split("@"), [g, genre] = base.split("-");
   return {g, genre, cast: (cast || "survey").split("~")[0]};  // "m-scifi@arcane2~3" = 3rd such character in a larger cast
 }
-const castName = c => c === "survey" ? "Survey six" : c.replace(/(\d+)$/, " $1").replace(/^./, x => x.toUpperCase()) + " cast";
+const castName = c => String(c).startsWith("char:") ? `“${c.slice(5)}” characters` : c === "survey" ? "Survey six" : c.replace(/(\d+)$/, " $1").replace(/^./, x => x.toUpperCase()) + " cast";
 function subjMatch(k) {
   const p = parseSubj(k), cast = store.get("fcast", "all"), g = store.get("fg", "all"), genre = store.get("fgenre", "all");
-  return (cast === "all" || p.cast === cast) && (g === "all" || p.g === g) && (genre === "all" || p.genre === genre);
+  const byChar = String(cast).startsWith("char:") && String(SUBJT[k] || SUBJ[k] || "").toLowerCase().includes(cast.slice(5));  // 🎹 "every character matching …"
+  return (cast === "all" || byChar || p.cast === cast) && (g === "all" || p.g === g) && (genre === "all" || p.genre === genre);
 }
 const charFiltered = () => ["fcast", "fg", "fgenre"].some(k => store.get(k, "all") !== "all");
 const filtersActive = () => charFiltered() || !!Q() || FILTER_KEYS.some(k => fget(k) !== fdef(k));
@@ -3371,9 +4226,23 @@ function castOptions(casts, lins) {
   return [{v: "all", lab: "All casts", n: all.size, where: "", name: "all casts", chars: [], text: ""},
     ...casts.map(c => opt(c, castName(c), subs[c] || new Set()))];
 }
+// 🎹 a free-text option on top: every character in the WHOLE library whose
+// description mentions the words, across casts, as one filter ("char:<words>")
+function charOption(q) {
+  const t = q.trim().toLowerCase(); if (t.length < 3) return null;
+  const keys = new Set([...Object.keys(SUBJT || {}), ...Object.keys(SUBJ || {})].filter(k => String(SUBJT[k] || SUBJ[k] || "").toLowerCase().includes(t)));
+  if (!keys.size) return null;
+  const casts = new Set([...keys].map(k => parseSubj(k).cast));
+  return {o: {v: "char:" + t, lab: `🎹 Every character matching “${q.trim()}”`, n: keys.size, where: `${casts.size} cast${casts.size === 1 ? "" : "s"}`, name: "", chars: [], text: ""}, score: -1, hit: ""};
+}
 function castMatches(q) {
   const terms = qTerms(q.toLowerCase());
   if (!terms.length) return CASTOPTS.map(o => ({o, hit: ""}));
+  const co = charOption(q);
+  const raw = castMatchesRaw(terms), i = raw.findIndex(x => x.score >= 2);  // cast-name hits first, then 🎹, then single-character hits
+  return co ? [...raw.slice(0, i < 0 ? raw.length : i), co, ...raw.slice(i < 0 ? raw.length : i)] : raw;
+}
+function castMatchesRaw(terms) {
   return CASTOPTS.map(o => {
     if (!terms.every(t => o.name.includes(t) || o.text.includes(t))) return null;
     const score = terms.every(t => o.name.startsWith(t) || o.name.includes(" " + t)) ? 0 : terms.every(t => o.name.includes(t)) ? 1 : 2;
@@ -3794,7 +4663,7 @@ const xLeft = () => EXST.state && EXST.state.active ? Math.max(0, ((EXST.deadlin
 function xApply(st) {
   EXST.state = st; EXST.deadline = Date.now() + ((st && st.left) || 0) * 1000;
   if (st && !XC.set && st.presence != null) { XC.presence = xkSnap(st.presence); xcAdopt(st.emotion == null ? xeNeutral() : st.emotion, XAE); if (st.formality != null) xcAdopt(st.formality, XAF);
-    if (st.maturity) XC.maturity = xdNorm(st.maturity); if (Array.isArray(st.cores)) XC.cores = xcoresClean(st.cores); }  // no saved default here yet: adopt the server's
+    if (st.maturity) XC.maturity = xdNorm(st.maturity); if (Array.isArray(st.cores)) XC.cores = xcoresClean(st.cores); XC.genres = xgsNorm(st.genres != null ? st.genres : st.genre); }  // no saved default here yet: adopt the server's
 }
 const xShots = ep => (ep.shots || []).filter(s => s.src);
 function xStatus(ep) {
@@ -3808,11 +4677,16 @@ const xclamp = (v, a, b) => Math.max(a, Math.min(b, v));
 // ---- the retired 8-emotion wheel: its emotions are now LEGACY NODES of the Emotion Atlas (same ids), so old saved values / old episodes migrate onto them
 const XE_LEGACY = ["joy", "wonder", "awe", "tension", "dread", "melancholy", "longing", "serenity"];
 const XE_ADJ = {joy: "joyful", wonder: "wondering", awe: "awed", tension: "tense", dread: "dreadful", melancholy: "melancholic", longing: "yearning", serenity: "serene"};
-const XK_DETENTS = [0, 25, 50, 75, 100], XK_LABELS = [[0, "Intimate", "close, quiet, personal pictures"], [50, "Filmic", "composed, classic framing"], [100, "Epic", "vast, dramatic, grand pictures"]];
-const xkSnap = v => { v = xclamp(v, 0, 100); const d = XK_DETENTS.reduce((b, x) => Math.abs(x - v) < Math.abs(b - v) ? x : b); return Math.abs(d - v) <= 5 ? d : Math.round(v); };
-const xkAngle = v => -135 + v * 2.7;  // dial sweep -135 .. +135 degrees
-const xkDrag = (v0, dx, dy) => xkSnap(v0 + (dx - dy) * 0.5);  // drag up or right = more epic, down or left = more intimate
-const xkWord = v => v <= 12 ? "Intimate" : v < 38 ? "Leaning intimate" : v <= 62 ? "Filmic" : v < 88 ? "Leaning epic" : "Epic";
+const XK_LABELS = [[0, "Intimate", "close, quiet, personal pictures"], [50, "Filmic", "composed, classic framing"], [100, "Epic", "vast, dramatic, grand pictures"]];
+// the knob turns like the maturity dial: an absolute rotary
+// with 21 stops (every 5), each a firm click; the labelled marks 0 / 25 / 50 / 75 / 100 are drawn longer
+// and LOOKS like it ("no reason for the different look and feel on the same page for such similar controls"): same bakelite selector, same sweep
+const XK_STEP = 5, XK_MARKS = [[0, "Intimate"], [25, "Close"], [50, "Filmic"], [75, "Wide"], [100, "Epic"]];
+const xkSnap = v => xclamp(Math.round((+v || 0) / XK_STEP) * XK_STEP, 0, 100);
+const xkAngle = v => -130 + v * 2.6;  // the maturity dial's sweep, -130 .. +130 degrees
+const xkFromPointer = (dx, dy) => xkSnap((xclamp(Math.atan2(dx, -dy) * 180 / Math.PI, -130, 130) + 130) / 2.6);  // where the pointer points, 0 = straight up
+const xkNear = v => XK_MARKS.reduce((b, x) => Math.abs(x[0] - v) < Math.abs(b - v) ? x[0] : b, 0);  // the printed label lit for a value
+const xkWord = v => XK_MARKS.find(x => x[0] === xkNear(v))[1];  // the readout = the lit printed label
 const xkHint = v => (XK_LABELS.reduce((b, x) => Math.abs(x[0] - v) < Math.abs(b[0] - v) ? x : b))[2];
 // in the player the values only set hold time (intimate = longer) and how the pictures dissolve / how the caption is tinted; nothing moves
 const xpHold = (hold, p) => Math.max(2, Math.round((+hold || 6) * (1.3 - 0.6 * ((p == null ? 50 : p) / 100))));
@@ -3840,6 +4714,8 @@ function xFade(e) {  // crossfade seconds: calm emotions dissolve slowly, tense 
 // 7 discrete stops, firm detents. The stops' text comes from tools/maturity.py (payload.maturity); HARD CEILING at every stop: mature THEMES only (no sexual content, no graphic gore,
 // romance only between adults, fully clothed; no on-screen injury or blood below Teen).
 const XD_FALLBACK = ["Preschool", "Kids", "Family", "Tween", "Teen", "Young adult", "Mature"].map((label, stop) => ({stop, label, feels_like: "", story: "", pictures: "", ceiling: ""}));
+// the note under the dial: this workflow can run on other models, so where the content lands is up to them
+const XD_DISCRETION = "Content at each stop, Mature especially, is at the discretion of the user and the model writing the story.";
 let XMAT = {stops: XD_FALLBACK, ceiling: "Mature themes only: no sexual content, no graphic gore, romance only between adults, characters fully clothed.", default: 4};
 try { if (MAT0 && MAT0.stops && MAT0.stops.length === 7) XMAT = MAT0; } catch {}  // the page data arrived before this code existed
 const xdStops = () => XMAT.stops;
@@ -4038,13 +4914,14 @@ function xfCap(v) {  // caption typography for the player, from the top neuron's
 }
 // ---- 🧩 EMOTIONAL CORES. A core = a saved point / blend on the Emotion
 // atlas that the story keeps returning to: {id, name, probe, blend, weight 0-1, status active|resolved}. Up to 5 active. Pure list helpers (unit-tested); the DOM wrappers are below.
-const XCORE_MAX = 5, XCORE_W = 0.6;
+// ONE active core (the orbit value already blends a sun with its planets and moons). Setting a new core retires the old one to "resolved" (its history kept); reopening one swaps it back in.
+const XCORE_MAX = 1, XCORE_W = 0.6;
 function xcoresClean(list) {  // anything saved / from a saga -> valid cores (blend re-derived from the probe when the atlas is loaded; at most 5 active; unique ids)
   const out = [], seen = new Set(); let active = 0;
   for (const c of Array.isArray(list) ? list : []) {
     if (!c || typeof c !== "object") continue;
     const v = XAE.nodes.length ? xeNorm(c) : (c.blend && c.blend.length ? c : null); if (!v || !v.blend || !v.blend.length) continue;
-    const status = c.status === "resolved" ? "resolved" : "active"; if (status === "active" && active >= XCORE_MAX) continue;
+    const status = c.status === "resolved" || active >= XCORE_MAX ? "resolved" : "active";  // extra active ones (older saves stacked up to 5) are kept as resolved
     let id = String(c.id || xaSlug(c.name || v.genre) || "core").slice(0, 24), n = 2; while (seen.has(id)) id = String(c.id || "core").slice(0, 20) + "-" + n++;
     seen.add(id); active += status === "active";
     const core = {id, name: String(c.name || v.genre || "core").replace(/\s+/g, " ").trim().slice(0, 60), probe: v.probe, blend: v.blend, weight: Math.round(xclamp(c.weight == null ? XCORE_W : +c.weight, 0, 1) * 100) / 100, status};
@@ -4064,19 +4941,21 @@ function xoFold(v, A = XAE) {  // an orbit value -> a plain 3-neuron value for a
 function xcoresAdd(cs, v, name) {  // -> {cores, added (the new core or null), reason}
   v = xeNorm(xoFold(xeNorm(v))); const cur = xcoresClean(cs);
   if (!v.blend || !v.blend.length) return {cores: cur, added: null, reason: "Drag the probe onto a feeling first (the centre is neutral)."};
-  if (xcoresActive(cur).length >= XCORE_MAX) return {cores: cur, added: null, reason: `${XCORE_MAX} active cores is the limit: resolve or remove one first.`};
   const dup = xcoresActive(cur).find(c => c.blend[0].id === v.blend[0].id && Math.hypot(c.probe.x - v.probe.x, c.probe.y - v.probe.y) < 0.05);
-  if (dup) return {cores: cur, added: null, reason: `"${dup.name}" is already a core.`};
+  if (dup) return {cores: cur, added: null, reason: `"${dup.name}" is already the core.`};
   let id = "c" + Date.now().toString(36), n = 2; while (cur.some(c => c.id === id)) id = "c" + Date.now().toString(36) + n++;
   const core = {id, name: String(name || v.genre).slice(0, 60), probe: v.probe, blend: v.blend, weight: XCORE_W, status: "active"}; if (v.warped) core.warped = true;
-  return {cores: [...cur, core], added: core, reason: ""};
+  const act = xcoresActive(cur), keep = XCORE_MAX > 1 ? act.slice(-(XCORE_MAX - 1)).map(c => c.id) : [];  // the oldest active ones step aside to make room
+  const retired = cur.map(c => c.status !== "resolved" && !keep.includes(c.id) ? {...c, status: "resolved"} : c);
+  return {cores: [core, ...retired], added: core, replaced: act.filter(c => !keep.includes(c.id)).map(c => c.name), reason: ""};
 }
 const xcoresEdit = (cs, id, patch) => (cs || []).map(c => c.id === id ? {...c, ...patch} : c);
 const xcoresRemove = (cs, id) => (cs || []).filter(c => c.id !== id);
-function xcoresResolve(cs, id, on) {  // resolve (on) or reopen; reopening needs a free slot
+function xcoresResolve(cs, id, on) {  // resolve (on) or reopen; reopening with no free slot swaps the current core out (resolved)
   const c = (cs || []).find(x => x.id === id); if (!c) return {cores: cs, ok: false};
-  if (!on && xcoresActive(cs).length >= XCORE_MAX && c.status === "resolved") return {cores: cs, ok: false};
-  return {cores: xcoresEdit(cs, id, {status: on ? "resolved" : "active"}), ok: true};
+  if (on || c.status !== "resolved") return {cores: xcoresEdit(cs, id, {status: on ? "resolved" : "active"}), ok: true};
+  let out = cs; const act = xcoresActive(cs); if (act.length >= XCORE_MAX) act.slice(0, act.length - XCORE_MAX + 1).forEach(a => { out = xcoresEdit(out, a.id, {status: "resolved"}); });
+  out = xcoresEdit(out, id, {status: "active"}); return {cores: [out.find(x => x.id === id), ...out.filter(x => x.id !== id)], ok: true};
 }
 function xcoresMove(cs, id, toIdx) {  // reorder: put core `id` at index toIdx of the active list (resolved ones keep their place after)
   const act = xcoresActive(cs), res = (cs || []).filter(c => c.status === "resolved"), from = act.findIndex(c => c.id === id);
@@ -4085,17 +4964,45 @@ function xcoresMove(cs, id, toIdx) {  // reorder: put core `id` at index toIdx o
 const xcoresWeightAt = (fx) => Math.round(xclamp(fx, 0, 1) * 20) / 20;  // a drag-bar position 0-1 -> weight in 5% steps
 const xcoresSig = cs => JSON.stringify((cs || []).map(c => [c.id, c.name, c.weight, c.status, (c.blend || []).map(b => b.id)]));
 // state: values are remembered per viewer (localStorage) and sent with Start / Continue / Apply
-const XC = {presence: 50, emotion: xeNeutral(), formality: xfNeutral(), cores: [], maturity: {stop: 4, label: "Teen"}, coresSaga: "", set: false, drag: null};
+const XC = {presence: 50, emotion: xeNeutral(), formality: xfNeutral(), cores: [], maturity: {stop: 4, label: "Teen"}, genres: [], coresSaga: "", set: false, drag: null};
+// 🎭 GENRE selector: "" = the author's choice. Sent with start / continue / tune as `genre`
+// (explore_state.GENRES is the same list); the 🎲 surprise draws its place + hook from the genre. Hooks are written to sit under every maturity stop's ceiling.
+const XGENRES = [
+  ["Fantasy", {intimate: ["in a hedge-witch's cottage", "in a tavern at the edge of the map"], filmic: ["in a walled city of guilds and spires", "along a river of old elven ruins"], epic: ["across kingdoms waking an old dragon", "as the last great spell begins to fail"]}, ["a magic that costs something every time", "a prophecy that names the wrong hero"]],
+  ["Science fiction", {intimate: ["in a two-person research station", "in a cramped freighter cabin"], filmic: ["in a domed colony city", "on an orbital shipyard"], epic: ["across a fleet fleeing a dying star", "while first contact goes wrong"]}, ["a signal nobody should be able to send", "a machine that remembers a different past"]],
+  ["Mystery", {intimate: ["in a snowed-in guesthouse", "in a locked library"], filmic: ["in a fog-bound harbour town", "in a grand old hotel"], epic: ["across a city where every witness lies", "on a cross-country express"]}, ["a clue that points at the detective", "a disappearance nobody reported"]],
+  ["Romance", {intimate: ["in a tiny flower shop", "in a shared apartment"], filmic: ["in a seaside town over one summer", "on a long-distance train route"], epic: ["across two rival houses", "on opposite sides of a war"]}, ["two people who keep meeting at the wrong time", "a fake engagement that stops being fake"]],
+  ["Horror", {intimate: ["in a house that rearranges itself", "in a night-shift hospital ward"], filmic: ["in a village that never sleeps", "on a research ship in the ice"], epic: ["as a whole city forgets the sun", "while something old wakes under the mountains"]}, ["a voice in the walls that knows their name", "a ritual everyone else seems to remember"]],
+  ["Adventure", {intimate: ["in a balloonist's basket", "on a small sailing boat"], filmic: ["in a jungle full of old temples", "across a desert caravan route"], epic: ["on a race around a flooded world", "toward the edge of the known map"]}, ["a map that redraws itself", "a treasure that wants to stay lost"]],
+  ["Comedy", {intimate: ["in a disastrous dinner party", "in a two-desk detective agency"], filmic: ["in a town festival that keeps going wrong", "in a magic school's worst dorm"], epic: ["while two kingdoms fight over a sandwich", "during an intergalactic talent show"]}, ["a lie that grows bigger every scene", "a swap nobody notices for far too long"]],
+  ["Slice of life", {intimate: ["in a corner café", "in a laundromat after closing"], filmic: ["in a seaside neighbourhood", "in a mountain town over the seasons"], epic: ["across one whole year in a big city", "on a road trip across the country"]}, ["a small promise that matters a lot", "a new neighbour who changes everything a little"]],
+  ["Thriller", {intimate: ["in a safe house with one exit", "in a stalled elevator"], filmic: ["in a city on election night", "on a ferry crossing in a storm"], epic: ["across three capitals in three days", "while a whole network hunts them"]}, ["a countdown nobody else can see", "the wrong briefcase"]],
+  ["Western", {intimate: ["in a lonely trading post", "in a homestead at the edge of the plains"], filmic: ["in a boom town on the new railroad", "along a cattle drive"], epic: ["across a frontier at war over water", "chasing a train across the territories"]}, ["a debt that rides into town", "a sheriff's badge nobody wants"]],
+  ["Historical", {intimate: ["in a printer's workshop", "in a lighthouse during the war"], filmic: ["in a Renaissance city-state", "in a Silk Road caravanserai"], epic: ["as an empire changes hands", "during the voyage that changed the maps"]}, ["a letter that could change the outcome", "a secret kept by an ordinary family"]],
+  ["Post-apocalyptic", {intimate: ["in a greenhouse in the ruins", "in a bunker radio room"], filmic: ["in a market town built from old cars", "along a flooded highway"], epic: ["across a continent reclaimed by forest", "while the last cities choose sides"]}, ["a seed vault worth fighting over", "a broadcast from somewhere that should be empty"]],
+  ["Fairy tale", {intimate: ["in a woodcutter's cottage", "in a tower with no door"], filmic: ["in a kingdom of talking animals", "in a forest where paths move"], epic: ["across seven enchanted kingdoms", "as winter refuses to end"]}, ["a bargain made with a polite stranger", "a curse with one loophole"]],
+  ["Superhero", {intimate: ["in a secret workshop above a laundromat", "in a hero's tiny apartment"], filmic: ["in a city with too many heroes", "in a training academy"], epic: ["while two hero teams go to war", "as the sky cracks open over the city"]}, ["a power that only works when nobody watches", "a villain with a fair point"]],
+  ["Cyberpunk", {intimate: ["in a noodle bar under the monorail", "in a hacker's capsule room"], filmic: ["in a neon city of rival corporations", "in a floating slum district"], epic: ["while one AI buys a whole city", "across a net war that bleeds into the streets"]}, ["a stolen memory that isn't theirs", "a job that is too well paid"]],
+  ["Steampunk", {intimate: ["in a clockmaker's shop", "in an airship's engine room"], filmic: ["in a city of brass and smoke", "on a sky-rail between towers"], epic: ["during the great airship race", "as the empire's engine starts to fail"]}, ["an invention that should not work", "a rivalry between two inventors"]],
+  ["Noir", {intimate: ["in a rain-streaked office", "in a jazz club's back room"], filmic: ["in a port city ruled by one family", "in a city that never stops raining"], epic: ["across a city on the edge of a crime war", "while the whole police force is bought"]}, ["a client who lies from the first line", "a case the detective should have dropped"]],
+  ["Mythic", {intimate: ["in a shrine at the end of the world", "in a ferryman's boat"], filmic: ["in a city where the gods walk the streets", "on a mountain where heroes are tested"], epic: ["while the old gods and the new go to war", "on a journey into the underworld"]}, ["a deal with a god who keeps their word too exactly", "a stolen fire"]],
+  ["Sports", {intimate: ["in a run-down boxing gym", "in a small-town ice rink"], filmic: ["through one season of an underdog team", "at a national tournament"], epic: ["at the final of a world championship", "in a league played across planets"]}, ["one last season before the team folds", "a rival who becomes the only friend who understands"]],
+];
+const XGENRE_LABELS = XGENRES.map(g => g[0]);
+const xgNorm = g => XGENRE_LABELS.find(x => x.toLowerCase() === String(g || "").trim().toLowerCase()) || "";  // "" = the author's choice
+// up to 3 genres, in the order picked (the first leads); an old single `genre` string migrates to [g]
+const XGENRE_MAX = 3;
+const xgsNorm = v => { const out = []; for (const x of Array.isArray(v) ? v : [v]) { const g = xgNorm(x); if (g && !out.includes(g)) out.push(g); } return out.slice(0, XGENRE_MAX); };
 function xcAdopt(raw, A = XAF) { if (A.nodes.length) { XC[A.kind] = xvNorm(raw, A); A.raw = null; } else { A.raw = raw; XC[A.kind] = xvNeutral(A); } }
 { const sv = store.get("xtune", null); if (sv && typeof sv.presence === "number") { XC.presence = xkSnap(sv.presence); if (sv.emotion != null) xcAdopt(sv.emotion, XAE); if (sv.formality != null) xcAdopt(sv.formality, XAF);
-  XC.cores = Array.isArray(sv.cores) ? sv.cores : []; XC.maturity = xdNorm(sv.maturity); XC.coresSaga = sv.coresSaga || ""; XC.set = true; } }
+  XC.cores = Array.isArray(sv.cores) ? sv.cores : []; XC.maturity = xdNorm(sv.maturity); XC.genres = xgsNorm(sv.genres != null ? sv.genres : sv.genre); XC.coresSaga = sv.coresSaga || ""; XC.set = true; } }
 try { if (XATLAS0 && !XAF.nodes.length) xaSet(XATLAS0, XAF); if (XATLAS1 && !XAE.nodes.length) xaSet(XATLAS1, XAE); } catch {}  // the page data arrived before the atlas code existed: place the saved values now
-const xcSave = () => { XC.set = true; store.set("xtune", {presence: XC.presence, emotion: XC.emotion, formality: XC.formality, cores: XC.cores, maturity: XC.maturity, coresSaga: XC.coresSaga}); };
+const xcSave = () => { XC.set = true; store.set("xtune", {presence: XC.presence, emotion: XC.emotion, formality: XC.formality, cores: XC.cores, maturity: XC.maturity, genres: XC.genres, genre: XC.genres[0] || "", coresSaga: XC.coresSaga}); };
 const xcSame = (a, b) => JSON.stringify(xeNorm(a)) === JSON.stringify(xeNorm(b));
 const xcSameF = (a, b) => JSON.stringify(xfNorm(a)) === JSON.stringify(xfNorm(b));
 const xcDirty = () => { const st = EXST.state; if (!st) return false;
   return (st.presence == null ? 50 : st.presence) !== XC.presence || !xcSameF(st.formality, XC.formality) || !xcSame(st.emotion, XC.emotion) || xdNorm(st.maturity).stop !== XC.maturity.stop
-    || xcoresSig(xcoresClean(st.cores)) !== xcoresSig(xcoresClean(XC.cores)); };
+    || xcoresSig(xcoresClean(st.cores)) !== xcoresSig(xcoresClean(XC.cores)) || JSON.stringify(xgsNorm(st.genres != null ? st.genres : st.genre)) !== JSON.stringify(XC.genres); };
 // the cores belong to the CURRENT saga (the newest): opening the home page loads them from its bible; a brand-new novel starts with the deck's
 const xcCurSaga = () => (typeof SAGAS !== "undefined" && SAGAS[0]) || null;
 function xcSyncSaga() {
@@ -4106,18 +5013,27 @@ function xcSyncSaga() {
   xcSave(); return true;
 }
 function xKnobHtml() {
-  const p = XC.presence, pt = (a, r) => [(60 + r * Math.sin(a * Math.PI / 180)).toFixed(1), (60 - r * Math.cos(a * Math.PI / 180)).toFixed(1)];
-  let ticks = "";
-  for (let v = 0; v <= 100; v += 5) {
-    const det = XK_DETENTS.includes(v), a = xkAngle(v), [x1, y1] = pt(a, det ? 47 : 50), [x2, y2] = pt(a, 55);
-    ticks += `<line class="xkt${det ? " det" : ""}${v === p ? " on" : ""}" data-v="${v}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+  // drawn exactly like the maturity dial (xDialHtml): 21 ticks (the 5 labelled ones longer), the labels printed round it, the same bakelite body
+  const p = XC.presence, cx = 150, cy = 104, pt = (a, r) => [cx + r * Math.sin(a * Math.PI / 180), cy - r * Math.cos(a * Math.PI / 180)];
+  let marks = "";
+  for (let v = 0; v <= 100; v += XK_STEP) {
+    const lab = XK_MARKS.find(x => x[0] === v), a = xkAngle(v), [x1, y1] = pt(a, lab ? 52 : 55), [x2, y2] = pt(a, 61);
+    marks += `<line class="xdt xkt${lab ? " det" : ""}${v === p ? " on" : ""}" data-v="${v}" x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}"/>`;
+    if (lab) { const [lx, ly] = pt(a, 74), sn = Math.sin(a * Math.PI / 180), anchor = sn > 0.25 ? "start" : sn < -0.25 ? "end" : "middle";
+      marks += `<text class="xdl${xkNear(p) === v ? " on" : ""}" data-xkv="${v}" x="${lx.toFixed(1)}" y="${(ly + 4).toFixed(1)}" text-anchor="${anchor}">${lab[1]}</text>`; }
   }
   return `<div class="xknob" tabindex="0" role="slider" aria-label="Cinematic presence" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${p}" aria-valuetext="${esc(xkWord(p))}"
-      title="Turn it: drag up / right for epic, down / left for intimate. Arrow keys work too. It clicks into place at the marks.">
-    <svg viewBox="0 0 120 120" width="132" height="132"><defs><radialGradient id="xkg" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#7d8497"/><stop offset=".55" stop-color="#3b404d"/><stop offset="1" stop-color="#1c1f27"/></radialGradient></defs>
-      ${ticks}<circle cx="60" cy="60" r="38" fill="url(#xkg)" stroke="#0b0c10" stroke-width="2"/><circle cx="60" cy="60" r="31" fill="none" stroke="rgba(255,255,255,.12)" stroke-dasharray="1.5 2.5"/>
-      <g class="xkdial" transform="rotate(${xkAngle(p)} 60 60)"><line x1="60" y1="30" x2="60" y2="48" stroke="#ffb454" stroke-width="4" stroke-linecap="round"/></g></svg></div>
-    <div class="xklabels">${XK_LABELS.map(([v, lab]) => `<span data-xkv="${v}" class="${Math.abs(p - v) <= 12 ? "on" : ""}">${lab}</span>`).join("")}</div>
+      title="Turn it like the maturity dial: drag round it, click a label, or use the arrow keys. It clicks into each of its 21 stops.">
+    <svg viewBox="0 0 300 176" width="300" class="xdsvg"><defs>
+      <radialGradient id="xkg" cx="38%" cy="30%" r="85%"><stop offset="0" stop-color="#8a6446"/><stop offset=".5" stop-color="#4a3022"/><stop offset="1" stop-color="#1d120c"/></radialGradient>
+      <radialGradient id="xkc" cx="40%" cy="32%" r="80%"><stop offset="0" stop-color="#f4e7c6"/><stop offset=".55" stop-color="#bfa97c"/><stop offset="1" stop-color="#6e5d3f"/></radialGradient></defs>
+      <path d="M${pt(-130, 60)[0].toFixed(1)} ${pt(-130, 60)[1].toFixed(1)} A60 60 0 1 1 ${pt(130, 60)[0].toFixed(1)} ${pt(130, 60)[1].toFixed(1)}" fill="none" stroke="rgba(160,168,190,.18)" stroke-width="1"/>
+      ${marks}
+      <circle cx="${cx}" cy="${cy}" r="47" fill="#0b0705" opacity=".55"/><circle cx="${cx}" cy="${cy}" r="45" fill="url(#xkg)" stroke="#0b0705" stroke-width="2"/>
+      <circle cx="${cx}" cy="${cy}" r="44" fill="none" stroke="#2a1a11" stroke-width="7" stroke-dasharray="2.1 2.9" opacity=".9"/>
+      <circle cx="${cx}" cy="${cy}" r="33" fill="url(#xkc)" stroke="#2a1a11" stroke-width="1.5"/><circle cx="${cx}" cy="${cy}" r="26" fill="none" stroke="rgba(60,40,20,.35)" stroke-dasharray="1.2 2.4"/>
+      <g class="xkdial" transform="rotate(${xkAngle(p).toFixed(1)} ${cx} ${cy})"><path d="M${cx - 4} ${cy - 12} L${cx} ${cy - 42} L${cx + 4} ${cy - 12} Z" fill="#2a1a11"/><circle cx="${cx}" cy="${cy - 40}" r="2.4" fill="#ffd27a"/></g>
+      <circle cx="${cx}" cy="${cy}" r="6" fill="#2a1a11"/></svg></div>
     <div class="xread" id="xknob-read">${esc(xkWord(p))} <i>${p}</i></div><div class="xhint2" id="xknob-hint">${esc(xkHint(p))}</div>`;
 }
 // the maturity dial: a chunky ridged bakelite channel selector with the 7 stops printed round it
@@ -4142,7 +5058,7 @@ function xDialHtml() {
       <g class="xddial" transform="rotate(${xdAngle(m.stop).toFixed(1)} ${cx} ${cy})"><path d="M${cx - 4} ${cy - 12} L${cx} ${cy - 42} L${cx + 4} ${cy - 12} Z" fill="#2a1a11"/><circle cx="${cx}" cy="${cy - 40}" r="2.4" fill="#ffd27a"/></g>
       <circle cx="${cx}" cy="${cy}" r="6" fill="#2a1a11"/></svg></div>
     <div class="xread" id="xdial-read">${esc(m.label)} <i>${m.stop + 1} / 7</i></div><div class="xhint2" id="xdial-hint">${esc(xdHint(m))}</div>
-    <div class="xhint2 xceil" title="${esc(XMAT.ceiling)}">Always: mature themes only. No sexual content, no graphic gore, adults only in romance, fully clothed.</div>`;
+    <div class="xhint2 xceil" title="${esc(XD_DISCRETION)}">${esc(XD_DISCRETION)}</div>`;
 }
 // ---- 🪐 ORBIT VIEW = a little SOLAR SYSTEM (replaces the drag map + gravity / repulsor): the centre neuron links to
 // three others and those to two more each; the centre stays selected until reset while the others rotate; each orbit out from the centre carries
@@ -4553,28 +5469,42 @@ const xAtlasRead = (A = XAF) => A.kind === "emotion" ? `${esc(xeWord(XC.emotion)
 // the cores row under the Emotion atlas
 function xCoreRowHtml(c) {
   const res = c.status === "resolved", w = Math.round((+c.weight || 0) * 100);
-  return `<div class="xcore${res ? " resolved" : ""}" data-xcid="${esc(c.id)}"><span class="xcgrip" data-xcgrip title="${res ? "resolved" : "Drag up or down to reorder"}">⠿</span>
+  return `<div class="xcore${res ? " resolved" : ""}" data-xcid="${esc(c.id)}">${XCORE_MAX > 1 ? `<span class="xcgrip" data-xcgrip title="${res ? "resolved" : "Drag up or down to reorder"}">⠿</span>` : ""}
     <div class="xcmain"><input class="xcname" data-xcname value="${esc(c.name)}" maxlength="60" aria-label="Core name" title="Rename this core"><span class="xcsub">${esc(xvWord(c, XAE))}</span></div>
     ${res ? "" : `<span class="xcbar" data-xcw tabindex="0" role="slider" aria-label="Weight of ${esc(c.name)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${w}" title="How strongly the story pursues this: drag, or arrow keys. Heavy cores drive the main beats, light ones just colour scenes."><i style="width:${w}%"></i><b>${w}</b></span>`}
     <button class="xcbtn" data-xcgo title="Show on the map">◎</button><button class="xcbtn" data-xcres title="${res ? "Reopen this core" : "Mark resolved: the story has paid it off"}">${res ? "↺" : "✓"}</button><button class="xcbtn" data-xcdel title="Remove">✕</button></div>`;
 }
 function xCoresHtml() {
   const cs = xcoresClean(XC.cores), act = xcoresActive(cs), res = cs.filter(c => c.status === "resolved"), g = xcCurSaga();
-  return `<div class="xcores" id="xcores"><div class="xcoreshead"><b>Emotional cores</b><span class="xcsub">the story's through-lines · stack up to ${XCORE_MAX}${g ? ` · saved with “${esc(g.title)}”` : " · a new novel starts with these"}</span></div>
-    <button class="xcoreadd" data-xcadd title="Save the current probe point / blend as a core of the story">＋ Add as core</button><span class="xhint2 xcstat" id="xcores-status"></span>
-    <div class="xcorelist">${act.map(xCoreRowHtml).join("") || `<div class="xcempty">No cores yet. Park the probe on a feeling the story should keep coming back to, then press <b>＋ Add as core</b>.</div>`}</div>
-    ${res.length ? `<details class="xcres"><summary>${res.length} resolved</summary>${res.map(xCoreRowHtml).join("")}</details>` : ""}</div>`;
+  const btn = act.length ? "↻ Replace core" : "◎ Set as core";
+  return `<div class="xcores" id="xcores"><div class="xcoreshead"><b>Emotional core</b><span class="xcsub">the story's through-line${g ? ` · saved with “${esc(g.title)}”` : " · a new novel starts with it"}</span></div>
+    <button class="xcoreadd" data-xcadd title="${act.length ? "Make the current atlas value the story's core; the old core is kept under resolved" : "Save the current atlas value as the story's core"}">${btn}</button><span class="xhint2 xcstat" id="xcores-status"></span>
+    <div class="xcorelist">${act.map(xCoreRowHtml).join("") || `<div class="xcempty">No core yet. Set the atlas on the feeling the story should keep coming back to, then press <b>◎ Set as core</b>.</div>`}</div>
+    ${res.length ? `<details class="xcres"><summary>${res.length} earlier / resolved</summary>${res.map(xCoreRowHtml).join("")}</details>` : ""}</div>`;
 }
+const xGenreHtml = () => `<div class="xgenres" role="group" aria-label="Genres (up to ${XGENRE_MAX}, the first leads)">${[["", "Any"], ...XGENRE_LABELS.map(g => [g, g])].map(([v, lab]) => {
+  const at = v ? XC.genres.indexOf(v) : -1, on = v ? at >= 0 : !XC.genres.length;
+  return `<button class="xgchip${on ? " on" : ""}" aria-pressed="${on}" data-xgenre="${esc(v)}" title="${v ? `${esc(v)}: pick up to ${XGENRE_MAX}, blended, the first picked leads; the 🎲 surprise draws its place and hook from one of them` : "Your author picks the genre"}">${esc(lab)}${at >= 0 ? `<sup class="xgn">${at === 0 && XC.genres.length > 1 ? "lead" : at + 1}</sup>` : ""}</button>`; }).join("")}
+  <span class="hint xghint">${XC.genres.length > 1 ? `Blend: ${esc(XC.genres.join(" + "))} (lead: ${esc(XC.genres[0])})` : `Pick up to ${XGENRE_MAX}; the first leads. A 4th replaces the oldest.`}</span></div>`;
+function xcSetGenre(g) {  // chips toggle; "" (Any) clears; a 4th pick replaces the oldest
+  g = String(g || "") === "" ? "" : xgNorm(g);
+  let next = g === "" ? [] : XC.genres.includes(g) ? XC.genres.filter(x => x !== g) : [...XC.genres, g].slice(-XGENRE_MAX);
+  if (g === "" && !XC.genres.length) return;
+  XC.genres = next; xcSave(); xcBuzz();
+  document.querySelectorAll(".xgenres").forEach(el => { el.outerHTML = xGenreHtml(); });
+  document.querySelectorAll(".xapply").forEach(b => b.classList.toggle("dirty", xcDirty())); }
+document.addEventListener("click", e => { const b = e.target.closest && e.target.closest("[data-xgenre]"); if (b) { e.preventDefault(); xcSetGenre(b.dataset.xgenre); } });
 const xTuneHtml = () => { xcSyncSaga(); return `<div class="xtune"><div class="xtc xtk"><h4>Cinematic presence</h4>${xKnobHtml()}</div>
   <div class="xtc xtd"><h4>Maturity</h4>${xDialHtml()}</div>
+  <div class="xtc xtg"><h4>Genre</h4>${xGenreHtml()}</div>
   <div class="xmaps"><div class="xtc xte"><h4>Emotion atlas</h4>${xMapHtml(XAE)}${xCoresHtml()}</div>
   <div class="xtc xtf"><h4>Formality atlas</h4>${xMapHtml(XAF)}</div></div>
   <p class="hint xtnote">These steer the pictures and the story your author makes: topic, how close or vast each picture is, the audience and how dark it may get, the mood of the moment, the emotional cores it keeps pursuing, how posed or candid, the light, the palette, the captions. ${canFB ? "Saved on this device as your default." : ""}</p></div>`; };
 function xcPaint() {  // live update while dragging (no full redraw)
   const q = s => document.querySelector(s), p = XC.presence;
-  const d = q(".xkdial"); if (d) d.setAttribute("transform", `rotate(${xkAngle(p)} 60 60)`);
+  const d = q(".xkdial"); if (d) d.setAttribute("transform", `rotate(${xkAngle(p).toFixed(1)} 150 104)`);
   document.querySelectorAll(".xkt").forEach(t => t.classList.toggle("on", +t.dataset.v === p));
-  document.querySelectorAll("[data-xkv]").forEach(l => l.classList.toggle("on", Math.abs(p - +l.dataset.xkv) <= 12));
+  document.querySelectorAll("[data-xkv]").forEach(l => l.classList.toggle("on", xkNear(p) === +l.dataset.xkv));
   const kr = q("#xknob-read"); if (kr) kr.innerHTML = `${esc(xkWord(p))} <i>${p}</i>`;
   const kh = q("#xknob-hint"); if (kh) kh.textContent = xkHint(p);
   const kn = q(".xknob"); if (kn) { kn.setAttribute("aria-valuenow", p); kn.setAttribute("aria-valuetext", xkWord(p)); }
@@ -4598,7 +5528,8 @@ function xcClick() {  // a firm little detent click for the maturity dial (a 12 
   try { const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return; XCTX = XCTX || new AC(); const o = XCTX.createOscillator(), g = XCTX.createGain(), t = XCTX.currentTime;
     o.type = "square"; o.frequency.setValueAtTime(1500, t); o.frequency.exponentialRampToValueAtTime(420, t + 0.014); g.gain.setValueAtTime(0.035, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.02); o.connect(g); g.connect(XCTX.destination); o.start(t); o.stop(t + 0.025); } catch {}
 }
-function xcSetPresence(v) { v = xkSnap(v); if (v !== XC.presence) { if (XK_DETENTS.includes(v)) xcBuzz(); XC.presence = v; xcSave(); xcPaint(); } }
+function xcSetPresence(v) { v = xkSnap(v); if (v !== XC.presence) { xcBuzz(); xcClick(); XC.presence = v; xcSave(); xcPaint(); } }
+function xcKnobEvent(ev, knob) { const r = knob.querySelector("svg").getBoundingClientRect(), k = r.width / 300; xcSetPresence(xkFromPointer(ev.clientX - (r.left + 150 * k), ev.clientY - (r.top + 104 * k))); }  // same 300x176 viewBox + centre as the maturity dial
 function xcSetMaturity(i) { const m = xdNorm(i); if (m.stop !== XC.maturity.stop) { xcBuzz(); xcClick(); XC.maturity = m; xcSave(); xcPaint(); } }
 function xcSetV(A, v, save = true) { v = xvNorm(v, A); const was = XC[A.kind]; if (JSON.stringify(v) !== JSON.stringify(was)) { if (v.blend && was.blend && v.blend[0] && was.blend[0] && v.blend[0].id !== was.blend[0].id) xcBuzz(); XC[A.kind] = v; if (save) xcSave(); xcPaint(); } }
 const xcSetFormality = (f, save = true) => xcSetV(XAF, f, save), xcSetEmotion = (e, save = true) => xcSetV(XAE, e, save);
@@ -4606,7 +5537,7 @@ function xcSetCores(cs) { XC.cores = cs; xcSave(); xcoresRepaint(); }
 function xcCoresStatus(msg) { const el = document.querySelector("#xcores-status"); if (el) el.textContent = msg || ""; }
 function xcAddCore() {
   const r = xcoresAdd(XC.cores, XC.emotion); if (!r.added) { xcCoresStatus(r.reason); return; }
-  xcSetCores(r.cores); xcCoresStatus(`＋ ${r.added.name}`);
+  xcSetCores(r.cores); xcCoresStatus(r.replaced && r.replaced.length ? `◎ ${r.added.name} (was ${r.replaced.join(", ")})` : `◎ ${r.added.name}`);
 }
 const xcFlush = () => { if (PENDING_RENDER && !typing()) { PENDING_RENDER = false; render(true); } };
 function xcWeightBar(ev, bar) { const r = bar.getBoundingClientRect(), row = bar.closest("[data-xcid]"); if (!row) return; const w = xcoresWeightAt((ev.clientX - r.left) / Math.max(1, r.width));
@@ -4615,7 +5546,7 @@ function xcDialEvent(ev, dial) { const r = dial.querySelector("svg").getBounding
 document.addEventListener("pointerdown", ev => {
   const t = ev.target; if (!t || !t.closest) return;
   const k = t.closest(".xknob"), dl = t.closest(".xdial"), cb = t.closest("[data-xcw]"), gr = t.closest("[data-xcgrip]");
-  if (k) { XC.drag = {kind: "k", x: ev.clientX, y: ev.clientY, v0: XC.presence}; try { k.setPointerCapture(ev.pointerId); } catch {} k.focus(); ev.preventDefault(); }
+  if (k) { const lab = t.closest("[data-xkv]"); if (lab) { xcSetPresence(+lab.dataset.xkv); k.focus(); ev.preventDefault(); return; } XC.drag = {kind: "k", el: k}; try { k.setPointerCapture(ev.pointerId); } catch {} k.focus(); xcKnobEvent(ev, k); ev.preventDefault(); }
   else if (dl) { const lab = t.closest("[data-xdv]"); if (lab) { xcSetMaturity(+lab.dataset.xdv); dl.focus(); ev.preventDefault(); return; } XC.drag = {kind: "d", el: dl}; try { dl.setPointerCapture(ev.pointerId); } catch {} dl.focus(); xcDialEvent(ev, dl); ev.preventDefault(); }
   else if (cb) { XC.drag = {kind: "cw", el: cb}; try { cb.setPointerCapture(ev.pointerId); } catch {} cb.focus(); xcWeightBar(ev, cb); ev.preventDefault(); }
   else if (gr) { const row = gr.closest("[data-xcid]"); if (row && !row.classList.contains("resolved")) { XC.drag = {kind: "cg", id: row.dataset.xcid, row}; row.classList.add("dragging"); try { gr.setPointerCapture(ev.pointerId); } catch {} ev.preventDefault(); } }
@@ -4623,7 +5554,7 @@ document.addEventListener("pointerdown", ev => {
 });
 document.addEventListener("pointermove", ev => {
   if (!XC.drag) return;
-  if (XC.drag.kind === "k") xcSetPresence(xkDrag(XC.drag.v0, ev.clientX - XC.drag.x, ev.clientY - XC.drag.y));
+  if (XC.drag.kind === "k") xcKnobEvent(ev, XC.drag.el);
   else if (XC.drag.kind === "d") xcDialEvent(ev, XC.drag.el);
   else if (XC.drag.kind === "cw") xcWeightBar(ev, XC.drag.el);
   else if (XC.drag.kind === "cg") {  // reorder: the row under the pointer's height is where the dragged core goes
@@ -4654,7 +5585,7 @@ document.addEventListener("change", ev => { const t = ev.target; if (t && t.matc
 document.addEventListener("keydown", ev => {
   const t = ev.target; if (!t || !t.closest) return;
   if (t.closest(".xknob")) {
-    const step = {ArrowUp: 5, ArrowRight: 5, ArrowDown: -5, ArrowLeft: -5, PageUp: 25, PageDown: -25}[ev.key];
+    const step = {ArrowUp: XK_STEP, ArrowRight: XK_STEP, ArrowDown: -XK_STEP, ArrowLeft: -XK_STEP, PageUp: 25, PageDown: -25}[ev.key];
     if (step) { ev.preventDefault(); xcSetPresence(XC.presence + step); } else if (ev.key === "Home") { ev.preventDefault(); xcSetPresence(0); } else if (ev.key === "End") { ev.preventDefault(); xcSetPresence(100); }
   } else if (t.closest(".xdial")) {
     const step = {ArrowUp: 1, ArrowRight: 1, ArrowDown: -1, ArrowLeft: -1}[ev.key];
@@ -4676,37 +5607,81 @@ const XSPARKS = [
 ];
 const XSPARK_ADD = ["…with a secret nobody tells", "…told over one long night", "…and a talking animal", "…where nobody can lie", "…a hundred years later"];
 function xSparks() { const pick = []; const pool = [...XSPARKS]; while (pick.length < 4 && pool.length) pick.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]); return pick; }
-// 🎲 follows the deck: maturity picks WHO + the
-// STAKES (inside the hard ceiling at every stop), presence picks the SCALE of the place, and the emotion blend / formality / active cores
-// become short Mood / Register / Through-line notes when they are on. Pure (rnd injectable) and unit-tested.
-const XSUR_WHO = [
-  ["a shy little cloud", "a hedgehog who lost her mitten", "a toy robot with a squeaky wheel", "a baby dragon who can't roar yet", "a little bus that wants to fly"],
-  ["a goofy space janitor", "a kid inventor and her runaway gadget", "a dog detective with a terrible nose", "a clumsy wizard's apprentice", "twin skateboarding ghosts"],
-  ["a grandmother and her grandson", "a lonely lighthouse robot", "a family of travelling puppeteers", "a girl who talks to storms", "an old fox and a young fox"],
-  ["the new kid at a school for monster hunters", "three friends with a stolen map", "a girl who can hear machines think", "a boy who swapped places with his shadow", "a junior park ranger and a lost alien"],
-  ["a runaway heir", "a getaway driver with a conscience", "two rivals forced onto one team", "a singer who lost her voice", "a young medic in an occupied city"],
-  ["a soldier who deserted the winning side", "a forger in a city of informants", "a princess raised as a hostage", "a pilot who keeps reliving one battle", "a cult's runaway daughter"],
-  ["a widowed judge", "an exiled general", "a war photographer coming home", "a doctor who covered up one death", "an aging spy asked to train her replacement"]];
+// 🎲 follows the deck and is COMBINATORIAL:
+// premise = a TRAIT + a ROLE (by maturity stop) + a PLACE (the genre's at the presence scale; Any = every genre's + the general pool) + sometimes a WHEN
+// + the STAKES (by stop) + from Tween up a hook (the genre's, or any genre's now and then). Every pool sits under its stop's ceiling. Then the
+// emotion blend / formality / active core become short Mood / Register / Through-line notes when they are on. Pure (rnd injectable) and unit-tested.
+const XSUR_TRAITS = [
+  ["shy", "brave little", "sleepy", "curious", "clumsy", "grumpy", "giggly", "tiny", "very polite", "forgetful", "bouncy", "worried"],
+  ["shy", "brave little", "sleepy", "curious", "clumsy", "grumpy", "giggly", "tiny", "very polite", "forgetful", "bouncy", "worried"],
+  ["stubborn", "newly arrived", "bookish", "daredevil", "homesick", "too-honest", "overlooked", "inventive", "anxious", "loud", "gentle", "lonely"],
+  ["stubborn", "newly arrived", "bookish", "daredevil", "homesick", "too-honest", "overlooked", "inventive", "anxious", "loud", "competitive", "sarcastic"],
+  ["disgraced", "retired", "reluctant", "ambitious", "charming", "burned-out", "idealistic", "secretive", "recently promoted", "hot-headed", "broke", "lucky"],
+  ["disgraced", "retired", "reluctant", "ambitious", "exiled", "charming", "burned-out", "idealistic", "secretive", "hardened", "haunted", "stubborn"],
+  ["disgraced", "retired", "reluctant", "ambitious", "widowed", "exiled", "charming", "burned-out", "secretive", "aging", "principled", "haunted"]];
+const XSUR_ROLES = [
+  ["cloud", "hedgehog", "toy robot", "baby dragon", "little bus", "snail", "teapot", "penguin chick", "kite", "bunny", "garden gnome", "moon", "rubber duck", "lighthouse"],
+  ["space janitor", "kid inventor", "dog detective", "wizard's apprentice", "skateboarding ghost", "pizza-delivery robot", "pirate parrot", "substitute teacher",
+   "alien exchange student", "superhero sidekick", "mail-carrier owl", "monster under the bed", "cereal mascot", "junior astronaut"],
+  ["grandmother", "lighthouse robot", "travelling puppeteer", "girl who talks to storms", "old fox", "clockmaker's daughter", "forest ranger", "circus strongwoman",
+   "boy with a three-legged dog", "baker on a flying island", "young inventor", "retired sea captain", "ghost who runs a bed-and-breakfast", "mapmaker"],
+  ["new kid at a monster-hunting school", "kid with a stolen map", "girl who hears machines think", "boy who swapped places with his shadow", "junior park ranger",
+   "exchange student from another dimension", "drone-racing captain", "apprentice locksmith", "kid detective", "goalkeeper with stage fright", "young beekeeper",
+   "choir kid with a secret power", "kid who can talk to pigeons", "messenger on roller skates"],
+  ["runaway heir", "getaway driver", "rival forced onto the wrong team", "singer who lost her voice", "young medic", "courier", "rookie firefighter", "ex-champion fighter",
+   "street artist", "hotel night clerk", "ballet understudy", "smuggler's apprentice", "bodyguard", "late-night radio DJ"],
+  ["deserter", "forger", "princess raised as a hostage", "pilot who keeps reliving one battle", "cult's runaway daughter", "translator", "spy's son", "rebel quartermaster",
+   "prison cook", "bounty hunter", "refugee engineer", "scholarship student", "stunt double", "double agent"],
+  ["judge", "general", "war photographer", "doctor with a secret", "spy asked to train her replacement", "union organiser", "priest", "diplomat", "detective", "ferry captain",
+   "farmer", "novelist", "surgeon", "small-town mayor"]];
 const XSUR_STAKES = [
-  ["must find the way home before bedtime", "wants to make a new friend", "learns to share the very best puddle"],
-  ["has to stop a silly villain's giant cake machine", "must win the weirdest race in town", "accidentally shrinks the whole class"],
-  ["must keep a promise that keeps getting harder", "has one summer to save the family business", "goes looking for someone who never came back"],
-  ["uncovers a secret the grown-ups are hiding", "has to break a curse before the school year ends", "joins a contest that is not what it seems"],
-  ["has one night to make things right", "falls for the one person they were sent to stop", "must choose who to save when the plan goes wrong"],
-  ["must choose between loyalty and the truth", "learns the war's hero was a lie", "has to betray one friend to protect another"],
-  ["must live with a choice that saved some and doomed others", "returns to face the town they failed", "is asked to forgive the unforgivable"]];
+  ["must find the way home before bedtime", "wants to make a new friend", "learns to share the very best puddle", "has to find a lost button", "has to fetch the moon's hat even though it's dark",
+   "wants to bake a cake for a grumpy neighbour", "has to wake up the sleepy sun", "is looking for the perfect nap spot", "must return a borrowed umbrella", "wants to join the big parade"],
+  ["has to stop a silly villain's giant cake machine", "must win the weirdest race in town", "accidentally shrinks the whole class", "has to find who stole all the socks",
+   "must fix a time machine before dinner", "gets mistaken for a famous superhero", "has to babysit a baby volcano", "must win back the school's lost trophy",
+   "starts a band that is far too loud", "has to deliver a pizza to the moon"],
+  ["must keep a promise that keeps getting harder", "has one summer to save the family business", "goes looking for someone who never came back", "has to win over a town that doesn't want them",
+   "must bring a broken festival back to life", "finds a door that only opens once a year", "has to choose between two homes", "must guide a lost creature back to its herd",
+   "inherits a shop full of strange clocks", "must finish a journey a grandparent started"],
+  ["uncovers a secret the grown-ups are hiding", "has to break a curse before the school year ends", "joins a contest that is not what it seems", "must clear a best friend's name",
+   "finds out their town is not on any map", "has to lead a team nobody believes in", "must return a stolen relic before the full moon", "discovers the new teacher isn't human",
+   "must keep a magical pet hidden", "gets one wish and has to choose who it's for"],
+  ["has one night to make things right", "falls for the one person they were sent to stop", "must choose who to save when the plan goes wrong", "has to win back a title they threw away",
+   "must get a witness across the city alive", "is framed for a crime they almost committed", "must keep a promise to someone who is gone", "has to throw a fight or lose everything",
+   "gets a second chance and blows it in the first hour", "must expose the person who raised them"],
+  ["must choose between loyalty and the truth", "learns the war's hero was a lie", "has to betray one friend to protect another", "must decide which side to rebuild",
+   "is offered everything to turn on their own people", "has to finish the mission of someone they hated", "discovers they were the weapon all along", "must lead the people who once hunted them",
+   "has to bring a killer to trial without becoming one", "must burn the only record of who they were"],
+  ["must live with a choice that saved some and doomed others", "returns to face the town they failed", "is asked to forgive the unforgivable", "must testify against the person they love",
+   "has one last case and no one left to trust", "must decide whether a mercy is a crime", "inherits the debts of a family they left", "has to tell a truth that will end a career, maybe their own",
+   "is the only one who remembers what really happened", "must make peace before the end"]];
+const XSUR_WHEN = [  // kid stops, older stops ("" = no when, most of the time)
+  ["", "", "", "on a rainy afternoon", "on the first snowy day", "during a birthday party", "at the start of summer", "on the night of the big fair", "on a very windy morning"],
+  ["", "", "", "during the longest night of the year", "as the floodwaters rise", "on the eve of a coronation", "the week the power goes out", "during a heat wave",
+   "after the last ferry has left", "on the night of an eclipse", "in the last days of a war", "during a city-wide blackout", "on the first day of a new job"]];
 const XSUR_WHERE = {
   intimate: ["in one small apartment", "on a night train", "in a family bakery", "in a hospital waiting room", "in a houseboat kitchen", "in a lighthouse room"],
   filmic: ["in a rain-soaked port city", "in a mountain village", "on a floating market", "in a frontier town", "in a sprawling old school"],
   epic: ["across a dying empire", "between two warring moons", "aboard a generation ship", "across a continent of storms", "during the fall of a sky-city"]};
+const xsurArticle = w => /^[aeiou]/i.test(w) ? "An" : "A";
+const XSUR_DARK = ["Horror", "Thriller", "Noir", "Romance", "Post-apocalyptic", "Cyberpunk"];  // left out of "Any" at Preschool / Kids / Family
 function xSurprise(deck, rnd) {
   rnd = rnd || Math.random;
   const pick = a => a[Math.floor(rnd() * a.length) % a.length];
   const st = Math.max(0, Math.min(6, Math.round(+((deck.maturity || {}).stop ?? 4))));
   const pr = +(deck.presence ?? 50), scale = pr < 35 ? "intimate" : pr > 68 ? "epic" : "filmic";
-  const who = pick(XSUR_WHO[st]);
-  let out = `${who[0].toUpperCase()}${who.slice(1)} ${pick(XSUR_WHERE[scale])} ${pick(XSUR_STAKES[st])}.`;
-  const names = v => ((v && v.blend) || []).filter(b => b && b.name && (b.w ?? 1) >= 0.2).slice(0, 2).map(b => b.name.toLowerCase());
+  const gl = xgsNorm(deck.genres != null ? deck.genres : deck.genre);  // 🎭 chosen genres (up to 3): one of them (random when several) supplies the place (at the presence scale) and, from Tween up, its hook
+  const gen = gl.length ? XGENRES.find(g => g[0] === (gl.length > 1 ? pick(gl) : gl[0])) : undefined;
+  const lead = `${pick(XSUR_TRAITS[st])} ${pick(XSUR_ROLES[st])}`;
+  // Any genre: every genre's places at this scale + the general pool (the darker genres stay out below Tween; a genre the user picks is always honoured)
+  const anyG = XGENRES.filter(g => st >= 3 || !XSUR_DARK.includes(g[0]));
+  const where = pick(gen ? gen[1][scale] : [...XSUR_WHERE[scale], ...anyG.flatMap(g => g[1][scale])]);
+  const when = pick(XSUR_WHEN[st <= 2 ? 0 : 1]);
+  let out = `${xsurArticle(lead)} ${lead} ${where}${when ? " " + when : ""} ${pick(XSUR_STAKES[st])}.`;
+  if (gen) out += ` Genre: ${gl.map(x => x.toLowerCase()).join(" + ")}${st >= 3 ? `, with ${pick(gen[2])}` : ""}.`;
+  else if (st >= 3 && rnd() < 0.5) out += ` With ${pick(anyG.filter(g => st >= 4 || g[0] !== "Romance").flatMap(g => g[2]))}.`;  // now and then any genre's hook (romance from Teen up)
+  // the two heaviest feelings of the blend (an orbit value = the sun + its strongest planet; an old 3-node value = its top two of 20 %+)
+  const names = v => ((v && v.blend) || []).filter(b => b && b.name && (b.w ?? 1) >= 0.1).sort((a, b) => (b.w ?? 1) - (a.w ?? 1)).slice(0, 2).map(b => b.name.toLowerCase());
   const e = deck.emotion, f = deck.formality;
   if (e && (e.intensity ?? 0) >= 0.15 && names(e).length) out += ` Mood: ${names(e).join(" and ")}.`;
   if (f && (f.intensity ?? 0) >= 0.15 && names(f).length) out += ` Register: ${names(f)[0]}.`;
@@ -4719,7 +5694,7 @@ function xSeedBox(big) {
   return `<div class="xseedbox${big ? " big" : ""}">
     <label for="xseed">Premise <i>optional</i></label>
     <textarea id="xseed" data-draft="xseed" maxlength="2000" rows="${big ? 4 : 3}" placeholder="A world, a character, a mood, a first line… or leave it empty and let your author surprise you."></textarea>
-    <div class="xseedrow"><span class="xsparks">${chips}</span><span class="xseedtools"><button class="xdice" data-xdice title="Surprise me: a random premise that fits the deck (maturity picks who and what's at stake, presence the scale; the mood, register and cores are added when they're set)">🎲</button><button class="xclear" data-xclear title="Clear">✕</button><span class="xcount" id="xcount">0/2000</span></span></div></div>`;
+    <div class="xseedrow"><span class="xsparks">${chips}</span><span class="xseedtools"><button class="xdice" data-xdice title="Surprise me: a random premise that fits the deck (maturity picks who and what's at stake, presence the scale, the genre the place and a hook; the mood, register and core are added when they're set)">🎲</button><button class="xclear" data-xclear title="Clear">✕</button><span class="xcount" id="xcount">0/2000</span></span></div></div>`;
 }
 document.addEventListener("click", e => {
   const t = e.target.closest && e.target.closest("[data-xspark],[data-xdice],[data-xclear]"); if (!t) return;
@@ -4740,31 +5715,32 @@ const xNewBtn = () => `<button class="xnewbtn${XNW.open ? " on" : ""}" data-xnew
 const xNewBox = () => XNW.open ? `<div class="xnewbox">${xSeedBox(false)}<button class="xstart" data-xop="start">▶ Start the new novel</button>
   <span class="hint">Your author starts a fresh saga from this premise (or its own idea if empty). The current novel stays on its page.</span></div>` : "";
 document.addEventListener("click", e => { const b = e.target.closest && e.target.closest("[data-xnew]"); if (!b) return; e.preventDefault(); XNW.open = !XNW.open; const y = window.scrollY; render(true, true); window.scrollTo(0, y); if (XNW.open) { const t = $("#xseed"); if (t) t.focus(); } });
-function exploreBar(root) {  // root = the Nev Novel home page: the only place that offers Start a (new) novel
-  if (!canFB) return `<div class="xbar"><span class="hint">Open the gallery through tools/serve_gallery.py to start a Nev Novel.</span></div>`;
+function exploreBar(root) {  // root = the NevNovella home page: the only place that offers Start a (new) novel
+  if (!canFB) return `<div class="xbar"><span class="hint">Open the gallery through tools/serve_gallery.py to start a NevNovella.</span></div>`;
   const st = EXST.state;
   if (!st) return `<div class="xbar"><span class="hint">Loading…</span></div>`;
   let bar;
-  if (st.active) bar = `<div class="xbar on"><span class="xlive">📖 Nev Novel running · <b id="xleft">${xFmt(xLeft())}</b> left</span>
+  if (st.active) bar = `<div class="xbar on"><span class="xlive">📖 NevNovella running · <b id="xleft">${xFmt(xLeft())}</b> left</span>
     <span class="hint">Your author is inventing the story and drawing it as it goes.</span>
     <button class="xapply${xcDirty() ? " dirty" : ""}" data-xop="tune" title="Send the knob, dial, atlases and cores to your author: the story turns that way">Apply</button><button data-xop="stop" title="Stop writing. Afterwards you can Start a new novel or Continue this one">■ Stop</button>${root ? xBuildingBtn() : ""}</div>`;
   else if (st.reason === "timer") bar = `<div class="xbar paused"><button class="xcont" data-xop="continue">⏸ Paused after 15 min — Continue the novel</button>${root ? xNewBtn() : ""}
     <span class="hint">Nothing more is written or drawn until you press Continue.</span></div>${root ? xNewBox() : ""}`;
-  else if (!root) bar = `<div class="xbar"><span class="hint">Nothing is being written. Start a new novel from the <a href="#/nev">📖 Nev Novel home</a>.</span></div>`;
-  else bar = `<div class="xbar"><button class="xstart" data-xop="start">▶ Start a Nev Novel</button>
+  else if (!root) bar = `<div class="xbar"><span class="hint">Nothing is being written. Start a new novel from the <a href="#/nev">📖 NevNovella home</a>.</span></div>`;
+  else bar = `<div class="xbar"><button class="xstart" data-xop="start">▶ Start a NevNovella</button>
     ${xSeedBox(true)}<span class="hint">Your author writes and draws on its own for 15 minutes, then waits for you to continue.</span></div>`;
   return `<div class="xpanel">${bar}${xTuneHtml()}</div>`;
 }
 async function xPost(op, seed) {
   try {
-    const j = await (await fetch("/api/explore", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({op, seed: seed || "", presence: XC.presence, maturity: XC.maturity, emotion: XC.emotion, cores: xcoresClean(XC.cores).map(({history, ...c}) => c), formality: XC.formality})})).json();
+    const j = await (await fetch("/api/explore", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({op, seed: seed || "", presence: XC.presence, maturity: XC.maturity, emotion: XC.emotion, cores: xcoresClean(XC.cores).map(({history, ...c}) => c), formality: XC.formality, genres: XC.genres, genre: XC.genres[0] || ""})})).json();
     if (j.state) { xApply(j.state); render(true, true); }
   } catch { $("#fbwait").textContent = "⚠ can't reach gallery server"; }
 }
 async function xLoad() {  // 3 s poll; the countdown itself ticks locally
   try {
     const j = await (await fetch("/api/explore", {cache: "no-store"})).json(), sig = JSON.stringify([j.state.active, j.state.reason, j.state.until]);
-    const prev = EXST.sig; EXST.sig = sig; xApply(j.state);
+    const prev = EXST.sig, aprev = JSON.stringify(EXST.anim); EXST.anim = j.animate_requests || []; EXST.sig = sig; xApply(j.state);
+    if (aprev !== JSON.stringify(EXST.anim) && /^(?:explore|nev)(\/|$)/.test(location.hash.replace(/^#\/?/, ""))) { const y = window.scrollY; render(true); window.scrollTo(0, y); }
     if (j.atlas_sig && j.atlas_sig !== XAF.sig) xaFetch(j.atlas_sig, XAF);  // the Formality Atlas file changed (a neuron was added, a synapse learned)
     if (j.emotion_atlas_sig && j.emotion_atlas_sig !== XAE.sig) xaFetch(j.emotion_atlas_sig, XAE);  // ... or the Emotion Atlas
     if (prev !== sig && /^(?:explore|nev)(\/|$)/.test(location.hash.replace(/^#\/?/, ""))) { const y = window.scrollY; render(true); window.scrollTo(0, y); }
@@ -4783,14 +5759,14 @@ function exploreListPage() {
   const es = EXPL.filter(e => hasAll(et(e), q));
   const gs = SAGAS.filter(g => hasAll(sgText(g), q));
   $("#qcount").textContent = q ? `${gs.length + es.length} result${gs.length + es.length === 1 ? "" : "s"}` : "";
-  const head = `<div class="layer-head"><h2>📖 Nev Novel</h2><div class="sub">The Never-ending Visual Novel: your author invents the lore, the characters, the world and the story as it goes, and draws every chapter.
+  const head = `<div class="layer-head"><h2>📖 NevNovella</h2><div class="sub">The Never-ending Visual Novel: your author invents the lore, the characters, the world and the story as it goes, and draws every chapter.
     It keeps going for 15 minutes; after that it waits until you press Continue. Press ▶ Play on a novel for the full-screen visual-novel view.</div></div>${exploreBar(true)}`;
   const cards = es.map(e => `<div class="jcard" data-go="#/nev/${esc(e.id)}"><div class="jcover">${e.cover ? `<img src="${esc(th(e.cover))}" loading="lazy">` : `<div class="mvnocover">🌌</div>`}</div>
       <div class="body"><h3>${esc(e.title)}</h3><div class="meta">${esc(xStatus(e))}</div>${e.topic ? `<div class="meta mvl1">${esc(e.topic)}</div>` : ""}</div></div>`).join("");
   const sgCards = gs.map(g => `<div class="jcard sgcardl" data-go="#/nev/saga/${esc(g.id)}"><div class="jcover">${g.cover ? `<img src="${esc(th(g.cover))}" loading="lazy">` : `<div class="mvnocover">📖</div>`}</div>
       <div class="body"><h3>📖 ${esc(g.title)}</h3><div class="meta">${esc(sgStatus(g))}</div>${g.logline ? `<div class="meta mvl1">${esc(g.logline)}</div>` : ""}</div></div>`).join("");
   return head + (sgCards ? `<h3 class="xsec">📖 Novels</h3><div class="jcards">${sgCards}</div>` : "")
-    + (cards ? (sgCards ? `<h3 class="xsec">One-off episodes</h3>` : "") + `<div class="jcards">${cards}</div>` : sgCards ? "" : `<p class="empty">${q ? "No episodes match." : "No novels yet. Press Start a Nev Novel."}</p>`);
+    + (cards ? (sgCards ? `<h3 class="xsec">One-off episodes</h3>` : "") + `<div class="jcards">${cards}</div>` : sgCards ? "" : `<p class="empty">${q ? "No episodes match." : "No novels yet. Press Start a NevNovella."}</p>`);
 }
 function explorePage(id) {
   const ep = explById[id];
@@ -4801,7 +5777,7 @@ function explorePage(id) {
     return `<figure class="xshot"><div class="cell">${s.src ? `<img src="${esc(th(s.src))}" data-xshot="${esc(s.src)}" loading="lazy">${fbBar(s.src, cap)}` : `<div class="xwait">⏳ ${esc(s.id)} not rendered yet</div>`}</div>
       <figcaption><b>${esc(s.id)}</b>${esc(s.caption || "")}${s.prompt ? `<details><summary>prompt</summary><pre>${esc(s.prompt)}</pre></details>` : ""}</figcaption></figure>`;
   }).join("");
-  return `<div class="crumbs"><a href="#/nev">📖 Nev Novel</a> / ${esc(ep.id)}</div>
+  return `<div class="crumbs"><a href="#/nev">📖 NevNovella</a> / ${esc(ep.id)}</div>
     <div class="layer-head"><h2>${esc(ep.title)}</h2><div class="sub">${esc(ep.topic || "")}${ep.premise ? " — " + esc(ep.premise) : ""}</div>
       <div class="sub">${esc(xStatus(ep))}</div>
       <button class="xplay" data-xplay="${esc(ep.id)}" ${n ? "" : "disabled"} title="Full-screen player (Space pause, arrows step, Esc exit)">▶ Play</button></div>
@@ -4873,6 +5849,111 @@ function sgMore(g, segs) {  // what the endless stream still has to append: ever
   let last = -1; full.forEach((x, i) => { if (have.has(x.key)) last = i; });
   return full.slice(last + 1).filter(x => !have.has(x.key));
 }
+// 🎞 Music video (saga level): one song over a chapter range, the cells fitted to it by ONE uniform speed. saga.json `mv` {music, chapters, length, clip_sound, offset};
+// payload g.mv = {cfg, music, final_cut}; server ops via /api/explore: mv_set | mv_music_clear | assemble {saga, chapters, target}; upload kind=music with saga only.
+const XMV_MIN = 0.7, XMV_MAX = 1.4, XMV_D = 1.0, XMV_TAIL = 1.5;
+const xmvFmt = s => { s = Math.round(Math.max(0, +s || 0)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
+function xmvParseLen(v) {  // "4:05" | "245" -> seconds, 0 when unusable
+  const p = String(v == null ? "" : v).trim().split(":"); if (!p[0]) return 0; let s = 0;
+  for (const x of p) { const n = parseFloat(x); if (!isFinite(n) || n < 0) return 0; s = s * 60 + n; } return s;
+}
+function xmvRange(spec, ids) {  // "ch01-ch03" -> the chapter ids inside it
+  const nums = (String(spec || "").match(/\d+/g) || []).map(Number); if (!nums.length) return [];
+  const lo = Math.min(nums[0], nums[nums.length - 1]), hi = Math.max(nums[0], nums[nums.length - 1]);
+  return ids.filter(i => { const n = +(String(i).replace(/\D/g, "") || 0); return n >= lo && n <= hi; });
+}
+function xmvFit(nats, target, hasMusic) {  // pure: the uniform speed that fits natural -> target (same maths as saga_edit.fit_report)
+  const tot = nats.reduce((a, b) => a + b, 0), n = nats.length, ds = Math.max(0, n - 1) * XMV_D, pic = target - (hasMusic ? XMV_TAIL : 0);
+  const want = pic + ds, raw = want > 0 ? tot / want : XMV_MAX, avg = n ? tot / n : 5;
+  const out = {cells: n, natural: tot - ds, target, raw, ok: raw >= XMV_MIN && raw <= XMV_MAX, add: 0};
+  if (raw < XMV_MIN) out.add = Math.ceil((XMV_MIN * want - tot) / avg); else if (raw > XMV_MAX) out.add = -Math.ceil((tot - XMV_MAX * want) / avg);
+  return out;
+}
+function xmvState(g) {
+  const mv = g.mv || {}, cfg = mv.cfg || {}, chs = (g.chapters || []).filter(c => (c.shots || []).some(s => s.nat > 0)), ids = chs.map(c => c.id);
+  const spec = cfg.chapters || (ids.length ? (ids.length > 1 ? ids[0] + "-" + ids[ids.length - 1] : ids[0]) : ""), sel = xmvRange(spec, ids);
+  const nats = chs.filter(c => sel.includes(c.id)).flatMap(c => (c.shots || []).map(s => +s.nat || 0).filter(x => x > 0));
+  const m = mv.music, len = m ? Math.max(0, (+m.dur || 0) - (+cfg.offset || 0)) : xmvParseLen(cfg.length);
+  return {mv, cfg, chs, ids, spec, sel, nats, music: m, target: len, fit: len > 0 && nats.length ? xmvFit(nats, len, !!m) : null};
+}
+function xmvReadout(S) {
+  if (!S.nats.length) return "No cells in that range yet.";
+  const f = S.fit; if (!f) return `${S.nats.length} cells · natural ${xmvFmt(S.nats.reduce((a, b) => a + b, 0) - (S.nats.length - 1) * XMV_D)} · add a song or type its length`;
+  const base = `${f.cells} cells · natural ${xmvFmt(f.natural)} → ${xmvFmt(f.target)} at ${f.raw.toFixed(2)}x`;
+  return f.ok ? base : `${base}: ${f.add > 0 ? `needs ~${f.add} more cell${f.add === 1 ? "" : "s"}` : `drop ~${-f.add} cell${f.add === -1 ? "" : "s"}`}, or ${f.raw.toFixed(2)}x is ${f.add > 0 ? "too slow" : "too fast"}`;
+}
+function xmvBlock(g) {
+  if (!canFB) return "";
+  const S = xmvState(g), {mv, cfg, music: m} = S, fc = mv.final_cut || {}, cut = fc.latest, st = fc.status, busy = !!(st && ["queued", "running"].includes(st.state)), dis = busy ? "disabled" : "", k = g.id;
+  if (!S.ids.length && !m) return "";
+  if (!(g.chapters || []).some(c => (c.shots || []).some(s => s.clips > 0)) && !m && !(fc.builds || []).length) return "";
+  const sel = (which, cur) => `<select data-xmvrange="${which}" data-xmvfor="${esc(k)}">${S.ids.map(i => `<option value="${esc(i)}" ${i === cur ? "selected" : ""}>${esc(i)}</option>`).join("")}</select>`;
+  const lo = S.sel[0] || S.ids[0], hi = S.sel[S.sel.length - 1] || S.ids[S.ids.length - 1];
+  const song = m ? `<b class="xmname" title="${esc(m.name)}">${esc(m.name)}</b> <audio controls preload="none" src="${esc(m.src)}?v=${m.mtime}" style="height:30px;vertical-align:middle"></audio> <button data-xmvmusicclear="${esc(k)}" title="Remove the song">✖ remove</button>
+      <select data-xmvopt="clip_sound" data-xmvfor="${esc(k)}" title="What the clips' own audio does under the song">${Object.entries(XCLIP_SOUND).map(([v, lab]) => `<option value="${v}" ${(cfg.clip_sound || "off") === v ? "selected" : ""}>${lab}</option>`).join("")}</select>
+      <label>start at <input type="number" min="0" step="0.5" value="${+cfg.offset || 0}" data-xmvopt="offset" data-xmvfor="${esc(k)}" style="width:70px"> s</label>`
+    : `<span class="hint">Drop the song here, or</span> <label>Song length <input type="text" placeholder="mm:ss" value="${esc(cfg.length || "")}" data-xmvopt="length" data-xmvfor="${esc(k)}" style="width:70px"></label>`;
+  const stat = busy ? `<span class="jstatus">⏳ ${st.state === "queued" ? "Queued…" : esc(st.stage || "Building…")}${st.target ? " (" + XCUT_TGT[st.target] + ")" : ""}</span>`
+    : st && st.state === "error" ? `<span class="jstatus err">⚠ Build failed: ${esc(st.msg || "")}</span>`
+    : st && st.state === "stale" ? `<span class="jstatus">⚠ The last build never reported back; build again.</span>`
+    : cut ? `<span class="jstatus done">✓ ${XCUT_TGT[cut.target] || "YouTube"}${cut.range ? " " + esc(cut.range) : ""}${cut.w ? " · " + cut.w + "×" + cut.h : ""}${cut.duration ? " · " + xmvFmt(cut.duration) : ""}${cut.speed ? " · " + cut.speed + "x" : ""}</span>` : "";
+  const btn = (t, label, tip, cls) => `<button ${cls ? `class="${cls}" ` : ""}data-xmvasm="${esc(k + "/" + t)}" ${dis} ${S.fit && !S.fit.ok ? "" : ""} title="${esc(tip)}">${label}</button>`;
+  const files = (fc.builds || []).length ? `<div class="mvcutfiles">${fc.builds.map(b => `<span class="mvcf"><b>${XCUT_TGT[b.target] || b.target}</b>${b.range ? " " + esc(b.range) : ""} ${b.w ? `${b.w}×${b.h} · ` : ""}${b.mb != null ? b.mb + " MB · " : ""}<code>${esc(b.src.split("/").pop())}</code>
+      ${cut && b.src === cut.src ? `<i class="jstatus">playing</i>` : `<button data-xcutplay="${esc(b.src)}?v=${b.mtime}" data-xcutfor="${esc("mv:" + k)}">▶ Play</button>`}${revealBtn(b.src.replace(/^\.\.\//, ""), " Open folder")}</span>`).join("")}</div>` : "";
+  const hs = fc.hooks || [];
+  const hooks = hs.length ? `<details class="mvhooks"><summary>🪝 ${hs.length} hooks</summary><div class="mvcutfiles">${hs.map(h => `<span class="mvcf"><b>#${h.n}</b> ${esc(h.range || "")} ${xmvFmt(h.t0)}–${xmvFmt(h.t1)} · ${(h.t1 - h.t0).toFixed(1)} s
+      <button data-xcutplay="${esc(h.src)}" data-xcutfor="${esc("mv:" + k)}">▶ Play</button></span>`).join("")}${revealBtn(hs[0].src.replace(/^\.\.\//, ""), " Open folder")}</div></details>` : "";
+  return `<section class="mvsec mvcut xmvsec" data-xmvdrop="${esc(k)}"><h3>🎞 Music video</h3>
+    <div class="row">Chapters ${sel("from", lo)} to ${sel("to", hi)} <span class="xmvread jstatus">${esc(xmvReadout(S))}</span></div>
+    <div class="row xmusic"><span class="jstatus">🎵 Song</span> ${song} <label class="xmpick"><input type="file" accept="audio/*,.mp3,.wav,.m4a,.flac,.ogg,.opus,.aac" data-xmvfile="${esc(k)}" hidden><span class="jbtn" role="button">${m ? "Replace…" : "Choose a song…"}</span></label></div>
+    <div class="row">${btn("draft", "🎞 Build draft", "960×540, quick", "jgo")}${btn("youtube", "▶ Build for YouTube", "The master, 1920×1080")}${btn("suno", "🎵 Build for Suno", "Under Suno's 200 MB limit")}${btn("hooks", "🪝 Build for Hooks", "10–30 s hooks at shot changes")}${stat}</div>
+    ${cut ? `<video class="mvcutv" data-xcutv="${esc("mv:" + k)}" src="${esc(cut.src)}?v=${cut.mtime}" data-jclipv="${esc(cut.src)}" controls playsinline preload="metadata"></video>${files}${hooks}${clipPanel(cut.src, g.title + " · music video", true)}`
+      : `<p class="jstatus">Pick the chapters, add the song (or type its length), then Build draft: every cell of those chapters is sped up or slowed down by the same factor to fill the song.</p>`}</section>`;
+}
+async function xmvPost(body) {
+  try { const r = await fetch("/api/explore", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)}); if (!r.ok) throw 0; return await r.json(); }
+  catch { $("#fbwait").textContent = "⚠ can't reach gallery server; music video change not saved"; return null; }
+}
+async function xmvUpload(sid, file) {
+  if (!file || !XMUSIC_EXT.test(file.name)) { $("#fbwait").textContent = "Pick an audio file (mp3 / wav / m4a / flac / ogg)"; return; }
+  if (file.size > 200 * 1024 * 1024) { $("#fbwait").textContent = "That file is over 200 MB"; return; }
+  $("#fbwait").textContent = "⏳ uploading the song…";
+  try {
+    const r = await fetch(`/api/explore/upload?saga=${encodeURIComponent(sid)}&kind=music&name=${encodeURIComponent(file.name)}`, {method: "POST", body: file});
+    const j = await r.json(); if (!r.ok) throw 0;
+    const g = sagaById[sid]; if (g) { g.mv = g.mv || {cfg: {}, final_cut: {}}; g.mv.music = {src: `../explore/sagas/${sid}/cut/${j.music.file}`, mtime: Math.floor(Date.now() / 1000), name: j.music.name, dur: j.music.dur || 0}; }
+    $("#fbwait").textContent = "✓ song added"; const y = window.scrollY; render(true, true); window.scrollTo(0, y);
+  } catch { $("#fbwait").textContent = "⚠ song not uploaded"; }
+}
+document.addEventListener("change", async e => {
+  const f = e.target.closest && e.target.closest("[data-xmvfile]"); if (f) { await xmvUpload(f.dataset.xmvfile, f.files[0]); f.value = ""; return; }
+  const r = e.target.closest && e.target.closest("[data-xmvrange]"), o = e.target.closest && e.target.closest("[data-xmvopt]");
+  const el = r || o; if (!el) return;
+  const sid = el.dataset.xmvfor, g = sagaById[sid]; if (!g) return; g.mv = g.mv || {cfg: {}, final_cut: {}}; g.mv.cfg = g.mv.cfg || {};
+  let body = {op: "mv_set", saga: sid};
+  if (r) {
+    const wrap = el.closest(".xmvsec"), a = wrap.querySelector('[data-xmvrange="from"]').value, b = wrap.querySelector('[data-xmvrange="to"]').value;
+    body.chapters = a === b ? a : `${a}-${b}`; g.mv.cfg.chapters = body.chapters;
+  } else { const key = el.dataset.xmvopt, v = key === "offset" ? Math.max(0, +el.value || 0) : el.value; body[key] = v; g.mv.cfg[key] = v; }
+  const j = await xmvPost(body);
+  if (j && j.mv) g.mv.cfg = {...j.mv, music: undefined};
+  const y = window.scrollY; render(true, true); window.scrollTo(0, y);
+});
+document.addEventListener("dragover", e => { const z = e.target.closest && e.target.closest(".xmvsec[data-xmvdrop]"); if (z) { e.preventDefault(); z.classList.add("over"); } });
+document.addEventListener("dragleave", e => { const z = e.target.closest && e.target.closest(".xmvsec[data-xmvdrop]"); if (z) z.classList.remove("over"); });
+document.addEventListener("drop", async e => { const z = e.target.closest && e.target.closest(".xmvsec[data-xmvdrop]"); if (!z) return; e.preventDefault(); z.classList.remove("over"); await xmvUpload(z.dataset.xmvdrop, e.dataTransfer.files[0]); });
+document.addEventListener("click", async e => {
+  const c = e.target.closest && e.target.closest("[data-xmvmusicclear]");
+  if (c) { e.preventDefault(); const sid = c.dataset.xmvmusicclear, j = await xmvPost({op: "mv_music_clear", saga: sid}), g = sagaById[sid];
+    if (j && g && g.mv) { g.mv.music = null; $("#fbwait").textContent = "✖ song removed"; const y = window.scrollY; render(true, true); window.scrollTo(0, y); } return; }
+  const b = e.target.closest && e.target.closest("[data-xmvasm]"); if (!b) return;
+  e.preventDefault(); e.stopPropagation();
+  const parts = b.dataset.xmvasm.split("/"), target = parts.pop(), sid = parts.join("/"), g = sagaById[sid]; if (!g) return;
+  const S = xmvState(g); if (!S.spec) return;
+  const j = await xmvPost({op: "assemble", saga: sid, chapters: S.spec, target});
+  if (j) { g.mv = g.mv || {cfg: {}, final_cut: {}}; g.mv.final_cut = {...(g.mv.final_cut || {}), status: {state: "queued", target, range: S.spec, stage: "waiting in the queue", ts: Date.now() / 1000}};
+    $("#fbwait").textContent = `🎞 ${XCUT_TGT[target]} music video queued…`; const y = window.scrollY; render(true, true); window.scrollTo(0, y); }
+}, true);
 function sagaPage(id) {
   const g = sagaById[id];
   if (!g) return `<p class="empty">Unknown novel ${esc(id)}. <a href="#/nev">All novels</a></p>`;
@@ -4885,15 +5966,16 @@ function sagaPage(id) {
     const cells = (ch.shots || []).map(s => {
       const cap = `${g.title} ${ch.id} · ${s.id}${s.caption ? " — " + s.caption : ""}`;
       const lines = [s.narration ? `<div class="sgnar">${esc(s.narration)}</div>` : "", ...(s.dialogue || []).map(d => `<div class="sgsay"><b style="color:${esc(vnColor(d.who, g.cast))}">${esc(d.who)}${d.off ? " (off-screen)" : ""}</b> ${esc(d.text)}</div>`)].join("");
-      return `<figure class="xshot"><div class="cell">${s.src ? `<img src="${esc(th(s.src))}" data-xshot="${esc(s.src)}" loading="lazy">${fbBar(s.src, cap)}` : `<div class="xwait">⏳ ${esc(s.id)} not rendered yet</div>`}</div>
+      return `<figure class="xshot"><div class="cell">${s.src ? `<img src="${esc(th(s.src))}" data-xshot="${esc(s.src)}" loading="lazy">${fbBar(s.src, cap)}
+          <button class="sgtileplay" data-sgplay="${esc(g.id)}" data-from="${ch.num}" data-at="${esc(ch.id + "/" + s.id)}" title="Play from this picture">▶</button>` : `<div class="xwait">⏳ ${esc(s.id)} not rendered yet</div>`}</div>
         <figcaption><b>${esc(s.id)}</b>${(s.with || []).length ? `<span class="sgwith">${esc(s.with.join(", "))}${s.place ? " · " + esc(s.place) : ""}</span>` : s.place ? `<span class="sgwith">${esc(s.place)}</span>` : ""}${lines || esc(s.caption || "")}
         ${s.prompt ? `<details><summary>prompt</summary><pre>${esc(s.prompt)}</pre></details>` : ""}</figcaption></figure>`;
     }).join("");
     return `<section class="sgchap" id="sg-${esc(ch.id)}"><div class="sgchead"><h3>Chapter ${ch.num} — ${esc(ch.title)}</h3><span class="meta">${esc(xStatus(ch))}</span>
-      <button class="xplay sgfrom" data-sgplay="${esc(g.id)}" data-from="${ch.num}" ${sgShots(ch).length ? "" : "disabled"} title="Play from this chapter">▶ From here</button></div>
+      <button class="xplay sgfrom" data-sgplay="${esc(g.id)}" data-from="${ch.num}" ${sgShots(ch).length ? "" : "disabled"} title="Play from this chapter">▶ From here</button>${xanimBtn(g, ch)}</div>${xanimBox(g, ch)}${xcutSection(g, ch)}
       ${ch.summary ? `<p class="sgsum">${esc(ch.summary)}</p>` : ""}<div class="xshots">${cells}</div></section>`;
   }).join("");
-  return `<div class="crumbs"><a href="#/nev">📖 Nev Novel</a> / ${esc(g.id)}</div>
+  return `<div class="crumbs"><a href="#/nev">📖 NevNovella</a> / ${esc(g.id)}</div>
     <div class="layer-head"><h2>📖 ${esc(g.title)}</h2><div class="sub">${esc(g.logline || "")}</div><div class="sub">${esc(sgStatus(g))}</div>
       <button class="xplay" data-sgplay="${esc(g.id)}" ${n ? "" : "disabled"} title="Visual-novel player: click / Space / → advance, Auto reads for you">▶ Play from the start</button></div>
     ${exploreBar()}
@@ -4906,12 +5988,13 @@ function sagaPage(id) {
     <h3 class="sgh">Threads</h3><div class="sgthreads"><div><h5>Open (${open.length})</h5>${open.map(t => `<div class="sgth open">${esc(t.text)} <span class="meta">${esc(t.id)}${t.opened ? " · " + esc(t.opened) : ""}</span></div>`).join("") || "<span class='meta'>none</span>"}</div>
       <div><h5>Closed (${closed.length})</h5>${closed.map(t => `<div class="sgth closed">${esc(t.text)} <span class="meta">${esc(t.id)} · ${esc(t.closed_in || "")}</span></div>`).join("") || "<span class='meta'>none</span>"}</div></div>
     ${(g.timeline || []).length ? `<h3 class="sgh">Timeline</h3><ol class="sgtl">${g.timeline.map(t => `<li><b>${esc(t.chapter)}</b> ${esc(t.event)}</li>`).join("")}</ol>` : ""}
-    <h3 class="sgh">Chapters</h3>${chapters || "<p class='empty'>No chapters yet. Press Start a Nev Novel and your author writes the first one.</p>"}
+    ${xmvBlock(g)}
+    <h3 class="sgh">Chapters</h3>${chapters || "<p class='empty'>No chapters yet. Press Start a NevNovella and your author writes the first one.</p>"}
     ${canFB ? `<h3 style="margin-top:22px">Comments on this novel</h3>${thread("saga:" + g.id, "Tell your author where the story should go… (Ctrl+Enter to send)")}` : ""}`;
 }
 function bindSaga(app, id) {
   const g = sagaById[id]; if (!g) return;
-  app.querySelectorAll("[data-sgplay]").forEach(b => b.onclick = () => sgOpen(b.dataset.sgplay, b.dataset.from ? +b.dataset.from : null));
+  app.querySelectorAll("[data-sgplay]").forEach(b => b.onclick = ev => { ev.stopPropagation(); sgOpen(b.dataset.sgplay, b.dataset.from ? +b.dataset.from : null, b.dataset.at || null); });
   const list = (g.chapters || []).flatMap(ch => sgShots(ch).map(s => ({src: s.src, cap: `${g.title} ${ch.id} · ${s.id}${s.caption ? " — " + s.caption : ""}`, prompt: s.prompt})));
   app.querySelectorAll("img[data-xshot]").forEach(img => img.onclick = () => openLB(list, Math.max(0, list.findIndex(x => fbKey(x.src) === fbKey(img.dataset.xshot)))));
 }
@@ -4932,7 +6015,30 @@ function xpFrameRect(ar, vw, vh) {  // the largest ar-shaped rectangle that fits
 function xpFit() {
   const el = typeof XP !== "undefined" && XP.el; if (!el) return;
   const vw = el.clientWidth || window.innerWidth || 0, vh = el.clientHeight || window.innerHeight || 0; if (!vw || !vh) return;
-  el.querySelectorAll(".xframe[data-ar]").forEach(f => { const r = xpFrameRect(+f.dataset.ar, vw, vh); f.style.width = r.w + "px"; f.style.height = r.h + "px"; f.style.setProperty("--fw", r.w + "px"); });
+  el.querySelectorAll(".xframe[data-ar]").forEach(f => { const r = xpFrameRect(+f.dataset.ar, vw, vh); f.style.width = r.w + "px"; f.style.height = r.h + "px"; f.style.setProperty("--fw", r.w + "px"); f.style.setProperty("--fh", r.h + "px"); });
+  // the player's own overlays (chapter / position pill, queue, 15-min timer) hug the CURRENT picture too, never the screen edge
+  const seg = XP.segs && XP.segs[XP.i], cur = xpFrameRect(seg && seg.ar ? +seg.ar : 16 / 9, vw, vh);
+  [["--frx", cur.x], ["--fry", cur.y], ["--frw", cur.w], ["--frh", cur.h]].forEach(([k, v]) => el.style.setProperty(k, v + "px"));
+  vnRefit();
+}
+// the story text never leaves the picture (ultrawide screens, streamed playback): fonts follow the frame's width AND height (CSS --fw / --fh), each box has a max-height
+// inside the frame, and before a line types the box is measured with the WHOLE line and its font scale (--vnk) shrinks until it fits.
+const VN_MIN_SCALE = 0.4;
+function vnFitScale(fits, minK = VN_MIN_SCALE) {  // pure: the largest scale in 0.05 steps (1 .. minK) for which fits(k) is true; minK if none
+  for (let k = 1; k >= minK - 1e-9; k = Math.round((k - 0.05) * 100) / 100) if (fits(k)) return k;
+  return minK;
+}
+function vnFit(boxEl, textEl, text) {  // measure the box with the full text, pick the scale, leave the text empty for typing to fill
+  if (!boxEl || !textEl || !boxEl.style || typeof boxEl.style.setProperty !== "function" || !boxEl.clientHeight) return 1;  // nothing laid out to measure
+  const keep = textEl.textContent; textEl.textContent = text;
+  const k = vnFitScale(k => { boxEl.style.setProperty("--vnk", k); return boxEl.scrollHeight <= boxEl.clientHeight + 1 && boxEl.scrollWidth <= boxEl.clientWidth + 1; });
+  boxEl.style.setProperty("--vnk", k); textEl.textContent = keep; return k;
+}
+function vnRefit() {  // after a resize / fullscreen change: re-fit the visible line(s) for the new frame size
+  if (typeof XP === "undefined" || !XP.lay || !XP.segs) return;
+  const seg = XP.segs[XP.i], b = seg && seg.beats && seg.beats[XP.beat]; if (!b) return;
+  if (b.kind === "narr") vnFit(XP.lay.querySelector(".vnnar"), XP.lay.querySelector(".vnnar"), b.text);
+  else vnFit(XP.lay.querySelector(".vnbox"), XP.lay.querySelector(".vntext"), b.text);
 }
 window.addEventListener("resize", () => xpFit()); document.addEventListener("fullscreenchange", () => setTimeout(xpFit, 50));
 const XP = {open: false, segs: [], i: -1, paused: false, tid: 0, endAt: 0, left: 0, el: null, ctl: 0, tx: 0, ty: 0, sg: null, beat: -1, typed: true, typer: 0, lay: null, t0: 0};
@@ -4997,6 +6103,7 @@ function vnShowBeat(k) {
     textEl = box.querySelector(".vntext"); const nm = box.querySelector(".vnname");
     nm.textContent = b.who + (b.off ? " (off-screen)" : ""); nm.style.color = b.color; box.classList.add("on"); box.classList.remove("done"); box.classList.toggle("off", !!b.off);
   }
+  vnFit(b.kind === "narr" ? nar : box, textEl, b.text);  // shrink to fit the whole line inside the picture before it types
   textEl.textContent = "";
   const tick = () => {
     const el = Date.now() - XP.t0;
@@ -5155,12 +6262,22 @@ function xpQueueRows(qv, g, max = 6) {
     ...xpBacklog(g, items).map(c => `· then ${c.id}: ${c.left} frame${c.left === 1 ? "" : "s"} (written, not queued yet)`)];
   return rows.length > max ? [...rows.slice(0, max - 1), `+${rows.length - max + 1} more`] : rows;
 }
+// subtle render progress in the player's queue pill: the same estimate
+// as the ⚙ Queue panel (time on the GPU vs that model's average, 3..95 % until it lands) for the one job ComfyUI is executing. Pure: null when nothing is on the GPU.
+function xpQueueProgress(qv) {
+  if (!qv || !qv.jobs) return null;
+  const it = qv.jobs.flatMap(j => j.items || []).find(x => x.status === "running" && x.on_gpu); if (!it) return null;
+  const avg = (qv.avgm || {})[it.model] || (qv.avg || {})[it.kind] || 60, el = Math.max(0, (qv.now || 0) - (it.gpu_t0 || it.t0 || qv.now || 0));
+  return {pct: Math.round(Math.max(3, Math.min(95, 100 * el / avg))), finishing: el > avg};
+}
 function xpQueue() {
   if (!XP.open || !XP.el) return;
   const el = XP.el.querySelector(".xqueue"); if (!el) return;
-  const g = XP.sg ? sagaById[XP.sg] : null, t = xpQueueLine(QV, g), rows = t && t !== XP_QIDLE ? xpQueueRows(QV, g) : [];
-  const html = t ? `<div class="xqhead">${esc(t)}</div>${rows.length > 1 ? `<div class="xqrows">${rows.map(r => `<div>${esc(r)}</div>`).join("")}</div>` : ""}` : "";
+  const g = XP.sg ? sagaById[XP.sg] : null, t = xpQueueLine(QV, g), rows = t && t !== XP_QIDLE ? xpQueueRows(QV, g) : [], pr = t && t !== XP_QIDLE ? xpQueueProgress(QV) : null;
+  const rowsP = pr ? rows.map((r, i) => i === rows.findIndex(x => x.startsWith("▶ ")) ? `${r} · ${pr.finishing ? "finishing…" : pr.pct + "%"}` : r) : rows;
+  const html = t ? `<div class="xqhead">${esc(t)}</div>${rowsP.length > 1 ? `<div class="xqrows">${rowsP.map(r => `<div>${esc(r)}</div>`).join("")}</div>` : ""}<div class="xqprog"><span></span></div>` : "";
   if (el.dataset.h !== html) { el.dataset.h = html; el.innerHTML = html; }
+  const bar = el.querySelector(".xqprog"); if (bar) { bar.classList.toggle("on", !!pr); bar.firstChild.style.width = (pr ? pr.pct : 0) + "%"; }
   el.classList.toggle("on", !!t); el.classList.toggle("idle", t === XP_QIDLE);
 }
 // ⏳ the 15-minute window inside the full-screen player ("an indication of the time period coming to an end and the ability to
@@ -5240,11 +6357,13 @@ function xpOpen(id) {
   const segs = xpTimeline(ep); if (segs.length < 2) return;
   xpBoot(segs, id, null);
 }
-function sgOpen(id, fromNum) {
+function sgOpen(id, fromNum, atKey) {  // atKey "chNN/eK": start on that very picture
   const g = sagaById[id]; if (!g) return;
   const segs = sgTimeline(g, fromNum == null ? null : fromNum, fromNum == null); if (!segs.length) return;
   xpBoot(segs, null, id);
+  const i = sgStartIndex(segs, atKey); if (i > 0) xpGo(i);
 }
+const sgStartIndex = (segs, atKey) => atKey ? Math.max(0, segs.findIndex(s => s.key === atKey)) : 0;  // pure: where a tile's ▶ starts (0 = the chapter card / beginning)
 function xpClose(fromFs) {
   if (!XP.open) return;
   xpEngLeave("close"); xpEngFlush(); clearInterval(XP.engT);
@@ -5265,6 +6384,9 @@ document.addEventListener("keydown", e => {
 window.addEventListener("hashchange", () => xpClose());
 setInterval(xTick, 1000);
 let PENDING_RENDER = false, PENDING_RELOAD = false;
+// watching something = the 📖 player, the 🎞 slideshow, the lightbox, full screen or playing media: a code update waits until it ends
+const viewing = () => !!((typeof XP !== "undefined" && XP.open) || document.getElementById("showroot") || document.querySelector("#lightbox.show") || document.fullscreenElement || mediaPlaying());
+setInterval(() => { if (PENDING_RELOAD && !viewing() && !typing()) location.reload(); }, 1500);
 const typing = () => { const a = document.activeElement; return !!a && /^(TEXTAREA|INPUT)$/.test(a.tagName) && a.type !== "range" && a.type !== "checkbox" && a.id !== "q" && $("#app").contains(a); };
 function render(keepScroll = false, force = false) {
   if (!force && (mediaPlaying() || typing() || XC.drag)) { PENDING_RENDER = true; return; }
@@ -5272,12 +6394,12 @@ function render(keepScroll = false, force = false) {
 }
 ["pause", "ended", "focusout"].forEach(ev => document.addEventListener(ev, () => setTimeout(() => {
   if (mediaPlaying() || typing()) return;
-  if (PENDING_RELOAD) { location.reload(); return; }
+  if (PENDING_RELOAD && !viewing()) { location.reload(); return; }
   if (PENDING_RENDER) { PENDING_RENDER = false; const y = window.scrollY; render(true); window.scrollTo(0, y); }
 }, 150), true));
 function renderInner(keepScroll) {
   let h = location.hash.replace(/^#\/?/, "");
-  if (/^explore(\/|$)/.test(h)) { h = "nev" + h.slice(7); try { history.replaceState(null, "", "#/" + h); } catch {} }  // 📖 Nev Novel: #/explore is the old address
+  if (/^explore(\/|$)/.test(h)) { h = "nev" + h.slice(7); try { history.replaceState(null, "", "#/" + h); } catch {} }  // 📖 NevNovella: #/explore is the old address
   const app = $("#app");
   let lbList = [];
   layerNav();
@@ -5314,6 +6436,8 @@ function renderInner(keepScroll) {
       openLB(lbList, lbList.findIndex(x => x.src === img.dataset.src)));
     bindGrid(app);
     const dt = $("#difft"); if (dt) dt.onclick = () => { store.set("diff", !store.get("diff", true)); render(); };
+  } else if (h.startsWith("show")) {  // 🎞 slideshow
+    if (!$("#showroot")) { app.innerHTML = showPage(); bindGrid(app); bindShow(); }  // live refreshes and pins keep the hand on the table
   } else if (h.startsWith("tree/")) {
     app.innerHTML = treePage(h.slice(5).split("?")[0]);
     bindGrid(app); bindTree(app);
@@ -5428,7 +6552,7 @@ if (location.protocol.startsWith("http")) {
       stamp = st;
       if (txt === last) return;
       const next = JSON.parse(txt);
-      if (next.ui !== RAW.ui) { if (mediaPlaying()) PENDING_RELOAD = true; else location.reload(); return; }  // gallery code changed
+      if (next.ui !== RAW.ui) { if (viewing() || typing()) { if (!PENDING_RELOAD && location.hash.startsWith("#/show") && typeof showToast === "function") showToast("A gallery update is ready. Press R to load it (the show restarts; F for full screen again).", 15000); PENDING_RELOAD = true; live.title = "A gallery update is waiting: it loads when you leave the player / slideshow"; } else location.reload(); return; }  // gallery code changed
       last = txt; setData(next);
       const y = window.scrollY; render(true); window.scrollTo(0, y);
       mvCutFresh();

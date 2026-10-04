@@ -354,6 +354,78 @@ ev = [json.loads(line) for line in (fb / "log.jsonl").read_text(encoding="utf-8"
 ok(j["atlas_request"]["id"] == "a1" and [x["kind"] for x in ev] == ["atlas_add"] and ev[0]["text"] == "quiet library hush", "an identical open request is not logged twice; the event is atlas_add")
 code, j = call("POST", {"op": "atlas_add", "text": " "})
 ok(code == 400, "an empty feeling -> 400")
+# ---- 🎬 Animate chapter on a saga chapter
+sg.EXPLORE_ANIM = fb / "explore_animate.json"
+(tmp / "explore" / "sagas" / "900-t" / "ch01").mkdir(parents=True)
+(tmp / "explore" / "sagas" / "900-t" / "ch01" / "episode.json").write_text("{}", encoding="utf-8")
+n_ev = len((fb / "log.jsonl").read_text(encoding="utf-8").splitlines())
+code, j = call("POST", {"op": "animate", "saga": "900-t", "chapter": "ch01", "text": "slow and wistful"})
+ok(code == 200 and j["animate_requests"][0]["id"] == "a1" and j["animate_requests"][0]["status"] == "open" and j["animate_requests"][0]["text"] == "slow and wistful", "POST animate records an open request")
+ev = [json.loads(line) for line in (fb / "log.jsonl").read_text(encoding="utf-8").splitlines()][n_ev:]
+ok(len(ev) == 1 and ev[0]["event"] == "explore" and ev[0]["kind"] == "animate" and ev[0]["saga"] == "900-t" and ev[0]["chapter"] == "ch01" and not wf.is_info(ev[0]), "animate logs an [ACT] explore event")
+ok(call("POST", {"op": "animate", "saga": "900-t", "chapter": "ch09"})[0] == 400 and call("POST", {"op": "animate", "saga": "../x", "chapter": "ch01"})[0] == 400, "animate on a missing chapter / bad saga id -> 400")
+code, j = call("GET")
+ok([r["id"] for r in j["animate_requests"]] == ["a1"], "GET /api/explore carries animate_requests")
+# ---- 🎞 Final cut of a saga chapter: queued on the reroll worker (rebuild + worker stubbed)
+sg.rebuild_bg = lambda: None
+sg.REROLLS.clear()
+ok(call("POST", {"op": "assemble", "saga": "900-t", "chapter": "ch01", "target": "bogus"})[0] == 400 and call("POST", {"op": "assemble", "saga": "900-t", "chapter": "ch09", "target": "draft"})[0] == 400, "assemble: bad target / missing chapter -> 400")
+code, j = call("POST", {"op": "assemble", "saga": "900-t", "chapter": "ch01", "target": "draft"})
+stj = json.loads((tmp / "explore" / "sagas" / "900-t" / "ch01" / "cut" / "_status.json").read_text(encoding="utf-8"))
+ok(code == 200 and j["queued"] == 1 and sg.REROLLS == ["xasm:900-t|ch01|draft"] and stj["state"] == "queued" and stj["target"] == "draft", "assemble: queued as xasm:<saga>|<chNN>|<target> with a queued status")
+code, j = call("POST", {"op": "assemble", "saga": "900-t", "chapter": "ch01", "target": "draft"})
+ok(sg.REROLLS == ["xasm:900-t|ch01|draft"] and "explore_assemble" in [json.loads(x)["event"] for x in (fb / "log.jsonl").read_text(encoding="utf-8").splitlines()] and wf.is_info({"event": "explore_assemble"}), "assemble: not queued twice; informational event")
+ok("900-t" in sg.xasm_label("xasm:900-t|ch01|draft") and "ch01" in sg.xasm_label("xasm:900-t|ch01|draft") and "draft" in sg.xasm_label("xasm:900-t|ch01|draft"), "queue label names the saga, chapter and target")
+# ---- 🎵 chapter music upload
+def upload(name, data, **kw):
+    q = "saga=900-t&chapter=ch01&kind=music&name=" + name
+    req = urllib.request.Request("http://127.0.0.1:8794/api/explore/upload?" + q, data=data, method="POST")
+    try:
+        return 200, json.loads(urllib.request.urlopen(req, timeout=20).read())
+    except urllib.error.HTTPError as e:
+        return e.code, json.loads(e.read())
+epf = tmp / "explore" / "sagas" / "900-t" / "ch01" / "episode.json"
+code, j = upload("song.mp3", b"ID3fake")
+rm = json.loads(epf.read_text(encoding="utf-8"))["reel"]["music"]
+ok(code == 200 and rm["file"] == "music.mp3" and rm["name"] == "song.mp3" and (epf.parent / "cut" / "music.mp3").read_bytes() == b"ID3fake", "music upload: saved as cut/music.<ext>, recorded in episode.json reel.music")
+ok(upload("song.txt", b"x")[0] == 400 and upload("song.mp3", b"")[0] == 400, "music upload: a non-audio file / an empty body -> 400")
+code, j = call("POST", {"op": "music_set", "saga": "900-t", "chapter": "ch01", "clip_sound": "low", "offset": 12.5})
+rm = json.loads(epf.read_text(encoding="utf-8"))["reel"]["music"]
+ok(code == 200 and rm["clip_sound"] == "low" and rm["offset"] == 12.5 and rm["file"] == "music.mp3", "music_set keeps the file, stores the options")
+code, j = call("POST", {"op": "music_set", "saga": "900-t", "chapter": "ch01", "clip_sound": "bogus", "offset": -3})
+rm = json.loads(epf.read_text(encoding="utf-8"))["reel"]["music"]
+ok(rm["clip_sound"] == "low" and rm["offset"] == 0, "music_set: a bad clip sound is ignored, a negative offset clamps to 0")
+upload("other.wav", b"RIFFfake")
+rm = json.loads(epf.read_text(encoding="utf-8"))["reel"]["music"]
+ok(rm["file"] == "music.wav" and rm["clip_sound"] == "low" and not (epf.parent / "cut" / "music.mp3").exists(), "a new upload replaces the old file and keeps the options")
+code, j = call("POST", {"op": "music_clear", "saga": "900-t", "chapter": "ch01"})
+ok(code == 200 and "reel" not in json.loads(epf.read_text(encoding="utf-8")) and not list((epf.parent / "cut").glob("music.*")), "music_clear removes the file and reel.music")
+# ---- 🎞 saga-level music video: song upload without a chapter, mv_set, assemble with chapters
+sgd = tmp / "explore" / "sagas" / "900-t"
+(sgd / "saga.json").write_text(json.dumps({"title": "T", "cast": {}}), encoding="utf-8")
+def upload_mv(name, data):
+    req = urllib.request.Request("http://127.0.0.1:8794/api/explore/upload?saga=900-t&kind=music&name=" + name, data=data, method="POST")
+    try:
+        return 200, json.loads(urllib.request.urlopen(req, timeout=20).read())
+    except urllib.error.HTTPError as e:
+        return e.code, json.loads(e.read())
+code, j = upload_mv("full%20song.mp3", b"ID3fake")
+mvj = json.loads((sgd / "saga.json").read_text(encoding="utf-8"))["mv"]
+ok(code == 200 and mvj["music"]["file"] == "music.mp3" and mvj["music"]["name"] == "full song.mp3" and (sgd / "cut" / "music.mp3").read_bytes() == b"ID3fake" and json.loads((sgd / "saga.json").read_text(encoding="utf-8"))["title"] == "T", "mv upload (no chapter): saved as saga/cut/music.<ext>, recorded in saga.json mv.music, the rest of saga.json kept")
+ok(upload_mv("x.txt", b"x")[0] == 400, "mv upload: a non-audio file -> 400")
+code, j = call("POST", {"op": "mv_set", "saga": "900-t", "chapters": "ch03-ch01", "length": "4:05", "clip_sound": "low", "offset": 3})
+mvj = json.loads((sgd / "saga.json").read_text(encoding="utf-8"))["mv"]
+ok(code == 200 and mvj["chapters"] == "ch01-ch03" and mvj["length"] == "4:05" and mvj["clip_sound"] == "low" and mvj["offset"] == 3 and mvj["music"]["file"] == "music.mp3", "mv_set: range normalised, length / clip sound / offset stored, the song kept")
+code, j = call("POST", {"op": "mv_set", "saga": "900-t", "chapters": "bogus", "clip_sound": "bogus"})
+ok(json.loads((sgd / "saga.json").read_text(encoding="utf-8"))["mv"]["chapters"] == "ch01-ch03" and json.loads((sgd / "saga.json").read_text(encoding="utf-8"))["mv"]["clip_sound"] == "low", "mv_set: junk is ignored")
+sg.REROLLS.clear()
+ok(call("POST", {"op": "assemble", "saga": "900-t", "chapters": "zz", "target": "draft"})[0] == 400 and call("POST", {"op": "assemble", "saga": "nope", "chapters": "ch01", "target": "draft"})[0] == 400, "mv assemble: bad range / saga -> 400")
+code, j = call("POST", {"op": "assemble", "saga": "900-t", "chapters": "ch01-ch03", "target": "hooks"})
+ok(code == 200 and sg.REROLLS == ["xmv:900-t|ch01-ch03|hooks"] and json.loads((sgd / "cut" / "_status.json").read_text(encoding="utf-8"))["state"] == "queued" and "music video" in sg.xasm_label(sg.REROLLS[0]), "mv assemble: queued as xmv:<saga>|<range>|<target>")
+sg.REROLLS.clear()
+code, j = call("POST", {"op": "mv_music_clear", "saga": "900-t"})
+ok(code == 200 and "music" not in json.loads((sgd / "saga.json").read_text(encoding="utf-8"))["mv"] and not list((sgd / "cut").glob("music.*")), "mv_music_clear removes the song")
+sg.REROLLS.clear()
 code, j = call("GET")
 ok([r["text"] for r in j["atlas_requests"]] == ["quiet library hush"] and fa.open_requests(tmp)[0]["id"] == "a1", "open requests listed (the inbox shows them)")
 at = fa.load(atp)

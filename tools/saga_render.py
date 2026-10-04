@@ -92,6 +92,9 @@ def scene_text(bible, ep, shot, root):
     people = [f"{n} ({rj.look(j['cast'][n]).rstrip('. ')})" for n in sc["with"] if n in j["cast"]]
     if people:
         parts.append("In the scene: " + "; ".join(people) + ".")
+    if len(people) >= 2:  # "A and B on a cot" once rendered B twice; say the head count and that nobody repeats
+        names = [n for n in sc["with"] if n in j["cast"]]
+        parts.append(f"Exactly {len(names)} named characters, each appearing once and never duplicated: " + ", ".join(names) + ".")
     refs = refs_of(bible, shot, root)
     if refs:
         parts.append(" ".join(f"Reference image {i} shows {w}: appearance only." for i, (_, w) in enumerate(refs, 1)))

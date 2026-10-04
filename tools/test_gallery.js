@@ -22,7 +22,7 @@ global.MutationObserver = class { observe() {} }; global.ResizeObserver = class 
 global.getComputedStyle = () => ({ backgroundColor: "" }); global.addEventListener = () => {};
 
 // expose top-level const/let bindings for the checks below
-(0, eval)(code + "\n;globalThis.__t = {get FB(){return FB},set FB(v){FB=v},overview,layerPage,videosPage,imagesPage,allImages,vidChip,byId,DATA,get VIDS(){return VIDS},store,fbKey,atCandidates,imgRef,lineageText,qTerms,journeysPage,journeyPage,get JRN(){return JRN},get jById(){return jById},set JR(v){JR=v},set BL(v){BL=v},fbBar,isBlurred,jStartBox,set jOpen(v){jOpen=v},jAnimOpen,layerNav,fdef,castMatches,get CASTOPTS(){return CASTOPTS},castName,parseSubj,treePage,treeAncestors,treeDescendants,treeSetBox,clipPanel,sceneClipChip,sceneClipBox,JCLIP,journeyReel,castNoteParse,castNoteBuild,CAST_TYPES,decideSwipe,shouldPreventMove,rectToFractions,applyDrag,cropThumb,refThumb,refCropRect,refEditOpen,mvGenBox,get TREE_EDGES(){return TREE_EDGES},fmtT,parseT,mvTimeToX,mvXToTime,mvRegion,lyricLines,mvListPage,mvPage,mvMerge,mvStatus,mvScenesOf,mvDoneCount,hideDoneBtn,headlineHtml,headlinesOn,headlineBtn,mvMarkList,mvEditHtml,MVT,refOid,refOwner,get MVS(){return MVS},set MVS(v){MVS=v},get mvById(){return mvById},set mvById(v){mvById=v},set MVR(v){MVR=v},mvSortDrop,mvDropZone,mvEdgeHit,mvShift,mvSnapBeat,fixAreaBtn,rerollBtn,upscaleBtn,refitCtl,clipPrompt,coverBtn,mvLoupeSpan,mvStemColor,mvCutSection,mvCutRows,mvCutBusy,mvLaneGeom,mvStemsInfo,mvStemsBar,mvLanesOn,mvPaint,MV_STEM_COL,mvLyricBlocks,mvLyricHit,mvPickLyric,mvLyricsBar,mvHasLyrics,mvGeo,mvReel,mvPlayBtn,sceneClips,revsOf,revChip,revBtn,revViewHtml,revOpen,revPick,revRestore,RV,get REVS(){return REVS},get MTIMES(){return MTIMES},get EXPL(){return EXPL},set EXPL(v){EXPL=v; explById=Object.fromEntries(v.map(e=>[e.id,e]))},EXST,XC,xApply,exploreBar,exploreListPage,explorePage,xpTimeline,xpLayerHtml,xpAr,xpHold,xTint,xFade,xFmt,XF_RIM,XA,xaSet,xaValueAt,xaPath,xaFind,xaScore,xaPlaceLabels,xmDraw,xMapHtml,xfNeutral,xfNorm,xfWord,xfHint,xfCap,xfLevelWord,xTuneHtml,xeNeutral,XAF,XAE,XE_LEGACY,xvNorm,xeNorm,xeWord,xeHint,xeIntensityWord,xdNorm,xdSnap,xdAngle,xdFromPointer,xdWord,xdHint,xdStops,get XMAT(){return XMAT},xDialHtml,xcoresClean,xcoresAdd,xcoresEdit,xcoresRemove,xcoresResolve,xcoresMove,xcoresWeightAt,xcoresSig,xcoresActive,xCoresHtml,xcSyncSaga,XCORE_MAX,xcDirty,xcAdopt,xcSetV,xcSetMaturity,xcAddCore,xpFrameRect,xpFit,xaP,xaWarped,xaResetStep,xMapBtnsHtml,xSurprise,XSUR_WHO,XSUR_WHERE,xpCopy,xpDragData,xpPrefetchFile,xpRetryUrl,xpRetryDelay,xpTimerState,xpQueueLine,xpQueueRows,xpEngRow,xpPosText,xpBacklog,xpChatToggle,XNW,xoCands,xoHubs,xoTree,xoBlend,xoValue,xoSt,xoTurn1,xoTurnP,xoTurnM,xoLock,xoLockedP,xoCandsDeep,xoCentre,xoClick,xoPos,xoTick,xoNext,xoLabelLook,xoLabelDim,xoState,xoDecks,xoOrbit,xoEdge,xoRoute,XO,xkSnap,xkAngle,xkDrag,xkWord,xkHint,isExpl,cmLabel,cmLink,get SAGAS(){return SAGAS},set SAGAS(v){SAGAS=v; sagaById=Object.fromEntries(v.map(g=>[g.id,g]))},sagaPage,sgTimeline,sgMore,sgStatus,sgText,sgShots,vnBeats,vnAction,vnBackAction,vnTypeMs,vnReadMs,vnBeatMs,vnTyped,vnColor,vnHue,XP,xpNext,xpPrev,xpGo,xpExtend,xpBoot,sgOpen,bindSaga,vnShowBeat,vnArm,vnAuto,xpArm,xpClose,castTyped,castTip,animBtn,animBox,jplayBtn,clipVideoFor,subjShort,toolbar,styleMark,subjMatch,get JR(){return JR},set CM(v){CM=v},set VIDS(v){VIDS=v},set JRN(v){JRN=v},set jById(v){jById=v}};");
+(0, eval)(code + "\n;globalThis.__t = {get FB(){return FB},set FB(v){FB=v},overview,layerPage,videosPage,imagesPage,allImages,vidChip,byId,DATA,get VIDS(){return VIDS},store,fbKey,atCandidates,imgRef,lineageText,qTerms,journeysPage,journeyPage,get JRN(){return JRN},get jById(){return jById},set JR(v){JR=v},set BL(v){BL=v},fbBar,isBlurred,jStartBox,set jOpen(v){jOpen=v},jAnimOpen,layerNav,fdef,castMatches,get CASTOPTS(){return CASTOPTS},castName,parseSubj,treePage,treeAncestors,treeDescendants,treeSetBox,clipPanel,sceneClipChip,sceneClipBox,JCLIP,journeyReel,castNoteParse,castNoteBuild,CAST_TYPES,decideSwipe,shouldPreventMove,rectToFractions,applyDrag,cropThumb,refThumb,refCropRect,refEditOpen,mvGenBox,get TREE_EDGES(){return TREE_EDGES},fmtT,parseT,mvTimeToX,mvXToTime,mvRegion,lyricLines,mvListPage,mvPage,mvMerge,mvStatus,mvScenesOf,mvDoneCount,hideDoneBtn,headlineHtml,headlinesOn,headlineBtn,mvMarkList,mvEditHtml,MVT,refOid,refOwner,get MVS(){return MVS},set MVS(v){MVS=v},get mvById(){return mvById},set mvById(v){mvById=v},set MVR(v){MVR=v},mvSortDrop,mvDropZone,mvEdgeHit,mvShift,mvSnapBeat,fixAreaBtn,rerollBtn,upscaleBtn,refitCtl,clipPrompt,coverBtn,mvLoupeSpan,mvStemColor,mvCutSection,mvCutRows,mvCutBusy,mvLaneGeom,mvStemsInfo,mvStemsBar,mvLanesOn,mvPaint,MV_STEM_COL,mvLyricBlocks,mvLyricHit,mvPickLyric,mvLyricsBar,mvHasLyrics,mvGeo,mvReel,mvPlayBtn,sceneClips,revsOf,revChip,revBtn,revViewHtml,revOpen,revPick,revRestore,RV,get REVS(){return REVS},get MTIMES(){return MTIMES},get EXPL(){return EXPL},set EXPL(v){EXPL=v; explById=Object.fromEntries(v.map(e=>[e.id,e]))},EXST,XC,xApply,exploreBar,exploreListPage,explorePage,xpTimeline,xpLayerHtml,xpAr,xpHold,xTint,xFade,xFmt,XF_RIM,XA,xaSet,xaValueAt,xaPath,xaFind,xaScore,xaPlaceLabels,xmDraw,xMapHtml,xfNeutral,xfNorm,xfWord,xfHint,xfCap,xfLevelWord,xTuneHtml,xeNeutral,XAF,XAE,XE_LEGACY,xvNorm,xeNorm,xeWord,xeHint,xeIntensityWord,xdNorm,xdSnap,xdAngle,xdFromPointer,xdWord,xdHint,xdStops,get XMAT(){return XMAT},xDialHtml,xcoresClean,xcoresAdd,xcoresEdit,xcoresRemove,xcoresResolve,xcoresMove,xcoresWeightAt,xcoresSig,xcoresActive,xCoresHtml,xcSyncSaga,XCORE_MAX,xcDirty,xcAdopt,xcSetV,xcSetMaturity,xcAddCore,xpFrameRect,xpFit,xaP,xaWarped,xaResetStep,xMapBtnsHtml,xSurprise,XSUR_WHERE,xpCopy,xpDragData,xpPrefetchFile,xpRetryUrl,xpRetryDelay,xpTimerState,xpQueueLine,xpQueueRows,xpEngRow,xpPosText,xpBacklog,xpChatToggle,XNW,xoCands,xoHubs,xoTree,xoBlend,xoValue,xoSt,xoTurn1,xoTurnP,xoTurnM,xoLock,xoLockedP,xoCandsDeep,xoCentre,xoClick,xoPos,xoTick,xoNext,xoLabelLook,xoLabelDim,xoState,xoDecks,xoOrbit,xoEdge,xoRoute,XO,xkSnap,xkAngle,xkWord,xkHint,isExpl,cmLabel,cmLink,get SAGAS(){return SAGAS},set SAGAS(v){SAGAS=v; sagaById=Object.fromEntries(v.map(g=>[g.id,g]))},sagaPage,sgTimeline,sgMore,sgStatus,sgText,sgShots,vnBeats,vnAction,vnBackAction,vnTypeMs,vnReadMs,vnBeatMs,vnTyped,vnColor,vnHue,XP,xpNext,xpPrev,xpGo,xpExtend,xpBoot,sgOpen,bindSaga,vnShowBeat,vnArm,vnAuto,xpArm,xpClose,subjMatch,showGroups,showPool,showPick,showUnseen,showLayout,showIsNew,showMinglePlan,showCorner,showDialPick,showQueueDelta,showStyleHref,showKind,showPage,XGENRES,XSUR_ROLES,XSUR_TRAITS,XSUR_DARK,XSUR_STAKES,xgNorm,xGenreHtml,xKnobHtml,xcKnobEvent,vnFitScale,vnFit,VN_MIN_SCALE,sgStartIndex,xpQueueProgress,pinReorder,pinSlot,qTarget,qLink,xkFromPointer,xkNear,xAnimOpen,xgsNorm,xcSetGenre,xcutSection,xmvBlock,xmvState,xmvFit,xmvParseLen,xmvRange,xmvReadout,xmvFmt,castTyped,castTip,animBtn,animBox,jplayBtn,clipVideoFor,subjShort,toolbar,styleMark,get JR(){return JR},set CM(v){CM=v},set VIDS(v){VIDS=v},set JRN(v){JRN=v},set jById(v){jById=v}};");
 const T = globalThis.__t;
 const ok = (c, m) => { console.log((c ? "PASS " : "FAIL ") + m); if (!c) process.exitCode = 1; };
 const clearFilters = () => { ["fcast", "fg", "fgenre"].forEach(k => T.store.set(k, "all"));
@@ -962,6 +962,42 @@ T.JRN = [FJ]; T.jById = {[FJ.id]: FJ};
   T.mvById[id] = mk({latest, status: {state: "done"}}); ok4(T.mvPage(id).includes("🎞 Final cut") && T.mvPage(id).indexOf("Final cut") < T.mvPage(id).indexOf("Storyboards"), "on the music-video page, before the storyboards");
   T.mvById = hB; T.MVS = hM;
 }
+{  // ⚙ queue rows link to where the item lives, any status
+  const okq = (c, m) => ok(c, "queue links: " + m);
+  const lins = Object.values(T.byId || {}), evo = lins.find(l => l.depth > 0), surv = lins.find(l => !l.depth);
+  if (evo) { const t = T.qTarget(`evolutions/${evo.id}/v01/x_seed1001.png`, "image");
+    okq(t.href === `#/e/${evo.depth}?hl=${encodeURIComponent(evo.id)}` && t.tree === `#/tree/${evo.id}`, "an evolve / cross variant -> its set on the layer page (highlighted) + 🌳 family tree"); }
+  if (surv) okq(T.qTarget(`evolutions/${surv.id}/v02/a.png`, "image").href === `#/l/${surv.id}` && !T.qTarget(`evolutions/${surv.id}/v02/a.png`, "image").tree, "a survey style -> its lineage page");
+  okq(T.qTarget("journeys/021-x/ch02/s3.png", "image").href === "#/j/021-x" && T.qTarget("musicvideos/002-y/sb01/s4.png", "image").href === "#/mv/002-y"
+    && T.qTarget("explore/sagas/003-sample-saga/ch10/e3.png", "image").href === "#/nev/saga/003-sample-saga" && T.qTarget("explore/012-z/e2.png", "image").href === "#/nev/012-z", "journeys, music videos, sagas and episodes");
+  okq(T.qTarget("mvasm:002-y|youtube", "image").href === "#/mv/002-y"
+    && T.qTarget("fixarea:0.1,0.2,0.3,0.4|journeys/021-x/ch01/s2.png|remove the hat", "image").href === "#/j/021-x"
+    , "worker keys (final-cut builds, fixes) resolve to their page");
+  okq(T.qLink({out: "journeys/021-x/ch02/s3.png", kind: "image", status: "queued"}) === "#/j/021-x", "queued / running rows link too (not only done)");
+}
+{  // 📌 drag to reorder the pin tray
+  const okp = (c, m) => ok(c, "pin order: " + m);
+  okp(JSON.stringify(T.pinReorder(["a", "b", "c", "d"], 0, 2)) === '["b","c","a","d"]' && JSON.stringify(T.pinReorder(["a", "b", "c"], 2, 0)) === '["c","a","b"]'
+    && JSON.stringify(T.pinReorder(["a", "b"], 0, 9)) === '["b","a"]' && JSON.stringify(T.pinReorder(["a", "b"], 5, 0)) === '["a","b"]', "move an item to a slot (clamped; bad index = no change)");
+  okp(T.pinSlot(10, [50, 120, 190]) === 0 && T.pinSlot(100, [50, 120, 190]) === 1 && T.pinSlot(500, [50, 120, 190]) === 3, "the drop slot from the pointer x vs the other thumbnails' centres");
+}
+{  // the story text never leaves the picture: fit scale search, a stub box, the CSS bounds
+  const okf = (c, m) => ok(c, "novel fit: " + m);
+  okf(T.vnFitScale(() => true) === 1 && T.vnFitScale(k => k <= 0.7) === 0.7 && T.vnFitScale(() => false) === T.VN_MIN_SCALE, "fit scale: full size when it fits, the largest that fits, the floor otherwise");
+  const mk = lines => { const box = {_k: 1, clientHeight: 100, clientWidth: 400, textContent: "", style: {setProperty(n, v) { if (n === "--vnk") box._k = +v; }},
+    get scrollHeight() { return Math.round(lines(box.textContent) * 24 * box._k); }, get scrollWidth() { return 400; }}; return box; };
+  const long = "word ".repeat(50), short = "Hello there.";  // 7 lines at full size in a 4-line box -> shrinks to 0.6
+  { const b = mk(t => Math.ceil(t.length / 40)); const k = T.vnFit(b, b, long); okf(k < 1 && Math.ceil(long.length / 40) * 24 * k <= 101 && b.textContent === "", "a long line shrinks until the whole of it fits, and the box is left empty for typing (k " + k + ")"); }
+  { const b = mk(t => Math.ceil(t.length / 40)); okf(T.vnFit(b, b, short) === 1, "a short line keeps full size"); }
+  const css = html.match(/#xplayer \.vnnar \{[^}]*\}/)[0] + html.match(/#xplayer \.vnbox \{[^}]*\}/)[0];
+  okf(/max-height: 42%/.test(css) && /max-height: 46%/.test(css) && (css.match(/var\(--vnk, 1\)/g) || []).length === 2 && (css.match(/var\(--fh, 100vh\)/g) || []).length === 2,
+    "narration (42%) + dialogue (46%) boxes are capped inside the frame (no overlap), fonts follow frame width AND height and the fit scale");
+  okf(/#xplayer \.xpos \{[^}]*right: calc\(var\(--frx, 0px\) \+ 14px\); top: calc\(var\(--fry, 0px\) \+ 12px\)/.test(html)
+    && /#xplayer \.xqueue \{[^}]*right: calc\(var\(--frx, 0px\) \+ 14px\); top: calc\(var\(--fry, 0px\) \+ 44px\)[^}]*max-width: calc\(var\(--frw, 100vw\) \* \.36\)/.test(html)
+    && /#xplayer \.xtimer \{[^}]*top: calc\(var\(--fry, 0px\) \+ 14px\)/.test(html) && /setProperty\(k, v \+ "px"\)/.test(html) && /"--frx", cur\.x/.test(html),
+    "the chapter / position pill, the queue box and the timer hug the current picture (--frx/--fry/--frw from xpFit), not the screen");
+  okf(/#xplayer \.vnbox \{[^}]*overflow: visible/.test(html) && /#xplayer \.vnname \{[^}]*top: -/.test(html), "the dialogue box never clips: the speaker's name tag sits above its top edge");
+}
 {  // a picture that failed to load mid-play (the server went away) is retried
   const ok8 = (c, m) => ok(c, "novel stream: " + m);
   const shot = (id, src) => ({id, src, narration: "n " + id, dialogue: [], aspect: "16:9", hold: 6});
@@ -996,7 +1032,11 @@ T.JRN = [FJ]; T.jById = {[FJ.id]: FJ};
       ok8(r7.length === 4 && r7[0] === "▶ 📖 007 ch03 · e5" && r7[1] === "· 📖 007 ch03 · e6" && r7[2] === "· 📖 007 ch02 · e6" && r7[3].startsWith("· then ch04: 14 frames"), "player queue rows: running first, then every queued item across jobs (a chapter + a redo), then waiting chapters: " + r7.join(" | "));
       const big = {jobs: [{items: Array(10).fill(0).map((_, i) => ({status: "queued", kind: "image", label: "f" + i, out: "x/" + i}))}]}, rb = T.xpQueueRows(big, null, 6);
       ok8(rb.length === 6 && rb[5] === "+5 more", "player queue rows: at most 6, then '+N more'");
-      ok8(T.xpQueueRows(null, null).length === 0 && T.xpQueueRows({jobs: []}, null).length === 0, "player queue rows: none before the queue loads / when empty"); }    { const e0 = {src: "explore/sagas/007-x/ch03/e5.png", t0: 1000, read: 20000, beats: 3, seen: 3, paused: 0, pauseAt: 0};
+      ok8(T.xpQueueRows(null, null).length === 0 && T.xpQueueRows({jobs: []}, null).length === 0, "player queue rows: none before the queue loads / when empty");
+      // subtle render progress: only the job on the GPU, elapsed vs that model's average, 3..95 %, "finishing" past the average
+      const pq = (el, extra = {}) => ({now: 1000, avg: {image: 60}, avgm: {"QI2.1": 40}, jobs: [{items: [{status: "running", on_gpu: true, kind: "image", model: "QI2.1", gpu_t0: 1000 - el, ...extra}, {status: "queued", kind: "image"}]}]});
+      ok8(T.xpQueueProgress(pq(20)).pct === 50 && T.xpQueueProgress(pq(0)).pct === 3 && T.xpQueueProgress(pq(400)).pct === 95 && T.xpQueueProgress(pq(400)).finishing && !T.xpQueueProgress(pq(20)).finishing, "player queue progress: elapsed vs the model's average, clamped 3..95, finishing past it");
+      ok8(T.xpQueueProgress(pq(20, {on_gpu: false})) === null && T.xpQueueProgress(null) === null && T.xpQueueProgress({jobs: []}) === null, "player queue progress: nothing on the GPU = no bar"); }    { const e0 = {src: "explore/sagas/007-x/ch03/e5.png", t0: 1000, read: 20000, beats: 3, seen: 3, paused: 0, pauseAt: 0};
       ok8(T.xpEngRow(e0, 23000, "next").act === "next" && T.xpEngRow(e0, 23000, "next").dwell === 22000, "engagement: a shot read through and then advanced = next");
       ok8(T.xpEngRow(e0, 6000, "next").act === "skip" && T.xpEngRow({...e0, seen: 1}, 40000, "next").act === "skip", "engagement: moving on before the text was read (time or lines) = skip");
       ok8(T.xpEngRow(e0, 23000, "auto").act === "auto" && T.xpEngRow(e0, 5000, "back").act === "back" && T.xpEngRow(e0, 5000, null).act === "jump", "engagement: auto / back / jump are kept as they are");
@@ -1008,10 +1048,10 @@ T.JRN = [FJ]; T.jById = {[FJ.id]: FJ};
       ok8(b.includes("⏳ Building novel…") && b.includes("disabled") && !b.includes("data-xnew") && !b.includes("Start the new novel"), "new novel: while a novel is running the button reads Building novel… (disabled, no new start)");
       T.XNW.open = true; b = T.exploreBar(true);
       ok8(!b.includes("Start the new novel") && b.includes("Building novel"), "new novel: ... even if the premise box was open (it stays Building until Stop or the timer)");
-      T.EXST.state = {active: false, reason: "stopped"}; b = T.exploreBar(true); ok8(b.includes("▶ Start a Nev Novel") && !b.includes("Building"), "new novel: after ■ Stop, Start is back");
+      T.EXST.state = {active: false, reason: "stopped"}; b = T.exploreBar(true); ok8(b.includes("▶ Start a NevNovella") && !b.includes("Building"), "new novel: after ■ Stop, Start is back");
       T.EXST.state = {active: false, reason: "timer"}; b = T.exploreBar(true);
       ok8(b.includes("Continue the novel") && b.includes("＋ New novel") && b.includes("Start the new novel"), "new novel: also offered next to Continue when paused");
-      ok8(!T.exploreBar(false).includes("data-xnew"), "new novel: only on the Nev Novel home page");
+      ok8(!T.exploreBar(false).includes("data-xnew"), "new novel: only on the NevNovella home page");
       T.EXST.state = keepS; T.XNW.open = keepN; }
     ok8(html.includes('<button data-xp="chat"') && html.includes('<div class="xchat"></div>') && html.includes('thread("general", "Message your agent')
         && html.includes('e.target.closest(".xchat")) { if (e.key === "Escape")') && html.includes("reelPanel(); xpChatPaint();") && typeof T.xpChatToggle === "function",
@@ -1023,17 +1063,51 @@ T.JRN = [FJ]; T.jById = {[FJ.id]: FJ};
 {  // 🎲 surprise premise follows the deck
   const ok6 = (c, m) => ok(c, "novel dice: " + m), seq = vals => { let i = 0; return () => vals[i++ % vals.length]; };
   const neutral = {presence: 50, maturity: {stop: 4}, emotion: {blend: [], intensity: 0}, formality: {blend: [], intensity: 0}, cores: []};
-  let s = T.xSurprise(neutral, seq([0]));
-  ok6(s === "A runaway heir in a rain-soaked port city has one night to make things right.", "neutral deck: one clean premise, no notes: " + s);
-  const kidsSafe = Array.from({length: 40}, (_, i) => T.xSurprise({...neutral, maturity: {stop: 0}}, seq([(i * 0.137) % 1, (i * 0.391) % 1, (i * 0.713) % 1])));
-  ok6(kidsSafe.every(p => T.XSUR_WHO[0].some(w => p.toLowerCase().startsWith(w)) && !/war|death|betray|exile|occupied/i.test(p)), "Preschool: toddler-cartoon leads and stakes only");
-  ok6(T.XSUR_WHO[6].some(w => T.xSurprise({...neutral, maturity: {stop: 6}}, seq([0.5])).toLowerCase().startsWith(w)), "Mature: adult-fiction leads");
-  ok6(T.XSUR_WHERE.intimate.some(w => T.xSurprise({...neutral, presence: 10}, seq([0.3])).includes(w)) && T.XSUR_WHERE.epic.some(w => T.xSurprise({...neutral, presence: 95}, seq([0.3])).includes(w)), "presence: intimate knob -> a small place, epic -> a vast one");
+  let s = T.xSurprise(neutral, seq([0.99]));
+  ok6(/^An? \S/.test(s) && s.endsWith(".") && !/Mood|Register|Through-line|Genre/.test(s), "neutral deck: one clean premise, no notes: " + s);
+  // combinatorial: 200 rolls on one deck give well over 150 different premises
+  const rolls = new Set(Array.from({length: 200}, () => T.xSurprise(neutral)));
+  ok6(rolls.size > 150, "variety: 200 rolls on one deck -> " + rolls.size + " different premises");
+  ok6(T.XSUR_ROLES.every(r => r.length >= 14) && T.XSUR_TRAITS.every(t => t.length >= 12) && T.XSUR_STAKES.every(x => x.length >= 10), "pools: 14+ roles, 12+ traits, 10+ stakes at every stop");
+  const kids = Array.from({length: 300}, () => T.xSurprise({...neutral, maturity: {stop: 0}}));
+  ok6(kids.every(p => T.XSUR_ROLES[0].some(w => p.includes(" " + w + " ")) && T.XSUR_STAKES[0].some(w => p.includes(w)) && !/death|betray|exile|occupied|blood|bkill/i.test(p) && !/Genre: |. With /.test(p)), "Preschool: toddler-cartoon leads and stakes only, no hooks");
+  ok6(kids.every(p => !T.XGENRES.filter(g => T.XSUR_DARK.includes(g[0])).some(g => ["intimate", "filmic", "epic"].some(k => g[1][k].some(w => p.includes(w))))), "Preschool + Any: no places from the darker genres");
+  ok6(Array.from({length: 50}, () => T.xSurprise({...neutral, maturity: {stop: 6}})).every(p => T.XSUR_ROLES[6].some(w => p.includes(" " + w + " "))), "Mature: adult-fiction leads");
+  ok6(Array.from({length: 60}, () => T.xSurprise({...neutral, maturity: {stop: 3}})).every(p => !T.XGENRES.find(g => g[0] === "Romance")[2].some(h => p.includes(h))), "Tween + Any: no romance hooks");
+  const inScale = (k, p) => [...T.XSUR_WHERE[k], ...T.XGENRES.flatMap(g => g[1][k])].some(w => p.includes(w));
+  ok6(Array.from({length: 40}, () => T.xSurprise({...neutral, presence: 10})).every(p => inScale("intimate", p)) && Array.from({length: 40}, () => T.xSurprise({...neutral, presence: 95})).every(p => inScale("epic", p)), "presence: intimate knob -> a small place, epic -> a vast one (any genre's)");
+  ok6(T.xSurprise({...neutral, maturity: {stop: 6}}, seq([0.3, 0.25])).startsWith("An "), "article: 'An' before a vowel");
   s = T.xSurprise({...neutral, emotion: {blend: [{name: "Bittersweet", w: 0.6}, {name: "Nostalgia", w: 0.3}, {name: "Hope", w: 0.1}], intensity: 0.7},
     formality: {blend: [{name: "Black tie", w: 0.5}], intensity: 0.6}, cores: [{name: "Found family", weight: 0.8, status: "active"}, {name: "Grief", weight: 0.3, status: "resolved"}, {name: "Revenge", weight: 0.5}]}, seq([0]));
   ok6(s.endsWith("Mood: bittersweet and nostalgia. Register: black tie. Through-line: found family and revenge."), "mood (top 2, w >= 0.2), register, active cores by weight (resolved skipped): " + s);
   ok6(!T.xSurprise({...neutral, emotion: {blend: [{name: "Awe", w: 1}], intensity: 0.1}}, seq([0])).includes("Mood"), "a barely-on emotion (intensity < 0.15) adds no mood");
   ok6(T.xSurprise({}, seq([0.99])).length > 20 && T.xSurprise({}, seq([0.99])).length <= 400, "an empty deck still works (Teen, filmic), <= 400 chars");
+  // orbit values: the sun (40 %) + its heaviest planet (12 %) name the mood, the 4 % moons never do
+  s = T.xSurprise({...neutral, emotion: {orbit: true, blend: [{name: "Grief", w: 0.4}, {name: "Tension", w: 0.12}, {name: "Hope", w: 0.12}, {name: "Awe", w: 0.04}], intensity: 0.7}}, seq([0]));
+  ok6(s.endsWith("Mood: grief and tension."), "an orbit value names the sun + its heaviest planet: " + s);
+  // 🎭 genre: the place comes from the genre at the presence scale; from Tween up a genre hook too; Any = the old pools
+  const noir = T.XGENRES.find(g => g[0] === "Noir");
+  s = T.xSurprise({...neutral, genre: "Noir", presence: 95}, seq([0]));
+  ok6(s.includes(noir[1].epic[0]) && s.includes("Genre: noir, with " + noir[2][0]), "genre: Noir + epic presence -> a noir epic place and a noir hook: " + s);
+  s = T.xSurprise({...neutral, genre: "noir", maturity: {stop: 1}, presence: 10}, seq([0]));
+  ok6(s.includes(noir[1].intimate[0]) && /Genre: noir\.$/.test(s), "genre below Tween: the place only, no hook (kept kid-safe): " + s);
+  ok6(!T.xSurprise({...neutral, genre: ""}, seq([0])).includes("Genre"), "genre Any: no genre note");
+  ok6(T.XGENRES.length === 19 && T.XGENRES.every(g => ["intimate", "filmic", "epic"].every(k => g[1][k].length >= 2) && g[2].length >= 2) && T.xgNorm("science FICTION") === "Science fiction" && T.xgNorm("zzz") === "" && T.xgNorm(null) === "",
+    "genre list: 19 genres, each with places at 3 scales + 2 hooks; xgNorm is case-blind, unknown = Any");
+  { const keep = T.XC.genres; T.XC.genres = ["Western"]; const h = T.xGenreHtml(); ok6((h.match(/data-xgenre=/g) || []).length === 20 && /class="xgchip on"[^>]*data-xgenre="Western"/.test(h) && h.includes('data-xgenre=""'), "genre chips: Any + 19, the chosen one lit"); T.XC.genres = keep; }
+  // up to 3 genres, the first leads
+  ok6(JSON.stringify(T.xgsNorm(["horror", "Comedy", "zzz", "Horror", "Western", "Noir"])) === '["Horror","Comedy","Western"]' && JSON.stringify(T.xgsNorm("noir")) === '["Noir"]' && T.xgsNorm("").length === 0 && T.xgsNorm(null).length === 0, "genres: deduped, capped at 3, an old single genre string migrates to [g]");
+  { const keep = T.XC.genres, doc = globalThis.document; T.XC.genres = [];
+    T.xcSetGenre("Horror"); T.xcSetGenre("Comedy"); T.xcSetGenre("Western");
+    ok6(JSON.stringify(T.XC.genres) === '["Horror","Comedy","Western"]', "genre chips toggle on, in the order picked");
+    T.xcSetGenre("Noir"); ok6(JSON.stringify(T.XC.genres) === '["Comedy","Western","Noir"]', "a 4th pick replaces the oldest");
+    T.xcSetGenre("Western"); ok6(JSON.stringify(T.XC.genres) === '["Comedy","Noir"]', "clicking a lit chip turns it off");
+    const h2 = T.xGenreHtml(); ok6(h2.includes("lead</sup>") && h2.includes("Comedy + Noir (lead: Comedy)"), "the lead and the blend are shown");
+    T.xcSetGenre(""); ok6(T.XC.genres.length === 0, "Any clears them");
+    T.XC.genres = ["Noir", "Western"]; const s2 = T.xSurprise({...neutral, genres: ["Noir", "Western"], maturity: {stop: 4}}, seq([0]));
+    ok6(s2.includes("Genre: noir + western"), "🎲 surprise names the chosen genres: " + s2);
+    T.XC.genres = keep; }
+  ok6(T.xTuneHtml().includes("<h4>Genre</h4>"), "the deck has a Genre control");
 }
 {  // 🪐 orbit view = a solar system: the sun stays; three planets (the sun's links, dealt into 3 decks: inner = strongest) on their own ellipses, two moons each;
    // HOLD the sun = the planets race and each deals its next link per lap (different speeds = different intervals); hold a planet = its moons; click = next; double-click = new sun
@@ -1150,25 +1224,25 @@ T.JRN = [FJ]; T.jById = {[FJ.id]: FJ};
   { const at = id => T.xaValueAt(E.by[id].x, E.by[id].y, E), W = T.xcoresWeightAt;
     let r = T.xcoresAdd([], T.xeNeutral()); ok5(!r.added && r.cores.length === 0 && /neutral/.test(r.reason), "cores: the neutral centre cannot be added");
     r = T.xcoresAdd([], at("saudade")); ok5(r.added && r.added.weight === 0.6 && r.added.status === "active" && r.added.name === "Saudade" && r.added.blend[0].id === "saudade" && r.cores.length === 1, "cores: add saves the probe + blend, name = the top node, default weight 0.6");
-    let cs = r.cores; r = T.xcoresAdd(cs, at("saudade")); ok5(!r.added && /already a core/.test(r.reason) && r.cores.length === 1, "cores: the same feeling is not added twice");
-    for (const id of ["grief", "defiance", "tenderness", "wanderlust"]) { r = T.xcoresAdd(cs, at(id)); cs = r.cores; }
-    ok5(cs.length === 5 && T.xcoresActive(cs).length === 5 && new Set(cs.map(c => c.id)).size === 5, "cores: five active, unique ids");
-    r = T.xcoresAdd(cs, at("triumph")); ok5(!r.added && r.cores.length === 5 && /limit/.test(r.reason), "cores: a sixth active core is refused (max 5)");
-    const g = cs[1].id; cs = T.xcoresEdit(cs, g, {weight: 0.9, name: "Dear Grief"}); ok5(cs[1].weight === 0.9 && cs[1].name === "Dear Grief" && cs[0].weight === 0.6, "cores: weight + rename edit one core");
+    let cs = r.cores; r = T.xcoresAdd(cs, at("saudade")); ok5(!r.added && /already the core/.test(r.reason) && r.cores.length === 1, "cores: the same feeling is not set twice");
+    const s0 = cs[0].id; r = T.xcoresAdd(cs, at("grief")); cs = r.cores;
+    ok5(r.added && T.xcoresActive(cs).length === 1 && T.xcoresActive(cs)[0].blend[0].id === "grief" && cs.find(c => c.id === s0).status === "resolved" && r.replaced.join() === "Saudade", "cores: ONE active core: setting a new one retires the old to resolved, kept");
+    for (const id of ["defiance", "tenderness"]) { r = T.xcoresAdd(cs, at(id)); cs = r.cores; }
+    ok5(cs.length === 4 && T.xcoresActive(cs).length === 1 && new Set(cs.map(c => c.id)).size === 4 && cs[0].blend[0].id === "tenderness", "cores: the newest is the active one, earlier ones kept as resolved, unique ids");
+    const g = cs[0].id; cs = T.xcoresEdit(cs, g, {weight: 0.9, name: "Dear Heart"}); ok5(cs[0].weight === 0.9 && cs[0].name === "Dear Heart" && cs[1].weight === 0.6, "cores: weight + rename edit one core");
     ok5(W(0.62) === 0.6 && W(0.68) === 0.7 && W(-1) === 0 && W(5) === 1 && W(0.5) === 0.5, "cores: the drag-bar snaps to 5% steps within 0-1");
-    cs = T.xcoresMove(cs, g, 0); ok5(cs[0].id === g && cs.length === 5, "cores: reorder (drag) moves a core to a new place");
-    cs = T.xcoresMove(cs, g, 99); ok5(cs[4].id === g, "cores: reorder clamps to the end");
-    r = T.xcoresResolve(cs, g, true); cs = r.cores; ok5(r.ok && T.xcoresActive(cs).length === 4 && cs[cs.length - 1].id === g || cs.find(c => c.id === g).status === "resolved", "cores: resolve retires a core out of the active list");
-    r = T.xcoresAdd(cs, at("triumph")); ok5(r.added && T.xcoresActive(r.cores).length === 5, "cores: a slot freed by resolving can be reused");
-    const full = r.cores; ok5(!T.xcoresResolve(full, g, false).ok, "cores: reopening a resolved core needs a free slot");
-    cs = T.xcoresRemove(full, g); ok5(cs.length === full.length - 1 && !cs.some(c => c.id === g), "cores: remove");
+    r = T.xcoresResolve(cs, g, true); cs = r.cores; ok5(r.ok && T.xcoresActive(cs).length === 0 && cs.find(c => c.id === g).status === "resolved", "cores: resolve retires the core (none active)");
+    r = T.xcoresResolve(cs, s0, false); cs = r.cores; ok5(r.ok && T.xcoresActive(cs).length === 1 && T.xcoresActive(cs)[0].id === s0, "cores: reopen an earlier core");
+    r = T.xcoresResolve(cs, g, false); ok5(r.ok && T.xcoresActive(r.cores).length === 1 && T.xcoresActive(r.cores)[0].id === g && r.cores.find(c => c.id === s0).status === "resolved", "cores: reopening while one is active swaps them");
+    const full = r.cores; cs = T.xcoresRemove(full, s0); ok5(cs.length === full.length - 1 && !cs.some(c => c.id === s0), "cores: remove");
     ok5(T.xcoresClean(JSON.parse(JSON.stringify(full))).length === full.length && T.xcoresClean([{name: "x"}, null, 3, {blend: []}]).length === 0 && T.xcoresSig(full) === T.xcoresSig(JSON.parse(JSON.stringify(full))), "cores: clean keeps good ones and drops junk; signature is stable");
     const six = Array.from({length: 7}, (_, i) => ({id: "k" + i, name: "n" + i, ...at(["joy", "grief", "awe", "dread", "serenity", "pride", "shame"][i]), status: "active", weight: 0.5}));
-    ok5(T.xcoresActive(T.xcoresClean(six)).length === 5, "cores: loading 7 active ones keeps 5");
+    { const cl = T.xcoresClean(six); ok5(cl.length === 7 && T.xcoresActive(cl).length === 1 && T.xcoresActive(cl)[0].id === "k0", "cores: an old save with 7 active keeps the first active, the rest as resolved (nothing lost)"); }
     // the DOM markup
     const keepC = T.XC.cores, keepE = T.XC.emotion; T.XC.cores = full; T.XC.emotion = at("saudade"); const h = T.xCoresHtml();
-    ok5(h.includes("data-xcadd") && h.includes("＋ Add as core") && (h.match(/data-xcw/g) || []).length === 5 && h.includes("data-xcgrip") && h.includes("data-xcname") && h.includes("data-xcdel") && h.includes("data-xcres") && h.includes("data-xcgo") && h.includes("1 resolved"), "cores markup: add button, a weight drag-bar + grip + rename + resolve + remove on every row, resolved ones folded");
-    T.XC.cores = []; ok5(T.xCoresHtml().includes("No cores yet"), "cores markup: empty state"); T.XC.cores = keepC; T.XC.emotion = keepE;
+    ok5(h.includes("data-xcadd") && h.includes("↻ Replace core") && !h.includes("Add as core") && (h.match(/data-xcw/g) || []).length === 1 && !h.includes("data-xcgrip") && h.includes("data-xcname") && h.includes("data-xcdel") && h.includes("data-xcres") && h.includes("data-xcgo") && h.includes("3 earlier / resolved") && h.includes("Emotional core<"),
+      "cores markup: one core with weight bar + rename + resolve + remove (no reorder grip), Replace button, earlier ones folded");
+    T.XC.cores = []; const he = T.xCoresHtml(); ok5(he.includes("No core yet") && he.includes("◎ Set as core"), "cores markup: empty state offers Set as core"); T.XC.cores = keepC; T.XC.emotion = keepE;
     // per saga: opening the home loads the current saga's cores; a different saga id re-syncs; a saga without cores keeps the deck's
     const keepS = T.SAGAS, k0 = [T.XC.cores, T.XC.maturity, T.XC.coresSaga]; T.XC.coresSaga = "";
     T.SAGAS = [{id: "900-test", title: "T", chapters: [], cast: [], cores: [{id: "c1", name: "Saved grief", probe: at("grief").probe, blend: at("grief").blend, weight: 0.8, status: "active", history: [{chapter: "ch01", beat: "x"}]}], maturity: {stop: 2, label: "Family"}}];
@@ -1186,20 +1260,26 @@ T.JRN = [FJ]; T.jById = {[FJ.id]: FJ};
     ok5(ch.includes("Reset to defaults? click again") && ch.includes("data-xaremove=\"emotion\"") && ch.includes("also remove neurons added later") && !/data-xaremove="emotion" checked/.test(ch), "factory reset: the armed state asks again and offers the unticked 'also remove neurons added later' box"); }
   // 🎚 maturity dial: 7 discrete stops, a vintage channel selector
   ok5(T.xdStops().length === 7 && T.xdStops().map(s => s.label).join("|") === "Preschool|Kids|Family|Tween|Teen|Young adult|Mature", "maturity: the 7 stops, Preschool .. Mature");
-  ok5(T.xdStops().every(s => s.feels_like && s.story && s.pictures && s.ceiling) && /Saturday-morning/.test(T.xdStops()[1].feels_like) && /PG-13/.test(T.xdStops()[4].feels_like) && /literary adult/.test(T.xdStops()[6].feels_like), "maturity: each stop has feels_like / story / pictures / ceiling (from tools/maturity.py via the payload)");
-  ok5(/no sexual content/i.test(T.XMAT.ceiling) && /no graphic gore/i.test(T.XMAT.ceiling) && /only between adults/i.test(T.XMAT.ceiling) && /fully clothed/i.test(T.XMAT.ceiling) && /no on-screen injury or blood/i.test(T.XMAT.ceiling), "maturity: the hard ceiling text travels with the payload");
+  ok5(T.xdStops().every(s => s.feels_like && s.story && s.pictures && s.ceiling) && /Saturday-morning/.test(T.xdStops()[1].feels_like) && /PG-13/.test(T.xdStops()[4].feels_like) && /adult fiction/.test(T.xdStops()[6].feels_like), "maturity: each stop has feels_like / story / pictures / ceiling (from tools/maturity.py via the payload)");
+  ok5(/no sexual content/i.test(T.XMAT.ceiling) && /no graphic gore/i.test(T.XMAT.ceiling) && /adults only/i.test(T.XMAT.ceiling) && /under 18/i.test(T.XMAT.ceiling) && /fully clothed/i.test(T.XMAT.ceiling) && /no on-screen injury or blood/i.test(T.XMAT.ceiling), "maturity: the hard ceiling text travels with the payload");
   ok5(T.xdSnap(2.4) === 2 && T.xdSnap(2.6) === 3 && T.xdSnap(-4) === 0 && T.xdSnap(99) === 6 && T.xdSnap("x") === 0, "maturity: discrete detents only (rounds to a whole stop, clamped 0-6)");
   ok5(T.xdAngle(0) === -130 && T.xdAngle(3) === 0 && T.xdAngle(6) === 130 && near(T.xdAngle(1) - T.xdAngle(0), 260 / 6), "maturity: the pointer sweeps -130 .. +130 degrees in equal steps");
   ok5(T.xdFromPointer(0, -50) === 3 && T.xdFromPointer(-50, 0) === 1 && T.xdFromPointer(50, 0) === 5 && T.xdFromPointer(-30, 30) === 0 && T.xdFromPointer(30, 30) === 6, "maturity: an absolute rotary (up = Tween, left = Kids, right = Young adult, the bottom corners = the ends)");
   ok5(T.xdFromPointer(-1, 50) === 0 && T.xdFromPointer(1, 50) === 6 && T.xdFromPointer(-40, -40) === 2 && T.xdFromPointer(40, -40) === 4, "maturity: dead zone at the bottom snaps to the nearer end; diagonals pick Family / Teen");
   ok5(JSON.stringify(T.xdNorm(2)) === '{"stop":2,"label":"Family"}' && T.xdNorm("Young adult").stop === 5 && T.xdNorm({stop: 9}).label === "Mature" && T.xdNorm(null).stop === 4 && T.xdNorm("zzz").label === "Teen" && T.xdWord({stop: 0}) === "Preschool" && /toddler/.test(T.xdHint(0)), "maturity: normalising numbers / labels / objects / junk (default Teen)");
-  { const h = T.xDialHtml(); ok5(h.includes('class="xdial"') && h.includes('role="slider"') && h.includes('aria-valuemax="6"') && T.xdStops().every(s => h.includes(`>${s.label}</text>`)) && (h.match(/data-xdv=/g) || []).length === 14 && /mature themes only/i.test(h) && /no sexual content/i.test(h) && /no graphic gore/i.test(h) && /fully clothed/i.test(h),
-      "maturity markup: the dial with 7 printed stops, tick + label each, and the hard ceiling in plain sight"); }
+  { const h = T.xDialHtml(); ok5(h.includes('class="xdial"') && h.includes('role="slider"') && h.includes('aria-valuemax="6"') && T.xdStops().every(s => h.includes(`>${s.label}</text>`)) && (h.match(/data-xdv=/g) || []).length === 14 && /at the discretion of the user and the model/i.test(h),
+      "maturity markup: the dial with 7 printed stops, tick + label each, and the discretion note"); }
   // presence knob: detents, sweep, drag
-  ok5(T.xkSnap(48) === 50 && T.xkSnap(52) === 50 && T.xkSnap(56) === 56 && T.xkSnap(22) === 25 && T.xkSnap(-9) === 0 && T.xkSnap(130) === 100, "knob clicks into the detents (0 25 50 75 100) within 5, free between");
-  ok5(T.xkAngle(0) === -135 && T.xkAngle(50) === 0 && T.xkAngle(100) === 135, "dial sweeps -135 .. +135 degrees");
-  ok5(T.xkDrag(50, 0, -20) === 60 && T.xkDrag(50, 0, -200) === 100 && T.xkDrag(50, 0, 200) === 0 && T.xkDrag(50, 20, 0) === 60, "drag up or right = more epic, down or left = more intimate, clamped");
-  ok5(T.xkWord(0) === "Intimate" && T.xkWord(50) === "Filmic" && T.xkWord(100) === "Epic" && T.xkWord(25) === "Leaning intimate" && T.xkWord(75) === "Leaning epic", "knob words");
+  ok5(T.xkSnap(48) === 50 && T.xkSnap(52) === 50 && T.xkSnap(56) === 55 && T.xkSnap(22) === 20 && T.xkSnap(-9) === 0 && T.xkSnap(130) === 100, "knob clicks into 21 stops (every 5), clamped");
+  ok5(T.xkAngle(0) === -130 && T.xkAngle(50) === 0 && T.xkAngle(100) === 130, "knob sweeps -130 .. +130 degrees, like the maturity dial");
+  ok5(T.xkFromPointer(0, -50) === 50 && T.xkFromPointer(50, 0) === 85 && T.xkFromPointer(-50, 0) === 15 && T.xkFromPointer(10, 50) === 100 && T.xkFromPointer(-10, 50) === 0, "knob is an absolute rotary: where the pointer points (up = Filmic), clamped past the ends");
+  { const h = T.xKnobHtml(); ok5((h.match(/class="xdt xkt/g) || []).length === 21 && (h.match(/data-xkv=/g) || []).length === 5 && h.includes('class="xdsvg"') && h.includes(">Intimate</text>") && h.includes(">Epic</text>") && T.xkNear(60) === 50 && T.xkNear(65) === 75,
+    "knob markup = the maturity dial's look: 21 ticks, 5 printed labels (nearest one lit)"); }
+  { const h = T.xKnobHtml(); ok5(!h.includes("xddial") && h.includes('class="xkdial"'), "knob needle has its own class (sharing .xddial made the maturity dial turn the knob)"); }
+  { const knob = {querySelector: () => ({getBoundingClientRect: () => ({left: 10, top: 20, width: 300})})}, at = v => { const a = T.xkAngle(v) * Math.PI / 180; return {clientX: 10 + 150 + 70 * Math.sin(a), clientY: 20 + 104 - 70 * Math.cos(a)}; };
+    const was = T.XC.presence, got = [0, 25, 50, 85, 100].map(v => { T.xcKnobEvent(at(v), knob); return T.XC.presence; }); T.XC.presence = was;
+    ok5(JSON.stringify(got) === "[0,25,50,85,100]", "knob pointer: pointing at a mark lands on that mark (centre 150,104 of the 300-wide viewBox): " + got); }
+  ok5(T.xkWord(0) === "Intimate" && T.xkWord(50) === "Filmic" && T.xkWord(100) === "Epic" && T.xkWord(25) === "Close" && T.xkWord(75) === "Wide" && T.xkWord(65) === "Wide", "knob words");
   ok5(/close, quiet, personal pictures/.test(T.xkHint(0)) && /composed, classic framing/.test(T.xkHint(50)) && /vast, dramatic, grand pictures/.test(T.xkHint(100)), "knob hints describe the pictures, not camera moves");
   // 🧠 Formality Atlas (replaces the joypad stick): neurons + synapses, probe -> blend, migration, search, glide, reveal, labels, markup
   const A = T.XA, sl = s => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""), FE = ["rigidity", "hierarchy", "ritual", "ornament", "tradition", "publicness", "intimacy", "chaos"];
@@ -1260,9 +1340,9 @@ T.JRN = [FJ]; T.jById = {[FJ.id]: FJ};
   location.hash = "#/explore/900-test-ep";
   T.layerNav();
   const nav = els["#layers"].innerHTML;
-  ok5(nav.includes('href="#/nev"') && /📖 Nev Novel \d+/.test(nav) && /class="on"[^>]*>📖 Nev Novel/.test(nav) && !/class="on">Survey/.test(nav), "header tab 📖 Nev Novel (count, highlighted on its pages, not Survey)");
+  ok5(nav.includes('href="#/nev"') && /📖 NevNovella \d+/.test(nav) && /class="on"[^>]*>📖 NevNovella/.test(nav) && !/class="on">Survey/.test(nav), "header tab 📖 NevNovella (count, highlighted on its pages, not Survey)");
   location.hash = "#/nev/900-test-ep"; T.layerNav();
-  ok5(/class="on"[^>]*>📖 Nev Novel/.test(els["#layers"].innerHTML), "the #/nev address highlights the tab too (#/explore is the old alias)");
+  ok5(/class="on"[^>]*>📖 NevNovella/.test(els["#layers"].innerHTML), "the #/nev address highlights the tab too (#/explore is the old alias)");
   location.hash = "";
   ok5(T.cmLabel("image:explore/900-test-ep/e3.png") === "Explore shot 900-test-ep/e3" && T.cmLink("image:explore/900-test-ep/e3.png") === "#/nev/900-test-ep" && T.cmLink("explore:900-test-ep") === "#/nev/900-test-ep", "comment labels + links for shots and episodes");
   ok5(T.fbKey("../explore/900-test-ep/e3.png?v=5") === "explore/900-test-ep/e3.png" && T.isExpl("../explore/900-test-ep/e3.png") && !T.isExpl("../journeys/x/ch01/s1.png"), "marks use keys explore/...png");
@@ -1271,13 +1351,13 @@ T.JRN = [FJ]; T.jById = {[FJ.id]: FJ};
   ok5(T.exploreBar().includes("Loading"), "bar: loading before the first poll");
   T.xApply({active: false, reason: "idle", left: 0, until: 0, presence: null, emotion: null});
   let h = T.exploreBar(true);
-  ok5(h.includes('data-xop="start"') && h.includes("▶ Start a Nev Novel") && h.includes('id="xseed"') && !h.includes('data-xop="stop"') && !h.includes('data-xop="continue"'), "idle: big Start button + optional seed box");
+  ok5(h.includes('data-xop="start"') && h.includes("▶ Start a NevNovella") && h.includes('id="xseed"') && !h.includes('data-xop="stop"') && !h.includes('data-xop="continue"'), "idle: big Start button + optional seed box");
   ok5(h.includes('class="xknob"') && h.includes('class="xdial"') && h.includes('id="xmap-emotion"') && h.includes('id="xmap"') && h.includes("Cinematic presence") && h.includes("Emotion atlas") && h.includes("Maturity") && h.includes('role="slider"'), "idle: every tactile control is there");
-  ok5(["intimate", "Intimate", "Filmic", "Epic"].every(w => h.includes(w)) && ["Preschool", "Kids", "Family", "Tween", "Teen", "Young adult", "Mature"].every(w => h.includes(`>${w}</text>`)), "knob labels + the seven maturity stops are printed round the dial");
+  ok5(["Intimate", "Close", "Filmic", "Wide", "Epic"].every(w => h.includes(`>${w}</text>`)) && ["Preschool", "Kids", "Family", "Tween", "Teen", "Young adult", "Mature"].every(w => h.includes(`>${w}</text>`)), "knob labels + the seven maturity stops are printed round the dial");
   ok5(!/camera|zoom|\bpan\b|Ken Burns/i.test(h), "UI words are about the pictures, not camera moves");
   T.xApply({active: true, reason: "", left: 761, until: 0, presence: 50, emotion: null});
   h = T.exploreBar();
-  ok5(h.includes("Nev Novel running") && h.includes('id="xleft">12:41<') && h.includes('data-xop="stop"') && h.includes('data-xop="tune"') && h.includes("Apply") && !h.includes('data-xop="start"'), "active: countdown 12:41, Stop, Apply");
+  ok5(h.includes("NevNovella running") && h.includes('id="xleft">12:41<') && h.includes('data-xop="stop"') && h.includes('data-xop="tune"') && h.includes("Apply") && !h.includes('data-xop="start"'), "active: countdown 12:41, Stop, Apply");
   T.EXST.deadline = Date.now() + 5000;
   ok5(T.exploreBar().includes('id="xleft">0:05<') && T.xFmt(65) === "1:05" && T.xFmt(0) === "0:00" && T.xFmt(-3) === "0:00" && T.xFmt(600) === "10:00", "countdown formatting");
   T.xApply({active: false, reason: "timer", left: 0, until: 1, presence: 50, emotion: null});
@@ -1304,7 +1384,7 @@ T.JRN = [FJ]; T.jById = {[FJ.id]: FJ};
   T.XC.emotion = T.xeNeutral();
   // list + episode pages
   h = T.exploreListPage();
-  ok5(h.includes("📖 Nev Novel") && h.includes('data-go="#/nev/900-test-ep"') && h.includes("The Lighthouse &lt;Keeper&gt;") && h.includes("✓ ready · 3 shots") && h.includes("🎨 rendering 0/1") && h.includes("Lights at the edge"), "list: cover cards with title (escaped), status, topic");
+  ok5(h.includes("📖 NevNovella") && h.includes('data-go="#/nev/900-test-ep"') && h.includes("The Lighthouse &lt;Keeper&gt;") && h.includes("✓ ready · 3 shots") && h.includes("🎨 rendering 0/1") && h.includes("Lights at the edge"), "list: cover cards with title (escaped), status, topic");
   h = T.explorePage("900-test-ep");
   ok5(h.includes("The Lighthouse &lt;Keeper&gt;") && h.includes('data-xplay="900-test-ep"') && !/data-xplay="900-test-ep" disabled/.test(h) && h.includes("▶ Play"), "episode: title + Play button");
   ok5(h.includes('data-xshot="../explore/900-test-ep/e1.png"') && h.includes("⏳ e3 not rendered yet") && h.includes("cap e1") && h.includes("cap e2"), "episode: shots in order with captions, unrendered ones marked");
@@ -1337,7 +1417,7 @@ T.JRN = [FJ]; T.jById = {[FJ.id]: FJ};
   T.EXPL = hb; T.EXST.state = hs;
   function XE_NAMES_ALL() { return ["joy", "wonder", "awe", "tension", "dread", "melancholy", "longing", "serenity"]; }
 }
-{  // 📖 Nev Novel sagas: bible page, list order, the visual-novel line machine (typing, click sequencing, auto-advance timing), chapter cards, the endless stream
+{  // 📖 NevNovella sagas: bible page, list order, the visual-novel line machine (typing, click sequencing, auto-advance timing), chapter cards, the endless stream
   const ok6 = (c, m) => ok(c, "novel: " + m);
   const hbE = T.EXPL, hbS = T.SAGAS, hs6 = T.EXST.state;
   const P = "../explore/sagas/900-test-saga";
@@ -1395,6 +1475,74 @@ T.JRN = [FJ]; T.jById = {[FJ.id]: FJ};
   ok6(h.includes("Harbour master (off-screen)") && h.includes("⏳ e2 not rendered yet"), "off-screen speakers marked; unrendered shots shown as waiting");
   ok6(h.includes('data-fb="love"') && h.includes('data-fb="nope"') && h.includes("data-reroll=") && h.includes(`data-src="${P}/ch01/e1.png"`) && !h.includes('data-fb="cast"') && !h.includes("data-pin="), "shots: ❤ 👎 + 🎲 via the usual bar, no 👥 / 📌");
   ok6(h.includes('data-draft="saga:900-test-saga"') && T.sagaPage("nope").includes("Unknown novel"), "comment thread on the novel; unknown id handled");
+  // 🎬 Animate chapter on saga chapters
+  { const keepA = T.EXST.anim, ak = "900-test-saga/ch01";
+    T.EXST.anim = [];
+    ok6(h.includes(`data-xanim="${ak}"`) && h.includes(`data-xanim="900-test-saga/ch02"`) && h.includes("Animate chapter") && !h.includes("data-xanimsend"), "saga chapters have a 🎬 Animate chapter button, note box closed");
+    T.xAnimOpen.add(ak); ok6(T.sagaPage("900-test-saga").includes(`data-xanimsend="${ak}"`) && T.sagaPage("900-test-saga").includes(`data-xanimcancel="${ak}"`), "clicking it opens the note box (Send / Cancel)"); T.xAnimOpen.delete(ak);
+    T.EXST.anim = [{id: "a1", kind: "animate", saga: "900-test-saga", chapter: "ch01", text: "slow", ts: "t", status: "open"}];
+    let hx = T.sagaPage("900-test-saga");
+    ok6(hx.includes("Animation requested") && !hx.includes(`data-xanim="${ak}"`) && hx.includes(`data-xanim="900-test-saga/ch02"`), "an open request shows 'Animation requested' on that chapter only");
+    T.EXST.anim = [{id: "a1", kind: "animate", saga: "900-test-saga", chapter: "ch01", text: "", ts: "t", status: "done", reply: "reel rendered"}];
+    hx = T.sagaPage("900-test-saga");
+    ok6(hx.includes("reel rendered") && hx.includes(`data-xanim="${ak}"`), "an answered request shows the reply and the button again");
+    T.EXST.anim = keepA; }
+  // 🎞 Final cut on saga chapters: hidden until a shot has a clip; 4 build buttons; busy state; latest build + hooks
+  { const c1 = sg.chapters[0], k = "900-test-saga/ch01";
+    ok6(!T.sagaPage("900-test-saga").includes("data-xasm=") && T.xcutSection(sg, c1) === "", "final cut: hidden while no shot has a clip");
+    c1.shots[0].clips = 1;
+    let hh = T.sagaPage("900-test-saga");
+    ok6(["draft", "youtube", "suno", "hooks"].every(t => hh.includes(`data-xasm="${k}/${t}"`)) && hh.includes("🎞 Final cut") && !hh.includes('data-xasm="900-test-saga/ch02/'), "final cut: the 4 build buttons appear on the chapter that has a clip only");
+    ok6(!hh.includes("<video") || !hh.includes("data-xcutv="), "final cut: no player before a build");
+    c1.final_cut = {latest: null, builds: [], status: {state: "running", target: "draft", stage: "piece 3/5 (e3)", ts: 1}, hooks: []};
+    hh = T.xcutSection(sg, c1);
+    ok6(hh.includes("piece 3/5") && hh.includes("(Draft)") && (hh.match(/data-xasm=[^>]* disabled/g) || []).length === 4, "final cut: busy state shows the stage and disables all 4 buttons");
+    const b1 = {src: "../explore/sagas/900-test-saga/ch01/cut/test-ch01.mp4", target: "youtube", mtime: 100, mb: 12.5, w: 1920, h: 1080, duration: 65};
+    c1.final_cut = {latest: b1, builds: [b1, {...b1, src: b1.src.replace(".mp4", "-draft.mp4"), target: "draft", w: 960, h: 540, mb: 3}], status: {state: "done", target: "youtube", ts: 1}, hooks: [{n: 1, file: "01-e1-e2.mp4", t0: 3, t1: 20, mb: 2, shots: ["e1", "e2"], src: "../explore/sagas/900-test-saga/ch01/cut/hooks/01-e1-e2.mp4"}], hooks_from: "test-ch01.mp4"};
+    hh = T.xcutSection(sg, c1);
+    ok6(hh.includes(`data-xcutv="${k}"`) && hh.includes("test-ch01.mp4?v=100") && hh.includes("1920×1080") && hh.includes("🪝 1 hooks") && hh.includes("data-xcutplay=") && hh.includes('data-draft="image:explore/sagas/900-test-saga/ch01/cut/test-ch01.mp4"') && !(hh.match(/data-xasm=[^>]* disabled/g) || []).length,
+      "final cut: the latest build plays with its comment thread, other builds + hooks listed, buttons enabled again");
+    c1.final_cut = {latest: null, builds: [], status: {state: "error", target: "hooks", msg: "boom"}, hooks: []};
+    ok6(T.xcutSection(sg, c1).includes("Build failed: boom"), "final cut: a failed build shows its message");
+    hh = T.xcutSection(sg, c1);
+    ok6(hh.includes('data-xmusicfile="900-test-saga/ch01"') && hh.includes("Choose a song") && !hh.includes("<audio") && !hh.includes("data-xmusicclear"), "music: no song yet -> a picker / drop zone, no player");
+    c1.music = {src: "../explore/sagas/900-test-saga/ch01/cut/music.mp3", mtime: 5, name: "my <song>.mp3", clip_sound: "low", offset: 12};
+    hh = T.xcutSection(sg, c1);
+    ok6(hh.includes("my &lt;song&gt;.mp3") && hh.includes("<audio") && hh.includes("music.mp3?v=5") && hh.includes('data-xmusicclear="900-test-saga/ch01"') && /<option value="low" selected>/.test(hh) && hh.includes('value="12"') && hh.includes("Replace"), "music: the track name (escaped), a player, ✖ remove, clip-sound + start offset options");
+    c1.music = null;
+    c1.final_cut = null; c1.shots[0].clips = 0; }
+  // 🎞 Music video (saga level): range pickers, song / length, live readout, 4 builds, player
+  { const keepMv = sg.mv;
+    ok6(T.xmvParseLen("4:05") === 245 && T.xmvParseLen("245") === 245 && T.xmvParseLen("") === 0 && T.xmvParseLen("x") === 0 && T.xmvParseLen("1:02:03") === 3723 && T.xmvFmt(245) === "4:05", "music video: song length parsing + formatting");
+    ok6(JSON.stringify(T.xmvRange("ch01-ch03", ["ch01", "ch02", "ch03", "ch04"])) === '["ch01","ch02","ch03"]' && JSON.stringify(T.xmvRange("ch02", ["ch01", "ch02"])) === '["ch02"]' && T.xmvRange("", ["ch01"]).length === 0, "music video: range parsing");
+    const f1 = T.xmvFit(Array(45).fill(5), 245, false);  // 225 s natural, 44 s of dissolves
+    ok6(f1.ok && Math.abs(f1.raw - 225 / (245 + 44)) < 1e-6 && f1.cells === 45, "music video: uniform speed = natural / (target + dissolves)");
+    const f2 = T.xmvFit(Array(20).fill(5), 245, true);
+    ok6(!f2.ok && f2.add > 0 && T.xmvFit(Array(60).fill(5), 100, false).add < 0 && T.xmvFit(Array(45).fill(5), 245, true).raw > T.xmvFit(Array(45).fill(5), 245, false).raw, "music video: outside 0.7-1.4x says how many cells to add / drop; the music tail is reserved");
+    for (const c of sg.chapters) for (const s of c.shots) { s.nat = s.src ? 5 : 0; s.clips = 0; }
+    sg.chapters[0].shots[0].clips = 1; sg.mv = null;
+    let hm = T.sagaPage("900-test-saga");
+    ok6(hm.includes("🎞 Music video") && hm.includes('data-xmvrange="from"') && hm.includes('data-xmvrange="to"') && hm.includes('placeholder="mm:ss"') && ["draft", "youtube", "suno", "hooks"].every(t => hm.includes(`data-xmvasm="900-test-saga/${t}"`)) && !hm.includes("<audio"), "music video: range pickers, a song-length field, the 4 build buttons (no song yet)");
+    sg.mv = {cfg: {chapters: "ch01-ch02", length: "0:30"}, music: null, final_cut: {}};
+    hm = T.xmvBlock(sg);
+    ok6(hm.includes("4 cells") && hm.includes("natural 0:17") && hm.includes("at ") && /at 0\.\d\dx/.test(hm), "music video: the live readout for the chosen range + typed length: " + (hm.match(/xmvread[^<]*</) || [""])[0]);
+    sg.mv = {cfg: {chapters: "ch01-ch02", offset: 2, clip_sound: "low"}, music: {src: "../explore/sagas/900-test-saga/cut/music.mp3", mtime: 3, name: "big <song>.mp3", dur: 32}, final_cut: {}};
+    hm = T.xmvBlock(sg);
+    ok6(hm.includes("big &lt;song&gt;.mp3") && hm.includes("<audio") && hm.includes('data-xmvmusicclear="900-test-saga"') && /<option value="low" selected>/.test(hm) && hm.includes("→ 0:30"), "music video: the song replaces the length field; the target = its duration minus the start offset");
+    const bm = {src: "../explore/sagas/900-test-saga/cut/test-saga-ch01-ch02.mp4", target: "youtube", mtime: 9, mb: 40, w: 1920, h: 1080, duration: 30, range: "ch01-ch02", speed: 0.78};
+    sg.mv.final_cut = {latest: bm, builds: [bm], status: {state: "done", target: "youtube"}, hooks: [{n: 1, file: "01-e1-e2.mp4", t0: 0, t1: 15, src: "../explore/sagas/900-test-saga/cut/hooks-ch01-ch02/01-e1-e2.mp4", range: "ch01-ch02"}]};
+    hm = T.xmvBlock(sg);
+    ok6(hm.includes('data-xcutv="mv:900-test-saga"') && hm.includes("0.78x") && hm.includes("🪝 1 hooks") && hm.includes('data-draft="image:explore/sagas/900-test-saga/cut/test-saga-ch01-ch02.mp4"'), "music video: the latest build plays with comments; speed, hooks listed");
+    sg.mv.final_cut = {status: {state: "running", target: "draft", stage: "piece 2/4"}};
+    ok6((T.xmvBlock(sg).match(/data-xmvasm=[^>]* disabled/g) || []).length === 4 && T.xmvBlock(sg).includes("piece 2/4"), "music video: busy state disables the buttons");
+    for (const c of sg.chapters) for (const s of c.shots) { delete s.nat; delete s.clips; }
+    sg.mv = {cfg: {}, music: null, final_cut: {}};
+    ok6(T.xmvBlock(sg) === "", "music video: hidden when nothing is playable");
+    sg.mv = keepMv; }
+  // ▶ on every rendered tile
+  ok6(h.includes('class="sgtileplay" data-sgplay="900-test-saga" data-from="1" data-at="ch01/e1"') && !h.includes('data-at="ch02/e2"'), "every rendered tile has ▶ Play from this picture (not the unrendered ones)");
+  { const segs = [{key: "title"}, {key: "ch01"}, {key: "ch01/e1"}, {key: "ch01/e3"}];
+    ok6(T.sgStartIndex(segs, "ch01/e3") === 3 && T.sgStartIndex(segs, null) === 0 && T.sgStartIndex(segs, "ch09/e9") === 0, "a tile's ▶ starts on that picture; unknown / none = the beginning"); }
   ok6(T.cmLabel("image:explore/sagas/900-test-saga/ch01/e3.png") === "Saga shot 900-test-saga/ch01/e3" && T.cmLink("image:explore/sagas/900-test-saga/ch01/e3.png") === "#/nev/saga/900-test-saga" && T.cmLink("saga:900-test-saga") === "#/nev/saga/900-test-saga", "comment labels + links for saga shots");
   ok6(T.isExpl(`${P}/ch01/e1.png`), "saga shots count as explore shots for marks / reroll");
   T.EXPL = [{id: "899-one", title: "One-off", topic: "t", status: "done", created: "2026/10/01 11:00:00", cover: null, shots: []}];
@@ -1477,4 +1625,142 @@ T.JRN = [FJ]; T.jById = {[FJ.id]: FJ};
   const b = T.hideDoneBtn(3);
   ok(/data-hidedone/.test(b) && /Hide approved/.test(b) && /\(3\)/.test(b), "storyboard: Hide approved toggle shows the approved count");
   ok(T.mvDoneCount({storyboards: []}) === 0, "mvDoneCount: empty storyboard = 0");
+}
+{  // slideshow
+  const lins = [{id: "001-a", title: "A", depth: 0, created: "2026-10-01 10:00:00", versions: [{id: "v01", images: [{src: "evolutions/001-a/v01/f-modern@x_seed1.png"}, {src: "evolutions/001-a/v01/c-animals@x~1_seed1.png"}]}, {id: "v02", images: []}]},
+                {id: "050-b", title: "B", depth: 1, created: "2026-09-01 10:00:00", versions: [{id: "v01", images: [{src: "evolutions/050-b/v01/l-location@y_seed1.png"}]}]}];
+  const g = T.showGroups(lins);
+  ok(g.length === 2 && g[0].key === "001-a/v01" && g[0].imgs.length === 2, "show: one group per rendered version (empty versions skipped)");
+  const m = {loved: s => /c-animals/.test(s), noped: () => false, styleMark: () => ""};
+  const now = Date.parse("2026-10-03T10:00:00");
+  ok(T.showPool(g, {layer: "survey"}, m, now).map(x => x.key).join() === "001-a/v01", "show: survey filter keeps depth 0");
+  ok(T.showPool(g, {layer: "evo"}, m, now).map(x => x.key).join() === "050-b/v01", "show: evolutions filter keeps depth > 0");
+  ok(T.showPool(g, {fresh: "7d"}, m, now).length === 1, "show: last 7 days drops older styles");
+  const k = T.showPool(g, {kind: "creatures"}, m, now);
+  ok(k.length === 1 && k[0].imgs.length === 1 && /c-animals/.test(k[0].imgs[0].src), "show: kind filter narrows images and drops empty groups");
+  ok(T.showPool(g, {loved: "loved"}, m, now).length === 1, "show: loved filter keeps loved images only");
+  ok(T.showPool(g, {}, {...m, styleMark: l => l === "050-b" ? "nope" : ""}, now).length === 1, "show: a 👎 style is hidden");
+  ok(T.showPool(g, {}, {...m, noped: s => /f-modern/.test(s)}, now)[0].imgs.length === 1, "show: 👎 images hidden");
+  const pool = [1, 2, 3, 4, 5, 6].map(i => ({key: "k" + i}));
+  const seen = {k1: 9, k2: 8, k3: 7, k4: 6};
+  const picks = new Set([0, 0.3, 0.6, 0.99].map(r => T.showPick(pool, seen, () => r).key));
+  ok([...picks].every(k => k === "k5" || k === "k6"), "show: picks only among the least-recently-shown third");
+  ok(T.showPick(pool, {}, () => 0, "k1").key !== "k1", "show: never repeats the current group when there's a choice");
+  ok(T.showPick([], {}) === null && T.showPick([{key: "a"}], {}, () => 0, "a").key === "a", "show: empty pool = null, lone group still shows");
+  ok(T.showKind("x/p-props@a.png") === "props" && T.showKind("x/m-scifi@a.png") === "people", "show: kind from the subject prefix");
+}
+{  // slideshow card table
+  let s = 1; const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+  for (const [n, a, W, H] of [[1, .75, 1600, 900], [6, .75, 1600, 900], [8, 1.78, 3440, 1440], [9, .66, 390, 800], [3, 1.78, 390, 800]]) {
+    const L = T.showLayout(n, a, W, H, rnd);
+    const inside = L.every(p => p.x - p.w / 2 >= -2 && p.x + p.w / 2 <= W + 2 && p.y - p.h / 2 >= -2 && p.y + p.h / 2 <= H + 2);
+    const apart = L.every((p, i) => L.every((q, j) => i >= j || Math.abs(p.x - q.x) > (p.w + q.w) / 2 * .85 || Math.abs(p.y - q.y) > (p.h + q.h) / 2 * .85));  // tuck at most ~15%
+    ok(L.length === n && inside && apart && L.every(p => Math.abs(p.rot) <= 4.5), `show: ${n} cards of aspect ${a} land on a ${W}x${H} table, inside, overlapping at most ~15%`);
+  }
+  ok(T.showLayout(0, 1, 100, 100).length === 0, "show: no cards, empty layout");
+  ok(T.showLayout(6, .75, 1600, 900, rnd)[0].h > T.showLayout(6, .75, 1600, 900, rnd)[0].w, "show: portrait cards stay portrait");
+}
+{  // slideshow: just-finished evolve / cross sets jump the queue, woven in
+  const now = Date.parse("2026-10-03T18:00:00"), sec = s => Math.floor(Date.parse(s) / 1000);
+  const v = (n, have) => ({id: "v01", params: {seeds: [1001], subjects: Array.from({length: n}, (_, i) => "s" + i)}, images: Array.from({length: have}, (_, i) => ({src: `evolutions/x/v01/f-modern@s${i}_seed1001.png`}))});
+  const lins = [
+    {id: "001-old", depth: 0, created: sec("2026-09-01T10:00:00"), versions: [v(2, 2)]},
+    {id: "002-old", depth: 0, created: sec("2026-09-02T10:00:00"), versions: [v(2, 2)]},
+    {id: "400-cross", depth: 2, parent_images: ["a.png", "b.png"], created: sec("2026-10-03T17:00:00"), rendered: sec("2026-10-03T17:40:00"), versions: [v(3, 3)]},
+    {id: "401-evo", depth: 1, parent_images: ["a.png"], created: sec("2026-10-03T16:00:00"), rendered: sec("2026-10-03T17:20:00"), versions: [v(3, 3)]},
+    {id: "402-half", depth: 1, parent_images: ["c.png"], created: sec("2026-10-03T17:50:00"), versions: [v(3, 1)]},
+    {id: "403-stale", depth: 1, parent_images: ["d.png"], created: sec("2026-09-20T10:00:00"), versions: [v(3, 3)]}];
+  const g = T.showGroups(lins), by = k => g.find(x => x.lid === k);
+  ok(by("400-cross").set === "cross" && by("401-evo").set === "evolve" && by("001-old").set === "", "show: groups know cross / evolve / survey");
+  ok(by("402-half").complete === false && by("400-cross").complete === true, "show: a set still rendering isn't complete");
+  ok(T.showIsNew(by("400-cross"), now) && !T.showIsNew(by("402-half"), now) && !T.showIsNew(by("403-stale"), now) && !T.showIsNew(by("001-old"), now), "show: new = a finished evolve/cross set from the last 48 h");
+  const p1 = T.showPick(g, {}, () => 0, null, {now});
+  ok(p1.lid === "401-evo", "show: the first-finished new set is dealt first");
+  const p2 = T.showPick(g, {[p1.key]: now}, () => 0, p1.key, {now, lastFresh: true});
+  ok(!T.showIsNew(p2, now), "show: never two new sets back to back while other styles exist (woven in)");
+  const p3 = T.showPick(g, {[p1.key]: now, [p2.key]: now}, () => 0, p2.key, {now, lastFresh: false});
+  ok(p3.lid === "400-cross", "show: the next new set comes right after one other style");
+  ok(T.showPick(g, {"401-evo/v01": now, "400-cross/v01": now}, () => .99, null, {now}) && !["401-evo", "400-cross"].includes(T.showPick(g, {"401-evo/v01": now, "400-cross/v01": now}, () => 0, null, {now}).lid), "show: once shown, new sets rejoin the normal rotation");
+  ok(T.showPick([by("400-cross")], {}, () => 0, null, {now, lastFresh: true}).lid === "400-cross", "show: only new sets left = still dealt");
+  ok(T.showPool(g, {fresh: "7d"}, {loved: () => false, noped: () => false, styleMark: () => ""}, now).every(x => !x.lid.endsWith("old")), "show: last 7 days works on epoch-second created");
+}
+{  // slideshow: pinned cards mingle with the hand
+  const cards = T.showLayout(6, .75, 1600, 900, () => .5), W = 1600, H = 900;
+  const P = T.showMinglePlan(cards, 2, W, H);
+  ok(P.paths.length === 2 && P.ms > 6000, "mingle: 2 pins, a slow walk");
+  const rests = path => path.slice(1, -1).filter((q, i, a) => i % 2 === 0);
+  ok(P.paths.every(p => rests(p).length === 6), "mingle: each pin rests beside every card of the hand");
+  ok(P.paths.every(p => p.every((q, i) => !i || q.t >= p[i - 1].t) && p[p.length - 1].t === P.ms), "mingle: keyframe times run forward and end together");
+  const near = (q, c) => Math.abs(q.x - c.x) <= c.w && Math.abs(q.y - c.y) <= c.h;
+  const a = rests(P.paths[0]), b = rests(P.paths[1]);
+  ok(a.every((q, s) => !cards.filter(c => near(q, c)).some(c => near(b[s], c) && Math.abs(b[s].x - q.x) < 1)), "mingle: two pins never rest on the same card at once");
+  ok(P.paths.every(p => p[0].y > H && p[p.length - 1].y > H), "mingle: pins rise from below and sink back");
+  ok(T.showMinglePlan(cards, 0, W, H).ms === 0 && T.showMinglePlan([], 3, W, H).ms === 0, "mingle: no pins or no hand = no mingle");
+  ok(T.showMinglePlan(cards, 9, W, H).paths.length === 4, "mingle: at most 4 pins at once");
+}
+{  // slideshow: the carried character of an evolve / cross set
+  const g = T.showGroups([{id: "500-x", depth: 1, parent_images: ["evolutions/090-a/v02/f-modern@sigilfire2~3_seed1001.png", "evolutions/056-b/v01/f-fantasy@amano_seed1001.png"],
+    versions: [{id: "v01", images: [{src: "../evolutions/500-x/v01/f-modern@sigilfire2~3_seed1001.png"}, {src: "../evolutions/500-x/v01/f-fantasy@amano_seed1001.png"}, {src: "../evolutions/500-x/v01/m-modern@orig9~1_seed1001.png"}]}]},
+    {id: "001-s", depth: 0, versions: [{id: "v01", images: [{src: "../evolutions/001-s/v01/f-modern@sigilfire2~3_seed1001.png"}]}]}]);
+  ok(g[0].imgs.map(i => !!i.carried).join() === "true,false,false", "show: only the FIRST parent's character is the carried one");
+  ok(!g[1].imgs[0].carried, "show: survey styles have no carried character");
+}
+{  // slideshow: no game sets
+  const v = {id: "v01", images: [{src: "../evolutions/x/v01/f-modern@a_seed1001.png"}]};
+  const g = T.showGroups([{id: "600-art", tags: ["evolution"], versions: [v]}, {id: "601-game", tags: ["game assets", "props"], versions: [v]}]);
+  ok(g.map(x => x.lid).join() === "600-art", "show: game-asset lineages stay out of the slideshow");
+}
+{  // slideshow: the whole-set ❤ sits on the top row's right-most card
+  const L = T.showLayout(7, .75, 1600, 900, () => .5), c = T.showCorner(L), top = Math.min(...L.map(p => p.y));
+  ok(c && c.y < top + c.h / 2 && L.filter(p => p.y < top + c.h / 2).every(p => p.x <= c.x), "show: the set pill goes on the top row's right-most card");
+  ok(T.showCorner([]) === null, "show: no cards, no set pill");
+}
+{  // slideshow: 👥 radial dial
+  ok(T.showDialPick(0, 0, 10) === -1 && T.showDialPick(10, 10, 10) === -1, "dial: the middle = same kind");
+  ok(T.showDialPick(0, -100, 10) === 0 && T.showDialPick(100, 0, 10) === 3 && T.showDialPick(0, 100, 10) === 5 && T.showDialPick(-100, 0, 10) === 8, "dial: up / right / down / left pick options 0 / 3 / 5 / 8 of 10");
+  ok(T.showDialPick(0, -400, 10) === null, "dial: far outside = cancel");
+}
+{  // slideshow: queue counter
+  ok(T.showQueueDelta(undefined, 12) === 0 && T.showQueueDelta(12, 15) === 3 && T.showQueueDelta(15, 14) === 0 && T.showQueueDelta(14, 14) === 0, "queue counter: animates only when images are added");
+}
+{  // slideshow: a set waits until every style in it is fully rendered
+  const v = (n, have) => ({id: "v01", params: {seeds: [1001], subjects: Array.from({length: n}, (_, i) => "s" + i)}, images: Array.from({length: have}, (_, i) => ({src: `evolutions/x/v01/f-modern@s${i}_seed1001.png`}))});
+  const g = T.showGroups([{id: "700-a", depth: 1, parent_images: ["p.png", "q.png"], versions: [v(3, 3)]}, {id: "701-b", depth: 1, parent_images: ["p.png", "q.png"], versions: [v(3, 1)]},
+    {id: "702-c", depth: 1, parent_images: ["z.png"], versions: [v(2, 2)]}]);
+  const m = {loved: () => false, noped: () => false, styleMark: () => ""};
+  ok(g.find(x => x.lid === "700-a").setDone === false && g.find(x => x.lid === "702-c").setDone === true, "show: a set is done only when every sibling style is fully rendered");
+  ok(T.showPool(g, {}, m).map(x => x.lid).join() === "702-c", "show: half-rendered sets (and their finished siblings) stay out of the show");
+}
+{  // slideshow: the new layout uses the table better
+  const L = T.showLayout(7, .75, 1600, 900, () => .5);
+  ok(L[0].h > 900 * .42, "show: 7 portrait cards on 1600x900 are now big (taller than 42% of the screen)");
+  ok(T.showLayout(12, .75, 1600, 900, () => .5).length === 12, "show: a 12-card hand fits");
+}
+{  // slideshow: a set seen half-rendered regains its priority once it finishes
+  const v = n => ({id: "v01", params: {seeds: [1001], subjects: Array.from({length: n}, (_, i) => "s" + i)}, images: Array.from({length: n}, (_, i) => ({src: `evolutions/x/v01/f-modern@s${i}_seed1001.png`}))});
+  const now = Date.parse("2026-10-03T20:00:00"), sec = s => Math.floor(Date.parse(s) / 1000);
+  const g = T.showGroups([{id: "800-new", depth: 1, parent_images: ["a.png"], created: sec("2026-10-03T19:00:00"), rendered: sec("2026-10-03T19:50:00"), versions: [v(2)]},
+    {id: "001-old", depth: 0, created: sec("2026-09-01T10:00:00"), rendered: sec("2026-09-01T10:00:00"), versions: [v(2)]}]);
+  const seenEarly = {"800-new/v01": Date.parse("2026-10-03T19:30:00")}, seenAfter = {"800-new/v01": Date.parse("2026-10-03T19:55:00")};
+  ok(T.showPick(g, seenEarly, () => 0, null, {now}).lid === "800-new", "show: a set dealt while still rendering is fresh again once it finishes");
+  ok(T.showPick(g, seenAfter, () => 0, null, {now}).lid === "001-old", "show: once seen after it finished, it rejoins the normal rotation");
+  // a later 👥 version rendering into a SIBLING must not make the set fresh again
+  const vs = (id, t) => ({id, params: {seeds: [1001], subjects: ["s0"]}, images: [{src: `evolutions/x/${id}/s0_seed1001.png`}], slots: [{ts: sec(t)}]});
+  const g2 = T.showGroups([{id: "810-a", depth: 1, parent_images: ["a.png", "b.png"], created: sec("2026-10-03T19:00:00"), rendered: sec("2026-10-03T19:40:00"), versions: [vs("v01", "2026-10-03T19:40:00")]},
+    {id: "811-b", depth: 1, parent_images: ["a.png", "b.png"], created: sec("2026-10-03T19:00:00"), rendered: sec("2026-10-03T19:58:00"), versions: [vs("v01", "2026-10-03T19:41:00"), vs("v02", "2026-10-03T19:58:00")]}]);
+  const a = g2.find(x => x.key === "810-a/v01");
+  ok(!T.showUnseen(a, {"810-a/v01": Date.parse("2026-10-03T19:45:00")}), "show: a sibling's later 👥 version doesn't make a seen set fresh again");
+  ok(T.showUnseen(g2.find(x => x.key === "811-b/v02"), {"811-b/v02": Date.parse("2026-10-03T19:45:00")}), "show: the 👥 version itself is fresh once it lands");
+}
+{  // cast box: "every character matching …" across the whole library
+  const m = T.castMatches("uniform");
+  const top = m.find(x => x.o.v.startsWith("char:"));
+  ok(top && top.o.v === "char:uniform" && top.o.n >= 1, "cast box: 'uniform' offers 🎹 every character matching it (all casts) ahead of single-character matches");
+  T.store.set("fcast", "char:uniform");
+  const k = Object.keys(T.DATA.reduce((a, l) => (l.versions.forEach(v => v.slots.forEach(sl => a[sl.subject] = 1)), a), {})).find(s => T.subjMatch(s));
+  ok(!!k, "cast box: the char: filter matches at least one rendered subject");
+  T.store.set("fcast", "all");
+}
+{  // slideshow: paused double-click opens the style's page
+  ok(T.showStyleHref({lid: "412-clay-jojo-toon", depth: 2}) === "#/e/2?hl=412-clay-jojo-toon" && T.showStyleHref({lid: "042-moebius", depth: 0}) === "#/l/042-moebius", "show: double-click target = the style's evolution layer (highlighted) or survey lineage page");
 }

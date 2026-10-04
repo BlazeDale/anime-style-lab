@@ -47,8 +47,9 @@ def main(argv):
     print(newdir.relative_to(R).as_posix())
     print("\n".join(keys))
     if render and not dry:
-        sys.exit(subprocess.call([str(VENV_PYTHON), "-u", "tools/run_version.py",
-                                  newdir.relative_to(R).as_posix()], cwd=R))
+        sys.path.insert(0, str(R / "tools")); import render_queue
+        j = render_queue.add([newdir.relative_to(R).as_posix()], label="👥 " + newdir.relative_to(R).as_posix())
+        print(f"queued {j['id']} on the gallery server's render worker"); return
 
 
 if __name__ == "__main__":

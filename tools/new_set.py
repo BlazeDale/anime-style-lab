@@ -2,7 +2,7 @@
 usage: new_set.py <spec.json> [--render] [--dry-run]
 parents[0]'s subject is always added to the set (the picked image reimagined in each new style).
 spec: {"parents":[png..], "why", "tags":[..], "cast":{"id"?, "entries":[..]} | "subjects":[keys],
-       "aspect_ratio"?, "variants":[{slug,title,change:"LABEL: goal",prompt,aspect_ratio?}]}"""
+       "aspect_ratio"?, "carry_subject"? (default true), "variants":[{slug,title,change:"LABEL: goal",prompt,aspect_ratio?}]}"""
 import sys, json, subprocess
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -45,7 +45,7 @@ def main(argv):
     else:
         sys.exit("spec needs cast or subjects")
     # the picked image redrawn in every new style: evolve = its subject, cross = the FIRST pinned image's only
-    carried = labkit.parent_subject(parents[0])
+    carried = labkit.parent_subject(parents[0]) if spec.get("carry_subject", True) else None  # false: design jobs (a banner) where the picked image's subject doesn't belong
     if carried and carried not in subjects:
         subjects = [carried, *subjects]
     elif not carried:
@@ -78,7 +78,9 @@ def main(argv):
     print(("[dry-run] would create:\n" if dry else "created:\n") + "\n".join(made))
     print("subjects:", ", ".join(subjects))
     if render and not dry:
-        sys.exit(subprocess.call([str(VENV_PYTHON), "-u", "tools/run_version.py", *made], cwd=R))
+        sys.path.insert(0, str(R / "tools")); import render_queue
+        j = render_queue.add(made, label=f"{Path(args[0]).stem}: " + ", ".join(Path(d).parent.name for d in made))
+        print(f"queued {j['id']} on the gallery server's render worker ({len(made)} version dirs)")
 
 
 if __name__ == "__main__":

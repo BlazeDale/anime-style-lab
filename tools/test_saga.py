@@ -208,6 +208,7 @@ p3 = er.prompt_of(epr, shots[2], True, None, cd)  # Tobias + Mira, order of `wit
 ok(sr.refs_of(bib, shots[2], tmp) == [("explore/sagas/001-the-glass-harbour/ch02/e1.png", "Tobias"), ("explore/sagas/001-the-glass-harbour/ch01/e2.png", "Mira")]
    and "Reference image 1 shows Tobias" in p3 and "Reference image 2 shows Mira" in p3 and p3.index("Tobias (tall") < p3.index("Mira (red"), "two characters: refs numbered in `with` order, both looks repeated")
 ok("Kiri" not in p3 and "Harbour master" not in p3, "only the characters in frame are described")
+ok("Exactly 2 named characters, each appearing once and never duplicated: Tobias, Mira." in p3 and "Exactly" not in p, "two or more in frame: the head count, nobody duplicated; one person: no count")
 ok(sr.refs_of(bib, shots[0], tmp) == [] and "Reference image" not in er.prompt_of(epr, shots[0], True, None, cd) and "In the scene: Mira (" in er.prompt_of(epr, shots[0], True, None, cd), "noref shot: the look is described but no reference image is fed")
 p4 = er.prompt_of(epr, shots[3], True, None, cd)  # nofigure
 ok("There are no people in this image" in p4 and "Draw each named character" not in p4 and "Setting: The Lull Tower" in p4.replace("Setting: The Lull Tower", "Setting: The Lull Tower"), "nofigure shot: run_journey's no-people branch")

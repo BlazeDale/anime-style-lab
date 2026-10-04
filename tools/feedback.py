@@ -12,8 +12,12 @@
   python tools/feedback.py mvreply <req-id> "<text>"    marks a music-video request done; the reply shows on the music-video page
   python tools/feedback.py mvgen <mv-id> <req-id> <png> ["reply"]   🖼 closes a reference request with the rendered png (adds it to the mv's refs)
   python tools/feedback.py explore                      🌌 explore state (active / time left) + episodes + the unhandled start/continue request
+  python tools/feedback.py xanimreply <id> "<text>"     closes a NevNovella chapter animate request (also comments on saga:<id>)
   python tools/feedback.py explorereply "<text>"        marks the latest 🌌 start/continue request handled (also handled once an episode newer than it exists)
   python tools/feedback.py inbox                        unhandled marks + open threads (run by the prompt hooks)
+  python tools/feedback.py ackloves ["text"]            answer every sent ❤/👎-only mark at once (requests like 👥 🎬 stay open)
+  python tools/feedback.py taste [N]                    top N lineages by your marks (style ❤ x3 + image ❤ - 👎), the input for "what to evolve next"
+  python tools/feedback.py verdict <version dir> "<text>" [<dir> "<text>"...]   notes.json verdicts (prefixed with your ❤ counts) + one gallery rebuild
 """
 import json
 import sys
@@ -25,6 +29,7 @@ STATE = ROOT / "feedback" / "state.json"
 COMMENTS = ROOT / "feedback" / "comments.json"
 SETS = ROOT / "feedback" / "sets.json"
 JOURNEYS = ROOT / "feedback" / "journeys.json"
+EXPLORE_ANIM = ROOT / "feedback" / "explore_animate.json"
 MVS = ROOT / "feedback" / "mvs.json"
 MVD = ROOT / "musicvideos"
 LOGF = ROOT / "feedback" / "log.jsonl"
@@ -160,10 +165,59 @@ def load():
     return json.loads(STATE.read_text(encoding="utf-8")) if STATE.exists() else {}
 
 
+def acts(v):
+    return v.get("actions") or ([v["action"]] if v.get("action") else [])
+
+
+def taste(state, top=25):
+    """❤ / 👎 per lineage in one read (low per-event overhead; the watcher no longer prints style marks)"""
+    import re
+    rows = {}
+    for k, v in state.items():
+        a = acts(v)
+        if k.startswith("style:"):
+            r = rows.setdefault(k[6:], {"style": "", "love": 0, "nope": 0}); r["style"] = "❤" if "love" in a else "👎" if "nope" in a else ""
+        else:
+            m = re.match(r"evolutions/([^/]+)/", k)
+            if m:
+                r = rows.setdefault(m.group(1), {"style": "", "love": 0, "nope": 0})
+                r["love"] += "love" in a; r["nope"] += "nope" in a
+    score = lambda r: (r["style"] == "❤") * 3 + r["love"] - r["nope"] - (r["style"] == "👎") * 3
+    for lid, r in sorted(rows.items(), key=lambda kv: -score(kv[1]))[:top]:
+        print(f"{score(r):>4}  {r['style'] or '  '}  ❤{r['love']:<3} 👎{r['nope']:<3} {lid}")
+
+
+def verdict(pairs, state):
+    """feedback.py verdict <version dir> "<text>" [...]: writes notes.json verdicts, prefixed with the user's own marks on that version
+    (image ❤ count + style ❤), then rebuilds the gallery once"""
+    for d, text in zip(pairs[::2], pairs[1::2]):
+        vd = ROOT / d.rstrip("/")
+        notes = vd / "notes.json"
+        if not notes.exists():
+            print("no notes.json in", d); continue
+        rel, lid = vd.relative_to(ROOT).as_posix(), vd.parent.name
+        loves = sum("love" in acts(v) for k, v in state.items() if k.startswith(rel + "/"))
+        style = "love" in acts(state.get("style:" + lid, {}))
+        mark = " ".join(x for x in [f"User ❤ x{loves}." if loves else "", "Style ❤." if style else ""] if x)
+        n = json.loads(notes.read_text(encoding="utf-8"))
+        n["verdict"] = (mark + " " + text).strip()
+        write(notes, n)
+        print(f"{rel}: {n['verdict'][:90]}")
+    rebuild()
+
+
 def main():
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
     cmd = sys.argv[1] if len(sys.argv) > 1 else "list"
     state = load()
-    if cmd == "list":
+    if cmd == "taste":
+        taste(state, int(sys.argv[2]) if len(sys.argv) > 2 else 25)
+    elif cmd == "verdict":
+        verdict(sys.argv[2:], state)
+    elif cmd == "list":
         want = sys.argv[2] if len(sys.argv) > 2 else "sent"
         for k, v in state.items():
             if v.get("status") == want:
@@ -178,6 +232,15 @@ def main():
         tmp.write_text(json.dumps(state, indent=2, ensure_ascii=False), encoding="utf-8")
         tmp.replace(STATE)
         print("ok")
+    elif cmd == "ackloves":  # every SENT mark that is only ❤ / 👎 (no request inside) answered at once; taste signals, read via `taste`
+        text = sys.argv[2] if len(sys.argv) > 2 else "❤ noted: counts toward what gets evolved next."
+        n = 0
+        for k, v in state.items():
+            a = acts(v)
+            if v.get("status") == "sent" and a and set(a) <= {"love", "nope"}:
+                v.update(status="done", reply=text, replied=time.strftime("%Y-%m-%d %H:%M:%S")); n += 1
+        write(STATE, state)
+        print(f"{n} ❤/👎 marks answered; requests left untouched")
     elif cmd == "comments":
         comments = json.loads(COMMENTS.read_text(encoding="utf-8")) if COMMENTS.exists() else []
         last = {}
@@ -207,23 +270,27 @@ def main():
         try:
             import atlas as fatl
             atl = fatl.open_requests(ROOT)
-        except ImportError:  # the Nev Novel tools are optional
+        except ImportError:  # the NevNovella tools are optional
             atl = []
-        if not marks and not open_c and not open_s and not open_j and not open_m and not open_g and not xp and not atl:
+        open_xa = [x for x in (json.loads(EXPLORE_ANIM.read_text(encoding="utf-8")) if EXPLORE_ANIM.exists() else []) if x.get("status") == "open"]
+        if not marks and not open_xa and not open_c and not open_s and not open_j and not open_m and not open_g and not xp and not atl:
             return
+        for x in open_xa:
+            print(f"🎬 animate saga {x['saga']} {x['chapter']}: " + (x["text"] if x.get("text") else "(no note)")
+                  + f"  [id {x['id']}] -> write per-shot motion, `python tools/animate_chapter.py explore/sagas/{x['saga']}/{x['chapter']} --motions m.json`, then `feedback.py xanimreply {x['id']} \"...\"`")
         for r in atl:
             kd = r.get("atlas", "formality")
             extra = " --beats \"...\"" if kd == "emotion" else ""
             print(f"🧠 atlas_add {r['id']} ({r['ts']}): the user typed the {kd} \"{r['text']}\" and the {kd} atlas has no node for it -> `python tools/atlas.py {kd} near \"{r['text']}\"` "
-                  f"first (never duplicate), else `atlas.py {kd} add \"<name>\" --family F --features k=v,... --picture \"...\" --voice \"...\"{extra} --for {r['id']}` (CLAUDE.md 'Nev Novel' → Atlases).")
+                  f"first (never duplicate), else `atlas.py {kd} add \"<name>\" --family F --features k=v,... --picture \"...\" --voice \"...\"{extra} --for {r['id']}` (CLAUDE.md 'NevNovella' → Atlases).")
         if xp:
             if xp["kind"] == "tune":
-                print(f"📖 Nev Novel re-steer requested at {xp['ts']} [{__import__('explore_state').describe(xp, True)}]: `python tools/explore_edit.py current`; if a chapter/episode is still in flight, rewrite its "
+                print(f"📖 NevNovella re-steer requested at {xp['ts']} [{__import__('explore_state').describe(xp, True)}]: `python tools/explore_edit.py current`; if a chapter/episode is still in flight, rewrite its "
                       "UNRENDERED shots so the story wraps up the current thread in 1-3 shots and turns toward the new steer (explore_edit.py ... --steer-from-state); if nothing is "
-                      "running it steers the next chapter (CLAUDE.md 'Nev Novel'), then `feedback.py explorereply \"...\"`.")
+                      "running it steers the next chapter (CLAUDE.md 'NevNovella'), then `feedback.py explorereply \"...\"`.")
             else:
-                print(f"📖 Nev Novel {xp['kind']} requested at {xp['ts']}" + (f" (seed: {xp['seed']})" if xp.get("seed") else "") + f" [{__import__('explore_state').describe(xp, True)}]"
-                      + ": a start with a seed = `python tools/saga.py new ...` (invent the world, lore, cast), a continue = `saga.py bible --brief` then the next chapter; ONE chapter at a time while `python tools/explore_state.py active` exits 0 (CLAUDE.md 'Nev Novel'), then `feedback.py explorereply \"...\"`.")
+                print(f"📖 NevNovella {xp['kind']} requested at {xp['ts']}" + (f" (seed: {xp['seed']})" if xp.get("seed") else "") + f" [{__import__('explore_state').describe(xp, True)}]"
+                      + ": a start with a seed = `python tools/saga.py new ...` (invent the world, lore, cast), a continue = `saga.py bible --brief` then the next chapter; ONE chapter at a time while `python tools/explore_state.py active` exits 0 (CLAUDE.md 'NevNovella'), then `feedback.py explorereply \"...\"`.")
         print(f"GALLERY INBOX: {len(open_j)} 🧭 journey request(s), {len(open_m)} 🎵 music-video request(s), {len(open_g)} 🖼 reference request(s), {len(open_s)} 📌 set(s), {len(marks)} sent mark(s) and {len(open_c)} comment thread(s) "
               "are waiting on you. Act on them (see CLAUDE.md 'User feedback' / 'Journeys' / 'Music videos'), then reply with tools/feedback.py reply / creply / sreply / jreply / mvreply / mvgen.")
         for x in open_m:
@@ -243,6 +310,7 @@ def main():
         import explore_state
         st = explore_state.state()
         print(f"steer: {explore_state.describe(st, True)}")
+        print("Genres: " + explore_state.genres_words(explore_state.genre_list(st)))
         print(f"explore: {'ACTIVE, ' + str(int(st['left'] // 60)) + 'm' + str(int(st['left'] % 60)).zfill(2) + 's left' if st['active'] else 'not active (' + st['reason'] + ')'}")
         xp = explore_pending()
         if xp:
@@ -255,6 +323,17 @@ def main():
         print("  maturity: " + explore_state.maturity_words(st.get("maturity")))
         for e in explore_state.episodes():
             print(f"  {e['id']}  [{e['status']}] {e['rendered']}/{e['shots']} shots  {e['title']}  (topic: {e['topic']})")
+    elif cmd == "xanimreply":  # close a saga-chapter animate request: status done + a comment on saga:<id>
+        reqs = json.loads(EXPLORE_ANIM.read_text(encoding="utf-8")) if EXPLORE_ANIM.exists() else []
+        x = next(x for x in reqs if x["id"] == sys.argv[2])
+        now = time.strftime("%Y-%m-%d %H:%M:%S")
+        x.update(status="done", reply=sys.argv[3], done_ts=now)
+        write(EXPLORE_ANIM, reqs)
+        comments = json.loads(COMMENTS.read_text(encoding="utf-8")) if COMMENTS.exists() else []
+        comments.append({"id": f"c{len(comments) + 1}", "target": f"saga:{x['saga']}", "author": "claude",
+                         "text": f"🎬 {x['chapter']}: {sys.argv[3]}", "ts": now})
+        write(COMMENTS, comments)
+        print("ok")
     elif cmd == "explorereply":
         xp_ts = time.strftime("%Y-%m-%d %H:%M:%S")
         write(EXPLORE_HANDLED, {"ts": xp_ts, "text": sys.argv[2] if len(sys.argv) > 2 else ""})

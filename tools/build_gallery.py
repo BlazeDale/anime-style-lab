@@ -180,6 +180,81 @@ def collect_explore(root=None):
     return out
 
 
+def saga_shot_nat(cd, sid, sh, has_png):
+    """natural seconds a shot plays in a cut: its newest clip's length (the .json sidecar's `seconds`, minus the 0.15 s head trim) else its still hold; 0 = nothing to play"""
+    clips = sorted((c for c in Path(cd).glob(sid + "__*.mp4") if c.name.split("__")[0] == sid and not c.stem.endswith("__lipsync")), key=lambda c: c.stat().st_mtime, reverse=True)
+    if clips:
+        sec = (read_json(clips[0].with_suffix(".json"), {}) or {}).get("seconds") or 5
+        return round(max(1.5, float(sec) - 0.15), 2)
+    return float(sh.get("hold") or 6) if has_png else 0
+
+
+def saga_mv(d, sid_dir=None):
+    """🎞 the saga-level music video (saga.json `mv` + saga/cut/): {cfg, music {src, name, dur, ...}, final_cut {latest, builds, status, hooks}} or None"""
+    d = Path(d)
+    cfg = read_json(d / "saga.json", {}).get("mv") if isinstance(read_json(d / "saga.json", {}).get("mv"), dict) else {}
+    m = cfg.get("music") if isinstance(cfg.get("music"), dict) else None
+    music = None
+    if m and m.get("file") and (d / "cut" / m["file"]).is_file():
+        f = d / "cut" / m["file"]
+        music = {"src": f"../explore/sagas/{d.name}/cut/{m['file']}", "mtime": int(f.stat().st_mtime), "name": m.get("name") or m["file"], "dur": m.get("dur") or 0}
+    cut = d / "cut"
+    base = f"../explore/sagas/{d.name}/cut"
+    builds = []
+    if cut.is_dir():
+        for q in sorted(cut.glob("*.mp4"), key=lambda p: p.stat().st_mtime, reverse=True):
+            j = read_json(q.with_suffix(".json"), {}) or {}
+            builds.append({"src": f"{base}/{q.name}", "target": j.get("target") or ("draft" if q.stem.endswith("-draft") else "suno" if q.stem.endswith("-suno") else "youtube"),
+                           "mtime": int(q.stat().st_mtime), "mb": round(q.stat().st_size / 1e6, 1), "w": j.get("w"), "h": j.get("h"), "duration": j.get("duration"),
+                           "range": j.get("range"), "speed": j.get("speed_factor")})
+    st = read_json(cut / "_status.json", None) if cut.is_dir() else None
+    if st and st.get("state") in ("queued", "running") and time.time() - st.get("ts", 0) > 7200:
+        st["state"] = "stale"
+    hooks, hfrom = [], None
+    for hd in sorted(cut.glob("hooks-*")) if cut.is_dir() else []:
+        hj = read_json(hd / "hooks.json", None) or {}
+        for h in hj.get("hooks", []):
+            if (hd / h["file"]).is_file():
+                hooks.append({**h, "src": f"{base}/{hd.name}/{h['file']}", "range": hd.name[6:]})
+        hfrom = hj.get("from") or hfrom
+    return {"cfg": {k: v for k, v in cfg.items() if k != "music"}, "music": music, "final_cut": {"latest": builds[0] if builds else None, "builds": builds, "status": st, "hooks": hooks, "hooks_from": hfrom}}
+
+
+def saga_music(cd, sid, ep):
+    """🎵 the chapter's uploaded song (episode.json reel.music + chNN/cut/music.<ext>): {src, name, ts, clip_sound, offset} or None"""
+    m = (ep.get("reel") or {}).get("music") if isinstance(ep.get("reel"), dict) else None
+    if not isinstance(m, dict) or not m.get("file") or not (Path(cd) / "cut" / m["file"]).is_file():
+        return None
+    f = Path(cd) / "cut" / m["file"]
+    return {"src": f"../explore/sagas/{sid}/{Path(cd).name}/cut/{m['file']}", "mtime": int(f.stat().st_mtime), "name": m.get("name") or m["file"], "ts": m.get("ts", ""),
+            "clip_sound": m.get("clip_sound") if m.get("clip_sound") in ("off", "low", "full") else "off", "offset": m.get("offset") or 0}
+
+
+def saga_cut(cd, sid):
+    """🎞 a saga chapter's final cut (tools/saga_assemble.py: chNN/cut/*.mp4, hooks/, _status.json): {latest, builds, status, hooks} or None"""
+    cd = Path(cd)
+    cut = cd / "cut"
+    if not cut.is_dir():
+        return None
+    base = f"../explore/sagas/{sid}/{cd.name}/cut"
+
+    def tgt(q, j):
+        return j.get("target") or ("draft" if q.stem.endswith("-draft") else "suno" if q.stem.endswith("-suno") else "youtube")
+    builds = []
+    for q in sorted(cut.glob("*.mp4"), key=lambda p: p.stat().st_mtime, reverse=True):
+        j = read_json(q.with_suffix(".json"), {}) or {}
+        builds.append({"src": f"{base}/{q.name}", "target": tgt(q, j), "mtime": int(q.stat().st_mtime), "mb": round(q.stat().st_size / 1e6, 1), "w": j.get("w"), "h": j.get("h"),
+                       "duration": j.get("duration")})
+    st = read_json(cut / "_status.json", None)
+    if st and st.get("state") in ("queued", "running") and time.time() - st.get("ts", 0) > 7200:
+        st["state"] = "stale"
+    hj = read_json(cut / "hooks" / "hooks.json", None) or {}
+    hooks = [{**h, "src": f"{base}/hooks/{h['file']}"} for h in hj.get("hooks", []) if (cut / "hooks" / h["file"]).is_file()]
+    if not (builds or st or hooks):
+        return None
+    return {"latest": builds[0] if builds else None, "builds": builds, "status": st, "hooks": hooks, "hooks_from": hj.get("from")}
+
+
 def collect_sagas(root=None):
     """📖 Sagas (explore/sagas/NNN-slug/saga.json = the bible, chNN/episode.json = a chapter of Explore shots with narration + dialogue), newest first.
     Cast refs / shot pictures are ../explore/sagas/... paths with mtimes for cache-busting after a 🎲 reroll."""
@@ -202,11 +277,13 @@ def collect_sagas(root=None):
                 ok = png.is_file()
                 shots.append({"id": sid, "prompt": sh.get("prompt", ""), "caption": sh.get("caption", ""), "aspect": sh.get("aspect") or "16:9", "hold": sh.get("hold") or 6,
                               "with": sh.get("with") or [], "place": sh.get("place") or "", "narration": sh.get("narration") or "", "dialogue": sh.get("dialogue") or [],
-                              "src": f"../explore/sagas/{d.name}/{cd.name}/{sid}.png" if ok else None, "mtime": int(png.stat().st_mtime) if ok else 0})
+                              "src": f"../explore/sagas/{d.name}/{cd.name}/{sid}.png" if ok else None, "mtime": int(png.stat().st_mtime) if ok else 0,
+                              "clips": len([c for c in cd.glob(sid + "__*.mp4") if c.name.split("__")[0] == sid and not c.stem.endswith("__lipsync")]),
+                              "nat": saga_shot_nat(cd, sid, sh, ok)})
             chapters.append({"id": cd.name, "num": int(re.sub(r"\D", "", cd.name) or 0), "title": e.get("title") or cd.name, "summary": e.get("summary") or e.get("premise") or "",
                              "status": e.get("status", "draft"), "created": e.get("created", ""), "opens": e.get("opens") or [], "closes": e.get("closes") or [],
                              "presence": e.get("presence"), "emotion": e.get("emotion"), "formality": e.get("formality"), "cores": e.get("cores"),
-                             "maturity": e.get("maturity"), "shots": shots})
+                             "maturity": e.get("maturity"), "shots": shots, "final_cut": saga_cut(cd, d.name), "music": saga_music(cd, d.name, e)})
         cast = []
         for n, v in (b.get("cast") or {}).items():
             v = v if isinstance(v, dict) else {"look": v}
@@ -218,7 +295,7 @@ def collect_sagas(root=None):
         out.append({"id": d.name, "title": b.get("title") or d.name, "logline": b.get("logline", ""), "created": b.get("created", ""), "style": b.get("style", ""),
                     "world": b.get("world") or {}, "lore": b.get("lore") or [], "factions": b.get("factions") or [], "places": b.get("places") or [], "cast": cast,
                     "timeline": b.get("timeline") or [], "threads": b.get("threads") or [], "chapters": chapters, "cover": covers[-1] if covers else None,
-                    "cores": b.get("cores") or [], "maturity": b.get("maturity")})
+                    "cores": b.get("cores") or [], "maturity": b.get("maturity"), "mv": saga_mv(d)})
     return out
 
 
@@ -339,6 +416,38 @@ def write_readme(lin):
     (d / "README.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+GOOD_TPL = ROOT / "gallery" / ".template_last_good.html"
+
+
+def checked_template(tpl):
+    """Never publish a template whose page script doesn't parse (a half-finished template edit
+    could otherwise go live while other jobs rebuild the gallery and blank the page). `node --check` on the inline scripts; result cached per template hash.
+    A broken template -> the last good one is used instead and the error goes to stderr."""
+    import hashlib, re, shutil, subprocess, sys, tempfile
+    h = hashlib.sha1(tpl.encode("utf-8")).hexdigest()
+    stamp = GOOD_TPL.with_suffix(".sha")
+    if GOOD_TPL.exists() and stamp.exists() and stamp.read_text().strip() == h:
+        return tpl
+    node = shutil.which("node")
+    if not node:
+        return tpl
+    js = "\n;\n".join(re.findall(r"<script(?![^>]*\bsrc=)[^>]*>(.*?)</script>", tpl, flags=re.S))
+    with tempfile.NamedTemporaryFile("w", suffix=".js", delete=False, encoding="utf-8") as f:
+        f.write(js)
+    try:
+        r = subprocess.run([node, "--check", f.name], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60)
+    finally:
+        Path(f.name).unlink(missing_ok=True)
+    if r.returncode == 0:
+        GOOD_TPL.parent.mkdir(exist_ok=True)
+        GOOD_TPL.write_text(tpl, encoding="utf-8")
+        stamp.write_text(h)
+        return tpl
+    print("build_gallery: gallery_template.html has a JS syntax error, publishing the LAST GOOD template instead:\n"
+          + (r.stderr or r.stdout)[-1500:], file=sys.stderr)
+    return GOOD_TPL.read_text(encoding="utf-8") if GOOD_TPL.exists() else tpl
+
+
 def main():
     # re-read every build: casts get added to subjects.json while long render jobs are running
     global SUBJECTS
@@ -346,7 +455,7 @@ def main():
     lineages = collect()
     for lin in lineages:
         write_readme(lin)
-    tpl = (Path(__file__).parent / "gallery_template.html").read_text(encoding="utf-8")
+    tpl = checked_template((Path(__file__).parent / "gallery_template.html").read_text(encoding="utf-8"))
     import hashlib
     ui = hashlib.sha1(tpl.encode("utf-8")).hexdigest()[:12]  # page reloads itself when this changes
     videos = collect_videos(lineages)

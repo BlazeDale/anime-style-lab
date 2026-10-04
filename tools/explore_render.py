@@ -150,6 +150,33 @@ def _mood_clause(picture, n):
     return _clause(", ".join(keep), n) if keep else ""
 
 
+# time of day belongs to the SHOT, not the steer (a shot "at night under the fireworks" rendered in daylight because an atlas node's picture line
+# says "bright open daylight"). When the shot names a time, cue phrases naming the opposite time are dropped.
+DAY_WORDS = ("daylight", "sunlit", "sunlight", "sunshine", "sunny", "noon", "midday", "morning", "dawn", "daytime", "afternoon")
+NIGHT_WORDS = ("night", "midnight", "moonlit", "moonlight", "starlit", "after dark", "nocturnal", "evening")
+
+
+def _time_of(text):
+    """'night' | 'day' | None: what time of day a shot's own prompt / camera names (night wins when both appear, e.g. 'a night sky like daylight')"""
+    low = str(text or "").lower()
+    if any(w in low for w in NIGHT_WORDS):
+        return "night"
+    return "day" if any(w in low for w in DAY_WORDS) else None
+
+
+def _drop_time(cue, when):
+    """drop the comma-chunks of a cue that name the opposite time of day to `when` (None = keep everything)"""
+    if not cue or not when:
+        return cue
+    bad = DAY_WORDS if when == "night" else NIGHT_WORDS
+    has = lambda s: any(w in s.lower() for w in bad)  # noqa: E731
+    head, sep, rest = cue.partition(": ")   # "a clear mood of X: <picture chunks>" keeps its lead-in
+    if not sep or has(head):
+        head, sep, rest = "", "", cue
+    chunks = [c for c in rest.split(", ") if not has(c)]
+    return (head + sep + ", ".join(chunks)) if chunks else head
+
+
 def _slug(s):
     import re
     return re.sub(r"[^a-z0-9]+", "-", str(s).lower()).strip("-")
@@ -220,21 +247,22 @@ def steer_cue(ep, shot=None, atlas=None):
     pres, emo, fo, cores, mat = g("presence"), g("emotion"), g("formality"), g("cores"), g("maturity")
     tiers = [  # emotion budget, core words, formality budget, maturity picture words
         ((9, 5), 6, (10, 6, 4), 8), ((7, 0), 4, (6, 0, 0), 6), ((5, 0), 0, (0, 0, 0), 4), ((3, 0), 0, (0, 0, 0), 3)]
+    when = _time_of(" ".join(str((shot or {}).get(k) or "") for k in ("prompt", "camera")))
     text = ""
     for eb, cw, fb, mw in tiers:
         parts = []
         if pres is not None:
             parts.append(presence_cue(pres))
-        e = emotion_cue(emo, None, eb)
+        e = _drop_time(emotion_cue(emo, None, eb), when)
         if e:
             parts.append(e)
         skip = None
         if isinstance(emo, dict) and emo.get("blend") and float(emo.get("intensity") or 0) >= 0.15:
             skip = emo["blend"][0].get("id")
-        c = core_cue(cores, None, skip, cw)
+        c = _drop_time(core_cue(cores, None, skip, cw), when)
         if c:
             parts.append(c)
-        f = formality_cue(fo, atlas, fb) if any(fb) else ""
+        f = _drop_time(formality_cue(fo, atlas, fb), when) if any(fb) else ""
         if f:
             parts.append(f)
         m = maturity_cue(mat, mw)

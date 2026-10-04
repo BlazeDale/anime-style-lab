@@ -20,3 +20,4 @@ journeys/_tmp_workflow.json
 *.part
 bench/
 gallery/bench.html
+gallery/.template_last_good.*

@@ -56,12 +56,15 @@ ok(mt.clean(2) == {"stop": 2, "label": "Family"} and mt.clean("Kids") == {"stop"
 ok(mt.clean(None) is None and mt.clean("junk") is None and mt.clean(True) is None and mt.clean([1]) is None and mt.clean({}) is None and mt.clean(float("nan")) is None, "maturity: clean() rejects None / junk / bool / list / empty / NaN")
 ok(mt.clean({"stop": 99}) == {"stop": 6, "label": "Mature"}, "maturity: an out-of-range stop clamps")
 C = mt.CEILING.lower()
-ok("no sexual content" in C and "no graphic gore" in C and "only between adults" in C and "fully clothed" in C and "no on-screen injury or blood" in C and "slapstick or implied" in C, "maturity: the HARD CEILING text names every rule")
-ok(all("fully clothed" in s["ceiling"] or "no sexual" in s["ceiling"] for s in mt.STOPS), "maturity: every stop's ceiling keeps the clothing / no-sexual rule")
+ok("adults only" in C and "under 18" in C and "no sexual content" in C and "no graphic gore" in C and "fully clothed" in C and "no on-screen injury or blood" in C and "slapstick or implied" in C
+   and "discretion of the user and the model" in C, "maturity: the CEILING text names every rule (adults only everywhere; Mature at the user's + model's discretion)")
+ok(all("fully clothed" in s["ceiling"] for s in mt.STOPS[:6]), "maturity: Preschool .. Young adult keep the clothing rule")
+ok("adults only" in mt.STOPS[6]["ceiling"] and "under 18" in mt.STOPS[6]["ceiling"], "maturity: Mature's ceiling = consenting adults only, never anyone under 18")
 ok(all(re.search(r"no (on-screen )?injury|no blood|nothing scary", mt.STOPS[i]["ceiling"]) for i in (0, 1, 2)), "maturity: Preschool / Kids / Family show no injury or blood")
-ok(not [s["label"] for s in mt.STOPS if BAD.search(s["story"] + " " + s["pictures"] + " " + s["feels_like"])], "maturity: no sexual / gore words in any stop's story / pictures / feels_like")
+ok(not [s["label"] for s in mt.STOPS[:6] if BAD.search(s["story"] + " " + s["pictures"] + " " + s["feels_like"])], "maturity: no sexual / gore words in any stop below Mature")
+ok(not BAD.search(mt.STOPS[6]["pictures"]), "maturity: Mature's pictures line (the image steer cue) names no explicit content itself")
 ok(len({s["pictures"] for s in mt.STOPS}) == 7 and len({s["story"] for s in mt.STOPS}) == 7, "maturity: every stop has its own story + pictures lines")
-ok("PG-13" in mt.STOPS[4]["feels_like"] and "Saturday-morning" in mt.STOPS[1]["feels_like"] and "literary adult" in mt.STOPS[6]["feels_like"] and "toddler" in mt.STOPS[0]["feels_like"], "maturity: feels_like follows the brief")
+ok("PG-13" in mt.STOPS[4]["feels_like"] and "Saturday-morning" in mt.STOPS[1]["feels_like"] and "adult fiction" in mt.STOPS[6]["feels_like"] and "discretion" in mt.STOPS[6]["feels_like"] and "toddler" in mt.STOPS[0]["feels_like"], "maturity: feels_like follows the brief")
 d = mt.describe(1)
 ok(d.startswith("Kids [2/6") is False and d.startswith("Kids [1/6") and "story:" in d and "pictures:" in d and "ceiling:" in d and "fully clothed" in d, "maturity: describe() = stop, story, pictures, ceiling, the always-rules")
 ok(mt.cue(0)[0] == mt.STOPS[0]["pictures"] and mt.cue({"stop": 6})[1] == mt.STOPS[6]["ceiling"] and "Teen" in mt.words(None), "maturity: cue() / words()")
@@ -89,9 +92,9 @@ ok(xs.clean_cores([{"blend": ev["blend"], "probe": ev["probe"]}])[0]["weight"] =
 ok(xs.clean_cores([{"blend": ev["blend"], "name": "n" * 200}])[0]["name"] == "n" * 60 and xs.clean_cores([{"blend": ev["blend"]}])[0]["name"] == "Saudade", "clean_cores: name capped at 60, defaults to the top node")
 ids6 = ["joy", "grief", "awe", "dread", "serenity", "pride", "shame"]
 six = xs.clean_cores([{"id": "k%d" % i, "blend": at(x)["blend"], "probe": at(x)["probe"]} for i, x in enumerate(ids6)])
-ok(len(six) == 5 and [c["id"] for c in six] == ["k0", "k1", "k2", "k3", "k4"], "clean_cores: at most 5 ACTIVE kept (the 6th and 7th are dropped)")
+ok(len(six) == 7 and [c["id"] for c in six if c["status"] == "active"] == ["k0"] and all(c["status"] == "resolved" for c in six[1:]), "clean_cores: ONE active kept, later active ones kept as resolved")
 mix = xs.clean_cores([{"id": "r%d" % i, "blend": at(x)["blend"], "status": "resolved"} for i, x in enumerate(ids6)] + [{"id": "a%d" % i, "blend": at(x)["blend"]} for i, x in enumerate(ids6)])
-ok(sum(1 for c in mix if c["status"] == "active") == 5 and sum(1 for c in mix if c["status"] == "resolved") == 7 and len(mix) == 12, "clean_cores: resolved ones do not count against the 5 active (12 in all)")
+ok(sum(1 for c in mix if c["status"] == "active") == 1 and sum(1 for c in mix if c["status"] == "resolved") == 11 and len(mix) == 12, "clean_cores: one active, the rest resolved, 12 in all")
 many = xs.clean_cores([{"id": "r%d" % i, "blend": at(ids6[i % 7])["blend"], "status": "resolved"} for i in range(20)])
 ok(len(many) == xs.MAX_CORES == 12, "clean_cores: 12 cores at most in all")
 dup = xs.clean_cores([{"id": "x", "blend": at("joy")["blend"]}, {"id": "x", "blend": at("grief")["blend"]}, {"blend": at("awe")["blend"], "name": "Awe"}, {"blend": at("dread")["blend"], "name": "Awe"}])
@@ -157,7 +160,7 @@ ok(er.maturity_cue(None) == "", "maturity_cue: none = nothing (old episodes)")
 for i in range(7):
     pic, ceil = mt.cue(i)
     mc = er.maturity_cue(i)
-    ok(mc.endswith(ceil) and mc.startswith(" ".join(pic.split(",")[0].split())) and ("fully clothed" in mc or "no sexual" in mc), "maturity_cue %s: pictures clause + the ceiling at the end" % mt.LABELS[i])
+    ok(mc.endswith(ceil) and mc.startswith(" ".join(pic.split(",")[0].split())) and ("fully clothed" in mc or "adults only" in mc), "maturity_cue %s: pictures clause + the ceiling at the end" % mt.LABELS[i])
 ok(er.maturity_cue(0) != er.maturity_cue(6) and er.maturity_cue(0, 0) == mt.cue(0)[1], "maturity_cue: Preschool differs from Mature; 0 picture words = the ceiling alone")
 
 base = {"presence": 95, "emotion": {**moodv, "intensity": 0.9}, "cores": [mk("grief", 0.9)], "maturity": {"stop": 5, "label": "Young adult"},
@@ -216,10 +219,9 @@ saga.cores_set(sd, amb)
 ok("ambiguous" in (raises(saga.cores_status, sd, "grief", "resolved") or ""), "cores: an ambiguous name is refused")
 five = xs.clean_cores([{"id": "k%d" % i, "blend": at(x)["blend"]} for i, x in enumerate(ids6[:5])] + [{"id": "old", "blend": at("shame")["blend"], "status": "resolved"}])
 saga.cores_set(sd, five)
-ok("5 active" in (raises(saga.cores_status, sd, "old", "active") or "") and saga.load(sd)["cores"][-1]["status"] == "resolved", "cores reopen: refused while 5 are active")
-saga.cores_status(sd, "k0", "resolved")
 saga.cores_status(sd, "old", "active")
-ok(saga.load(sd)["cores"][-1]["status"] == "active", "cores reopen: works once a slot is free")
+cs_ = saga.load(sd)["cores"]
+ok(cs_[-1]["status"] == "active" and [c["id"] for c in cs_ if c["status"] == "active"] == ["old"], "cores reopen: swaps the reopened core in, the current one is resolved (one active)")
 # set: from the deck state, history kept by id
 saga.cores_set(sd, deck)
 saga.cores_log(sd, "c1", "ch01", "first beat")
@@ -342,6 +344,35 @@ text = xs.describe({"presence": 50, "emotion": ev, "cores": deck, "maturity": {"
 ok(all(x in text for x in ("maturity Young adult", "emotion of the moment", "Grief (weight 0.8", "pictures:", "story beats:")), "the inbox / `feedback.py explore` line (describe detail): maturity + emotion of the moment + cores with picture / voice / beats")
 src = (TOOLS / "feedback.py").read_text(encoding="utf-8")
 ok("describe(xp, True)" in src and "describe(st, True)" in src and "maturity_words" in src and "cores_words" in src and "atlas.py {kd} add" in src, "feedback.py wires the detailed describe into inbox + explore, shows cores + maturity, names atlas.py <kind> add")
+
+# time of day belongs to the shot
+ok(er._time_of("Mira on the roof at night under fireworks") == "night" and er._time_of("Camera: wide, morning light") == "day" and er._time_of("a barge deck") is None
+   and er._time_of("a night sky bright as daylight") == "night", "_time_of: night / day / none from the shot's own words (night wins)")
+ok(er._drop_time("a clear mood of adventurous: bright open daylight and wind, warm saturated colours", "night") == "a clear mood of adventurous: warm saturated colours"
+   and er._drop_time("staged as a smoky back-room cabaret after midnight, sly glances", "day") == "sly glances"
+   and er._drop_time("bright open daylight", None) == "bright open daylight", "_drop_time: only the opposite time's chunks go")
+_adv = {"probe": {"x": 0, "y": 0}, "blend": [{"id": "adventurous", "name": "Adventurous", "w": 1.0}], "intensity": 0.8, "valence": 0.8, "arousal": 0.8}
+if any(n["id"] == "adventurous" for n in A.load(kind="emotion")["nodes"]):
+    _night = er.steer_cue({"emotion": _adv, "maturity": 4}, {"prompt": "the rooftop at night, fireworks", "camera": "wide"})
+    _plain = er.steer_cue({"emotion": _adv, "maturity": 4}, {"prompt": "the rooftop", "camera": "wide"})
+    ok("daylight" not in _night.lower() and "daylight" in _plain.lower(), "steer_cue: a night shot drops the mood's daylight; an unspecified shot keeps it")
+
+# 🎭 genre selector
+ok(xs.clean_genre("noir") == "Noir" and xs.clean_genre(" Science  fiction ") == "Science fiction" and xs.clean_genre("Any") == "" and xs.clean_genre("") == ""
+   and xs.clean_genre("zzz") is None and xs.clean_genre(3) is None, "clean_genre: case/space-blind, Any/'' = the author's choice, junk refused")
+ok(xs.clean_tune({"genre": "Western"}) == {"genres": ["Western"], "genre": "Western"} and "genre" not in xs.clean_tune({"genre": "zzz"}) and "genre" not in xs.clean_tune({}), "clean_tune carries the genre only when valid (old single genre -> genres [g])")
+ok("genre" in xs.STEER_KEYS and xs.describe({"genre": "Horror"}).startswith("genre Horror;") and xs.describe({}).startswith("genre author's choice;"), "STEER_KEYS + describe() name the genre")
+ok(xs.view({"genre": "Mythic"})["genre"] == "Mythic" and xs._carry({"genre": "Noir", "presence": 40}, {"genre": ""}) == {"genre": "", "presence": 40}, "the genre survives start / continue / stop and Any clears it")
+TPL = (Path(__file__).parent / "gallery_template.html").read_text(encoding="utf-8")
+# up to 3 genres, the first leads
+ok(xs.clean_genres(["horror", "Comedy", "zzz", "HORROR", "Western", "Noir"]) == ["Horror", "Comedy", "Western"] and xs.clean_genres([]) == [] and xs.clean_genres("Any") == [] and xs.clean_genres("noir") == ["Noir"]
+   and xs.clean_genres("zzz") is None and xs.clean_genres(5) is None, "clean_genres: deduped, validated, capped at 3, order kept; a plain string = the old single genre")
+ok(xs.clean_tune({"genres": ["Horror", "Comedy"]}) == {"genres": ["Horror", "Comedy"], "genre": "Horror"} and xs.clean_tune({"genres": []}) == {"genres": [], "genre": ""}, "clean_tune: genres list + the lead as `genre` for old readers")
+ok(xs.genre_list({"genre": "Noir"}) == ["Noir"] and xs.genre_list({"genres": ["Mythic", "Sports"], "genre": "Noir"}) == ["Mythic", "Sports"] and xs.genre_list({}) == [] and xs.genre_list({"genre": ""}) == [], "genre_list: migrates the old single genre")
+ok("genres" in xs.STEER_KEYS and xs.describe({"genres": ["Horror", "Comedy", "Western"]}).startswith("genres Horror + Comedy + Western (lead: Horror);") and xs.genres_words([]) == "author's choice", "describe names several genres with the lead")
+ok(xs.view({"genre": "Mythic"})["genres"] == ["Mythic"] and xs.view({"genres": ["Noir", "Sports"]})["genres"] == ["Noir", "Sports"], "view migrates genre -> genres")
+js_genres = re.findall(r'^\s*\["([^"]+)", \{intimate:', TPL, re.M)
+ok(js_genres == xs.GENRES, "the template's XGENRES and explore_state.GENRES are the same list")
 
 shutil.rmtree(tmp, ignore_errors=True)
 print("PASS %d FAIL %d" % (PASS, FAIL))

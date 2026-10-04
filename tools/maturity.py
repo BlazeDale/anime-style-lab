@@ -4,10 +4,10 @@ Seven discrete stops (a vintage TV-channel knob in the deck): Preschool, Kids, F
 A value is {stop: 0-6, label}. Each stop says what the STORY may hold (vocab, peril, conflict, complexity, theme darkness, endings) and how the PICTURES look
 (shape language, palette, how violence is framed, lighting).
 
-HARD CEILING at EVERY stop, Mature included (enforced in the author rules, CLAUDE.md, and in the image steer cue):
-  mature THEMES only. No sexual content. No graphic gore. Romance only between adults. Characters fully clothed.
-  At Preschool / Kids / Family there is no on-screen injury or blood at all; violence below Teen is slapstick or implied.
-The dial raises the complexity and emotional weight of the themes. It never raises the explicitness of what is drawn.
+Each stop has a ceiling (in the author rules and in the image steer cue). Preschool to Young adult: no sexual content, no graphic gore, fully clothed;
+  at Preschool / Kids / Family no on-screen injury or blood at all; violence below Teen is slapstick or implied.
+Mature: graphic violence and sexual content between consenting adults allowed, at the discretion of the user and the model
+  writing the story (this workflow may run on other models). At EVERY stop: adults only in anything romantic or sexual, never anyone under 18.
 
   python tools/maturity.py [stop|label]      print the table / one stop in words
 Standard library only."""
@@ -41,14 +41,18 @@ STOPS = [
      "story": "mature but accessible vocabulary; identity and belonging, betrayal, the human cost of war and power; heavy choices with no clean answer; trauma and its aftermath; hard-won, ambiguous endings",
      "pictures": "cinematic grit, desaturated palette with one accent colour, hard directional light and long shadows, grounded textures, violence as weight and aftermath without detail",
      "ceiling": "non-graphic, no gore, romance only between adults and tasteful, fully clothed"},
-    {"stop": 6, "label": "Mature", "feels_like": "literary adult fiction; grief, moral ambiguity, trauma, politics, non-graphic violence with weight",
-     "story": "adult literary vocabulary and subtext; grief, moral ambiguity, trauma, politics and power; slow complex plots with consequences that last; violence has emotional weight, never spectacle; endings unresolved or tragic when true",
-     "pictures": "painterly, shadowed, unflinching framing, muted earth palette with deep darks, chiaroscuro light, aftermath and faces carry the weight, nothing graphic",
-     "ceiling": "mature themes only, no graphic gore, no sexual content, adults only in romance, fully clothed"},
+    # Mature: adult fiction with no content cap of its own; graphic violence and sexual content between consenting adults are allowed,
+    # at the discretion of the user and the model writing the story (the workflow may run on other models). Only the ADULTS-ONLY line is fixed.
+    {"stop": 6, "label": "Mature", "feels_like": "adult fiction; may include graphic violence and sexual content between consenting adults, at the discretion of the user and the model",
+     "story": "adult vocabulary and subtext; grief, moral ambiguity, trauma, politics and power; slow complex plots with consequences that last; violence and sexuality may be shown "
+              "explicitly when the user and the model choose to; endings unresolved or tragic when true",
+     "pictures": "painterly, shadowed, unflinching framing, muted earth palette with deep darks, chiaroscuro light, faces carry the weight",
+     "ceiling": "anything sexual involves consenting adults only, never anyone under 18"},
 ]
 
-CEILING = ("HARD CEILING at every stop, Mature too: mature THEMES only. No sexual content, no graphic gore, romance only between adults, characters fully clothed. "
-           "At Preschool / Kids / Family no on-screen injury or blood at all; violence below Teen is slapstick or implied.")
+CEILING = ("At every stop: anything romantic or sexual involves adults only, never anyone under 18. Preschool to Young adult: no sexual content, no graphic gore, "
+           "characters fully clothed; at Preschool / Kids / Family no on-screen injury or blood at all, and violence below Teen is slapstick or implied. "
+           "Mature: graphic violence and sexual content between consenting adults are allowed, at the discretion of the user and the model writing the story.")
 
 LABELS = [s["label"] for s in STOPS]
 
@@ -108,8 +112,8 @@ def words(v):
 def describe(v):
     """for feedback.py explore / inbox: the stop and what it means, with the ceiling"""
     s = stop_of(v)
-    return (f"{s['label']} [{s['stop']}/6: {s['feels_like']}]; story: {s['story']}; pictures: {s['pictures']}; ceiling: {s['ceiling']} (always: no sexual content, no graphic gore, "
-            "romance only between adults, fully clothed)")
+    return (f"{s['label']} [{s['stop']}/6: {s['feels_like']}]; story: {s['story']}; pictures: {s['pictures']}; ceiling: {s['ceiling']} "
+            "(always: adults only in anything romantic or sexual)")
 
 
 def cue(v, max_words=None):

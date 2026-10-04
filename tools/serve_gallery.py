@@ -68,6 +68,7 @@ STATE = FB / "state.json"
 LOG = FB / "log.jsonl"
 COMMENTS = FB / "comments.json"
 PINS = FB / "pins.json"  # {pins: [{src, cap}], directions}
+EXPLORE_ANIM = FB / "explore_animate.json"  # [{id a<n>, kind animate, saga, chapter, text, ts, status open|done, reply?, done_ts?}]
 JOURNEYS = FB / "journeys.json"  # [{id, kind: start|direct|animate, chapter? (animate), image?, cap?, journey?, text, ts, status: sent|done, reply?}]
 MVS = FB / "mvs.json"  # [{id, kind: submit, mv, text, ts, status: sent|done, reply?}]  (🎵 music video requests)
 MVDIR = ROOT / "musicvideos"
@@ -216,6 +217,169 @@ def mv_asm_run(key):
     rebuild_bg()
 
 
+XASM_TARGETS = ("draft", "youtube", "suno", "hooks")  # 🎞 saga-chapter final cut (tools/saga_assemble.py), same buttons as the music-video one
+
+
+def xasm_dir(saga, ch):
+    if not re.fullmatch(r"[\w.-]+", str(saga)) or not re.fullmatch(r"ch\d\d", str(ch)):
+        return None
+    d = ROOT / "explore" / "sagas" / str(saga) / str(ch)
+    return d if (d / "episode.json").is_file() else None
+
+
+def xasm_label(k):
+    saga, ch, target = (k.split(":", 1)[1].split("|") + ["", "", ""])[:3]
+    ch = ("music video " + ch) if k.startswith("xmv:") else ch
+    title = (load_json(ROOT / "explore" / "sagas" / saga / "saga.json", {}) or {}).get("title", saga)
+    return f"{title} {ch} ({ {'full': 'YouTube', 'youtube': 'YouTube', 'suno': 'Suno', 'hooks': 'hooks', 'draft': 'draft'}.get(target, target)})"
+
+
+def xmusic_write(d, fn):
+    """edit chNN/episode.json reel.music through fn(music dict or None) -> new dict or None (atomic write); returns the new value"""
+    f = d / "episode.json"
+    ep = load_json(f, {}) or {}
+    reel = ep.get("reel") if isinstance(ep.get("reel"), dict) else {}
+    new = fn(reel.get("music") if isinstance(reel.get("music"), dict) else None)
+    if new is None:
+        reel.pop("music", None)
+    else:
+        reel["music"] = new
+    if reel:
+        ep["reel"] = reel
+    else:
+        ep.pop("reel", None)
+    save_json(f, ep)
+    return new
+
+
+def xmusic_clean(m, body):
+    m = dict(m or {})
+    if body.get("clip_sound") in ("off", "low", "full"):
+        m["clip_sound"] = body["clip_sound"]
+    if body.get("offset") is not None:
+        try:
+            m["offset"] = round(max(0.0, min(36000.0, float(body["offset"]))), 2)
+        except (TypeError, ValueError):
+            pass
+    return m
+
+
+def ffprobe_path():
+    from config import FFPROBE
+    return FFPROBE
+
+
+def xmv_saga(saga):
+    if not re.fullmatch(r"[\w.-]+", str(saga)):
+        return None
+    d = ROOT / "explore" / "sagas" / str(saga)
+    return d if (d / "saga.json").is_file() else None
+
+
+def xmv_range(spec):
+    """'ch01-ch03' | 'ch02' -> the canonical range key, or None"""
+    m = re.fullmatch(r"(ch\d\d)(?:-(ch\d\d))?", str(spec or "").strip().lower())
+    if not m:
+        return None
+    a, b = m.group(1), m.group(2) or m.group(1)
+    return a if a == b else (f"{a}-{b}" if a < b else f"{b}-{a}")
+
+
+def xmv_write(d, fn):
+    """edit saga.json `mv` through fn(dict) -> dict or None (None removes the key); returns the new value. (saga.json is also edited by tools/saga.py: read-modify-write, quick)"""
+    f = d / "saga.json"
+    sj = load_json(f, {}) or {}
+    cur = sj.get("mv") if isinstance(sj.get("mv"), dict) else {}
+    new = fn(dict(cur))
+    if new:
+        sj["mv"] = new
+    else:
+        sj.pop("mv", None)
+    save_json(f, sj)
+    return new
+
+
+def xmv_clean(m, body):
+    m = dict(m or {})
+    if body.get("clip_sound") in ("off", "low", "full"):
+        m["clip_sound"] = body["clip_sound"]
+    if body.get("offset") is not None:
+        try:
+            m["offset"] = round(max(0.0, min(36000.0, float(body["offset"]))), 2)
+        except (TypeError, ValueError):
+            pass
+    if body.get("chapters") is not None:
+        r = xmv_range(body.get("chapters"))
+        if r:
+            m["chapters"] = r
+    if body.get("length") is not None:
+        sys.path.insert(0, str(Path(__file__).parent)); import saga_edit as _se
+        ln = _se.parse_length(body.get("length"))
+        if ln:
+            m["length"] = _se.fmt_len(ln) if isinstance(body.get("length"), str) and ":" in body["length"] else ln
+        elif str(body.get("length")).strip() == "":
+            m.pop("length", None)
+    return m
+
+
+def xmv_queue(d, rng, target):
+    """🎞 queue the saga-level music video build (tools/saga_assemble.py <saga> --chapters <rng>)"""
+    (d / "cut").mkdir(exist_ok=True)
+    (d / "cut" / "_status.json").write_text(json.dumps({"state": "queued", "target": target, "range": rng, "stage": "waiting in the queue", "ts": int(time.time())}), encoding="utf-8")
+    k = f"xmv:{d.name}|{rng}|{target}"
+    if k not in REROLLS:
+        REROLLS.append(k)
+    REROLL_WAKE.set()
+    log({"event": "explore_assemble", "saga": d.name, "range": rng, "target": target, "ts": time.strftime("%Y-%m-%d %H:%M:%S")})
+    rebuild_bg()
+    return k
+
+
+def xmv_run(key):
+    saga, rng, target = key[len("xmv:"):].split("|")
+    sp = ROOT / "explore" / "sagas" / saga / "cut" / "_status.json"
+    try:
+        r = subprocess.run([PY, str(ROOT / "tools" / "saga_assemble.py"), f"explore/sagas/{saga}", "--chapters", rng, "--target", target, "--no-gallery"], cwd=ROOT,
+                           capture_output=True, text=True, encoding="utf-8", errors="replace")
+        if r.returncode:
+            st = load_json(sp, {}) or {}
+            if st.get("state") != "error":
+                st.update(state="error", stage="failed", msg=((r.stderr or r.stdout or "").strip().splitlines() or ["no output"])[-1][:400], ts=int(time.time()))
+                sp.write_text(json.dumps(st), encoding="utf-8")
+    except Exception as e:
+        sp.write_text(json.dumps({"state": "error", "target": target, "msg": str(e)[:400], "ts": int(time.time())}), encoding="utf-8")
+    rebuild_bg()
+
+
+def xasm_queue(d, target):
+    """🎞 queue a saga-chapter final-cut build: chNN/cut/_status.json says queued until the worker starts tools/saga_assemble.py (which keeps it updated)"""
+    (d / "cut").mkdir(exist_ok=True)
+    (d / "cut" / "_status.json").write_text(json.dumps({"state": "queued", "target": target, "stage": "waiting in the queue", "ts": int(time.time())}), encoding="utf-8")
+    k = f"xasm:{d.parent.name}|{d.name}|{target}"
+    if k not in REROLLS:
+        REROLLS.append(k)
+    REROLL_WAKE.set()
+    log({"event": "explore_assemble", "saga": d.parent.name, "chapter": d.name, "target": target, "ts": time.strftime("%Y-%m-%d %H:%M:%S")})
+    rebuild_bg()
+    return k
+
+
+def xasm_run(key):
+    saga, ch, target = key[len("xasm:"):].split("|")
+    sp = ROOT / "explore" / "sagas" / saga / ch / "cut" / "_status.json"
+    try:
+        r = subprocess.run([PY, str(ROOT / "tools" / "saga_assemble.py"), f"explore/sagas/{saga}/{ch}", "--target", target, "--no-gallery"], cwd=ROOT,
+                           capture_output=True, text=True, encoding="utf-8", errors="replace")
+        if r.returncode:
+            st = load_json(sp, {}) or {}
+            if st.get("state") != "error":
+                st.update(state="error", stage="failed", msg=((r.stderr or r.stdout or "").strip().splitlines() or ["no output"])[-1][:400], ts=int(time.time()))
+                sp.write_text(json.dumps(st), encoding="utf-8")
+    except Exception as e:
+        sp.write_text(json.dumps({"state": "error", "target": target, "msg": str(e)[:400], "ts": int(time.time())}), encoding="utf-8")
+    rebuild_bg()
+
+
 def reroll_worker():
     while True:
         REROLL_WAKE.wait()
@@ -225,6 +389,14 @@ def reroll_worker():
             fit = key[len("refit:"):].split("|", 1) if key.startswith("refit:") else None
             fix = key[len("fixarea:"):].split("|", 2) if key.startswith("fixarea:") else None  # box@mtime|src|text, see /api/fix_area
             face = key[len("mvface:"):].split("|", 2) if key.startswith("mvface:") else None  # mode|mv|src: 🙂 face close-up
+            if key.startswith("xmv:"):  # 🎞 the saga-level music video
+                xmv_run(key)
+                REROLLS.pop(0)
+                continue
+            if key.startswith("xasm:"):  # 🎞 tools/saga_assemble.py (NevNovella chapter final cut)
+                xasm_run(key)
+                REROLLS.pop(0)
+                continue
             if key.startswith("mvasm:"):  # 🎞 tools/mv_assemble.py (ffmpeg, minutes)
                 mv_asm_run(key)
                 REROLLS.pop(0)
@@ -254,6 +426,34 @@ def reroll_worker():
                 print(f"worker job failed ({rc}): {key} (see feedback/pipeline/worker.log)", flush=True)
             REROLLS.pop(0)
         REROLL_WAKE.clear()
+
+
+def render_worker():
+    """🖨 the render queue (tools/render_queue.py): one job at a time through run_version.py; a job that was running when the
+    server stopped is resumed (run_version skips finished images). Done -> a "render_done" event, the watcher's cue to review that set."""
+    sys.path.insert(0, str(Path(__file__).parent)); import render_queue as RQ
+    q = RQ.load()
+    for j in q["jobs"]:
+        if j["status"] == "running":
+            j["status"] = "queued"
+    RQ.save(q)
+    while True:
+        try:
+            q = RQ.load()
+            job = next((j for j in q["jobs"] if j["status"] == "queued"), None)
+            if not job:
+                time.sleep(5); continue
+            job.update(status="running", started=time.strftime("%Y-%m-%d %H:%M:%S")); RQ.save(q)
+            rc = subprocess.call([PY, "-u", "tools/run_version.py", *job["dirs"]], cwd=ROOT,
+                                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            q = RQ.load()
+            for j in q["jobs"]:
+                if j["id"] == job["id"]:
+                    j.update(status="done" if rc == 0 else "failed", rc=rc, ended=time.strftime("%Y-%m-%d %H:%M:%S"))
+            RQ.save(q)
+            log({"event": "render_done", "job": job["id"], "label": job["label"], "dirs": job["dirs"], "rc": rc, "ts": time.strftime("%Y-%m-%d %H:%M:%S")})
+        except Exception as e:
+            print("render_worker:", e, flush=True); time.sleep(10)
 
 
 def pid_alive(pid):
@@ -346,12 +546,30 @@ def queue_view():
     except Exception:
         pass
     waiting = REROLLS[1:]  # REROLLS[0] is already running as its own pipeline job (except 🎤 lyrics: no plan of its own, so it is listed)
-    if REROLLS and REROLLS[0].startswith(("mvlyrics:", "mvasm:")):
+    if REROLLS and REROLLS[0].startswith(("mvlyrics:", "mvasm:", "xasm:", "xmv:")):
         waiting = REROLLS[:]
     if waiting:
         jobs.append({"pid": 0, "kind": "reroll-queue", "started": now,
-                     "items": [{"kind": "image", "out": k, "status": "running" if k == REROLLS[0] and k.startswith(("mvlyrics:", "mvasm:")) else "queued",
-                                "label": ("🎤 placing lyrics · " + k[9:] if k.startswith("mvlyrics:") else "🎞 assembling " + (load_json(ROOT / "musicvideos" / k[6:].split("|")[0] / "mv.json", {}) or {}).get("title", k[6:]) + " (" + {"full": "YouTube", "youtube": "YouTube", "suno": "Suno", "hooks": "hooks"}.get(k.split("|")[-1], k.split("|")[-1]) + ")" if k.startswith("mvasm:") else "✎ " + k.split("|")[1].split("/", 1)[1] if k.startswith("fixarea:") else "🙂 face close-up · " + k.split("|")[1] if k.startswith("mvface:") else "🎲 " + k.split("/", 1)[1]).replace("_seed1001", "")} for k in waiting]})
+                     "items": [{"kind": "image", "out": k, "status": "running" if k == REROLLS[0] and k.startswith(("mvlyrics:", "mvasm:", "xasm:", "xmv:")) else "queued",
+                                "label": ("🎞 assembling " + xasm_label(k) if k.startswith(("xasm:", "xmv:")) else ("🎤 placing lyrics · " + k[9:] if k.startswith("mvlyrics:") else "🎞 assembling " + (load_json(ROOT / "musicvideos" / k[6:].split("|")[0] / "mv.json", {}) or {}).get("title", k[6:]) + " (" + {"full": "YouTube", "youtube": "YouTube", "suno": "Suno", "hooks": "hooks"}.get(k.split("|")[-1], k.split("|")[-1]) + ")" if k.startswith("mvasm:") else "✎ " + k.split("|")[1].split("/", 1)[1] if k.startswith("fixarea:") else "🙂 face close-up · " + k.split("|")[1] if k.startswith("mvface:") else "🎲 " + k.split("/", 1)[1])).replace("_seed1001", "")} for k in waiting]})
+    # 🖨 sets waiting on the render worker: one queued row per image still to render
+    try:
+        sys.path.insert(0, str(Path(__file__).parent)); import render_queue as RQ
+        rq_items = []
+        for j in RQ.load()["jobs"]:
+            if j["status"] != "queued":
+                continue
+            for d in j["dirs"]:
+                p = load_json(ROOT / d / "params.json", {}) or {}
+                for s in p.get("subjects", []):
+                    for seed in p.get("seeds", [1001]):
+                        if not (ROOT / d / f"{s}_seed{seed}.png").exists():
+                            rq_items.append({"kind": "image", "model": "QI2.1", "status": "queued", "out": f"{d}/{s}_seed{seed}.png",
+                                             "label": f"🖨 {j['label']} · {d.split('/')[1]} · {s}"})
+        if rq_items:
+            jobs.append({"pid": 0, "kind": "render-queue", "started": now, "items": rq_items})
+    except Exception as e:
+        print("render queue listing:", e, flush=True)
     # averages from GPU time only (gsecs); submit-to-done "secs" include waiting in a shared queue
     done = [it for j in jobs for it in j["items"] if it["status"] == "done" and it.get("gsecs")]
     avg = {k: round(sum(x) / len(x)) if (x := [it["gsecs"] for it in done if it["kind"] == k]) else d
@@ -467,7 +685,7 @@ def explore_api(body, ts, by="gallery"):
     sys.path.insert(0, str(Path(__file__).parent)); import explore_state
     path, op = FB / "explore.json", str(body.get("op", ""))
     tune = explore_state.clean_tune(body)  # presence knob, maturity dial, emotion atlas value, stacked cores, formality atlas value
-    steer = lambda st: {k: st.get(k) for k in ("presence", "emotion", "formality", "cores", "maturity")}  # noqa: E731
+    steer = lambda st: {k: st.get(k) for k in explore_state.STEER_KEYS}  # noqa: E731
     if op == "start":
         st = explore_state.start(path, by, tune=tune)
         log({"event": "explore", "kind": "start", "seed": str(body.get("seed") or "").strip()[:2000], "until": st["until"], **steer(st), "ts": ts})
@@ -504,6 +722,56 @@ def explore_api(body, ts, by="gallery"):
         fa.save(a, path_)
         log({"event": "atlas_reset", "atlas": kind, "backup": bk.name, "removed": summ["removed_nodes"], "ts": ts})
         return {"ok": True, "atlas": kind, "backup": bk.name, "summary": summ, "state": explore_state.state(path), "episodes": explore_state.episodes(ROOT)}
+    elif op in ("music_set", "music_clear"):  # 🎵 the chapter's song (uploaded by the user): options / remove; the file lives in chNN/cut/
+        d = xasm_dir(body.get("saga"), body.get("chapter"))
+        if not d:
+            return None
+        if op == "music_clear":
+            cur = xmusic_write(d, lambda m: None)
+            for old in (d / "cut").glob("music.*"):
+                old.unlink(missing_ok=True)
+        else:
+            cur = xmusic_write(d, lambda m: xmusic_clean(m, body) if m and m.get("file") else m)
+        log({"event": "explore_music", "saga": d.parent.name, "chapter": d.name, "op": op, "ts": ts})
+        return {"music": cur, "state": explore_state.state(path), "episodes": explore_state.episodes(ROOT)}
+    elif op in ("mv_set", "mv_music_clear"):  # 🎞 the saga-level music video: range / song length / clip sound / offset; remove its song
+        d = xmv_saga(body.get("saga"))
+        if not d:
+            return None
+        if op == "mv_music_clear":
+            def clr(m):
+                m.pop("music", None)
+                return m
+            cur = xmv_write(d, clr)
+            for old in (d / "cut").glob("music.*"):
+                old.unlink(missing_ok=True)
+        else:
+            cur = xmv_write(d, lambda m: xmv_clean(m, body))
+        log({"event": "explore_music", "saga": d.name, "op": op, "ts": ts})
+        return {"mv": cur, "state": explore_state.state(path), "episodes": explore_state.episodes(ROOT)}
+    elif op == "assemble" and body.get("chapters"):  # 🎞 the saga-level music video build (chapters = the range)
+        d, rng, target = xmv_saga(body.get("saga")), xmv_range(body.get("chapters")), str(body.get("target") or "")
+        if not d or not rng or target not in XASM_TARGETS:
+            return None
+        k = xmv_queue(d, rng, target)
+        return {"queued": REROLLS.index(k) + 1 if k in REROLLS else 0, "state": explore_state.state(path), "episodes": explore_state.episodes(ROOT)}
+    elif op == "assemble":  # 🎞 Final cut of a saga chapter: queue tools/saga_assemble.py on the reroll worker (informational event)
+        d, target = xasm_dir(body.get("saga"), body.get("chapter")), str(body.get("target") or "")
+        if not d or target not in XASM_TARGETS:
+            return None
+        k = xasm_queue(d, target)
+        return {"queued": REROLLS.index(k) + 1 if k in REROLLS else 0, "state": explore_state.state(path), "episodes": explore_state.episodes(ROOT)}
+    elif op == "animate":  # 🎬 Animate chapter on a saga chapter: [ACT] write per-shot motion + tools/animate_chapter.py, then feedback.py xanimreply
+        sid, ch = str(body.get("saga", "")), str(body.get("chapter", ""))
+        if not re.fullmatch(r"[\w.-]+", sid) or not re.fullmatch(r"ch\d\d", ch) or not (ROOT / "explore" / "sagas" / sid / ch / "episode.json").is_file():
+            return None
+        text = str(body.get("text", "")).strip()[:2000]
+        reqs = load_json(EXPLORE_ANIM, [])
+        r = {"id": f"a{len(reqs) + 1}", "kind": "animate", "saga": sid, "chapter": ch, "text": text, "ts": ts, "status": "open"}
+        reqs.append(r)
+        save_json(EXPLORE_ANIM, reqs)
+        log({"event": "explore", "kind": "animate", "saga": sid, "chapter": ch, "text": text, "id": r["id"], "ts": ts})
+        return {"animate_requests": reqs, "state": explore_state.state(path), "episodes": explore_state.episodes(ROOT)}
     else:
         return None
     return {"state": st, "episodes": explore_state.episodes(ROOT)}
@@ -943,7 +1211,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if self.path.startswith("/api/explore"):
             sys.path.insert(0, str(Path(__file__).parent)); import explore_state, atlas as _atlas
             return self.send_json({"state": explore_state.state(FB / "explore.json"), "episodes": explore_state.episodes(ROOT), "atlas_sig": atlas_sig(),
-                                   "emotion_atlas_sig": atlas_sig("emotion"), "atlas_requests": _atlas.open_requests(ROOT)})
+                                   "emotion_atlas_sig": atlas_sig("emotion"), "atlas_requests": _atlas.open_requests(ROOT),
+                                   "animate_requests": load_json(EXPLORE_ANIM, [])})
         if self.path.startswith("/api/mv"):
             with LOCK:
                 return self.send_json({"mvs": [mv_load(x.parent) for x in sorted(MVDIR.glob("*/mv.json"), reverse=True)] if MVDIR.exists() else [],
@@ -1066,7 +1335,52 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             rebuild_bg()
         return self.send_json({"mv": m, "requests": load_json(MVS, [])})
 
+    def explore_upload(self):
+        """POST /api/explore/upload?saga=ID&chapter=chNN&kind=music&name=song.mp3, raw body (<= 200 MB): saved as chNN/cut/music.<ext>, recorded in episode.json reel.music"""
+        from urllib.parse import parse_qs, urlparse
+        q = {k: v[0] for k, v in parse_qs(urlparse(self.path).query).items()}
+        mvlevel = not q.get("chapter")  # no chapter = the saga-level 🎞 music video's song
+        n, d = int(self.headers.get("Content-Length") or 0), (xmv_saga(q.get("saga")) if mvlevel else xasm_dir(q.get("saga"), q.get("chapter")))
+        name = os.path.basename(q.get("name", ""))
+        ext = os.path.splitext(name)[1].lower().lstrip(".")
+        if not d or q.get("kind") != "music" or ext not in AUDIO_EXT or not 0 < n <= 200 * 1024 * 1024:
+            return self.send_json({"error": "bad request"}, 400)
+        cd = d / "cut"
+        cd.mkdir(exist_ok=True)
+        tmp = cd / "music.upload.tmp"
+        left = n
+        with tmp.open("wb") as fh:
+            while left > 0:
+                chunk = self.rfile.read(min(1 << 20, left))
+                if not chunk:
+                    break
+                fh.write(chunk)
+                left -= len(chunk)
+        if left:
+            tmp.unlink(missing_ok=True)
+            return self.send_json({"error": "short body"}, 400)
+        with LOCK:
+            for old in cd.glob("music.*"):
+                if old != tmp:
+                    old.unlink(missing_ok=True)
+            dst = cd / f"music.{ext}"
+            tmp.replace(dst)
+            if mvlevel:
+                dur = 0.0
+                try:
+                    dur = float(subprocess.run([ffprobe_path(), "-v", "error", "-show_entries", "format=duration", "-of", "default=nw=1:nk=1", str(dst)], capture_output=True, text=True).stdout.strip() or 0)
+                except Exception:
+                    pass
+                cur = xmv_write(d, lambda m: {**m, "music": {"file": dst.name, "name": name[:120], "ts": time.strftime("%Y-%m-%d %H:%M:%S"), "dur": round(dur, 2)}})["music"]
+            else:
+                cur = xmusic_write(d, lambda m: {**(m or {}), "file": dst.name, "name": name[:120], "ts": time.strftime("%Y-%m-%d %H:%M:%S")})
+            log({"event": "explore_music", "saga": q.get("saga"), "chapter": q.get("chapter") or "", "op": "upload", "file": dst.name, "bytes": n, "ts": time.strftime("%Y-%m-%d %H:%M:%S")})
+        rebuild_bg()
+        return self.send_json({"music": cur})
+
     def do_POST(self):
+        if self.path.startswith("/api/explore/upload"):
+            return self.explore_upload()
         if self.path.startswith("/api/mv/upload"):
             return self.mv_upload()
         n = int(self.headers.get("Content-Length") or 0)
@@ -1090,6 +1404,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 return self.send_json({"error": str(e)}, 400)
             rebuild_bg()
             return self.send_json(res)
+        if self.path == "/api/show/seen":
+            # 🎞 what the slideshow dealt (a debug log): key + title + the page build, appended to feedback/show.jsonl; no log event
+            row = {k: str(body.get(k, ""))[:200] for k in ("key", "title", "ui", "set")}
+            if row["key"]:
+                with LOCK, (FB / "show.jsonl").open("a", encoding="utf-8") as fh:
+                    fh.write(json.dumps({**row, "ts": ts}, ensure_ascii=False) + "\n")
+            return self.send_json({"ok": True})
         if self.path == "/api/reroll":
             key = norm(str(body.get("src", "")))
             f = (ROOT / key).resolve()
@@ -1164,7 +1485,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return self.send_json({"ok": True, "position": REROLLS.index(k)})
         if self.path == "/api/reveal":
             f = (ROOT / norm(str(body.get("src", "")))).resolve()
-            if not (any(f.is_relative_to(ROOT / a) for a in ("evolutions", "journeys", "musicvideos")) and f.suffix == ".mp4" and f.is_file()):
+            if not (any(f.is_relative_to(ROOT / a) for a in ("evolutions", "journeys", "musicvideos", "explore")) and f.suffix == ".mp4" and f.is_file()):
                 return self.send_json({"error": "bad request"}, 400)
             if sys.platform == "win32":
                 subprocess.Popen(f'explorer /select,"{f}"')
@@ -1273,6 +1594,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                     pv["directions"] = str(body.get("text", ""))
                 elif op == "count":  # how many variant styles to make (tray "Variations")
                     pv["count"] = max(1, min(9, int(body.get("n") or 3)))
+                elif op == "order":  # drag-to-reorder in the tray: the first pin leads a cross (its subject, the diff base)
+                    want = [norm(str(s)) for s in (body.get("srcs") or [])]
+                    rank = {s: i for i, s in enumerate(want)}
+                    pv["pins"] = sorted(pv["pins"], key=lambda p: rank.get(p["src"], len(want)))
                 else:
                     return self.send_json({"error": "bad request"}, 400)
                 save_json(PINS, pv)
@@ -1527,6 +1852,7 @@ if __name__ == "__main__":
     if not Path(PY).exists():
         warn_once("no .venv found: 🎲 reroll / ⤢ upscale / ⬚ refit won't run. Fix: python tools/doctor.py --fix")
     threading.Thread(target=reroll_worker, daemon=True).start()
+    threading.Thread(target=render_worker, daemon=True).start()  # 🖨 tools/render_queue.py
     threading.Thread(target=housekeeper, daemon=True).start()
     handler = functools.partial(Handler, directory=str(ROOT))
     # home-network access: listen on all interfaces but only answer loopback and private LAN addresses (no auth here,

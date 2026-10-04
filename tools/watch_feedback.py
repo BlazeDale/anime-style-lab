@@ -24,13 +24,15 @@ LOG = ROOT / "feedback" / "log.jsonl"
 OFFSET = ROOT / "feedback" / "pipeline" / "watch.offset"  # byte offset the last watch had read up to
 
 # events the gallery server handles by itself: shown, but flagged so nobody starts duplicate work
-INFO_ONLY = {"reroll", "upscale", "refit", "revision_restore", "style_mark", "blur", "fix_area", "journey-ref", "journey-ref-crop", "mv_upload", "mv-ref", "mv-ref-remove", "mv-ref-crop", "mv-ref-note", "mv_face", "mv_lyrics", "mv_assemble", "atlas_learn", "atlas_reset"}
+# never printed (keeps the agent's per-event overhead low): style ❤ / 👎 are taste signals, read in bulk by `feedback.py taste`
+SILENT = {"style_mark"}
+INFO_ONLY = {"reroll", "upscale", "refit", "revision_restore", "style_mark", "blur", "fix_area", "journey-ref", "journey-ref-crop", "mv_upload", "mv-ref", "mv-ref-remove", "mv-ref-crop", "mv-ref-note", "mv_face", "mv_lyrics", "mv_assemble", "explore_assemble", "explore_music", "atlas_learn", "atlas_reset"}
 
 
 def is_info(ev):
     """🎵 "mv" events: kinds "submit" (storyboard it) and "ref_request" (write a prompt, render a reference) are requests; start / add_refs just record the 📌 tray landing"""
     if ev.get("event") == "explore":  # 🌌 start / continue = plan the next episode, tune = re-steer the one in flight, atlas_add = map a new formality neuron (all ACT); stop = informational
-        return ev.get("kind") not in ("start", "continue", "tune", "atlas_add")  # tune = Apply = re-steer the story in flight
+        return ev.get("kind") not in ("start", "continue", "tune", "atlas_add", "animate")  # tune = Apply = re-steer the story in flight
     if ev.get("event") == "mv":
         return ev.get("kind") not in ("submit", "ref_request")
     return ev.get("event") in INFO_ONLY
@@ -76,7 +78,9 @@ def main():
                 *lines, buf = buf.split(b"\n")
                 for raw in lines:
                     if raw.strip():
-                        print(fmt(raw.decode("utf-8", "replace")), flush=True)
+                        line = raw.decode("utf-8", "replace")
+                        if not any(f'"event": "{e}"' in line for e in SILENT):  # taste signals: stored in state.json, read in bulk with feedback.py taste
+                            print(fmt(line), flush=True)
                 save(pos - len(buf))
         time.sleep(2)
 

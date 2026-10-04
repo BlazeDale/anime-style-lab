@@ -114,8 +114,10 @@ def _submit_and_wait(graph, timeout=1800):
             q = http_json("/queue")
             if any(it[1] == pid for it in q.get("queue_pending", [])):
                 t0 = time.time()  # still waiting its turn
-            elif not any(it[1] == pid for it in q.get("queue_running", [])) and not h and time.time() - t0 > 120:
-                raise RuntimeError(f"prompt {pid} vanished from the queue (deleted or ComfyUI restarted)")
+            elif not any(it[1] == pid for it in q.get("queue_running", [])) and time.time() - t0 > 120:
+                # neither queued nor running and not completed: gone, or left a half-written history entry (interrupted). A job once
+                # sat 16 min on such an entry holding the GPU ticket while ComfyUI idled; give up so the queue moves.
+                raise RuntimeError(f"prompt {pid} vanished from the queue or never completed ({json.dumps((h or {}).get('status'))[:300]})")
         if time.time() - t0 > timeout:
             raise TimeoutError(pid)
         time.sleep(2)

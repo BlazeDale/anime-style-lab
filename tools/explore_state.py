@@ -49,7 +49,12 @@ FORMALITY_HINTS = {  # genre -> pictures · caption voice (same table as the pag
     "Courtly": "thrones, regalia, absolute symmetry and hierarchy · high, archaic captions",
 }
 DEAD = 0.12
-MAX_ACTIVE_CORES, MAX_CORES = 5, 12
+# 🎭 the deck's genre selector, same list as XGENRES in the gallery template; "" = the author picks
+GENRES = ["Fantasy", "Science fiction", "Mystery", "Romance", "Horror", "Adventure", "Comedy", "Slice of life", "Thriller", "Western", "Historical",
+          "Post-apocalyptic", "Fairy tale", "Superhero", "Cyberpunk", "Steampunk", "Noir", "Mythic", "Sports"]
+MAX_GENRES = 3  # up to 3 genres, the first leads
+STEER_KEYS = ("presence", "emotion", "formality", "cores", "maturity", "genre", "genres")  # what a start / continue / tune carries and every chapter copies
+MAX_ACTIVE_CORES, MAX_CORES = 1, 12  # one active core since 2026-10-03 (the orbit value already blends several feelings)
 DEFAULT_CORE_WEIGHT = 0.6
 ADJ = {"joy": "joyful", "wonder": "wondering", "awe": "awed", "tension": "tense", "dread": "dreadful", "melancholy": "melancholic",
        "longing": "yearning", "serenity": "serene"}
@@ -70,10 +75,57 @@ def _write(path, obj):
     tmp.replace(path)
 
 
+def clean_genre(g):
+    """the deck's 🎭 genre -> one of GENRES, "" for the author's choice, or None when unusable"""
+    if not isinstance(g, str):
+        return None
+    t = " ".join(g.split()).lower()
+    if t in ("", "any"):
+        return ""
+    return next((x for x in GENRES if x.lower() == t), None)
+
+
+def clean_genres(g):
+    """the deck's genres (up to 3, the first leads) -> a list of GENRES names (deduped, junk dropped, capped), [] for the author's choice, None when unusable.
+    A plain string is the old single `genre` ("" / Any = []; an unknown name = None)"""
+    if isinstance(g, str):
+        c = clean_genre(g)
+        return None if c is None else ([c] if c else [])
+    if not isinstance(g, list):
+        return None
+    out = []
+    for x in g:
+        c = clean_genre(x) if isinstance(x, str) else None
+        if c and c not in out:
+            out.append(c)
+    return out[:MAX_GENRES]
+
+
+def genre_list(st):
+    """the genres of a state / episode dict: `genres`, else the old single `genre` migrated to [g]"""
+    st = st or {}
+    gs = clean_genres(st.get("genres")) if st.get("genres") is not None else None
+    if gs is None:
+        gs = clean_genres(st.get("genre")) or []
+    return gs
+
+
+def genres_words(gs):
+    """'Horror + Comedy + Western (lead: Horror)'; one genre = its name; none = the author's choice"""
+    gs = list(gs or [])
+    if not gs:
+        return "author's choice"
+    return gs[0] if len(gs) == 1 else " + ".join(gs) + f" (lead: {gs[0]})"
+
+
 def clean_tune(body):
     """validate the knob + wheel values from a POST body -> only the keys that were given and valid"""
     out = {}
     body = body or {}
+    gs = clean_genres(body["genres"]) if body.get("genres") is not None else clean_genres(body.get("genre"))
+    if gs is not None:
+        out["genres"] = gs
+        out["genre"] = gs[0] if gs else ""  # the lead, for old readers
     if body.get("presence") is not None:
         try:
             out["presence"] = round(max(0.0, min(100.0, float(body["presence"]))), 1)
@@ -166,7 +218,7 @@ def _slug_id(s, taken):
 
 def clean_cores(raw, atlas=None):
     """validate the stackable emotional cores from a POST body / saga.json -> a list of {id, name, probe, blend, weight 0-1, status, history?}.
-    A core needs a usable probe / blend; at most MAX_ACTIVE_CORES stay active (later ones are dropped), MAX_CORES in all; ids are made unique"""
+    A core needs a usable probe / blend; at most MAX_ACTIVE_CORES stay active (later active ones are kept as resolved), MAX_CORES in all; ids are made unique"""
     if not isinstance(raw, list):
         return []
     import atlas as fa
@@ -178,9 +230,7 @@ def clean_cores(raw, atlas=None):
         v = clean_emotion(c, atlas)
         if not v or not v.get("blend"):
             continue
-        status = "resolved" if c.get("status") == "resolved" else "active"
-        if status == "active" and active >= MAX_ACTIVE_CORES:
-            continue
+        status = "resolved" if c.get("status") == "resolved" or active >= MAX_ACTIVE_CORES else "active"
         try:
             wt = max(0.0, min(1.0, float(c["weight"]))) if c.get("weight") is not None else DEFAULT_CORE_WEIGHT
         except (TypeError, ValueError):
@@ -366,7 +416,8 @@ def describe(st, detail=False):
         emw = fa.describe_value(em, kind="emotion")
     else:
         emw = emotion_words(em)
-    head = f"presence {50 if p is None else p:g} ({presence_word(p)}); maturity {maturity_words(st.get('maturity'))}; emotion of the moment {emw}; cores {cores_words(st.get('cores'), detail=detail)}"
+    gl = genre_list(st)
+    head = f"{'genres' if len(gl) > 1 else 'genre'} {genres_words(gl)}; presence {50 if p is None else p:g} ({presence_word(p)}); maturity {maturity_words(st.get('maturity'))}; emotion of the moment {emw}; cores {cores_words(st.get('cores'), detail=detail)}"
     if isinstance(fo, dict) and fo.get("blend"):
         import formality_atlas as fa
         return f"{head}; formality {fa.describe_value(fo)}"
@@ -386,14 +437,14 @@ def view(raw, now=None):
     if raw.get("active") and now <= until:
         return {"active": True, "until": until, "started": raw.get("started"), "by": raw.get("by", ""), "left": round(until - now, 1),
                 "reason": "", "paused": False, "minutes": MINUTES, "presence": raw.get("presence"), "emotion": raw.get("emotion"), "formality": raw.get("formality"),
-                "cores": raw.get("cores"), "maturity": raw.get("maturity")}
+                "cores": raw.get("cores"), "maturity": raw.get("maturity"), "genre": raw.get("genre"), "genres": genre_list(raw)}
     if raw.get("active"):  # the 15 minutes ran out
         reason = "timer"
     else:
         reason = "stopped" if raw.get("stopped") else "idle"
     return {"active": False, "until": until, "started": raw.get("started"), "by": raw.get("by", ""), "left": 0,
             "reason": reason, "paused": reason == "timer", "minutes": MINUTES, "presence": raw.get("presence"), "emotion": raw.get("emotion"),
-            "formality": raw.get("formality"), "cores": raw.get("cores"), "maturity": raw.get("maturity")}
+            "formality": raw.get("formality"), "cores": raw.get("cores"), "maturity": raw.get("maturity"), "genre": raw.get("genre"), "genres": genre_list(raw)}
 
 
 def state(path=FILE, now=None):
@@ -406,7 +457,7 @@ def is_active(path=FILE, now=None):
 
 def _carry(cur, tune):
     """the knob + wheel values survive start / continue / stop; a request that carries new ones replaces them"""
-    out = {k: cur[k] for k in ("presence", "emotion", "formality", "cores", "maturity") if cur.get(k) is not None}
+    out = {k: cur[k] for k in STEER_KEYS if cur.get(k) is not None}
     out.update(tune or {})
     return out
 

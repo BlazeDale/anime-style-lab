@@ -144,7 +144,14 @@ python tools/test_saga.py
 - **Gallery**: image counts, sorting and collapsible strips on every style, Videos grouped per style/journey, a **🕘 past
   revisions** viewer (compare, flip, wipe, restore any earlier version of a rerolled/fixed image), per-model chips and
   per-model average render times in the **⚙ Queue**, compact reference cards with an in-place crop overlay, and a daily
-  **housekeeping** pass that prunes old discards after saving each one's lesson (`tools/housekeeping.py`).
+  **housekeeping** pass that prunes old discards after saving each one's lesson (`tools/housekeeping.py`). Queue rows link to
+  their set, journey or saga; the 📌 tray reorders by drag; the cast box finds "every character matching …" across all casts;
+  code updates wait until you stop watching.
+- **🎞 Slideshow** (`#/show`): styles thrown onto a black table as spinning cards in slow motion, new evolve / cross sets first,
+  your pins mingling with each hand, ❤ / 👎 / 📋 / 👥 on every card, drag to pin or out of the page, and an optional second
+  monitor that extends the same show.
+- **Render queue** (`tools/render_queue.py`): sets render one job at a time on the gallery server's worker (resumes after a
+  restart) and a `render_done` event cues your agent to review them; `feedback.py taste` / `verdict` keep the loop light.
 - **🎵 Music videos** (`musicvideos/`, `tools/mv_*.py`): a project per song with lyrics, an idea, reference images, and a
   waveform timeline where you mark what is sung when. Drop a **zip of stems** and the tool finds the mix, the lead vocal and
   every band member's entrances, solos, breakdowns and fills; **🎤 place lyrics** aligns your lyric lines to the vocal with
@@ -155,16 +162,18 @@ python tools/test_saga.py
   as a standalone clip with its headline and song slice, or (`--auto`) the whole song as 10-30 s hooks cut at scene changes and
   vocal pauses. A ✓ Hide approved toggle on the storyboard shows only the frames still to do. Experimental: the two-plate lip-sync composite
   (`mv_plates.py` + `mv_composite.py`) and the LatentSync pass (`lipsync.py`).
-- **📖 Nev Novel** (`explore/`, `tools/saga.py`, `tools/explore_*.py`): a never-ending visual novel your agent writes as you
+- **📖 NevNovella** (`explore/`, `tools/saga.py`, `tools/explore_*.py`): a never-ending visual novel your agent writes as you
   watch. A saga bible (lore, cast, places, threads) keeps continuity; cast reference images keep faces consistent; a full-screen
   visual-novel player shows stills with narration and dialogue. A deck steers it: composition **presence**, an **Emotion Atlas**
   and a **Formality Atlas** (living maps of ~140 concepts wired by researched story links, browsed as a little solar system of
-  related feelings, whose connections strengthen with your likes), stackable emotional
-  **cores**, and a **maturity** dial (Preschool to Mature) with a hard content ceiling at every stop: mature themes only, never
-  sexual content or graphic gore. Each session runs in a 15-minute window and waits for you to press Continue. Chapters are
+  related feelings, whose connections strengthen with your likes), one emotional **core** per saga, up to three **genres**, and a
+  **maturity** dial (Preschool to Mature) whose content ceiling rides in every image prompt; anything romantic involves adults
+  only at every stop, and Mature content is left to the discretion of you and the model writing the story. Each session runs in a 15-minute window and waits for you to press Continue. Chapters are
   checked for story craft (scenes with goals and stakes, a costly choice, a hook, faces that show the moment) and paced so the
   reading keeps up with the renders; the player shows your place, the render queue and the timer, copies or drags out the
-  current picture, and has a chat panel for your agent.
+  current picture, and has a chat panel for your agent. 🎬 Animate a chapter, then build its **final cut** (draft, YouTube
+  master, Suno, hooks; `tools/saga_assemble.py`) with world-building overview captions, your own uploaded song, beat-snapped
+  cuts and a shared grade, or cut a range of chapters into one music video fitted to the song's length.
 - **🧪 Render bake-offs** (`tools/saga_bench.py`, `tools/style_bench.py`, `tools/bench_page.py`): try render settings (steps,
   reference resolution, megapixels + upscaler) on real lineages and saga shots and compare speed and quality per style on
   `gallery/bench.html`. `tools/shot.py` screenshots the running gallery in headless Edge.
@@ -176,7 +185,7 @@ python tools/test_saga.py
 evolutions/NNN-slug/          one prompt lineage; vNN/ = one iteration (prompt.txt, params.json, notes.json, workflow.json, seed*.png)
 journeys/NNN-slug/            one character exploring their world, chapter by chapter (chNN/chapter.json + sN.png scenes)
 musicvideos/NNN-slug/         one music-video project: mv.json, audio/, sbNN/ storyboards, edit.json, cut/ (gitignored: your own work)
-explore/                      Nev Novel: the two starter atlases (tracked); episodes and sagas/ are gitignored
+explore/                      NevNovella: the two starter atlases (tracked); episodes and sagas/ are gitignored
 workflows/base/               ComfyUI workflow templates (never edited directly — copied per render)
 gallery/                      generated: index.html + data.json
 tools/                        build_gallery.py, serve_gallery.py, run_version.py, run_video.py, run_journey.py, feedback.py, ...
